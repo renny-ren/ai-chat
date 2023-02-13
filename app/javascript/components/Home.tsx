@@ -2,6 +2,7 @@ import React, { Fragment, useState } from "react"
 import { Link } from "react-router-dom"
 import { Dialog, Popover, Tab, Transition } from "@headlessui/react"
 import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from "@heroicons/react/24/outline"
+import ChatModule from "./ChatModule/ChatModule"
 
 const navigation = {
   categories: [
@@ -408,7 +409,9 @@ export default function Example() {
                 <div className="absolute inset-0 bg-gradient-to-r from-[#36b49f] to-[#DBFF75] opacity-40 [mask-image:radial-gradient(farthest-side_at_top,white,transparent)] dark:from-[#36b49f]/30 dark:to-[#DBFF75]/30 dark:opacity-100"></div>
               </div>
             </div>
-            <div className="bg-zinc-900/75 underline text-3xl font-bold">main</div>
+            <div>
+              <ChatModule />
+            </div>
           </main>
           <footer className="mx-auto max-w-2xl space-y-10 pb-16 lg:max-w-5xl">
             <div className="flex flex-col items-center justify-between gap-5 border-t border-zinc-900/5 pt-8 dark:border-white/5 sm:flex-row">
