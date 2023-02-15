@@ -43,14 +43,13 @@ const PromptInput: React.FC<PromptInputProps> = ({ prompt, onSubmit, updatePromp
         onChange={(e) => updatePrompt(e.target.value)}
       />*/}
       <textarea
+        className="m-0 w-full resize-none border-0 bg-transparent p-0 pl-2 pr-7 focus:ring-0 focus-visible:ring-0 dark:bg-transparent md:pl-0"
         tabIndex="0"
-        data-id="root"
         style={{ maxHeight: "200px", height: "24px", overflowY: "hidden" }}
         rows="1"
         placeholder=""
         onChange={(e) => updatePrompt(e.target.value)}
         value={prompt}
-        className="m-0 w-full resize-none border-0 bg-transparent p-0 pl-2 pr-7 focus:ring-0 focus-visible:ring-0 dark:bg-transparent md:pl-0"
       ></textarea>
     </>
   )

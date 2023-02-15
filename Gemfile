@@ -68,5 +68,6 @@ group :development do
 end
 
 gem "tailwindcss-rails", "~> 2.0"
-gem 'faraday'
-gem 'pry'
+gem "faraday"
+gem "pry"
+gem "openai_ruby", "~> 0.3.1"
