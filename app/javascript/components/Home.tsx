@@ -1,138 +1,20 @@
-import React, { Fragment, useState } from "react"
+import React, { Fragment, useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { Dialog, Popover, Tab, Transition } from "@headlessui/react"
 import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import ChatModule from "./ChatModule/ChatModule"
-
-const navigation = {
-  categories: [
-    {
-      id: "women",
-      name: "Women",
-      featured: [
-        {
-          name: "New Arrivals",
-          href: "#",
-          imageSrc: "https://tailwindui.com/img/ecommerce-images/mega-menu-category-01.jpg",
-          imageAlt: "Models sitting back to back, wearing Basic Tee in black and bone.",
-        },
-        {
-          name: "Basic Tees",
-          href: "#",
-          imageSrc: "https://tailwindui.com/img/ecommerce-images/mega-menu-category-02.jpg",
-          imageAlt: "Close up of Basic Tee fall bundle with off-white, ochre, olive, and black tees.",
-        },
-      ],
-      sections: [
-        {
-          id: "clothing",
-          name: "Clothing",
-          items: [
-            { name: "Tops", href: "#" },
-            { name: "Dresses", href: "#" },
-            { name: "Pants", href: "#" },
-            { name: "Denim", href: "#" },
-            { name: "Sweaters", href: "#" },
-            { name: "T-Shirts", href: "#" },
-            { name: "Jackets", href: "#" },
-            { name: "Activewear", href: "#" },
-            { name: "Browse All", href: "#" },
-          ],
-        },
-        {
-          id: "accessories",
-          name: "Accessories",
-          items: [
-            { name: "Watches", href: "#" },
-            { name: "Wallets", href: "#" },
-            { name: "Bags", href: "#" },
-            { name: "Sunglasses", href: "#" },
-            { name: "Hats", href: "#" },
-            { name: "Belts", href: "#" },
-          ],
-        },
-        {
-          id: "brands",
-          name: "Brands",
-          items: [
-            { name: "Full Nelson", href: "#" },
-            { name: "My Way", href: "#" },
-            { name: "Re-Arranged", href: "#" },
-            { name: "Counterfeit", href: "#" },
-            { name: "Significant Other", href: "#" },
-          ],
-        },
-      ],
-    },
-    {
-      id: "men",
-      name: "Men",
-      featured: [
-        {
-          name: "New Arrivals",
-          href: "#",
-          imageSrc: "https://tailwindui.com/img/ecommerce-images/product-page-04-detail-product-shot-01.jpg",
-          imageAlt: "Drawstring top with elastic loop closure and textured interior padding.",
-        },
-        {
-          name: "Artwork Tees",
-          href: "#",
-          imageSrc: "https://tailwindui.com/img/ecommerce-images/category-page-02-image-card-06.jpg",
-          imageAlt:
-            "Three shirts in gray, white, and blue arranged on table with same line drawing of hands and shapes overlapping on front of shirt.",
-        },
-      ],
-      sections: [
-        {
-          id: "clothing",
-          name: "Clothing",
-          items: [
-            { name: "Tops", href: "#" },
-            { name: "Pants", href: "#" },
-            { name: "Sweaters", href: "#" },
-            { name: "T-Shirts", href: "#" },
-            { name: "Jackets", href: "#" },
-            { name: "Activewear", href: "#" },
-            { name: "Browse All", href: "#" },
-          ],
-        },
-        {
-          id: "accessories",
-          name: "Accessories",
-          items: [
-            { name: "Watches", href: "#" },
-            { name: "Wallets", href: "#" },
-            { name: "Bags", href: "#" },
-            { name: "Sunglasses", href: "#" },
-            { name: "Hats", href: "#" },
-            { name: "Belts", href: "#" },
-          ],
-        },
-        {
-          id: "brands",
-          name: "Brands",
-          items: [
-            { name: "Re-Arranged", href: "#" },
-            { name: "Counterfeit", href: "#" },
-            { name: "Full Nelson", href: "#" },
-            { name: "My Way", href: "#" },
-          ],
-        },
-      ],
-    },
-  ],
-  pages: [
-    { name: "Company", href: "#" },
-    { name: "Stores", href: "#" },
-  ],
-}
+import SignInModal from "./user/SignInModal"
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ")
 }
 
-export default function Example() {
-  const [open, setOpen] = useState(false)
+const Home = () => {
+  const [isShowModal, setIsShowModal] = useState(false)
+
+  const onShowSignInModal = () => {
+    setIsShowModal(true)
+  }
 
   return (
     <>
@@ -173,22 +55,6 @@ export default function Example() {
                     <li>
                       <a
                         className="text-sm leading-5 text-zinc-600 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-                        href="/"
-                      >
-                        API
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        className="text-sm leading-5 text-zinc-600 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-                        href="/#"
-                      >
-                        Documentation
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        className="text-sm leading-5 text-zinc-600 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
                         href="/#"
                       >
                         Support
@@ -212,12 +78,12 @@ export default function Example() {
                   ></button>
                 </div>
                 <div className="hidden min-[416px]:contents">
-                  <a
+                  <div
                     className="inline-flex gap-0.5 justify-center overflow-hidden text-sm font-medium transition rounded-full bg-zinc-900 py-1 px-3 text-white hover:bg-zinc-700 dark:bg-emerald-400/10 dark:text-emerald-400 dark:ring-1 dark:ring-inset dark:ring-emerald-400/20 dark:hover:bg-emerald-400/10 dark:hover:text-emerald-300 dark:hover:ring-emerald-300"
-                    href="/#"
+                    onClick={onShowSignInModal}
                   >
-                    Sign in
-                  </a>
+                    登录
+                  </div>
                 </div>
               </div>
             </div>
@@ -248,7 +114,7 @@ export default function Example() {
                   </a>
                 </li>
                 <li className="relative mt-6 md:mt-0">
-                  <h2 className="text-xs font-semibold text-zinc-900 dark:text-white">Guides</h2>
+                  <h2 className="text-xs font-semibold text-zinc-900 dark:text-white">会话</h2>
                   <div className="relative mt-3 pl-2">
                     <div
                       className="absolute inset-x-0 top-0 bg-zinc-800/2.5 will-change-transform dark:bg-white/2.5"
@@ -270,80 +136,22 @@ export default function Example() {
                           className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-900 dark:text-white"
                           href="/"
                         >
-                          <span className="truncate">Introduction</span>
-                        </a>
-                        <ul role="list" style={{ opacity: 1 }}>
-                          <li>
-                            <a
-                              className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-7 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-                              href="/#guides"
-                            >
-                              <span className="truncate">Guides</span>
-                            </a>
-                          </li>
-                          <li>
-                            <a
-                              className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-7 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-                              href="/#resources"
-                            >
-                              <span className="truncate">Resources</span>
-                            </a>
-                          </li>
-                        </ul>
-                      </li>
-                      <li className="relative">
-                        <a
-                          className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-                          href="/quickstart"
-                        >
-                          <span className="truncate">Quickstart</span>
+                          <span className="truncate">会话1</span>
                         </a>
                       </li>
                       <li className="relative">
                         <a
                           className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-                          href="/sdks"
+                          href="/"
                         >
-                          <span className="truncate">SDKs</span>
-                        </a>
-                      </li>
-                      <li className="relative">
-                        <a
-                          className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-                          href="/authentication"
-                        >
-                          <span className="truncate">Authentication</span>
-                        </a>
-                      </li>
-                      <li className="relative">
-                        <a
-                          className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-                          href="/pagination"
-                        >
-                          <span className="truncate">Pagination</span>
-                        </a>
-                      </li>
-                      <li className="relative">
-                        <a
-                          className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-                          href="/errors"
-                        >
-                          <span className="truncate">Errors</span>
-                        </a>
-                      </li>
-                      <li className="relative">
-                        <a
-                          className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-                          href="/webhooks"
-                        >
-                          <span className="truncate">Webhooks</span>
+                          <span className="truncate">会话2</span>
                         </a>
                       </li>
                     </ul>
                   </div>
                 </li>
                 <li className="relative mt-6">
-                  <h2 className="text-xs font-semibold text-zinc-900 dark:text-white">Resources</h2>
+                  <h2 className="text-xs font-semibold text-zinc-900 dark:text-white">菜单</h2>
                   <div className="relative mt-3 pl-2">
                     <div className="absolute inset-y-0 left-2 w-px bg-zinc-900/10 dark:bg-white/5"></div>
                     <ul role="list" className="border-l border-transparent">
@@ -352,7 +160,7 @@ export default function Example() {
                           className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
                           href="/contacts"
                         >
-                          <span className="truncate">Contacts</span>
+                          <span className="truncate">清空会话</span>
                         </a>
                       </li>
                       <li className="relative">
@@ -360,7 +168,7 @@ export default function Example() {
                           className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
                           href="/conversations"
                         >
-                          <span className="truncate">Conversations</span>
+                          <span className="truncate">夜间模式</span>
                         </a>
                       </li>
                       <li className="relative">
@@ -368,23 +176,7 @@ export default function Example() {
                           className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
                           href="/messages"
                         >
-                          <span className="truncate">Messages</span>
-                        </a>
-                      </li>
-                      <li className="relative">
-                        <a
-                          className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-                          href="/groups"
-                        >
-                          <span className="truncate">Groups</span>
-                        </a>
-                      </li>
-                      <li className="relative">
-                        <a
-                          className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-                          href="/attachments"
-                        >
-                          <span className="truncate">Attachments</span>
+                          <span className="truncate">常见问题</span>
                         </a>
                       </li>
                     </ul>
@@ -416,12 +208,12 @@ export default function Example() {
                         <path d="M.5 56V.5H72" fill="none"></path>
                       </pattern>
                     </defs>
-                    <rect width="100%" height="100%" stroke-width="0" fill="url(#:R11d6:)"></rect>
-                    <svg x="-12" y="4" class="overflow-visible">
-                      <rect stroke-width="0" width="73" height="57" x="288" y="168"></rect>
-                      <rect stroke-width="0" width="73" height="57" x="144" y="56"></rect>
-                      <rect stroke-width="0" width="73" height="57" x="504" y="168"></rect>
-                      <rect stroke-width="0" width="73" height="57" x="720" y="336"></rect>
+                    <rect width="100%" height="100%" strokeWidth="0" fill="url(#:R11d6:)"></rect>
+                    <svg x="-12" y="4" className="overflow-visible">
+                      <rect strokeWidth="0" width="73" height="57" x="288" y="168"></rect>
+                      <rect strokeWidth="0" width="73" height="57" x="144" y="56"></rect>
+                      <rect strokeWidth="0" width="73" height="57" x="504" y="168"></rect>
+                      <rect strokeWidth="0" width="73" height="57" x="720" y="336"></rect>
                     </svg>
                   </svg>
                 </div>
@@ -449,6 +241,9 @@ export default function Example() {
           </footer>
         </div>
       </div>
+      <SignInModal isShow={isShowModal} setOpen={setIsShowModal} />
     </>
   )
 }
+
+export default Home
