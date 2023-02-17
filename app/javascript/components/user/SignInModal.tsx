@@ -5,6 +5,13 @@ import { LockClosedIcon } from "@heroicons/react/20/solid"
 import { message } from "antd"
 import axios from "axios"
 
+axios.interceptors.request.use((config) => {
+  config.headers["Content-Type"] = "application/json"
+  config.headers["Accept"] = "application/json"
+  config.headers["X-CSRF-Token"] = document.querySelector("meta[name='csrf-token']").getAttribute("content")
+  return config
+})
+
 interface SignInModalProps {
   isShow: boolean
   setOpen: () => void
@@ -15,30 +22,33 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
   const [mode, setMode] = useState("sign_in")
   const [formErrors, setFormErrors] = useState([])
 
-  const onSignIn = () => {
-    console.log("===")
+  const onSignIn = async (e) => {
+    e.preventDefault()
+    try {
+      const response = await axios.post("/users/sign_in", {
+        username: e.target.elements.username.value,
+        password: e.target.elements.password.value,
+      })
+      message.success("登录成功！")
+      setOpen(false)
+      window.avatar_url = response.data.avatar_url
+    } catch (error) {
+      setFormErrors([error.response.data.message])
+    }
   }
 
   const onSignUp = async (e) => {
     e.preventDefault()
     const csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content")
     try {
-      // const response = await axios.post(
-      //   "/users",
-      //   {
-      //     nickname: e.target.elements.nickname.value,
-      //     username: e.target.elements.username.value,
-      //     password: e.target.elements.password.value,
-      //   },
-      //   {
-      //     headers: {
-      //       "X-CSRF-Token": csrf,
-      //     },
-      //   }
-      // )
+      const response = await axios.post("/users", {
+        nickname: e.target.elements.nickname.value,
+        username: e.target.elements.username.value,
+        password: e.target.elements.password.value,
+      })
       message.success("注册成功！")
       setOpen(false)
-      // console.log("response", response)
+      window.avatar_url = response.data.avatar_url
     } catch (error) {
       if (error.response.status === 400) {
         setFormErrors(error.response.data.message)
@@ -97,7 +107,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
                           </span>
                         </p>
                       </div>
-                      <form className="mt-8 space-y-6" action="/users/sign_in" method="POST">
+                      <form className="mt-8 space-y-6" onSubmit={onSignIn}>
                         <input type="hidden" name="remember" defaultValue="true" />
                         <div className="-space-y-px rounded-md shadow-sm">
                           <div>
@@ -151,10 +161,19 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
                           </div>
                         </div>
 
+                        {!!formErrors.length && (
+                          <div className="text-indigo-600 rounded relative" role="alert">
+                            <ul>
+                              {formErrors.map((error, i) => (
+                                <li key={i}>{error}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+
                         <div>
                           <button
                             type="submit"
-                            onClick={onSignIn}
                             className="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                           >
                             <span className="absolute inset-y-0 left-0 flex items-center pl-3">

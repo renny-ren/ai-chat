@@ -4,6 +4,7 @@ import { Dialog, Popover, Tab, Transition } from "@headlessui/react"
 import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import ChatModule from "./ChatModule/ChatModule"
 import SignInModal from "./user/SignInModal"
+import UserBar from "./user/UserBar"
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ")
@@ -78,12 +79,16 @@ const Home = () => {
                   ></button>
                 </div>
                 <div className="hidden min-[416px]:contents">
-                  <div
-                    className="inline-flex gap-0.5 justify-center overflow-hidden text-sm font-medium transition rounded-full bg-zinc-900 py-1 px-3 text-white hover:bg-zinc-700 dark:bg-emerald-400/10 dark:text-emerald-400 dark:ring-1 dark:ring-inset dark:ring-emerald-400/20 dark:hover:bg-emerald-400/10 dark:hover:text-emerald-300 dark:hover:ring-emerald-300"
-                    onClick={onShowSignInModal}
-                  >
-                    登录
-                  </div>
+                  {window.avatar_url ? (
+                    <UserBar />
+                  ) : (
+                    <div
+                      className="cursor-pointer inline-flex gap-0.5 justify-center overflow-hidden text-sm font-medium transition rounded-full bg-zinc-900 py-1 px-3 text-white hover:bg-zinc-700 dark:bg-emerald-400/10 dark:text-emerald-400 dark:ring-1 dark:ring-inset dark:ring-emerald-400/20 dark:hover:bg-emerald-400/10 dark:hover:text-emerald-300 dark:hover:ring-emerald-300"
+                      onClick={onShowSignInModal}
+                    >
+                      登录
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

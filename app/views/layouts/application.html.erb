@@ -14,4 +14,7 @@
   <body>
     <%= yield %>
   </body>
+  <script type="text/javascript">
+    window.avatar_url = "<%= user_signed_in? ? current_user.avatar_url : '' %>";
+  </script>
 </html>
