@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import { Button, Space } from "antd"
 import axios from "axios"
 import PromptInput from "./PromptInput"
 import { ResponseInterface } from "./ResponseInterface"
@@ -147,8 +148,25 @@ const ChatModule = () => {
     }
   }
 
+  const defaultPrompts = [
+    "用简单的语言解释量子计算",
+    "给10岁的孩子过生日有什么创意吗？",
+    "How do I make an HTTP request in Javascript?",
+  ]
+
   return (
     <main className="relative h-full w-full transition-width flex flex-col overflow-hidden items-stretch flex-1">
+      {!responseList.length && (
+        <div className="flex flex-col items-center text-sm dark:bg-gray-800">
+          <div className="text-gray-800 w-full md:max-w-2xl lg:max-w-3xl md:h-full md:flex md:flex-col px-6 dark:text-gray-100">
+            {defaultPrompts.map((text, i) => (
+              <Button size="large" key={i} type="text" onClick={() => setPrompt(text)}>
+                {text}
+              </Button>
+            ))}
+          </div>
+        </div>
+      )}
       <div className="flex-1 overflow-hidden relative">
         <PromptResponseList responseList={responseList} key="response-list" />
       </div>

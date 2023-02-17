@@ -5,15 +5,14 @@ import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from "@her
 import ChatModule from "./ChatModule/ChatModule"
 import SignInModal from "./user/SignInModal"
 import UserBar from "./user/UserBar"
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ")
-}
+import MobileMenu from "./MobileMenu"
 
 const Home = () => {
   const [isShowModal, setIsShowModal] = useState(false)
+  const [isShowMobileMenu, setIsShowMobileMenu] = useState(false)
 
   const onShowSignInModal = () => {
+    setIsShowMobileMenu(false)
     setIsShowModal(true)
   }
 
@@ -31,24 +30,30 @@ const Home = () => {
             >
               <div className="absolute inset-x-0 top-full h-px transition bg-zinc-900/[.075] dark:bg-white/[.075]"></div>
               <div className="hidden lg:block lg:max-w-md lg:flex-auto">
-                <button
-                  type="button"
-                  className="hidden h-8 w-full items-center gap-2 rounded-full bg-white pl-2 pr-3 text-sm text-zinc-500 ring-1 ring-zinc-900/10 transition hover:ring-zinc-900/20 dark:bg-white/5 dark:text-zinc-400 dark:ring-inset dark:ring-white/10 dark:hover:ring-white/20 lg:flex focus:[&amp;:not(:focus-visible)]:outline-none"
-                >
-                  Find something...
-                  <kbd className="ml-auto text-2xs text-zinc-400 dark:text-zinc-500">
-                    <kbd className="font-sans">⌘</kbd>
-                    <kbd className="font-sans">K</kbd>
-                  </kbd>
-                </button>
+                <a aria-label="Home" href="/">
+                  <img src="/assets/logo.png" width="60px" />
+                </a>
               </div>
               <div className="flex items-center gap-5 lg:hidden">
                 <button
                   type="button"
                   className="flex h-6 w-6 items-center justify-center rounded-md transition hover:bg-zinc-900/5 dark:hover:bg-white/5"
                   aria-label="Toggle navigation"
-                ></button>
-                <a aria-label="Home" href="/"></a>
+                  onClick={() => setIsShowMobileMenu((isShowMobileMenu) => !isShowMobileMenu)}
+                >
+                  <svg
+                    viewBox="0 0 10 9"
+                    fill="none"
+                    strokeLinecap="round"
+                    aria-hidden="true"
+                    className="w-2.5 stroke-zinc-900 dark:stroke-white"
+                  >
+                    <path d="M.5 1h9M.5 8h9M.5 4.5h9"></path>
+                  </svg>
+                </button>
+                <a aria-label="Home" href="/">
+                  <img src="/assets/logo.png" width="60px" />
+                </a>
               </div>
               <div className="flex items-center gap-5">
                 <nav className="hidden md:block">
@@ -65,20 +70,14 @@ const Home = () => {
                 </nav>
                 <div className="hidden md:block md:h-5 md:w-px md:bg-zinc-900/10 md:dark:bg-white/15"></div>
                 <div className="flex gap-4">
-                  <div className="contents lg:hidden">
-                    <button
-                      type="button"
-                      className="flex h-6 w-6 items-center justify-center rounded-md transition hover:bg-zinc-900/5 dark:hover:bg-white/5 lg:hidden focus:[&amp;:not(:focus-visible)]:outline-none"
-                      aria-label="Find something..."
-                    ></button>
-                  </div>
                   <button
                     type="button"
                     className="flex h-6 w-6 items-center justify-center rounded-md transition hover:bg-zinc-900/5 dark:hover:bg-white/5"
                     aria-label="Toggle dark mode"
                   ></button>
                 </div>
-                <div className="hidden min-[416px]:contents">
+                {/*<div className="hidden min-[416px]:contents">*/}
+                <div>
                   {window.avatar_url ? (
                     <UserBar />
                   ) : (
@@ -246,6 +245,17 @@ const Home = () => {
           </footer>
         </div>
       </div>
+      <Transition
+        show={isShowMobileMenu}
+        enter="transition-opacity duration-75"
+        enterFrom="opacity-0"
+        enterTo="opacity-100"
+        leave="transition-opacity duration-150"
+        leaveFrom="opacity-100"
+        leaveTo="opacity-0"
+      >
+        <MobileMenu setIsShow={setIsShowMobileMenu} onShowSignInModal={onShowSignInModal} />
+      </Transition>
       <SignInModal isShow={isShowModal} setOpen={setIsShowModal} />
     </>
   )
