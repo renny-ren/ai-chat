@@ -34,27 +34,7 @@ const UserBar: React.FC<UserBarProps> = ({}) => {
                   href="#"
                   className={classNames(active ? "bg-gray-100 text-gray-900" : "text-gray-700", "block px-4 py-2 text-sm")}
                 >
-                  Account settings
-                </a>
-              )}
-            </Menu.Item>
-            <Menu.Item>
-              {({ active }) => (
-                <a
-                  href="#"
-                  className={classNames(active ? "bg-gray-100 text-gray-900" : "text-gray-700", "block px-4 py-2 text-sm")}
-                >
-                  Support
-                </a>
-              )}
-            </Menu.Item>
-            <Menu.Item>
-              {({ active }) => (
-                <a
-                  href="#"
-                  className={classNames(active ? "bg-gray-100 text-gray-900" : "text-gray-700", "block px-4 py-2 text-sm")}
-                >
-                  License
+                  账户设置
                 </a>
               )}
             </Menu.Item>
@@ -68,7 +48,7 @@ const UserBar: React.FC<UserBarProps> = ({}) => {
                       "block w-full px-4 py-2 text-left text-sm"
                     )}
                   >
-                    Sign out
+                    登出
                   </button>
                 )}
               </Menu.Item>

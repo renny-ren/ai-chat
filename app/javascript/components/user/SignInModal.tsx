@@ -39,12 +39,12 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
 
   const onSignUp = async (e) => {
     e.preventDefault()
-    const csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content")
     try {
       const response = await axios.post("/users", {
         nickname: e.target.elements.nickname.value,
         username: e.target.elements.username.value,
         password: e.target.elements.password.value,
+        password_confirmation: e.target.elements.password_confirmation.value,
       })
       message.success("注册成功！")
       setOpen(false)
@@ -58,6 +58,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
 
   const toggleMode = () => {
     setMode(mode === "sign_in" ? "sign_up" : "sign_in")
+    setFormErrors([])
   }
 
   return (
@@ -121,6 +122,8 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
                               autoComplete="username"
                               ref={nameRef}
                               required
+                              onInvalid={(e) => e.target.setCustomValidity("请输入用户名")}
+                              onInput={(e) => e.target.setCustomValidity("")}
                               className="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                               placeholder="用户名"
                             />
@@ -135,6 +138,8 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
                               type="password"
                               autoComplete="current-password"
                               required
+                              onInvalid={(e) => e.target.setCustomValidity("请输入密码")}
+                              onInput={(e) => e.target.setCustomValidity("")}
                               className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                               placeholder="密码"
                             />
@@ -235,6 +240,8 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
                               autoComplete="nickname"
                               ref={nameRef}
                               required
+                              onInvalid={(e) => e.target.setCustomValidity("请输入昵称")}
+                              onInput={(e) => e.target.setCustomValidity("")}
                               className="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                               placeholder="昵称（用于展示）"
                             />
@@ -249,6 +256,8 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
                               type="username"
                               autoComplete="username"
                               required
+                              onInvalid={(e) => e.target.setCustomValidity("请输入用户名")}
+                              onInput={(e) => e.target.setCustomValidity("")}
                               className="relative block w-full appearance-none rounded-none border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                               placeholder="用户名（用于登录）"
                             />
@@ -263,6 +272,8 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
                               type="password"
                               autoComplete="current-password"
                               required
+                              onInvalid={(e) => e.target.setCustomValidity("请输入密码")}
+                              onInput={(e) => e.target.setCustomValidity("")}
                               className="relative block w-full appearance-none rounded-none border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                               placeholder="密码"
                             />
@@ -276,6 +287,8 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
                               name="password_confirmation"
                               type="password"
                               required
+                              onInvalid={(e) => e.target.setCustomValidity("请输入确认密码")}
+                              onInput={(e) => e.target.setCustomValidity("")}
                               className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                               placeholder="确认密码"
                             />
