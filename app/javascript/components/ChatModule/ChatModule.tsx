@@ -1,9 +1,10 @@
-import React, { useState } from "react"
-import { Button, Space } from "antd"
+import React, { useState, useEffect, useRef } from "react"
+import { Button, Space, Card } from "antd"
 import axios from "axios"
 import PromptInput from "./PromptInput"
 import { ResponseInterface } from "./ResponseInterface"
 import PromptResponseList from "./PromptResponseList"
+import Typed from "typed.js"
 
 type ModelValueType = "gpt" | "codex" | "image"
 const ChatModule = () => {
@@ -152,25 +153,72 @@ const ChatModule = () => {
     "用简单的语言解释量子计算",
     "给10岁的孩子过生日有什么创意吗？",
     "How do I make an HTTP request in Javascript?",
+    "写一篇200字左右的爱情故事，男主角叫小明，女猪脚叫小红",
+    "我需要一首关于爱情的诗",
+    "请解释下概率是如何工作的",
+    "帮我制定一个减肥计划",
   ]
+  const el = React.useRef(null)
+  const typed = React.useRef(null)
+
+  React.useEffect(() => {
+    const options = {
+      strings: [
+        "智能交互引未来，语言生成开新局\n\n机器问答解难题，人工智能无极限",
+        "与我聊天\n\n尽显人工智能智慧之美",
+        "随时陪伴\n\n为你解答疑惑\n\n开启无限可能",
+        "我是一个大型语言模型\n\n能够通过自然语言与用户进行交互\n\n并提供各种知识和服务",
+        "你可以问我任何问题",
+      ],
+      typeSpeed: 60,
+      backSpeed: 50,
+      backDelay: 2500,
+      loop: true,
+    }
+
+    // elRef refers to the <span> rendered below
+    typed.current = new Typed(el.current, options)
+
+    return () => {
+      // Make sure to destroy Typed instance during cleanup
+      // to prevent memory leaks
+      typed.current.destroy()
+    }
+  }, [])
 
   return (
     <main className="relative h-full w-full transition-width flex flex-col overflow-hidden items-stretch flex-1">
-      {!responseList.length && (
-        <div className="flex flex-col items-center text-sm dark:bg-gray-800">
-          <div className="text-gray-800 w-full md:max-w-2xl lg:max-w-3xl md:h-full md:flex md:flex-col px-6 dark:text-gray-100">
-            {defaultPrompts.map((text, i) => (
-              <Button size="large" key={i} type="text" onClick={() => setPrompt(text)}>
-                {text}
-              </Button>
-            ))}
+      <div className="flex-1 overflow-hidden relative">
+        <div className="prompt-response-list h-full dark:bg-gray-800">
+          <div className="h-full w-full overflow-y-auto">
+            {!responseList.length ? (
+              <>
+                <div className="flex flex-col items-center text-sm dark:bg-gray-800">
+                  <div className="text-gray-800 w-full md:max-w-2xl lg:max-w-3xl md:h-full md:flex md:flex-col px-6 dark:text-gray-100">
+                    <div className="type-wrap text-xl md:text-2xl lg:text-3xl leading-8 lg:leading-10 h-60 py-6 px-6 w-full md:max-w-2xl lg:max-w-3xl ">
+                      <span style={{ whiteSpace: "pre" }} ref={el} />
+                    </div>
+                    <div className="py-4 text-gray-800 w-full md:max-w-2xl lg:max-w-3xl md:h-full md:flex md:flex-col dark:text-gray-100">
+                      <Card bordered={false} title="示例">
+                        {defaultPrompts.map((text, i) => (
+                          <div key={i}>
+                            <Button size="large" type="text" onClick={() => setPrompt(text)}>
+                              {text}
+                            </Button>
+                          </div>
+                        ))}
+                      </Card>
+                    </div>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <PromptResponseList responseList={responseList} key="response-list" />
+            )}
           </div>
         </div>
-      )}
-      <div className="flex-1 overflow-hidden relative">
-        <PromptResponseList responseList={responseList} key="response-list" />
       </div>
-      <div className=" bottom-0 left-0 w-full dark:border-transparent bg-vert-light-gradient dark:bg-vert-dark-gradient input-area">
+      <div className="absolute bottom-0 left-0 w-full dark:border-transparent bg-vert-light-gradient dark:bg-vert-dark-gradient input-area">
         <form className="stretch mx-2 flex flex-row gap-3 pt-2 last:mb-2 md:last:mb-6 lg:mx-auto lg:max-w-3xl lg:pt-6">
           <div className="relative flex h-full flex-1 flex-col">
             <div className="w-full flex gap-2 justify-center mb-3">
