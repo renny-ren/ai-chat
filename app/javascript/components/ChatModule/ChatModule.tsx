@@ -150,14 +150,35 @@ const ChatModule = () => {
   }
 
   const defaultPrompts = [
-    "用简单的语言解释量子计算",
-    "给10岁的孩子过生日有什么创意吗？",
-    "How do I make an HTTP request in Javascript?",
-    "写一篇200字左右的爱情故事，男主角叫小明，女猪脚叫小红",
-    "我需要一首关于爱情的诗",
-    "请解释下概率是如何工作的",
-    "帮我制定一个减肥计划",
+    {
+      title: "AI 创作",
+      img_src: "/assets/e1.png",
+      prompts: [
+        "我需要一首关于爱情的诗",
+        "给10岁的孩子过生日有什么创意吗",
+        "写一首赞美祖国的诗",
+        "写一篇200字左右的爱情故事，男主角叫小明，女主角叫小红",
+        "用Python写一个猜数字的游戏并运行它",
+      ],
+    },
+    {
+      title: "有趣的提问",
+      img_src: "/assets/e2.png",
+      prompts: ["有哪些有趣的科学实验", "如何问一个让 AI 也答不出的问题", "AI 会替代人类工作吗", "帮我制定一个减肥计划"],
+    },
+    {
+      title: "AI 百科",
+      img_src: "/assets/e3.png",
+      prompts: [
+        "用简单的术语来解释人工智能",
+        "莲藕排骨汤的做法",
+        "请解释下概率是如何工作的",
+        "用简单的语言解释量子计算",
+        "How do I make an HTTP request in Javascript?",
+      ],
+    },
   ]
+
   const el = React.useRef(null)
   const typed = React.useRef(null)
 
@@ -187,7 +208,7 @@ const ChatModule = () => {
   }, [])
 
   return (
-    <main className="relative h-full w-full transition-width flex flex-col overflow-hidden items-stretch flex-1">
+    <main className="relative h-full w-full transition-width flex flex-col overflow-hidden items-stretch flex-1 pb-8">
       <div className="flex-1 overflow-hidden relative">
         <div className="prompt-response-list h-full dark:bg-gray-800">
           <div className="h-full w-full overflow-y-auto">
@@ -195,21 +216,35 @@ const ChatModule = () => {
               <>
                 <div className="flex flex-col items-center text-sm dark:bg-gray-800">
                   <div className="text-gray-800 w-full md:max-w-2xl lg:max-w-3xl md:h-full md:flex md:flex-col px-6 dark:text-gray-100">
-                    <div className="type-wrap text-xl md:text-2xl lg:text-3xl leading-8 lg:leading-10 h-60 py-6 px-6 w-full md:max-w-2xl lg:max-w-3xl ">
+                    <div className="hidden md:block type-wrap text-xl md:text-2xl lg:text-3xl leading-8 lg:leading-10 h-60 py-6 px-6 w-full md:max-w-2xl lg:max-w-3xl ">
                       <span style={{ whiteSpace: "pre" }} ref={el} />
                     </div>
-                    <div className="py-4 text-gray-800 w-full md:max-w-2xl lg:max-w-3xl md:h-full md:flex md:flex-col dark:text-gray-100">
-                      <Card bordered={false} title="示例">
-                        {defaultPrompts.map((text, i) => (
-                          <div key={i}>
-                            <Button size="large" type="text" onClick={() => setPrompt(text)}>
-                              {text}
-                            </Button>
+                    <div>
+                      <div className="flex items-start text-center gap-3.5">
+                        {defaultPrompts.map((item, idx) => (
+                          <div key={idx} className="flex flex-col gap-3.5 flex-1">
+                            <div className="m:auto">
+                              <div className="inline-block w-6 h-6">
+                                <img src={item.img_src} width="24" height="24" />
+                              </div>
+                            </div>
+                            <h2 className="text-lg font-sans font-normal">{item.title}</h2>
+                            <ul className="flex flex-col gap-3.5">
+                              {item.prompts.map((text, i) => (
+                                <li
+                                  key={i}
+                                  className="w-full bg-gray-50 dark:bg-white/5 p-3 rounded-md hover:bg-gray-200 dark:hover:bg-gray-900 cursor-pointer"
+                                >
+                                  <div onClick={() => setPrompt(text)}>{text}</div>
+                                </li>
+                              ))}
+                            </ul>
                           </div>
                         ))}
-                      </Card>
+                      </div>
                     </div>
                   </div>
+                  <div className="w-full h-24 flex-shrink-0"></div>
                 </div>
               </>
             ) : (
@@ -232,7 +267,7 @@ const ChatModule = () => {
                       viewBox="0 0 24 24"
                       stroke-linecap="round"
                       stroke-linejoin="round"
-                      class="h-3 w-3"
+                      className="h-3 w-3"
                       height="1em"
                       width="1em"
                       xmlns="http://www.w3.org/2000/svg"

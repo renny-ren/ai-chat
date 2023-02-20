@@ -18,14 +18,14 @@ const Home = () => {
 
   return (
     <>
-      <div className="lg:ml-72 xl:ml-80">
+      <div className="h-full lg:ml-64 xl:ml-72">
         <header className="contents lg:pointer-events-none lg:fixed lg:inset-0 lg:z-40 lg:flex">
-          <div className="contents lg:pointer-events-auto lg:block lg:w-72 lg:overflow-y-auto lg:border-r lg:border-zinc-900/10 lg:px-6 lg:pt-4 lg:pb-8 lg:dark:border-white/10 xl:w-80">
+          <div className="contents lg:pointer-events-auto lg:block lg:w-64 lg:overflow-y-auto lg:border-r lg:border-zinc-900/10 lg:px-6 lg:pt-4 lg:pb-8 lg:dark:border-white/10 xl:w-72">
             <div className="hidden lg:flex">
               <a aria-label="Home" href="/"></a>
             </div>
             <div
-              className="fixed inset-x-0 top-0 z-50 flex h-14 items-center justify-between gap-12 px-4 transition sm:px-6 lg:left-72 lg:z-30 lg:px-8 xl:left-80 backdrop-blur-sm dark:backdrop-blur lg:left-72 xl:left-80 bg-white/[var(--bg-opacity-light)] dark:bg-zinc-900/[var(--bg-opacity-dark)]"
+              className="fixed inset-x-0 top-0 z-50 flex h-14 items-center justify-between gap-12 px-4 transition sm:px-6 lg:left-64 lg:z-30 lg:px-8 xl:left-72 backdrop-blur-sm dark:backdrop-blur lg:left-64 xl:left-72 bg-white/[var(--bg-opacity-light)] dark:bg-zinc-900/[var(--bg-opacity-dark)]"
               style={{ bgOpacityLight: "0.5", bgOpacityDark: "0.2" }}
             >
               <div className="absolute inset-x-0 top-full h-px transition bg-zinc-900/[.075] dark:bg-white/[.075]"></div>
@@ -198,8 +198,15 @@ const Home = () => {
             </nav>
           </div>
         </header>
-        <div className="relative pt-14">
-          <main className="py-10">
+        {/*<div style={{ height: "100%" }}>
+          <div className="overflow-hidden w-full h-full relative">
+            <div className="flex h-full flex-1 flex-col md:pl-[260px]">
+              <ChatModule />
+            </div>
+          </div>
+        </div>*/}
+        <div className="h-full relative pt-14">
+          <main className="h-full py-10">
             <div className="absolute inset-0 -z-10 mx-0 max-w-none overflow-hidden">
               <div className="absolute left-1/2 top-0 ml-[-38rem] h-[25rem] w-[81.25rem] dark:[mask-image:linear-gradient(white,transparent)]">
                 <div className="absolute inset-0 bg-gradient-to-r from-[#36b49f] to-[#DBFF75] opacity-40 [mask-image:radial-gradient(farthest-side_at_top,white,transparent)] dark:from-[#36b49f]/30 dark:to-[#DBFF75]/30 dark:opacity-100">
