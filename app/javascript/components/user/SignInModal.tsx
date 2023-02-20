@@ -98,7 +98,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
                           或{" "}
                           <span
                             onClick={toggleMode}
-                            className="cursor-pointer font-medium text-indigo-600 hover:text-indigo-500"
+                            className="cursor-pointer font-medium text-emerald-500 hover:text-emerald-400"
                           >
                             注册新账号
                           </span>
@@ -120,7 +120,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
                               required
                               onInvalid={(e) => e.target.setCustomValidity("请输入用户名")}
                               onInput={(e) => e.target.setCustomValidity("")}
-                              className="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                              className="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-emerald-500 focus:outline-none focus:ring-emerald-500 sm:text-sm"
                               placeholder="用户名"
                             />
                           </div>
@@ -136,7 +136,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
                               required
                               onInvalid={(e) => e.target.setCustomValidity("请输入密码")}
                               onInput={(e) => e.target.setCustomValidity("")}
-                              className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                              className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-emerald-500 focus:outline-none focus:ring-emerald-500 sm:text-sm"
                               placeholder="密码"
                             />
                           </div>
@@ -148,7 +148,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
                               id="remember-me"
                               name="remember-me"
                               type="checkbox"
-                              className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                              className="h-4 w-4 rounded border-gray-300 text-emerald-500 focus:ring-emerald-500"
                             />
                             <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
                               记住我
@@ -156,14 +156,14 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
                           </div>
 
                           <div className="text-sm">
-                            <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
+                            <a href="#" className="font-medium text-emerald-500 hover:text-emerald-400">
                               忘记密码?
                             </a>
                           </div>
                         </div>
 
                         {!!formErrors.length && (
-                          <div className="text-indigo-600 rounded relative" role="alert">
+                          <div className="text-emerald-600 rounded relative" role="alert">
                             <ul>
                               {formErrors.map((error, i) => (
                                 <li key={i}>{error}</li>
@@ -175,11 +175,11 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
                         <div>
                           <button
                             type="submit"
-                            className="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                            className="group relative flex w-full justify-center rounded-md border border-transparent bg-emerald-500 py-2 px-4 text-sm font-medium text-white hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
                           >
                             <span className="absolute inset-y-0 left-0 flex items-center pl-3">
                               <LockClosedIcon
-                                className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
+                                className="h-5 w-5 text-emerald-400 group-hover:text-emerald-300"
                                 aria-hidden="true"
                               />
                             </span>
@@ -207,17 +207,13 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
                   <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
                     <div className="w-full max-w-md space-y-8">
                       <div>
-                        <img
-                          className="mx-auto h-12 w-auto"
-                          src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                          alt="Your Company"
-                        />
+                        <img className="mx-auto h-16 w-auto" src="/assets/logo2.png" alt="aii.chat" />
                         <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">注册新账号</h2>
                         <p className="mt-2 text-center text-sm text-gray-600">
                           或{" "}
                           <span
                             onClick={toggleMode}
-                            className="cursor-pointer font-medium text-indigo-600 hover:text-indigo-500"
+                            className="cursor-pointer font-medium text-emerald-500 hover:text-emerald-400"
                           >
                             登录已有账号
                           </span>
@@ -238,7 +234,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
                               required
                               onInvalid={(e) => e.target.setCustomValidity("请输入昵称")}
                               onInput={(e) => e.target.setCustomValidity("")}
-                              className="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                              className="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-emerald-500 focus:outline-none focus:ring-emerald-500 sm:text-sm"
                               placeholder="昵称（用于展示）"
                             />
                           </div>
@@ -254,7 +250,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
                               required
                               onInvalid={(e) => e.target.setCustomValidity("请输入用户名")}
                               onInput={(e) => e.target.setCustomValidity("")}
-                              className="relative block w-full appearance-none rounded-none border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                              className="relative block w-full appearance-none rounded-none border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-emerald-500 focus:outline-none focus:ring-emerald-500 sm:text-sm"
                               placeholder="用户名（用于登录）"
                             />
                           </div>
@@ -270,7 +266,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
                               required
                               onInvalid={(e) => e.target.setCustomValidity("请输入密码")}
                               onInput={(e) => e.target.setCustomValidity("")}
-                              className="relative block w-full appearance-none rounded-none border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                              className="relative block w-full appearance-none rounded-none border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-emerald-500 focus:outline-none focus:ring-emerald-500 sm:text-sm"
                               placeholder="密码"
                             />
                           </div>
@@ -285,14 +281,14 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
                               required
                               onInvalid={(e) => e.target.setCustomValidity("请输入确认密码")}
                               onInput={(e) => e.target.setCustomValidity("")}
-                              className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                              className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-emerald-500 focus:outline-none focus:ring-emerald-500 sm:text-sm"
                               placeholder="确认密码"
                             />
                           </div>
                         </div>
 
                         {!!formErrors.length && (
-                          <div className="text-indigo-600 rounded relative" role="alert">
+                          <div className="text-emerald-600 rounded relative" role="alert">
                             <ul>
                               {formErrors.map((error, i) => (
                                 <li key={i}>{error}</li>
@@ -304,11 +300,11 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
                         <div>
                           <button
                             type="submit"
-                            className="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                            className="group relative flex w-full justify-center rounded-md border border-transparent bg-emerald-500 py-2 px-4 text-sm font-medium text-white hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
                           >
                             <span className="absolute inset-y-0 left-0 flex items-center pl-3">
                               <LockClosedIcon
-                                className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
+                                className="h-5 w-5 text-emerald-500 group-hover:text-emerald-400"
                                 aria-hidden="true"
                               />
                             </span>
