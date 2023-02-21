@@ -1,15 +1,14 @@
 import React, { FC, useEffect, useRef } from "react"
-// import ChatGptImg from '../../img/chatgpt.png';
-// import MyImg from '../../img/me.png';
 import ReactMarkdown from "react-markdown"
 import { ResponseInterface } from "./response-interface"
-// import hljs from "highlight.js"
+import hljs from "highlight.js"
 
 interface PromptResponseListProps {
   responseList: ResponseInterface[]
+  messagesEndRef: any
 }
 
-const PromptResponseList: FC<PromptResponseListProps> = ({ responseList }) => {
+const PromptResponseList: FC<PromptResponseListProps> = ({ responseList, messagesEndRef }) => {
   const responseListRef = useRef<HTMLDivElement>(null)
 
   // useEffect(() => {
@@ -22,7 +21,7 @@ const PromptResponseList: FC<PromptResponseListProps> = ({ responseList }) => {
 
   return (
     <div className="flex flex-col items-center text-sm h-full dark:bg-gray-800 overflow-y-auto">
-      {responseList.map((responseData) => (
+      {responseList.map((responseData, i) => (
         <div
           className={
             "w-full border-b border-black/10 dark:border-gray-900/50 text-gray-800 dark:text-gray-100 group  " +
@@ -57,6 +56,8 @@ const PromptResponseList: FC<PromptResponseListProps> = ({ responseList }) => {
           </div>
         </div>
       ))}
+      <div ref={messagesEndRef}></div>
+      <div className="w-full h-24 flex-shrink-0"></div>
     </div>
   )
 }

@@ -76,6 +76,7 @@ const ChatModule = () => {
       }
       return updatedList
     })
+    scrollToBottom()
   }
 
   const regenerateResponse = async () => {
@@ -179,10 +180,15 @@ const ChatModule = () => {
     },
   ]
 
-  const el = React.useRef(null)
-  const typed = React.useRef(null)
+  const el = useRef(null)
+  const typed = useRef(null)
+  const messagesEndRef = useRef(null)
 
-  React.useEffect(() => {
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  }
+
+  useEffect(() => {
     const options = {
       strings: [
         "智能交互引未来，语言生成开新局\n\n机器问答解难题，人工智能无极限",
@@ -208,7 +214,7 @@ const ChatModule = () => {
   }, [])
 
   return (
-    <main className="relative h-full w-full transition-width flex flex-col overflow-hidden items-stretch flex-1 pb-8">
+    <main className="relative h-full w-full transition-width flex flex-col overflow-hidden items-stretch flex-1 pb-14">
       <div className="flex-1 overflow-hidden relative">
         <div className="prompt-response-list h-full dark:bg-gray-800">
           <div className="h-full w-full overflow-y-auto">
@@ -216,7 +222,7 @@ const ChatModule = () => {
               <>
                 <div className="flex flex-col items-center text-sm dark:bg-gray-800">
                   <div className="text-gray-800 w-full md:max-w-2xl lg:max-w-3xl md:h-full md:flex md:flex-col px-6 dark:text-gray-100">
-                    <div className="hidden md:block type-wrap text-xl md:text-2xl lg:text-3xl leading-8 lg:leading-10 h-60 py-6 px-6 w-full md:max-w-2xl lg:max-w-3xl ">
+                    <div className="hidden md:block type-wrap text-lg md:text-xl lg:text-2xl leading-6 lg:leading-8 h-56 py-6 px-6 w-full md:max-w-2xl lg:max-w-3xl">
                       <span style={{ whiteSpace: "pre" }} ref={el} />
                     </div>
                     <div>
@@ -248,7 +254,7 @@ const ChatModule = () => {
                 </div>
               </>
             ) : (
-              <PromptResponseList responseList={responseList} key="response-list" />
+              <PromptResponseList messagesEndRef={messagesEndRef} responseList={responseList} key="response-list" />
             )}
           </div>
         </div>
@@ -311,6 +317,12 @@ const ChatModule = () => {
             </div>
           </div>
         </form>
+        <footer className="px-3 pt-2 pb-2 text-center text-xs text-black/50 dark:text-white/50 md:px-4 md:pt-3">
+          本站点基于外部 API 开发，仅供学习交流使用，使用前请知晓
+          <a className="underline" href="/disclaimer" rel="noreferrer">
+            免责申明
+          </a>
+        </footer>
       </div>
     </main>
   )
