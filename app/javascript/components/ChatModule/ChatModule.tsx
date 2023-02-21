@@ -34,22 +34,6 @@ const ChatModule = () => {
     return new Promise((resolve) => setTimeout(resolve, ms))
   }
 
-  const addLoader = (uid: string) => {
-    const element = document.getElementById(uid) as HTMLElement
-    element.textContent = ""
-
-    // @ts-ignore
-    loadInterval = setInterval(() => {
-      // Update the text content of the loading indicator
-      element.textContent += "."
-
-      // If the loading indicator has reached three dots, reset it
-      if (element.textContent === "....") {
-        element.textContent = ""
-      }
-    }, 300)
-  }
-
   const addResponse = (selfFlag: boolean, response?: string) => {
     const uid = generateUniqueId()
     setResponseList((prevResponses) => [
@@ -103,7 +87,6 @@ const ChatModule = () => {
       addResponse(true, _prompt)
       uniqueId = addResponse(false)
       await delay(50)
-      addLoader(uniqueId)
     }
 
     try {
@@ -254,7 +237,12 @@ const ChatModule = () => {
                 </div>
               </>
             ) : (
-              <PromptResponseList messagesEndRef={messagesEndRef} responseList={responseList} key="response-list" />
+              <PromptResponseList
+                messagesEndRef={messagesEndRef}
+                isLoading={isLoading}
+                responseList={responseList}
+                key="response-list"
+              />
             )}
           </div>
         </div>

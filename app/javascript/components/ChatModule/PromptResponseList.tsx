@@ -6,9 +6,10 @@ import hljs from "highlight.js"
 interface PromptResponseListProps {
   responseList: ResponseInterface[]
   messagesEndRef: any
+  isLoading: boolean
 }
 
-const PromptResponseList: FC<PromptResponseListProps> = ({ responseList, messagesEndRef }) => {
+const PromptResponseList: FC<PromptResponseListProps> = ({ responseList, messagesEndRef, isLoading }) => {
   const responseListRef = useRef<HTMLDivElement>(null)
 
   // useEffect(() => {
@@ -37,6 +38,17 @@ const PromptResponseList: FC<PromptResponseListProps> = ({ responseList, message
               />
             </div>
             <div className="relative flex w-[calc(100%-50px)] flex-col gap-1 md:gap-3 lg:w-[calc(100%-115px)]">
+              {i === responseList.length - 1 && isLoading && (
+                <div
+                  className="inline-block animate-[blink_0.8s_infinite]"
+                  style={{
+                    lineHeight: "17px",
+                    marginLeft: "3px",
+                    width: "7px",
+                    height: "18px",
+                  }}
+                ></div>
+              )}
               <div className="min-h-[20px] flex flex-col items-start gap-4 whitespace-pre-wrap">
                 <div className={(responseData.error ? "error-response " : "") + "prompt-content"} id={responseData.id}>
                   {responseData.image && <img src={responseData.image} className="ai-image" alt="generated ai" />}
