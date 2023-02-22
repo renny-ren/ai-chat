@@ -6,30 +6,6 @@ const Sidebar: React.FC<SidebarProps> = ({}) => {
   return (
     <nav className="hidden lg:mt-10 lg:block">
       <ul role="list">
-        <li className="md:hidden">
-          <a
-            className="block py-1 text-sm text-zinc-600 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-            href="/"
-          >
-            API
-          </a>
-        </li>
-        <li className="md:hidden">
-          <a
-            className="block py-1 text-sm text-zinc-600 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-            href="/#"
-          >
-            Documentation
-          </a>
-        </li>
-        <li className="md:hidden">
-          <a
-            className="block py-1 text-sm text-zinc-600 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-            href="/#"
-          >
-            Support
-          </a>
-        </li>
         <li className="relative mt-6 md:mt-0">
           <h2 className="text-xs font-semibold text-zinc-900 dark:text-white">会话</h2>
           <div className="relative mt-3 pl-2">
@@ -106,14 +82,6 @@ const Sidebar: React.FC<SidebarProps> = ({}) => {
               </li>
             </ul>
           </div>
-        </li>
-        <li className="sticky bottom-0 z-10 mt-6 min-[416px]:hidden">
-          <a
-            className="inline-flex gap-0.5 justify-center overflow-hidden text-sm font-medium transition rounded-full bg-zinc-900 py-1 px-3 text-white hover:bg-zinc-700 dark:bg-emerald-500 dark:text-white dark:hover:bg-emerald-400 w-full"
-            href="/#"
-          >
-            Sign in
-          </a>
         </li>
       </ul>
     </nav>

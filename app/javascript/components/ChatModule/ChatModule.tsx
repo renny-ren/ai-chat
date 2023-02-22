@@ -138,9 +138,8 @@ const ChatModule = () => {
       title: "AI 创作",
       img_src: "/assets/e1.png",
       prompts: [
-        "我需要一首关于爱情的诗",
-        "给10岁的孩子过生日有什么创意吗",
         "写一首赞美祖国的诗",
+        "给10岁的孩子过生日有什么创意吗",
         "写一篇200字左右的爱情故事，男主角叫小明，女主角叫小红",
         "用Python写一个猜数字的游戏并运行它",
       ],
@@ -148,7 +147,7 @@ const ChatModule = () => {
     {
       title: "有趣的提问",
       img_src: "/assets/e2.png",
-      prompts: ["有哪些有趣的科学实验", "如何问一个让 AI 也答不出的问题", "AI 会替代人类工作吗", "帮我制定一个减肥计划"],
+      prompts: ["有哪些有趣的科学实验", "AI 会替代人类工作吗", "如何问一个让 AI 也答不出的问题", "帮我制定一个减肥计划"],
     },
     {
       title: "AI 百科",
@@ -204,7 +203,7 @@ const ChatModule = () => {
             {!responseList.length ? (
               <>
                 <div className="flex flex-col items-center text-sm dark:bg-gray-800">
-                  <div className="text-gray-800 w-full md:max-w-2xl lg:max-w-3xl md:h-full md:flex md:flex-col px-6 dark:text-gray-100">
+                  <div className="text-gray-800 w-full md:max-w-2xl lg:max-w-3xl md:h-full md:flex md:flex-col px-4 md:px-6 dark:text-gray-100">
                     <div className="hidden md:block type-wrap text-lg md:text-xl lg:text-2xl leading-6 lg:leading-8 h-56 py-6 px-6 w-full md:max-w-2xl lg:max-w-3xl">
                       <span style={{ whiteSpace: "pre" }} ref={el} />
                     </div>
@@ -222,9 +221,10 @@ const ChatModule = () => {
                               {item.prompts.map((text, i) => (
                                 <li
                                   key={i}
+                                  onClick={() => setPrompt(text)}
                                   className="w-full bg-gray-50 dark:bg-white/5 p-3 rounded-md hover:bg-gray-200 dark:hover:bg-gray-900 cursor-pointer"
                                 >
-                                  <div onClick={() => setPrompt(text)}>{text}</div>
+                                  <div>{text}</div>
                                 </li>
                               ))}
                             </ul>
@@ -248,7 +248,7 @@ const ChatModule = () => {
         </div>
       </div>
       <div className="absolute bottom-0 left-0 w-full dark:border-transparent bg-vert-light-gradient dark:bg-vert-dark-gradient input-area">
-        <form className="stretch mx-2 flex flex-row gap-3 pt-2 last:mb-2 md:last:mb-6 lg:mx-auto lg:max-w-3xl lg:pt-6">
+        <form className="stretch mx-2 flex flex-row gap-3 last:mb-2 md:last:mb-6 lg:mx-auto lg:max-w-3xl">
           <div className="relative flex h-full flex-1 flex-col">
             <div className="w-full flex gap-2 justify-center mb-3">
               {uniqueIdToRetry && (
