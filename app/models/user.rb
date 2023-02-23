@@ -4,6 +4,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable, :trackable,
          :recoverable, :rememberable, :validatable
 
+  has_many :messages
+
   validates :username, presence: true, uniqueness: true, length: 3..16
   validates :nickname, presence: true, uniqueness: true
   validates_format_of :username, with: /^[a-zA-Z0-9_\.]*$/, multiline: true # Only allow letter, number, underscore and punctuation.
