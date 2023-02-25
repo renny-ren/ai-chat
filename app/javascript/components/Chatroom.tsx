@@ -1,30 +1,36 @@
-import React, { useState, useEffect } from "react"
-import ActionCable from "actioncable"
+import React, { useState, useEffect, useRef } from "react"
 
-const Chatroom = () => {
+const Chatroom = ({ cable }) => {
+  const messagesRef = useRef()
   const [messages, setMessages] = useState([])
   const [content, setContent] = useState("")
   const [userName, setUserName] = useState("")
-  const cable = ActionCable.createConsumer("ws://localhost:3000/cable")
+
+  messagesRef.current = messages
 
   useEffect(() => {
-    const channel = cable.subscriptions.create("MessagesChannel", {
+    console.log("yyy")
+
+    cable.subscriptions.create("MessagesChannel", {
       received: (data) => {
-        console.log("==received==", data)
-        setMessages([...messages, data])
+        console.log("==2received==", data)
+        console.log("count:", messagesRef.current)
+
+        // setMessages([...messages, data])
+        setMessages([...messagesRef.current, data])
       },
-      connected: () => {
-        console.log("Subscription connected!")
-        // if (cable.subscriptions.subscriptions.length > 0) {
-        //   cable.subscriptions.subscriptions[0].send({ content: "content" })
-        // }
-      },
+      //   connected: () => {
+      //     console.log("Subscription connected!")
+      //     // if (cable.subscriptions.subscriptions.length > 0) {
+      //     //   cable.subscriptions.subscriptions[0].send({ content: "content" })
+      //     // }
+      //   },
     })
 
-    return () => {
-      channel.unsubscribe()
-    }
-  }, [messages])
+    // return () => {
+    //   channel.unsubscribe()
+    // }
+  }, [])
 
   const handleContentChange = (event) => {
     setContent(event.target.value)
