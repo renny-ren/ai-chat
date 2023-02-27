@@ -20,6 +20,10 @@ class User < ApplicationRecord
   #   where(conditions).where(["lower(username) = :value OR lower(email) = :value", { value: login.strip.downcase }]).first
   # end
 
+  def frontend_attributes
+    { id: self.id, nickname: self.nickname, avatar_url: avatar_url }
+  end
+
   protected
 
   def email_required?

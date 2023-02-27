@@ -3,10 +3,14 @@ import { Link } from "react-router-dom"
 import { Dialog, Popover, Tab, Transition } from "@headlessui/react"
 import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import ChatModule from "./ChatModule/ChatModule"
+import ChatRoom from "./ChatRoom"
 import SignInModal from "./user/SignInModal"
 import UserBar from "./user/UserBar"
 import MobileMenu from "./MobileMenu"
 import Sidebar from "./Sidebar"
+import ActionCable from "actioncable"
+
+cable = ActionCable.createConsumer("ws://localhost:3000/cable")
 
 const Home = () => {
   const [isShowModal, setIsShowModal] = useState(false)
@@ -127,7 +131,8 @@ const Home = () => {
                 </div>
               </div>
             </div>
-            <ChatModule />
+            <ChatRoom cable={cable} />
+            {/*<ChatModule />*/}
           </main>
         </div>
       </div>

@@ -8,8 +8,10 @@ class MessagesChannel < ApplicationCable::Channel
   end
 
   def receive(data)
-    message = Message.create(content: data["content"], user_id: User.first.id)
-    # message = Message.last
-    ActionCable.server.broadcast("MessagesChannel", message.as_json(only: %i[content], methods: %i[user_nickname]))
+    Message.transaction do
+      message = Message.create(content: data["content"], user_id: current_user.id)
+      # message = Message.last(2).first
+      ActionCable.server.broadcast("MessagesChannel", message.as_json(only: %i[content user_id], methods: %i[user_nickname user_avatar_url]))
+    end
   end
 end

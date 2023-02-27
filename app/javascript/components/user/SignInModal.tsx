@@ -163,7 +163,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
                         </div>
 
                         {!!formErrors.length && (
-                          <div className="text-emerald-600 rounded relative" role="alert">
+                          <div className="text-orange-600 rounded relative" role="alert">
                             <ul>
                               {formErrors.map((error, i) => (
                                 <li key={i}>{error}</li>
@@ -208,7 +208,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
                     <div className="w-full max-w-md space-y-8">
                       <div>
                         <img className="mx-auto h-16 w-auto" src="/assets/logo2.png" alt="aii.chat" />
-                        <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">注册新账号</h2>
+                        <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">注册账号</h2>
                         <p className="mt-2 text-center text-sm text-gray-600">
                           或{" "}
                           <span
@@ -288,7 +288,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
                         </div>
 
                         {!!formErrors.length && (
-                          <div className="text-emerald-600 rounded relative" role="alert">
+                          <div className="text-orange-600 rounded relative" role="alert">
                             <ul>
                               {formErrors.map((error, i) => (
                                 <li key={i}>{error}</li>
