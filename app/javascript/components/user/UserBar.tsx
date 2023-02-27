@@ -1,6 +1,7 @@
 import React, { Fragment, useState, createElement, useEffect } from "react"
 import { Menu, Transition } from "@headlessui/react"
 import { ChevronDownIcon } from "@heroicons/react/20/solid"
+import currentUser from "stores/current_user_store"
 
 interface UserBarProps {}
 
@@ -13,7 +14,7 @@ const UserBar: React.FC<UserBarProps> = ({}) => {
     <Menu as="div" className="relative inline-block text-left">
       <div>
         <Menu.Button>
-          <img className="inline-block h-8 w-8 rounded-full ring-2 ring-white" src={window.avatar_url} />
+          <img className="inline-block h-8 w-8 rounded-full ring-2 ring-white" src={currentUser.avatarUrl()} />
         </Menu.Button>
       </div>
 

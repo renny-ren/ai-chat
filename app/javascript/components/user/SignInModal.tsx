@@ -31,10 +31,14 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
       })
       message.success("登录成功！")
       setOpen(false)
-      window.avatar_url = response.data.avatar_url
+      gon.user_meta = response.data.user_meta
     } catch (error) {
       setFormErrors([error.response.data.message])
     }
+  }
+
+  const renewUserMeta = (count) => {
+    console.log("===", count)
   }
 
   const onSignUp = async (e) => {

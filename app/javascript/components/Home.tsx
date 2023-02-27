@@ -9,6 +9,7 @@ import UserBar from "./user/UserBar"
 import MobileMenu from "./MobileMenu"
 import Sidebar from "./Sidebar"
 import ActionCable from "actioncable"
+import currentUser from "stores/current_user_store"
 
 cable = ActionCable.createConsumer("ws://localhost:3000/cable")
 
@@ -83,7 +84,7 @@ const Home = () => {
                 </div>
                 {/*<div className="hidden min-[416px]:contents">*/}
                 <div>
-                  {window.avatar_url ? (
+                  {currentUser.isSignedIn() ? (
                     <UserBar />
                   ) : (
                     <div
@@ -131,7 +132,7 @@ const Home = () => {
                 </div>
               </div>
             </div>
-            <ChatRoom cable={cable} />
+            <ChatRoom cable={cable} showSignInModal={() => setIsShowModal(true)} />
             {/*<ChatModule />*/}
           </main>
         </div>

@@ -3,6 +3,10 @@ const currentUser = {
     return gon.user_meta
   },
 
+  isSignedIn() {
+    return !!this.userMeta()
+  },
+
   id() {
     return gon.user_meta.id
   },
