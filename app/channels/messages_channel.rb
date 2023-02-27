@@ -16,7 +16,7 @@ class MessagesChannel < ApplicationCable::Channel
         mentioned_user_ids: mentioned_users.ids,
       )
       # message = Message.last(2).first
-      ActionCable.server.broadcast("MessagesChannel", message.as_json(only: %i[content user_id], methods: %i[user_nickname user_avatar_url mentioned_users_nickname]))
+      ActionCable.server.broadcast("MessagesChannel", message.as_item_json)
     end
   end
 end

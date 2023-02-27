@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react"
 import Sidebar from "./Sidebar"
 import Sample from "./Sample"
 import currentUser from "stores/current_user_store"
+import axios from "axios"
 
 interface ChatRoomProps {
   cable: any
@@ -20,6 +21,8 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ cable, showSignInModal }) => {
   useEffect(() => {
     console.log("yyy")
 
+    fetchMessages()
+
     if (currentUser.isSignedIn()) {
       cable.subscriptions.create("MessagesChannel", {
         received: (data) => {
@@ -27,7 +30,6 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ cable, showSignInModal }) => {
 
           // setMessages([...messages, data])
           setMessages([...messagesRef.current, data])
-          scrollToBottom()
         },
         //   connected: () => {
         //     console.log("Subscription connected!")
@@ -42,6 +44,20 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ cable, showSignInModal }) => {
       // }
     }
   }, [])
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages])
+
+  const fetchMessages = async () => {
+    const csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content")
+    const response = await axios.get("/v1/messages", {
+      headers: {
+        "X-CSRF-Token": csrf,
+      },
+    })
+    setMessages(response.data.messages)
+  }
 
   const handleContentChange = (event) => {
     setContent(event.target.value)

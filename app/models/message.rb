@@ -35,7 +35,15 @@ class Message < ApplicationRecord
   end
 
   def mentioned_users_nickname
-    User.where(id: self.mentioned_user_ids).map(&:nickname)
+    id_nickname_array = Rails.cache.fetch("id_nickname_array", expires_in: 30.seconds) do
+      User.all.pluck(:id, :nickname)
+    end
+    id_nickname_array.select { |item| mentioned_user_ids.include?(item[0]) }.map { |item| item[1] }
+    # User.where(id: self.mentioned_user_ids).map(&:nickname)
+  end
+
+  def as_item_json
+    as_json(only: %i[content user_id], methods: %i[user_nickname user_avatar_url mentioned_users_nickname], include: { user: { only: [:nickname, :id] } })
   end
 
   private
