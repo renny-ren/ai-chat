@@ -14,7 +14,6 @@ const ChatModule = () => {
   const [uniqueIdToRetry, setUniqueIdToRetry] = useState<string | null>(null)
   const [modelValue, setModelValue] = useState<ModelValueType>("gpt")
   const [isLoading, setIsLoading] = useState(false)
-  let loadInterval: number | undefined
 
   const generateUniqueId = () => {
     const timestamp = Date.now()
@@ -128,7 +127,6 @@ const ChatModule = () => {
         error: true,
       })
     } finally {
-      clearInterval(loadInterval)
       setIsLoading(false)
     }
   }
