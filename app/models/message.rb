@@ -29,8 +29,13 @@ class Message < ApplicationRecord
         user_id: message.user_id,
         user_nickname: message.user_nickname,
         user_avatar_url: message.user_avatar_url,
+        mentioned_users_nickname: mentioned_users.map(&:nickname),
       })
     end
+  end
+
+  def mentioned_users_nickname
+    User.where(id: self.mentioned_user_ids).map(&:nickname)
   end
 
   private

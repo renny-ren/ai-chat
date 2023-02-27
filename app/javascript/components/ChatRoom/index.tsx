@@ -52,7 +52,10 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ cable }) => {
     }
     console.log("www", cable.subscriptions)
 
-    cable.subscriptions.subscriptions[0].send({ content: content, mentions: isToAI ? [gon.global_config.robot_name] : [] })
+    cable.subscriptions.subscriptions[0].send({
+      content: content,
+      mentions: isToAI || content.startsWith(gon.global_config.robot_name) ? [gon.global_config.robot_name] : [],
+    })
 
     setContent("")
     setIsToAI(false)
@@ -131,7 +134,9 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ cable }) => {
                                   src={currentUser.avatarUrl()}
                                 />
                                 <div className="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl">
-                                  <div>{message.content}</div>
+                                  <div>
+                                    {message.mentioned_users_nickname.map((name) => `@${name}`)} {message.content}
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -143,7 +148,9 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ cable }) => {
                                   src={message.user_avatar_url}
                                 />
                                 <div className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
-                                  <div>{message.content}</div>
+                                  <div>
+                                    {message.mentioned_users_nickname.map((name) => `@${name}`)} {message.content}
+                                  </div>
                                 </div>
                               </div>
                             </div>
