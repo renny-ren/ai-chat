@@ -10,7 +10,7 @@ class MessagesChannel < ApplicationCable::Channel
   def receive(data)
     Message.transaction do
       mentioned_users = User.where(nickname: data["mentions"])
-      message = Message.create(
+      message = Message.create!(
         content: data["content"],
         user_id: current_user.id,
         mentioned_user_ids: mentioned_users.ids,

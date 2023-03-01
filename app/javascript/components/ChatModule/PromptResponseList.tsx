@@ -12,13 +12,15 @@ interface PromptResponseListProps {
 const PromptResponseList: FC<PromptResponseListProps> = ({ responseList, messagesEndRef, isLoading }) => {
   const responseListRef = useRef<HTMLDivElement>(null)
 
-  // useEffect(() => {
-  //   hljs.highlightAll()
-  // })
+  useEffect(() => {
+    console.log("hight1")
+    hljs.highlightAll()
+  })
 
-  // useEffect(() => {
-  //   hljs.highlightAll()
-  // }, [responseList])
+  useEffect(() => {
+    console.log("hight2")
+    hljs.highlightAll()
+  }, [responseList])
 
   return (
     <div className="flex flex-col items-center text-sm h-full dark:bg-gray-800 overflow-y-auto">

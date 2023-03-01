@@ -3,6 +3,7 @@ import Sidebar from "./Sidebar"
 import Sample from "./Sample"
 import currentUser from "stores/current_user_store"
 import axios from "axios"
+import hljs from "highlight.js"
 
 interface ChatRoomProps {
   cable: any
@@ -19,8 +20,6 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ cable, showSignInModal }) => {
   messagesRef.current = messages
 
   useEffect(() => {
-    console.log("yyy")
-
     fetchMessages()
 
     if (currentUser.isSignedIn()) {
@@ -28,8 +27,23 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ cable, showSignInModal }) => {
         received: (data) => {
           console.log("==2received==", data)
 
-          // setMessages([...messages, data])
-          setMessages([...messagesRef.current, data])
+          if (!data.id || data.is_first_chunk) {
+            // add message
+            console.log("=ADD MESSAGE====")
+            setMessages([...messagesRef.current, data])
+          } else {
+            // update message
+            console.log("=UPDATE MESSAGE====")
+            messagesRef.current.map((message) => {
+              if (message.id === data.id) {
+                message.content = data.content
+                message
+              } else {
+                message
+              }
+            })
+            setMessages([...messagesRef.current])
+          }
         },
         //   connected: () => {
         //     console.log("Subscription connected!")
@@ -46,6 +60,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ cable, showSignInModal }) => {
   }, [])
 
   useEffect(() => {
+    // hljs.highlightAll() // need to use pre code
     scrollToBottom()
   }, [messages])
 
@@ -95,8 +110,8 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ cable, showSignInModal }) => {
             <div className="flex flex-row h-full w-full overflow-x-hidden">
               <div className="flex flex-col flex-auto h-full items-center">
                 <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl h-full w-full md:max-w-3xl lg:max-w-4xl">
-                  <div className="flex flex-col h-full overflow-x-auto mb-4 pb-14">
-                    <div className="flex flex-col h-full">
+                  <div className="flex flex-col h-full mb-4 pb-14">
+                    <div className="flex flex-col h-full overflow-x-auto">
                       <div className="grid grid-cols-12 gap-y-2">
                         {/*<Sample />*/}
                         {messages.map((message, i) => {
@@ -115,13 +130,13 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ cable, showSignInModal }) => {
                               </div>
                             </div>
                           ) : (
-                            <div key={i} className="col-start-1 col-end-8 p-3 rounded-lg">
+                            <div key={i} className="col-start-1 col-end-10 md:col-end-8 p-3 rounded-lg">
                               <div className="flex flex-row items-center">
                                 <img
                                   className="inline-block h-10 w-10 rounded-full ring-2 ring-white"
                                   src={message.user_avatar_url}
                                 />
-                                <div className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl">
+                                <div className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl w-full break-words">
                                   <div>
                                     {message.mentioned_users_nickname.map((name) => `@${name}`)} {message.content}
                                   </div>
