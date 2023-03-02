@@ -28,7 +28,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ cable, showSignInModal }) => {
     fetchMessages()
 
     if (currentUser.isSignedIn()) {
-      cable.subscriptions.create("MessagesChannel", {
+      channel = cable.subscriptions.create("MessagesChannel", {
         received: (data) => {
           console.log("==2received==", data)
           !data.id || data.is_first_chunk ? addMessage(data) : updateMessage(data)
@@ -59,7 +59,11 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ cable, showSignInModal }) => {
   const updateMessage = (data) => {
     messagesRef.current.map((message) => {
       if (message.id === data.id) {
-        message.content = data.content
+        if (data.done) {
+          message.done = true
+        } else {
+          message.content = data.content
+        }
         message
       } else {
         message
@@ -132,8 +136,11 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ cable, showSignInModal }) => {
                                   src={currentUser.avatarUrl()}
                                 />
                                 <div className="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl">
-                                  <div>
+                                  <div className="flex items-center">
                                     {message.mentioned_users_nickname.map((name) => `@${name}`)} {message.content}
+                                    {message.done && (
+                                      <div className="ml-1 w-1 h-4 inline-block animate-[blink_0.8s_infinite]"></div>
+                                    )}
                                   </div>
                                 </div>
                               </div>

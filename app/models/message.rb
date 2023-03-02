@@ -46,9 +46,11 @@ class Message < ApplicationRecord
         puts "---chunk: #{chunk}"
         puts "===data: #{chunk[/data: (.*)\n\n$/, 1]}"
         data = chunk[/data: (.*)\n\n$/, 1]
+        response = JSON.parse(data)
 
         if data == "[DONE]"
           # TODO: close connection
+          signal_done(response)
           Message.transaction do
             message = Message.create!(
               content: @result[:text],
@@ -58,9 +60,10 @@ class Message < ApplicationRecord
             update_history(role: "assistant", content: message.content)
           end
         else
-          @result = build_result(data)
+          @result = build_result(response)
           ActionCable.server.broadcast("MessagesChannel", {
-            id: JSON.parse(chunk[/data: (.*)\n\n/, 1]).dig("id"),
+            id: response.dig("id"),
+            done: false,
             content: @result[:text],
             is_first_chunk: @result[:is_first_chunk],
             user_id: robot_user.id,
@@ -74,8 +77,14 @@ class Message < ApplicationRecord
     end
   end
 
-  def build_result(data)
-    response = JSON.parse(data)
+  def signal_done(response)
+    ActionCable.server.broadcast("MessagesChannel", {
+      id: response.dig("id"),
+      done: true,
+    })
+  end
+
+  def build_result(response)
     if response.dig("choices", 0, "delta", "content")
       @result[:text] = @result[:text] + response.dig("choices", 0, "delta", "content")
       @result[:detail] = response
