@@ -16,7 +16,7 @@ class Message < ApplicationRecord
   scope :to_ai, -> { where("? = ANY(mentioned_user_ids)", GPT_USER_ID) }
 
   def update_conversation_history
-    write_history(role: "user", content: self.content)
+    update_history(role: "user", content: self.content)
   end
 
   def generate_ai_response
@@ -25,8 +25,8 @@ class Message < ApplicationRecord
       # model: "text-davinci-003",
       model: "gpt-3.5-turbo",
       messages: conversation_history,
-      max_tokens: 1000,
-      temperature: 0.6,
+      max_tokens: 500,
+      temperature: 1,
       frequency_penalty: 0,
       presence_penalty: 0,
       stream: true,
@@ -55,7 +55,7 @@ class Message < ApplicationRecord
               user_id: robot_user.id,
               mentioned_user_ids: mentioned_users.ids,
             )
-            write_history(role: "assistant", content: message.content)
+            update_history(role: "assistant", content: message.content)
           end
         else
           @result = build_result(data)
@@ -153,12 +153,17 @@ class Message < ApplicationRecord
   end
 
   def conversation_history
-    @conversation_history ||= Rails.cache.fetch(conversation_cache_key, expires_in: 1.day) do
+    Rails.cache.fetch(conversation_cache_key, expires_in: 1.day) do
       initial_messages
     end
   end
 
-  def write_history(role:, content:)
-    Rails.cache.write(conversation_cache_key, conversation_history << { role: role, content: content }, expires_in: 1.day)
+  def update_history(role:, content:)
+    updated_history = conversation_history << { role: role, content: content }
+    if updated_history.size > 20
+      updated_history.delete_at(1)
+      updated_history.delete_at(2)
+    end
+    Rails.cache.write(conversation_cache_key, updated_history, expires_in: 1.day)
   end
 end

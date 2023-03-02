@@ -4,6 +4,11 @@ import Sample from "./Sample"
 import currentUser from "stores/current_user_store"
 import axios from "axios"
 import hljs from "highlight.js"
+import { message } from "antd"
+
+message.config({
+  maxCount: 1,
+})
 
 interface ChatRoomProps {
   cable: any
@@ -74,7 +79,12 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ cable, showSignInModal }) => {
   }
 
   const handleContentChange = (event) => {
-    setContent(event.target.value)
+    value = event.target.value
+    if (value.length > 300) {
+      message.error("消息已达最大长度限制")
+      return
+    }
+    setContent(value)
   }
 
   const handleSubmit = (event) => {
@@ -135,7 +145,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ cable, showSignInModal }) => {
                                   className="inline-block h-10 w-10 rounded-full ring-2 ring-white"
                                   src={message.user_avatar_url}
                                 />
-                                <div className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl break-words">
+                                <div className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl break-words whitespace-pre-line">
                                   <div>
                                     {message.mentioned_users_nickname.map((name) => `@${name}`)} {message.content}
                                   </div>
