@@ -26,24 +26,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ cable, showSignInModal }) => {
       cable.subscriptions.create("MessagesChannel", {
         received: (data) => {
           console.log("==2received==", data)
-
-          if (!data.id || data.is_first_chunk) {
-            // add message
-            console.log("=ADD MESSAGE====")
-            setMessages([...messagesRef.current, data])
-          } else {
-            // update message
-            console.log("=UPDATE MESSAGE====")
-            messagesRef.current.map((message) => {
-              if (message.id === data.id) {
-                message.content = data.content
-                message
-              } else {
-                message
-              }
-            })
-            setMessages([...messagesRef.current])
-          }
+          !data.id || data.is_first_chunk ? addMessage(data) : updateMessage(data)
         },
         //   connected: () => {
         //     console.log("Subscription connected!")
@@ -63,6 +46,22 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ cable, showSignInModal }) => {
     // hljs.highlightAll() // need to use pre code
     scrollToBottom()
   }, [messages])
+
+  const addMessage = (data) => {
+    setMessages([...messagesRef.current, data])
+  }
+
+  const updateMessage = (data) => {
+    messagesRef.current.map((message) => {
+      if (message.id === data.id) {
+        message.content = data.content
+        message
+      } else {
+        message
+      }
+    })
+    setMessages([...messagesRef.current])
+  }
 
   const fetchMessages = async () => {
     const csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content")
@@ -131,12 +130,12 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ cable, showSignInModal }) => {
                             </div>
                           ) : (
                             <div key={i} className="col-start-1 col-end-10 md:col-end-8 p-3 rounded-lg">
-                              <div className="flex flex-row items-center">
+                              <div className="flex flex-row">
                                 <img
                                   className="inline-block h-10 w-10 rounded-full ring-2 ring-white"
                                   src={message.user_avatar_url}
                                 />
-                                <div className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl w-full break-words">
+                                <div className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl break-words">
                                   <div>
                                     {message.mentioned_users_nickname.map((name) => `@${name}`)} {message.content}
                                   </div>

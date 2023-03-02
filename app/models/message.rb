@@ -10,19 +10,25 @@ class Message < ApplicationRecord
   delegate :nickname, to: :user, prefix: true
   delegate :avatar_url, to: :user, prefix: true
 
-  after_commit :generate_response, on: :create, if: :mentioned_ai?
+  after_commit :generate_ai_response, on: :create, if: :mentioned_ai?
 
   # scope :to_ai, -> { where("mentioned_user_ids @> ?", GPT_USER_ID) }
   scope :to_ai, -> { where("? = ANY(mentioned_user_ids)", GPT_USER_ID) }
 
-  def generate_response
+  def update_conversation_history
+    write_history(role: "user", content: self.content)
+  end
+
+  def generate_ai_response
+    update_conversation_history
     params = {
-      model: "text-davinci-003",
-      max_tokens: 100,
+      # model: "text-davinci-003",
+      model: "gpt-3.5-turbo",
+      messages: conversation_history,
+      max_tokens: 1000,
       temperature: 0.6,
       frequency_penalty: 0,
       presence_penalty: 0,
-      prompt: build_session_prompt,
       stream: true,
     }
     conn = Faraday.new(
@@ -31,32 +37,36 @@ class Message < ApplicationRecord
       headers: headers,
     )
     @result = { text: "", detail: {}, is_first_chunk: true }
+    mentioned_users = User.where(id: self.user_id)
 
-    conn.post("/v1/completions") do |req|
+    conn.post("/v1/chat/completions") do |req|
       req.body = params.to_json
       req.options.on_data = Proc.new do |chunk, overall_received_bytes, env|
         puts "Received #{overall_received_bytes} characters"
-        data = chunk[/data: (.*)\n\n/, 1]
+        puts "---chunk: #{chunk}"
+        puts "===data: #{chunk[/data: (.*)\n\n$/, 1]}"
+        data = chunk[/data: (.*)\n\n$/, 1]
 
         if data == "[DONE]"
           # TODO: close connection
-          mentioned_users = User.where(id: self.user_id)
-          message = Message.create!(
-            content: @result[:text],
-            user_id: robot_user.id,
-            mentioned_user_ids: mentioned_users.ids,
-          )
+          Message.transaction do
+            message = Message.create!(
+              content: @result[:text],
+              user_id: robot_user.id,
+              mentioned_user_ids: mentioned_users.ids,
+            )
+            write_history(role: "assistant", content: message.content)
+          end
         else
           @result = build_result(data)
-          # text = JSON.parse(chunk[/data: (.*)\n\n/, 1]).dig("choices", 0, "text").strip
           ActionCable.server.broadcast("MessagesChannel", {
             id: JSON.parse(chunk[/data: (.*)\n\n/, 1]).dig("id"),
             content: @result[:text],
             is_first_chunk: @result[:is_first_chunk],
             user_id: robot_user.id,
-            user_nickname: "GPT 机器人",
-            user_avatar_url: "",
-            mentioned_users_nickname: ["renny"],
+            user_nickname: "GPT robot",
+            user_avatar_url: robot_user.avatar_url,
+            mentioned_users_nickname: mentioned_users.map(&:nickname),
           })
           @result[:is_first_chunk] = false
         end
@@ -66,8 +76,8 @@ class Message < ApplicationRecord
 
   def build_result(data)
     response = JSON.parse(data)
-    if response.dig("choices", 0, "text")
-      @result[:text] = @result[:text] + response.dig("choices", 0, "text")
+    if response.dig("choices", 0, "delta", "content")
+      @result[:text] = @result[:text] + response.dig("choices", 0, "delta", "content")
       @result[:detail] = response
     end
     @result
@@ -117,6 +127,10 @@ class Message < ApplicationRecord
 
   private
 
+  def conversation_cache_key
+    "user_#{self.user_id}_conversations"
+  end
+
   def headers
     {
       "Content-Type" => "application/json",
@@ -124,27 +138,27 @@ class Message < ApplicationRecord
     }
   end
 
+  def initial_messages
+    [
+      { role: "system", content: "You are ChatGPT, a large language model trained by OpenAI. Answer as concisely as possible. Current date: #{Date.today.to_s}" },
+    ]
+  end
+
   def robot_user
-    User.find(GPT_USER_ID)
+    @robot_user ||= User.find(GPT_USER_ID)
   end
 
   def mentioned_ai?
     self.mentioned_user_ids.include?(robot_user.id)
   end
 
-  def build_session_prompt
-    "Instructions:\nYou are ChatGPT, a large language model trained by OpenAI. Current date: 2023-03-01\n\nUser:\n\n#{self.content}\n\nChatGPT:\n"
-    # messages = current_user.messages.to_ai.last(10)
-    # prompt = conf().get("character_desc", "")
-    # if prompt:
-    #     prompt += "\n\n"
-    # session = user_session.get(user_id, None)
-    # if session:
-    #     for conversation in session:
-    #         prompt += "Q: " + conversation["question"] + "\n\n\nA: " + conversation["answer"] + "<|im_end|>\n"
-    #     prompt += "Q: " + query + "\nA: "
-    #     return prompt
-    # else:
-    #     return prompt + "Q: " + query + "\nA: "
+  def conversation_history
+    @conversation_history ||= Rails.cache.fetch(conversation_cache_key, expires_in: 1.day) do
+      initial_messages
+    end
+  end
+
+  def write_history(role:, content:)
+    Rails.cache.write(conversation_cache_key, conversation_history << { role: role, content: content }, expires_in: 1.day)
   end
 end
