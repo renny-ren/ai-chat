@@ -27,12 +27,7 @@ const MessageList = ({ messages }) => {
       )
     },
     list(body, ordered) {
-      console.log("list", body)
-      if (ordered) {
-        return <ol className="list-decimal">{body}</ol>
-      } else {
-        return <ul className="c-list">{body}</ul>
-      }
+      return ordered ? <ol className="c-ordered-list">{body}</ol> : <ul className="c-list">{body}</ul>
     },
   }
 

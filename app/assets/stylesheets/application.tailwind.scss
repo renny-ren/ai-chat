@@ -4,14 +4,6 @@
 @tailwind componednts;
 @tailwind utilities;
 
-.c-list {
-  list-style-type: disc;
-  margin-top: 1.25rem;
-  margin-bottom: 1.25rem;
-  padding-left: 1.625rem;
-  line-height: 1.75rem;
-}
-
 .ai-response-loading :last-child::after {
   -webkit-animation: blink 1s steps(5, start) infinite;
   animation: blink 1s steps(5, start) infinite;
@@ -19,4 +11,24 @@
   content: "▍";
   margin-left: 0.25rem;
   vertical-align: baseline;
+}
+
+ul.c-list {
+  list-style-type: disc;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  padding-left: 1.625rem;
+  line-height: 1.75rem;
+}
+
+ol.c-ordered-list {
+  list-style-type: decimal;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  padding-left: 1.625rem;
+}
+
+li {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
 }
