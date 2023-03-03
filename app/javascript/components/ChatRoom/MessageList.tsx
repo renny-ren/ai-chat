@@ -50,8 +50,8 @@ const MessageList = ({ messages }) => {
             <div className="flex flex-row">
               <img className="inline-block h-10 w-10 rounded-full ring-2 ring-white" src={message.user_avatar_url} />
               <div
-                className={`relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl break-words whitespace-pre-line ${
-                  message.loading && "ai-response-loading"
+                className={`relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl break-words whitespace-pre-line overflow-x-scroll ${
+                  message.loading ? "ai-response-loading" : ""
                 }`}
               >
                 <Markdown

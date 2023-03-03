@@ -6,13 +6,21 @@ class User < ApplicationRecord
 
   has_many :messages
 
+  has_one_attached :avatar, dependent: :purge
+
   validates :username, presence: true, uniqueness: true, length: 3..16
   validates :nickname, presence: true, uniqueness: true, length: 1..16
   validates_format_of :username, with: /^[a-zA-Z0-9_\.]*$/, multiline: true # Only allow letter, number, underscore and punctuation.
-  validates :email, uniqueness: true, allow_blank: true, format: { with: URI::MailTo::EMAIL_REGEXP, message: "邮箱不合法" }
+  validates :email, uniqueness: true, allow_blank: true, format: { with: URI::MailTo::EMAIL_REGEXP, message: "email is not valid" }
 
   def avatar_url(size = 80)
-    "https://ui-avatars.com/api/?name=#{username}&size=#{size}"
+    ActiveStorage::Current.url_options = { host: "localhost", port: 3000 }
+    avatar.url || "https://ui-avatars.com/api/?name=#{username}&size=#{size}"
+  end
+
+  def avatar=(new_avatar)
+    avatar.purge_later if new_avatar.present?
+    super
   end
 
   # def find_for_database_authentication(warden_conditions)

@@ -15,6 +15,8 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.permit(:nickname, :email)
+    params.permit(:nickname, :avatar).tap do |param|
+      param[:email] = params[:email] if params[:email].present?
+    end
   end
 end

@@ -2,9 +2,9 @@ Rails.application.routes.draw do
   mount ActionCable.server => "/cable"
 
   devise_for :users, controllers: {
-            registrations: :registrations,
-            sessions: :sessions,
-          }
+                       registrations: :registrations,
+                       sessions: :sessions,
+                     }
 
   root "homepage#index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
@@ -16,5 +16,7 @@ Rails.application.routes.draw do
     resources :messages, only: :index
     resources :users, only: [:update]
   end
-  get "/*path" => "homepage#index"
+  get "/*path" => "homepage#index", format: false, constraints: ->(req) { !req.xhr? && req.format.html? }
+  # get "/settings" => "homepage#index"
+  # mount ActiveStorage::Engine => "/active_storage"
 end

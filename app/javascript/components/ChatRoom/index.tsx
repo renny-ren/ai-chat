@@ -86,7 +86,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ cable, showSignInModal }) => {
             <div className="flex flex-row h-full w-full overflow-x-hidden">
               <div className="flex flex-col flex-auto h-full items-center">
                 <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl h-full w-full md:max-w-3xl lg:max-w-4xl">
-                  <div className="flex flex-col h-full mb-4 pb-14">
+                  <div className="flex flex-col h-full mb-4">
                     <div className="flex flex-col h-full overflow-x-auto">
                       <div className="grid grid-cols-12 gap-y-2">
                         <MessageList messages={messages} />

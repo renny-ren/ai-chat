@@ -3,6 +3,7 @@ import { Dialog, Popover, Tab, Transition } from "@headlessui/react"
 import currentUser from "stores/current_user_store"
 import axios from "axios"
 import { message } from "antd"
+import Avatar from "./Avatar"
 
 axios.interceptors.request.use((config) => {
   config.headers["Content-Type"] = "application/json"
@@ -14,14 +15,17 @@ axios.interceptors.request.use((config) => {
 const Settings: React.FC<SettingsProps> = ({}) => {
   const [nickname, setNickname] = useState(currentUser.nickname() || "")
   const [email, setEmail] = useState(currentUser.email() || "")
+  const [avatarFile, setAvatarFile] = useState()
 
   const onSave = async (e) => {
     e.preventDefault()
+    const formData = new FormData()
+    formData.append("avatar", avatarFile)
+    formData.append("nickname", nickname)
+    formData.append("email", email)
+
     try {
-      const response = await axios.put(`/v1/users/${currentUser.id()}`, {
-        nickname: nickname,
-        email: email,
-      })
+      const response = await axios.put(`/v1/users/${currentUser.id()}`, formData)
       message.success("保存成功！")
     } catch (error) {
       message.error(error.response.data.message)
@@ -59,22 +63,15 @@ const Settings: React.FC<SettingsProps> = ({}) => {
                     <p className="text-xs text-gray-500"></p>
                   </div>
                   <div className="md:w-4/5 w-full">
-                    <div className="py-8 px-16 flex flex-wrap items-center">
-                      <label className="text-sm text-gray-600 w-full block">头像</label>
-                      <img className="rounded-full w-16 h-16 mt-2 float-left" src={currentUser.avatarUrl()} alt="photo" />
-                      <div className="bg-gray-200 text-gray-500 text-xs mt-5 ml-3 font-bold px-4 py-2 rounded-sm float-left hover:bg-gray-300 hover:text-gray-600 relative overflow-hidden cursor-pointer">
-                        <input
-                          type="file"
-                          name="photo"
-                          onChange={console.log("===load file")}
-                          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                        />
-                        修改头像
+                    <div className="p-8 flex flex-wrap items-center">
+                      <div className="w-full lg:w-6/12 px-4">
+                        <label className="text-sm text-gray-600 w-full block">头像</label>
+                        <Avatar />
                       </div>
                     </div>
                     <hr className="border-gray-200" />
 
-                    <div className="py-8 px-8 flex flex-wrap">
+                    <div className="p-8 flex flex-wrap">
                       <div className="w-full lg:w-6/12 px-4">
                         <label className="text-sm text-gray-600">昵称</label>
                         <input
