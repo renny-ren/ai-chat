@@ -28,7 +28,8 @@ ol.c-ordered-list {
   padding-left: 1.625rem;
 }
 
-li {
+.c-list > li,
+.c-ordered-list > li {
   margin-top: 0.5em;
   margin-bottom: 0.5em;
 }

@@ -2,6 +2,21 @@ class ApplicationController < ActionController::Base
   include Gonable
   # before_action :configure_permitted_parameters, if: :devise_controller?
 
+  def render_json_response(type, options = {})
+    unless [:ok, :redirect, :error].include?(type)
+      raise "Invalid json response type: #{type}"
+    end
+
+    default_json_structure = {
+      status: type,
+    }.merge(options)
+
+    render_options = { json: default_json_structure }
+    render_options[:status] = 400 if type == :error
+
+    render(render_options)
+  end
+
   protected
 
   def configure_permitted_parameters

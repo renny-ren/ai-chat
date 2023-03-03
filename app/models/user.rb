@@ -7,8 +7,9 @@ class User < ApplicationRecord
   has_many :messages
 
   validates :username, presence: true, uniqueness: true, length: 3..16
-  validates :nickname, presence: true, uniqueness: true
+  validates :nickname, presence: true, uniqueness: true, length: 1..16
   validates_format_of :username, with: /^[a-zA-Z0-9_\.]*$/, multiline: true # Only allow letter, number, underscore and punctuation.
+  validates :email, uniqueness: true, allow_blank: true, format: { with: URI::MailTo::EMAIL_REGEXP, message: "邮箱不合法" }
 
   def avatar_url(size = 80)
     "https://ui-avatars.com/api/?name=#{username}&size=#{size}"
@@ -21,7 +22,7 @@ class User < ApplicationRecord
   # end
 
   def frontend_attributes
-    { id: self.id, nickname: self.nickname, avatar_url: avatar_url }
+    { id: self.id, nickname: self.nickname, email: self.email, avatar_url: avatar_url }
   end
 
   protected

@@ -15,6 +15,10 @@ const currentUser = {
     return gon.user_meta.nickname
   },
 
+  email() {
+    return gon.user_meta.email
+  },
+
   avatarUrl() {
     return gon.user_meta.avatar_url
   },
