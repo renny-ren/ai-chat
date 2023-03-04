@@ -11,6 +11,7 @@
     "actioncable": "^5.2.8-1",
     "antd": "^5.2.1",
     "autoprefixer": "^10.4.13",
+    "axios": "^1.3.4",
     "esbuild": "^0.17.7",
     "highlight.js": "^11.7.0",
     "marked": "^4.2.12",
@@ -23,11 +24,12 @@
     "react-router-dom": "^6.8.1",
     "react-syntax-highlighter": "^15.5.0",
     "tailwindcss": "^3.2.6",
+    "tsconfig-paths": "^3.14.2",
     "typed.js": "^2.0.12"
   },
   "scripts": {
     "build": "esbuild app/javascript/*.* --bundle --sourcemap --outdir=app/assets/builds --public-path=assets",
-    "build:css": "tailwindcss -i ./app/assets/stylesheets/application.tailwind.scss -o ./app/assets/builds/application.css --minify"
+    "build:css": "tailwindcss -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.css --minify"
   },
   "devDependencies": {
     "@tailwindcss/aspect-ratio": "^0.4.2"
