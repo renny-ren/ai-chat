@@ -6,6 +6,7 @@ import hljs from "highlight.js"
 import Markdown from "marked-react"
 import SyntaxHighlighter from "react-syntax-highlighter"
 import { github, arduinoLight, atelierSeasideLight } from "react-syntax-highlighter/dist/esm/styles/hljs"
+import Avatar from "./Avatar"
 
 const MessageList = ({ messages }) => {
   const includeCode = (text: string | null | undefined) => {
@@ -31,33 +32,47 @@ const MessageList = ({ messages }) => {
     },
   }
 
+  const isSelf = (message) => {
+    return currentUser.id() === message.user_id
+  }
+
+  const renderContent = (message) => {
+    return isRobot(message) ? (
+      <Markdown
+        value={`${message.mentioned_users_nickname.map((name) => `@${name}`)} ${message.content}`}
+        renderer={renderer}
+      />
+    ) : (
+      <div className="flex items-center">
+        {message.mentioned_users_nickname.map((name) => `@${name}`)} {message.content}
+      </div>
+    )
+  }
+
+  const isRobot = (message) => {
+    return message.role === "assistant"
+  }
+
   return (
     <>
       {messages.map((message, i) => {
-        return message.user_id === currentUser.id() ? (
-          <div key={i} className="col-start-6 col-end-13 p-3 rounded-lg">
+        return isSelf(message) ? (
+          <div key={i} className="col-start-5 col-end-13 p-3 rounded-lg">
             <div className="flex items-center justify-start flex-row-reverse">
-              <img className="inline-block h-10 w-10 rounded-full ring-2 ring-white" src={currentUser.avatarUrl()} />
-              <div className="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl">
-                <div className="flex items-center">
-                  {message.mentioned_users_nickname.map((name) => `@${name}`)} {message.content}
-                </div>
-              </div>
+              <Avatar src={currentUser.avatarUrl()} />
+              <div className="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl">{renderContent(message)}</div>
             </div>
           </div>
         ) : (
           <div key={i} className="col-start-1 col-end-10 md:col-end-8 p-3 rounded-lg">
             <div className="flex flex-row">
-              <img className="inline-block h-10 w-10 rounded-full ring-2 ring-white" src={message.user_avatar_url} />
+              <Avatar src={message.user_avatar_url} isRobot={isRobot(message)} />
               <div
                 className={`relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl break-words whitespace-pre-line overflow-x-scroll ${
                   message.loading ? "ai-response-loading" : ""
                 }`}
               >
-                <Markdown
-                  value={`${message.mentioned_users_nickname.map((name) => `@${name}`)} ${message.content}`}
-                  renderer={renderer}
-                />
+                {renderContent(message)}
               </div>
             </div>
           </div>

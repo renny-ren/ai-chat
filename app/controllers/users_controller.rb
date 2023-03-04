@@ -8,6 +8,11 @@ class UsersController < ApplicationController
     render_json_response :error, message: e.message
   end
 
+  def clear_conversations
+    Rails.cache.delete(current_user.conversation_cache_key)
+    render_json_response :ok
+  end
+
   private
 
   def authenticate_user!

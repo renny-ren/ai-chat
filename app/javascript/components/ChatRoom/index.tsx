@@ -14,6 +14,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ cable, showSignInModal }) => {
   const messagesEndRef = useRef(null)
   const messagesRef = useRef()
   const [messages, setMessages] = useState([])
+  const [isGenerating, setIsGenerating] = useState(false)
 
   messagesRef.current = messages
 
@@ -22,7 +23,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ cable, showSignInModal }) => {
     if (currentUser.isSignedIn()) {
       channel = cable.subscriptions.create("MessagesChannel", {
         received: (data) => {
-          console.log("==2received==", data)
+          console.log("==received==", data)
           !data.id || data.is_first_chunk ? addMessage(data) : updateMessage(data)
         },
         //   connected: () => {
@@ -51,6 +52,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ cable, showSignInModal }) => {
     messagesRef.current.map((message) => {
       if (message.id === data.id) {
         if (data.done) {
+          setIsGenerating(false)
           message.loading = false
         } else {
           message.loading = true
@@ -101,7 +103,12 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ cable, showSignInModal }) => {
           </div>
         </div>
       </div>
-      <Footer cable={cable} showSignInModal={showSignInModal} />
+      <Footer
+        cable={cable}
+        showSignInModal={showSignInModal}
+        isGenerating={isGenerating}
+        setIsGenerating={setIsGenerating}
+      />
 
       {/*<div className="absolute bottom-0 left-0 w-full dark:border-transparent bg-vert-light-gradient dark:bg-vert-dark-gradient input-area">
         <div className="flex flex-row items-center h-16 rounded-xl bg-white w-full px-4 md:max-w-3xl lg:max-w-4xl mx-auto">

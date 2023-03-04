@@ -33,6 +33,14 @@ class User < ApplicationRecord
     { id: self.id, nickname: self.nickname, email: self.email, avatar_url: avatar_url }
   end
 
+  def ai_conversations
+    Rails.cache.read(conversation_cache_key)
+  end
+
+  def conversation_cache_key
+    "user_#{id}_conversations"
+  end
+
   protected
 
   def email_required?

@@ -14,7 +14,9 @@ Rails.application.routes.draw do
   scope "v1" do
     resources :completions, only: :create
     resources :messages, only: :index
-    resources :users, only: [:update]
+    resources :users, only: [:update] do
+      post :clear_conversations, on: :collection
+    end
   end
   get "/*path" => "homepage#index", format: false, constraints: ->(req) { !req.xhr? && req.format.html? }
   # get "/settings" => "homepage#index"

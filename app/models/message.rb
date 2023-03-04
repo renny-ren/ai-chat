@@ -64,6 +64,7 @@ class Message < ApplicationRecord
           @result = build_result(response)
           ActionCable.server.broadcast("MessagesChannel", {
             id: @message_id,
+            role: "assistant",
             done: false,
             content: @result[:text],
             is_first_chunk: @result[:is_first_chunk],
@@ -131,15 +132,15 @@ class Message < ApplicationRecord
     # User.where(id: self.mentioned_user_ids).map(&:nickname)
   end
 
+  def role
+    user_id == GPT_USER_ID ? "assistant" : "user"
+  end
+
   def as_item_json
-    as_json(only: %i[content user_id], methods: %i[user_nickname user_avatar_url mentioned_users_nickname], include: { user: { only: [:nickname, :id] } })
+    as_json(only: %i[content user_id], methods: %i[user_nickname user_avatar_url mentioned_users_nickname role], include: { user: { only: [:nickname, :id] } })
   end
 
   private
-
-  def conversation_cache_key
-    "user_#{self.user_id}_conversations"
-  end
 
   def headers
     {
@@ -163,7 +164,7 @@ class Message < ApplicationRecord
   end
 
   def conversation_history
-    Rails.cache.fetch(conversation_cache_key, expires_in: 1.day) do
+    Rails.cache.fetch(self.user.conversation_cache_key, expires_in: 1.day) do
       initial_messages
     end
   end
@@ -174,6 +175,6 @@ class Message < ApplicationRecord
       updated_history.delete_at(1)
       updated_history.delete_at(2)
     end
-    Rails.cache.write(conversation_cache_key, updated_history, expires_in: 1.day)
+    Rails.cache.write(self.user.conversation_cache_key, updated_history, expires_in: 1.day)
   end
 end

@@ -9,18 +9,23 @@ message.config({
 interface FooterProps {
   cable: any
   showSignInModal: () => void
+  isGenerating: boolean
+  setIsGenerating: () => void
 }
 
-const Footer: React.FC<FooterProps> = ({ cable, showSignInModal }) => {
+const Footer: React.FC<FooterProps> = ({ cable, showSignInModal, isGenerating, setIsGenerating }) => {
   const [content, setContent] = useState("")
   const [isToAI, setIsToAI] = useState(false)
 
   const handleSubmit = (event) => {
     event.preventDefault()
+    console.log("subs", cable.subscriptions)
     if (!content) {
       return
     }
-    console.log("www", cable.subscriptions)
+    if (isToAI && isGenerating) {
+      return message.info("机器人回答不过来了，请稍后再问")
+    }
 
     cable.subscriptions.subscriptions[0].send({
       content: content,
@@ -29,6 +34,7 @@ const Footer: React.FC<FooterProps> = ({ cable, showSignInModal }) => {
 
     setContent("")
     setIsToAI(false)
+    setIsGenerating(true)
   }
 
   const handleContentChange = (event) => {
