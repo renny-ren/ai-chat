@@ -23,8 +23,11 @@ const Footer: React.FC<FooterProps> = ({ cable, showSignInModal, isGenerating, s
     if (!content) {
       return
     }
-    if (isToAI && isGenerating) {
-      return message.info("机器人回答不过来了，请稍后再问")
+    if (isToAI) {
+      setIsGenerating(true)
+      if (isGenerating) {
+        return message.info("机器人回答不过来了，请稍后再问")
+      }
     }
 
     cable.subscriptions.subscriptions[0].send({
@@ -34,7 +37,6 @@ const Footer: React.FC<FooterProps> = ({ cable, showSignInModal, isGenerating, s
 
     setContent("")
     setIsToAI(false)
-    setIsGenerating(true)
   }
 
   const handleContentChange = (event) => {
