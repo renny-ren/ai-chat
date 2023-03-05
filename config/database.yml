@@ -82,5 +82,5 @@ test:
 production:
   <<: *default
   database: ai_chat_production
-  username: ai_chat
-  password: <%= ENV["AI_CHAT_DATABASE_PASSWORD"] %>
+  username: <%= ENV["DATABASE_USER"] || 'postgres' %>
+  password: <%= ENV["DATABASE_PASSWORD"] %>
