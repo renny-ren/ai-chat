@@ -1,7 +1,7 @@
 @import "./components/chat_module.scss";
 
-@tailwind bases;
-@tailwind componednts;
+@tailwind base;
+@tailwind components;
 @tailwind utilities;
 
 .ai-response-loading :last-child::after {
