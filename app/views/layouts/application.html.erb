@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html style="height: 100%">
   <head>
-    <title>AiChat</title>
+    <title>aii.chat - 人工智能对话</title>
+    <meta name=keywords content="ChatGPT, aii.chat, ai chat, chatgpt, AI, 智能问答, 聊天机器人">
+    <meta name=description content="人工智能问答平台">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= action_cable_meta_tag %>
+    <%= favicon_link_tag "logo2.png" %>
     <%= Gon::Base.render_data %>
 
     <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
@@ -17,6 +20,6 @@
     <%= yield %>
   </body>
   <script type="text/javascript">
-    window.avatar_url = "<%= user_signed_in? ? current_user.avatar_url : '' %>";
+    window.avatar_url = "<%= user_signed_in? ? current_user.avatar_url : "" %>";
   </script>
 </html>
