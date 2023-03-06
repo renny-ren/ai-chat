@@ -19,7 +19,7 @@ const Footer: React.FC<FooterProps> = ({ cable, showSignInModal, isGenerating, s
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    console.log("subs", cable.subscriptions)
+    // console.log("subs", cable.subscriptions)
     if (!content) {
       return
     }

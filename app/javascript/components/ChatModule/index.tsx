@@ -43,7 +43,6 @@ const ChatModule = () => {
         selfFlag,
       },
     ])
-    console.log("list", responseList)
     return uid
   }
 

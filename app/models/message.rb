@@ -42,9 +42,9 @@ class Message < ApplicationRecord
     conn.post("/v1/chat/completions") do |req|
       req.body = params.to_json
       req.options.on_data = Proc.new do |chunk, overall_received_bytes, env|
-        puts "Received #{overall_received_bytes} characters"
-        puts "---chunk: #{chunk}"
-        puts "===data: #{chunk[/data: (.*)\n\n$/, 1]}"
+        # puts "Received #{overall_received_bytes} characters"
+        # puts "---chunk: #{chunk}"
+        # puts "===data: #{chunk[/data: (.*)\n\n$/, 1]}"
         data = chunk[/data: (.*)\n\n$/, 1]
 
         if data == "[DONE]"

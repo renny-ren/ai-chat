@@ -4,45 +4,60 @@ import MessageList from "./MessageList"
 import Footer from "./Footer"
 import currentUser from "stores/current_user_store"
 import axios from "axios"
+import ActionCable from "actioncable"
+import consumer from "channels/consumer"
 
 interface ChatRoomProps {
-  cable: any
   showSignInModal: () => void
 }
 
-const ChatRoom: React.FC<ChatRoomProps> = ({ cable, showSignInModal }) => {
+const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal }) => {
   const messagesEndRef = useRef(null)
   const messagesRef = useRef()
   const [messages, setMessages] = useState([])
   const [isGenerating, setIsGenerating] = useState(false)
+  const [channel, setChannel] = useState()
 
   messagesRef.current = messages
 
   useEffect(() => {
     fetchMessages()
-    if (currentUser.isSignedIn()) {
-      channel = cable.subscriptions.create("MessagesChannel", {
-        received: (data) => {
-          console.log("==received==", data)
-          !data.id || data.is_first_chunk ? addMessage(data) : updateMessage(data)
-        },
-        //   connected: () => {
-        //     console.log("Subscription connected!")
-        //     // if (cable.subscriptions.subscriptions.length > 0) {
-        //     //   cable.subscriptions.subscriptions[0].send({ content: "content" })
-        //     // }
-        //   },
-      })
-
-      // return () => {
-      //   channel.unsubscribe()
-      // }
-    }
   }, [])
 
   useEffect(() => {
     scrollToBottom()
   }, [messages])
+
+  useEffect(() => {
+    resubscribeChannel()
+  }, [gon.user_meta])
+
+  const resubscribeChannel = () => {
+    if (channel) {
+      channel.unsubscribe()
+      consumer.disconnect()
+    }
+    newChannel = subscribeChannel(consumer)
+    setChannel(newChannel)
+  }
+
+  const subscribeChannel = (consumer) => {
+    const channel = consumer.subscriptions.create("MessagesChannel", {
+      received: (data) => {
+        // console.log("==received==", data)
+        !data.id || data.is_first_chunk ? addMessage(data) : updateMessage(data)
+      },
+      connected() {
+        // Called when the subscription is ready for use on the server
+        console.log("==connected==")
+      },
+      disconnected() {
+        // Called when the subscription has been terminated by the server
+        console.log("==disconnected==")
+      },
+    })
+    return channel
+  }
 
   const addMessage = (data) => {
     setMessages([...messagesRef.current, data])
@@ -104,7 +119,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ cable, showSignInModal }) => {
         </div>
       </div>
       <Footer
-        cable={cable}
+        cable={consumer}
         showSignInModal={showSignInModal}
         isGenerating={isGenerating}
         setIsGenerating={setIsGenerating}

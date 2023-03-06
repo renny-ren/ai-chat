@@ -13,7 +13,8 @@ module ApplicationCable
       if verified_user
         verified_user
       else
-        reject_unauthorized_connection
+        # Allow visitors to build connection and read messages in Chatroom
+        # reject_unauthorized_connection
       end
     end
   end

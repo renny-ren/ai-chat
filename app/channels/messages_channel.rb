@@ -5,6 +5,7 @@ class MessagesChannel < ApplicationCable::Channel
 
   def unsubscribed
     # Any cleanup needed when channel is unsubscribed
+    stop_all_streams
   end
 
   def receive(data)

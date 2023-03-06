@@ -5,6 +5,7 @@ import SignInModal from "./user/SignInModal"
 import UserBar from "./user/UserBar"
 import MobileMenu from "./MobileMenu"
 import Sidebar from "./Sidebar"
+import currentUser from "stores/current_user_store"
 
 const App = (props) => {
   const [isShowModal, setIsShowModal] = useState(false)
@@ -76,7 +77,7 @@ const App = (props) => {
                   ></button>
                 </div>
                 <div>
-                  {window.avatar_url ? (
+                  {currentUser.isSignedIn() ? (
                     <UserBar />
                   ) : (
                     <div

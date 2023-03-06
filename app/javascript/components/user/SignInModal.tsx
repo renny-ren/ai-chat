@@ -37,10 +37,6 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
     }
   }
 
-  const renewUserMeta = (count) => {
-    console.log("===", count)
-  }
-
   const onSignUp = async (e) => {
     e.preventDefault()
     try {
@@ -52,7 +48,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
       })
       message.success("注册成功！")
       setOpen(false)
-      window.avatar_url = response.data.avatar_url
+      gon.user_meta = response.data.user_meta
     } catch (error) {
       if (error.response.status === 400) {
         setFormErrors(error.response.data.message)

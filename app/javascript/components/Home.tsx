@@ -3,9 +3,6 @@ import { Link } from "react-router-dom"
 import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import ChatModule from "./ChatModule"
 import ChatRoom from "./ChatRoom"
-import ActionCable from "actioncable"
-
-cable = ActionCable.createConsumer("ws://localhost:3000/cable")
 
 const Home = ({ setIsShowModal }) => {
   return (
@@ -42,7 +39,7 @@ const Home = ({ setIsShowModal }) => {
               </div>
             </div>
           </div>
-          <ChatRoom cable={cable} showSignInModal={() => setIsShowModal(true)} />
+          <ChatRoom showSignInModal={() => setIsShowModal(true)} />
           {/*<ChatModule />*/}
         </main>
       </div>

@@ -8,4 +8,9 @@ class SessionsController < Devise::SessionsController
       render status: :unauthorized, json: { message: "用户名或密码不正确" }
     end
   end
+
+  def destroy
+    sign_out current_user
+    # render_json_response :ok
+  end
 end

@@ -2,11 +2,25 @@ import React, { Fragment, useState, createElement, useEffect } from "react"
 import { Menu, Transition } from "@headlessui/react"
 import { ChevronDownIcon } from "@heroicons/react/20/solid"
 import currentUser from "stores/current_user_store"
+import { message } from "antd"
+import axios from "axios"
 
 interface UserBarProps {}
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ")
+}
+
+const handleLogOut = async (e) => {
+  e.preventDefault()
+  try {
+    await axios.delete("/users/sign_out")
+    // gon.user_meta = undefined
+    window.location.reload()
+    message.success("登出成功")
+  } catch (error) {
+    message.error(error.response.data.message)
+  }
 }
 
 const UserBar: React.FC<UserBarProps> = ({}) => {
@@ -39,7 +53,7 @@ const UserBar: React.FC<UserBarProps> = ({}) => {
                 </a>
               )}
             </Menu.Item>
-            <form method="DELETE" action="/users/sign_out">
+            <form onSubmit={handleLogOut}>
               <Menu.Item>
                 {({ active }) => (
                   <button

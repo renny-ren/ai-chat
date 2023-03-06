@@ -33,7 +33,11 @@ const MessageList = ({ messages }) => {
   }
 
   const isSelf = (message) => {
-    return currentUser.id() === message.user_id
+    if (currentUser.isSignedIn()) {
+      return currentUser.id() === message.user_id
+    } else {
+      return false
+    }
   }
 
   const renderContent = (message) => {
