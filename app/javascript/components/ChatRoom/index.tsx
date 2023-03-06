@@ -6,6 +6,7 @@ import currentUser from "stores/current_user_store"
 import axios from "axios"
 import ActionCable from "actioncable"
 import consumer from "channels/consumer"
+import { Helmet } from "react-helmet"
 
 interface ChatRoomProps {
   showSignInModal: () => void
@@ -96,20 +97,25 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal }) => {
   }
 
   return (
-    <div className="relative h-full w-full transition-width flex flex-col overflow-hidden items-stretch flex-1 pb-14">
-      <div className="flex-1 overflow-hidden relative">
-        <div className="h-full overflow-hidden">
-          <div className="flex h-full antialiased text-gray-800">
-            <div className="flex flex-row h-full w-full overflow-x-hidden">
-              <div className="flex flex-col flex-auto h-full items-center">
-                <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl h-full w-full md:max-w-3xl lg:max-w-4xl">
-                  <div className="flex flex-col h-full mb-4">
-                    <div className="flex flex-col h-full overflow-x-auto">
-                      <div className="grid grid-cols-12 gap-y-2">
-                        <MessageList messages={messages} />
+    <>
+      <Helmet>
+        <title>ChatGPT 交流群</title>
+      </Helmet>
+      <div className="relative h-full w-full transition-width flex flex-col overflow-hidden items-stretch flex-1 pb-14">
+        <div className="flex-1 overflow-hidden relative">
+          <div className="h-full overflow-hidden">
+            <div className="flex h-full antialiased text-gray-800">
+              <div className="flex flex-row h-full w-full overflow-x-hidden">
+                <div className="flex flex-col flex-auto h-full items-center">
+                  <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl h-full w-full md:max-w-3xl lg:max-w-4xl">
+                    <div className="flex flex-col h-full md:pb-4">
+                      <div className="flex flex-col h-full overflow-x-auto">
+                        <div className="grid grid-cols-12 gap-y-2">
+                          <MessageList messages={messages} />
+                        </div>
+                        <div ref={messagesEndRef}></div>
+                        <div className="w-full h-2 sm:h-6 flex-shrink-0"></div>
                       </div>
-                      <div ref={messagesEndRef}></div>
-                      <div className="w-full h-20 flex-shrink-0"></div>
                     </div>
                   </div>
                 </div>
@@ -117,15 +123,14 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal }) => {
             </div>
           </div>
         </div>
-      </div>
-      <Footer
-        cable={consumer}
-        showSignInModal={showSignInModal}
-        isGenerating={isGenerating}
-        setIsGenerating={setIsGenerating}
-      />
+        <Footer
+          cable={consumer}
+          showSignInModal={showSignInModal}
+          isGenerating={isGenerating}
+          setIsGenerating={setIsGenerating}
+        />
 
-      {/*<div className="absolute bottom-0 left-0 w-full dark:border-transparent bg-vert-light-gradient dark:bg-vert-dark-gradient input-area">
+        {/*<div className="absolute bottom-0 left-0 w-full dark:border-transparent bg-vert-light-gradient dark:bg-vert-dark-gradient input-area">
         <div className="flex flex-row items-center h-16 rounded-xl bg-white w-full px-4 md:max-w-3xl lg:max-w-4xl mx-auto">
           <div>
             <button className="flex items-center justify-center text-gray-400 hover:text-gray-600">
@@ -199,7 +204,8 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal }) => {
           </form>
         </div>
       </div>*/}
-    </div>
+      </div>
+    </>
   )
 }
 

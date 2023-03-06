@@ -63,7 +63,7 @@ const Footer: React.FC<FooterProps> = ({ cable, showSignInModal, isGenerating, s
             {currentUser.isSignedIn() ? (
               <div className="flex flex-col w-full py-2 flex-grow md:py-3 md:pl-2 relative border border-black/10 bg-white dark:border-gray-900/50 dark:text-white dark:bg-gray-700 rounded-md shadow-[0_0_10px_rgba(0,0,0,0.10)] dark:shadow-[0_0_15px_rgba(0,0,0,0.10)]">
                 <button
-                  className="absolute text-gray-500 hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900"
+                  className="absolute ml-1 text-gray-500 md:hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900 outline-none"
                   type="button"
                   onClick={toggleIsToAI}
                 >
@@ -89,7 +89,7 @@ const Footer: React.FC<FooterProps> = ({ cable, showSignInModal, isGenerating, s
                 />
                 <button
                   type="submit"
-                  className="absolute p-1 rounded-md text-gray-500 bottom-1.5 right-1 md:bottom-2.5 md:right-2 hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent"
+                  className="absolute p-1 rounded-md text-gray-500 bottom-1.5 right-1 md:bottom-2.5 md:right-2 md:hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent outline-none"
                 >
                   <svg
                     stroke={content ? "currentColor" : "#cdcdcd"}

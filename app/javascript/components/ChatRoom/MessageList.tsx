@@ -61,14 +61,14 @@ const MessageList = ({ messages }) => {
     <>
       {messages.map((message, i) => {
         return isSelf(message) ? (
-          <div key={i} className="col-start-5 col-end-13 p-3 rounded-lg">
+          <div key={i} className="col-start-3 col-end-13 p-3 rounded-lg">
             <div className="flex items-center justify-start flex-row-reverse">
               <Avatar src={currentUser.avatarUrl()} />
               <div className="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl">{renderContent(message)}</div>
             </div>
           </div>
         ) : (
-          <div key={i} className="col-start-1 col-end-10 md:col-end-8 p-3 rounded-lg">
+          <div key={i} className="col-start-1 col-end-11 md:col-end-8 p-3 rounded-lg">
             <div className="flex flex-row">
               <Avatar src={message.user_avatar_url} isRobot={isRobot(message)} />
               <div

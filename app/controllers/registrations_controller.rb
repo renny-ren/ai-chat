@@ -3,7 +3,7 @@ class RegistrationsController < Devise::RegistrationsController
     build_resource(sign_up_params)
     resource.save!
     sign_in(resource_name, resource)
-    render status: 200, json: { user_meta: response.frontend_attributes }
+    render status: 200, json: { user_meta: resource.frontend_attributes }
   rescue => e
     render status: 400, json: { message: resource.errors.full_messages }
   end

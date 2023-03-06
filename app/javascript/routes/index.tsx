@@ -4,15 +4,12 @@ import Home from "components/Home"
 import Disclaimer from "components/Disclaimer"
 import Chat from "components/Chat"
 import Settings from "components/user/Settings"
-import ActionCable from "actioncable"
-
-cable = ActionCable.createConsumer("ws://localhost:3000/cable")
 
 export default (props) => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home setIsShowModal={props.setIsShowModal} />} />
+        <Route exact path="/" element={<Home setIsShowModal={props.setIsShowModal} />} />
         <Route path="/disclaimer" element={<Disclaimer />} />
         <Route path="/chat" element={<Chat />} />
         <Route path="/settings" element={<Settings />} />
