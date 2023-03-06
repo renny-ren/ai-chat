@@ -60,27 +60,14 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, isMobile = false }) => {
             <ul role="list" className="border-l border-transparent">
               <li
                 className={`relative ${
-                  window.location.pathname === "/" ? "border-l border-emerald-400 bg-zinc-800/[.025]" : ""
-                }`}
-              >
-                <a
-                  aria-current="page"
-                  className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-900 dark:text-white"
-                  href="/"
-                >
-                  <span className="truncate">会话1</span>
-                </a>
-              </li>
-              <li
-                className={`relative ${
-                  window.location.pathname === "/" ? "border-l border-emerald-400 bg-zinc-800/[.025]" : ""
+                  window.location.pathname === "/chat" ? "border-l border-emerald-400 bg-zinc-800/[.025]" : ""
                 }`}
               >
                 <a
                   className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-                  href="/"
+                  href="/chat"
                 >
-                  <span className="truncate">会话2</span>
+                  <span className="truncate">新的会话</span>
                 </a>
               </li>
             </ul>
@@ -91,26 +78,18 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, isMobile = false }) => {
           <div className="relative mt-3 pl-2">
             <div className="absolute inset-y-0 left-2 w-px bg-zinc-900/10 dark:bg-white/5"></div>
             <ul role="list" className="border-l border-transparent">
-              <li className="relative">
+              {/*<li className="relative">
                 <a
                   className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-                  href="/contacts"
-                >
-                  <span className="truncate">清空会话</span>
-                </a>
-              </li>
-              <li className="relative">
-                <a
-                  className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-                  href="/conversations"
+                  href="#"
                 >
                   <span className="truncate">夜间模式</span>
                 </a>
-              </li>
+              </li>*/}
               <li className="relative">
                 <a
                   className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-                  href="/messages"
+                  href="/qa"
                 >
                   <span className="truncate">常见问题</span>
                 </a>

@@ -114,7 +114,7 @@ const ChatModule = () => {
       //   })
       // }
 
-      updateResponse(uniqueId, { response: "\n\nMy name is Jessie and I am an artificial intelligence." })
+      updateResponse(uniqueId, { response: "\n\n我正在升级中，暂不支持个人会话，请进入聊天室与我交流。" })
 
       setPromptToRetry(null)
       setUniqueIdToRetry(null)

@@ -1,22 +1,9 @@
 import React, { Fragment, useState, useEffect } from "react"
-import { Link } from "react-router-dom"
-import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import ChatModule from "./ChatModule"
-import ChatRoom from "./ChatRoom"
-import ActionCable from "actioncable"
 
-cable = ActionCable.createConsumer("ws://localhost:3000/cable")
-
-const Home = ({ setIsShowModal }) => {
+const Chat = ({ setIsShowModal }) => {
   return (
     <>
-      {/*  <div style={{ height: "100%" }}>
-        <div className="overflow-hidden w-full h-full relative">
-          <div className="flex h-full flex-1 flex-col md:pl-[260px]">
-            <ChatModule />
-          </div>
-        </div>
-      </div>*/}
       <div className="h-full relative pt-14">
         <main className="h-full pt-4">
           <div className="absolute inset-0 -z-10 mx-0 max-w-none overflow-hidden">
@@ -42,12 +29,11 @@ const Home = ({ setIsShowModal }) => {
               </div>
             </div>
           </div>
-          <ChatRoom cable={cable} showSignInModal={() => setIsShowModal(true)} />
-          {/*<ChatModule />*/}
+          <ChatModule />
         </main>
       </div>
     </>
   )
 }
 
-export default Home
+export default Chat
