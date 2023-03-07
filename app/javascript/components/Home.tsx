@@ -4,7 +4,7 @@ import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from "@her
 import ChatModule from "./ChatModule"
 import ChatRoom from "./ChatRoom"
 
-const Home = ({ setIsShowModal }) => {
+const Home = ({ setIsShowModal, setCustomContent }) => {
   return (
     <>
       {/*  <div style={{ height: "100%" }}>
@@ -39,7 +39,7 @@ const Home = ({ setIsShowModal }) => {
               </div>
             </div>
           </div>
-          <ChatRoom showSignInModal={() => setIsShowModal(true)} />
+          <ChatRoom showSignInModal={() => setIsShowModal(true)} setCustomContent={setCustomContent} />
           {/*<ChatModule />*/}
         </main>
       </div>

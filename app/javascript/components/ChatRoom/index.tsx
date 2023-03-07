@@ -5,12 +5,14 @@ import currentUser from "stores/current_user_store"
 import axios from "axios"
 import consumer from "channels/consumer"
 import { Helmet } from "react-helmet"
+import Announcement from "./Announcement"
 
 interface ChatRoomProps {
   showSignInModal: () => void
+  setCustomContent: any
 }
 
-const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal }) => {
+const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal, setCustomContent }) => {
   const messagesEndRef = useRef(null)
   const messagesRef = useRef()
   const [messages, setMessages] = useState([])
@@ -21,6 +23,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal }) => {
 
   useEffect(() => {
     fetchMessages()
+    setCustomContent(customHeader)
     return () => {
       consumer.disconnect()
     }
@@ -33,6 +36,8 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal }) => {
   useEffect(() => {
     scrollToBottom()
   }, [messages])
+
+  const customHeader = <Announcement />
 
   const resubscribeChannel = () => {
     if (channel) {
