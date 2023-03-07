@@ -8,7 +8,7 @@ import SyntaxHighlighter from "react-syntax-highlighter"
 import { github, arduinoLight, atelierSeasideLight } from "react-syntax-highlighter/dist/esm/styles/hljs"
 import Avatar from "./Avatar"
 
-const MessageList = ({ messages }) => {
+const MessageList = ({ messages, openModal }) => {
   const includeCode = (text: string | null | undefined) => {
     const regexp = /^(?:\s{4}|\t).+/gm
     return !!(text?.includes(" = ") || text?.match(regexp))
@@ -69,8 +69,8 @@ const MessageList = ({ messages }) => {
           </div>
         ) : (
           <div key={i} className="col-start-1 col-end-11 md:col-end-8 p-3 rounded-lg">
-            <div className="flex flex-row">
-              <Avatar src={message.user_avatar_url} isRobot={isRobot(message)} />
+            <div className="flex flex-row items-start">
+              <Avatar src={message.user_avatar_url} isRobot={isRobot(message)} openModal={openModal} />
               <div
                 className={`relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl break-words whitespace-pre-line overflow-x-scroll ${
                   message.loading ? "ai-response-loading" : ""

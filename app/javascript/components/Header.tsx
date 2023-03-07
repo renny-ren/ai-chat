@@ -3,7 +3,7 @@ import currentUser from "stores/current_user_store"
 import Sidebar from "./Sidebar"
 import MobileMenu from "./MobileMenu"
 import UserBar from "./user/UserBar"
-import { Dialog, Popover, Tab, Transition } from "@headlessui/react"
+import { Transition } from "@headlessui/react"
 
 interface HeaderProps {
   setIsShowModal: () => void
