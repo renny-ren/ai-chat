@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useRef } from "react"
-import Sidebar from "./Sidebar"
 import MessageList from "./MessageList"
 import Footer from "./Footer"
 import currentUser from "stores/current_user_store"
 import axios from "axios"
-import ActionCable from "actioncable"
 import consumer from "channels/consumer"
 import { Helmet } from "react-helmet"
 
@@ -23,15 +21,18 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal }) => {
 
   useEffect(() => {
     fetchMessages()
+    return () => {
+      consumer.disconnect()
+    }
   }, [])
-
-  useEffect(() => {
-    scrollToBottom()
-  }, [messages])
 
   useEffect(() => {
     resubscribeChannel()
   }, [gon.user_meta])
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages])
 
   const resubscribeChannel = () => {
     if (channel) {
@@ -43,6 +44,10 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal }) => {
   }
 
   const subscribeChannel = (consumer) => {
+    // HACK: prevent creating multiple subscriptions for a consumer.
+    if (consumer.subscriptions.subscriptions.length != 0) {
+      consumer.subscriptions.subscriptions[0].unsubscribe()
+    }
     const channel = consumer.subscriptions.create("MessagesChannel", {
       received: (data) => {
         // console.log("==received==", data)
