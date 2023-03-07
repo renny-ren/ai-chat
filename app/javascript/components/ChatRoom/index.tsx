@@ -6,6 +6,7 @@ import axios from "axios"
 import consumer from "channels/consumer"
 import { Helmet } from "react-helmet"
 import Announcement from "./Announcement"
+import Sponsorship from "./Sponsorship"
 import ClearConversationModal from "./ClearConversationModal"
 
 interface ChatRoomProps {
@@ -25,7 +26,12 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal, setCustomContent }
 
   useEffect(() => {
     fetchMessages()
-    setCustomContent(<Announcement />)
+    setCustomContent(
+      <>
+        <Sponsorship />
+        <Announcement />
+      </>
+    )
     return () => {
       consumer.disconnect()
     }
