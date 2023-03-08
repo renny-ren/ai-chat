@@ -19,6 +19,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal, setCustomContent }
   const messagesRef = useRef()
   const [messages, setMessages] = useState([])
   const [isGenerating, setIsGenerating] = useState(false)
+  const [isFetching, setIsFetching] = useState(false)
   const [channel, setChannel] = useState()
   const [isOpenClearModal, setIsOpenClearModal] = useState(false)
 
@@ -103,6 +104,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal, setCustomContent }
   }
 
   const fetchMessages = async (page = 1) => {
+    setIsFetching(true)
     const csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content")
     const response = await axios.get(`/v1/messages?page=${page}`, {
       headers: {
@@ -110,6 +112,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal, setCustomContent }
       },
     })
     setMessages([...response.data.messages.reverse(), ...messagesRef.current])
+    setIsFetching(false)
   }
 
   return (
@@ -126,7 +129,12 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal, setCustomContent }
                   <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl h-full w-full md:max-w-3xl lg:max-w-4xl">
                     <div className="flex flex-col h-full md:pb-4">
                       <div className="flex flex-col h-full overflow-x-auto">
-                        <MessageList messages={messages} fetchMessages={fetchMessages} openModal={openModal} />
+                        <MessageList
+                          messages={messages}
+                          fetchMessages={fetchMessages}
+                          isFetching={isFetching}
+                          openModal={openModal}
+                        />
                         <div className="w-full h-2 sm:h-6 flex-shrink-0"></div>
                       </div>
                     </div>
