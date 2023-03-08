@@ -21,7 +21,7 @@ const Sponsorship: React.FC<SponsorshipProps> = ({ src, isRobot }) => {
         "X-CSRF-Token": csrf,
       },
     })
-    setSponsorships(response.data.sponsorships)
+    setSponsorships(response.data)
   }
 
   function closeModal() {
@@ -47,7 +47,7 @@ const Sponsorship: React.FC<SponsorshipProps> = ({ src, isRobot }) => {
                       </span>*/}
               <p>细波微漾，秋水澄清，吾辈匠心，献礼于君。</p>
 
-              <p>本站素来免费，但有开发维护之成本，</p>
+              <p>本站素来免费，但有开发维护之成本。</p>
               <p>运营不易，费用不少。</p>
               <p>祈愿君子留步，手持赏赐。</p>
               <p>且看二维码，玉手轻扫， 投资前程，点燃梦火。 </p>
@@ -57,13 +57,20 @@ const Sponsorship: React.FC<SponsorshipProps> = ({ src, isRobot }) => {
             </div>
           </div>
 
-          <div className="mt-4">
+          <div className="flex gap-4 justify-center mt-4">
             <button
               type="button"
               className="inline-flex justify-center rounded-md border border-transparent bg-indigo-100 px-4 py-2 text-sm font-medium text-indigo-900 hover:bg-indigo-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
               onClick={() => setStep("list")}
             >
               查看赞助者名单
+            </button>
+            <button
+              type="button"
+              className="inline-flex justify-center rounded-md border border-transparent bg-gray-100 px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-offset-2"
+              onClick={closeModal}
+            >
+              继续白嫖薅羊毛
             </button>
           </div>
         </Dialog.Panel>
@@ -78,19 +85,22 @@ const Sponsorship: React.FC<SponsorshipProps> = ({ src, isRobot }) => {
             <div className="leading-8 text-sm text-gray-500">
               <p>众慷慨之士，莅临赏赐</p>
               <p>殷殷感激，谢恩不尽， 愿君归来，再相逢。</p>
+              <p>（此名单每日更新）</p>
             </div>
-            <div className="flow-root">
+            <div className="flow-root max-h-60 overflow-y-scroll">
               <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
                 {sponsorships.map((s, i) => {
                   return (
                     <li className={`${i + 1 === sponsorships.length ? "pt-3 pb-0 sm:pt-4" : "py-3 sm:py-4"}`}>
                       <div className="flex items-center space-x-4">
                         <div className="flex-shrink-0">
-                          <img className="w-8 h-8 rounded-full" src={s.user_avatar_url} />
+                          <img className="w-8 h-8 rounded-full" src={s.user?.avatar_url || "/assets/person.png"} />
                         </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-gray-900 truncate dark:text-white">{user_nickname}</p>
-                          <p className="text-sm text-gray-500 truncate dark:text-gray-400">{s.created_at}</p>
+                        <div className="flex-1 min-w-0 text-left">
+                          <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
+                            {s.user?.nickname || "匿名"}
+                          </p>
+                          <p className="text-sm text-gray-500 truncate dark:text-gray-400">{s.sponsor_at}</p>
                         </div>
                         <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
                           ¥{s.amount}
@@ -99,60 +109,6 @@ const Sponsorship: React.FC<SponsorshipProps> = ({ src, isRobot }) => {
                     </li>
                   )
                 })}
-                <li className="py-3 sm:py-4">
-                  <div className="flex items-center space-x-4">
-                    <div className="flex-shrink-0">
-                      <img
-                        className="w-8 h-8 rounded-full"
-                        src="https://flowbite.com/docs/images/people/profile-picture-1.jpg"
-                        alt="Neil image"
-                      />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900 truncate dark:text-white">Neil Sims</p>
-                      <p className="text-sm text-gray-500 truncate dark:text-gray-400">email@windster.com</p>
-                    </div>
-                    <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                      $320
-                    </div>
-                  </div>
-                </li>
-                <li className="py-3 sm:py-4">
-                  <div className="flex items-center space-x-4">
-                    <div className="flex-shrink-0">
-                      <img
-                        className="w-8 h-8 rounded-full"
-                        src="https://flowbite.com/docs/images/people/profile-picture-3.jpg"
-                        alt="Bonnie image"
-                      />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900 truncate dark:text-white">Bonnie Green</p>
-                      <p className="text-sm text-gray-500 truncate dark:text-gray-400">email@windster.com</p>
-                    </div>
-                    <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                      $3467
-                    </div>
-                  </div>
-                </li>
-                <li className="pt-3 pb-0 sm:pt-4">
-                  <div className="flex items-center space-x-4">
-                    <div className="flex-shrink-0">
-                      <img
-                        className="w-8 h-8 rounded-full"
-                        src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-                        alt="Thomas image"
-                      />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900 truncate dark:text-white">Thomes Lean</p>
-                      <p className="text-sm text-gray-500 truncate dark:text-gray-400">email@windster.com</p>
-                    </div>
-                    <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                      $2367
-                    </div>
-                  </div>
-                </li>
               </ul>
             </div>
           </div>

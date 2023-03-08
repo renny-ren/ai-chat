@@ -5,6 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_many :messages
+  has_many :sponsorships
 
   has_one_attached :avatar, dependent: :purge
 

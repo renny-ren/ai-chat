@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     resources :users, only: [:update] do
       post :clear_conversations, on: :collection
     end
+    resources :sponsorships, only: :index
   end
   get "/*path" => "homepage#index", format: false, constraints: ->(req) { !req.xhr? && req.format.html? }
   # get "/settings" => "homepage#index"
