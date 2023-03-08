@@ -3,7 +3,6 @@ class SponsorshipsController < ApplicationController
   before_action :set_resources, only: :index
 
   def index
-    # render status: :ok, json: { messages: @sponsorships.map(&:as_item_json) }
   end
 
   private

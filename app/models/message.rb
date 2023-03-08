@@ -125,6 +125,8 @@ class Message < ApplicationRecord
   # end
 
   def mentioned_users_nickname
+    return [] if mentioned_user_ids.nil?
+
     id_nickname_array = Rails.cache.fetch("id_nickname_array", expires_in: 30.seconds) do
       User.all.pluck(:id, :nickname)
     end

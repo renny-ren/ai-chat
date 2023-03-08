@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState, useRef, useCallback, useMemo } from "react"
 import currentUser from "stores/current_user_store"
 import hljs from "highlight.js"
 // import ReactMarkdown from "react-markdown"
@@ -7,8 +7,15 @@ import Markdown from "marked-react"
 import SyntaxHighlighter from "react-syntax-highlighter"
 import { github, arduinoLight, atelierSeasideLight } from "react-syntax-highlighter/dist/esm/styles/hljs"
 import Avatar from "./Avatar"
+import useInfiniteScroll from "react-infinite-scroll-hook"
+import { Spin } from "antd"
 
-const MessageList = ({ messages, openModal }) => {
+const MessageList = ({ messages, fetchMessages, openModal }) => {
+  const [currentPage, setCurrentPage] = useState(1)
+  const scrollableRootRef = useRef<HTMLDivElement | null>(null)
+  const lastScrollDistanceToBottomRef = useRef<number>()
+  const messagesEndRef = useRef(null)
+
   const includeCode = (text: string | null | undefined) => {
     const regexp = /^(?:\s{4}|\t).+/gm
     return !!(text?.includes(" = ") || text?.match(regexp))
@@ -57,31 +64,87 @@ const MessageList = ({ messages, openModal }) => {
     return message.role === "assistant"
   }
 
+  const fetchMoreData = () => {
+    nextPage = currentPage + 1
+    fetchMessages(nextPage)
+    setCurrentPage(nextPage)
+  }
+
+  const [infiniteRef, { rootRef }] = useInfiniteScroll({
+    loading: false,
+    hasNextPage: currentPage <= 20,
+    onLoadMore: fetchMoreData,
+    rootMargin: "400px 0px 0px 0px",
+  })
+
+  // Keep the scroll position when new items are added.
+  useEffect(() => {
+    const scrollableRoot = scrollableRootRef.current
+    const lastScrollDistanceToBottom = lastScrollDistanceToBottomRef.current ?? 0
+    if (scrollableRoot) {
+      scrollableRoot.scrollTop = scrollableRoot.scrollHeight - lastScrollDistanceToBottom
+    }
+  }, [messages, rootRef])
+
+  useEffect(() => {
+    // scrollToBottom()
+  }, [messages])
+
+  const rootRefSetter = useCallback(
+    (node: HTMLDivElement) => {
+      rootRef(node)
+      scrollableRootRef.current = node
+    },
+    [rootRef]
+  )
+
+  const handleRootScroll = useCallback(() => {
+    const rootNode = scrollableRootRef.current
+    if (rootNode) {
+      const scrollDistanceToBottom = rootNode.scrollHeight - rootNode.scrollTop
+      lastScrollDistanceToBottomRef.current = scrollDistanceToBottom
+    }
+  }, [])
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  }
+
   return (
     <>
-      {messages.map((message, i) => {
-        return isSelf(message) ? (
-          <div key={i} className="col-start-3 col-end-13 p-3 rounded-lg">
-            <div className="flex items-center justify-start flex-row-reverse">
-              <Avatar src={currentUser.avatarUrl()} />
-              <div className="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl">{renderContent(message)}</div>
-            </div>
-          </div>
-        ) : (
-          <div key={i} className="col-start-1 col-end-11 md:col-end-8 p-3 rounded-lg">
-            <div className="flex flex-row items-start">
-              <Avatar src={message.user_avatar_url} isRobot={isRobot(message)} openModal={openModal} />
-              <div
-                className={`relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl break-words whitespace-pre-line overflow-x-scroll ${
-                  message.loading ? "ai-response-loading" : ""
-                }`}
-              >
-                {renderContent(message)}
+      <div className="container" style={{ overflow: "auto" }} ref={rootRefSetter} onScroll={handleRootScroll}>
+        <div className="sentry text-center" ref={infiniteRef}>
+          <Spin />
+        </div>
+        <div className="grid grid-cols-12 gap-y-2">
+          {messages.map((message, i) => {
+            return isSelf(message) ? (
+              <div key={i} className="col-start-3 col-end-13 p-3 rounded-lg">
+                <div className="flex items-center justify-start flex-row-reverse">
+                  <Avatar src={currentUser.avatarUrl()} />
+                  <div className="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl">
+                    {renderContent(message)}
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        )
-      })}
+            ) : (
+              <div key={i} className="col-start-1 col-end-11 md:col-end-8 p-3 rounded-lg">
+                <div className="flex flex-row items-start">
+                  <Avatar src={message.user_avatar_url} isRobot={isRobot(message)} openModal={openModal} />
+                  <div
+                    className={`relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl break-words whitespace-pre-line overflow-x-scroll ${
+                      message.loading ? "ai-response-loading" : ""
+                    }`}
+                  >
+                    {renderContent(message)}
+                  </div>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+        <div ref={messagesEndRef}></div>
+      </div>
     </>
   )
 }

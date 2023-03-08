@@ -8,6 +8,7 @@ import { Helmet } from "react-helmet"
 import Announcement from "./Announcement"
 import Sponsorship from "./Sponsorship"
 import ClearConversationModal from "./ClearConversationModal"
+import type { ChatMessage } from "./types"
 
 interface ChatRoomProps {
   showSignInModal: () => void
@@ -15,7 +16,6 @@ interface ChatRoomProps {
 }
 
 const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal, setCustomContent }) => {
-  const messagesEndRef = useRef(null)
   const messagesRef = useRef()
   const [messages, setMessages] = useState([])
   const [isGenerating, setIsGenerating] = useState(false)
@@ -40,10 +40,6 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal, setCustomContent }
   useEffect(() => {
     resubscribeChannel()
   }, [gon.user_meta])
-
-  useEffect(() => {
-    scrollToBottom()
-  }, [messages])
 
   const closeModal = () => {
     setIsOpenClearModal(false)
@@ -106,18 +102,14 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal, setCustomContent }
     setMessages([...messagesRef.current])
   }
 
-  const fetchMessages = async () => {
+  const fetchMessages = async (page = 1) => {
     const csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content")
-    const response = await axios.get("/v1/messages", {
+    const response = await axios.get(`/v1/messages?page=${page}`, {
       headers: {
         "X-CSRF-Token": csrf,
       },
     })
-    setMessages(response.data.messages)
-  }
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+    setMessages([...response.data.messages.reverse(), ...messagesRef.current])
   }
 
   return (
@@ -134,10 +126,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal, setCustomContent }
                   <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl h-full w-full md:max-w-3xl lg:max-w-4xl">
                     <div className="flex flex-col h-full md:pb-4">
                       <div className="flex flex-col h-full overflow-x-auto">
-                        <div className="grid grid-cols-12 gap-y-2">
-                          <MessageList messages={messages} openModal={openModal} />
-                        </div>
-                        <div ref={messagesEndRef}></div>
+                        <MessageList messages={messages} fetchMessages={fetchMessages} openModal={openModal} />
                         <div className="w-full h-2 sm:h-6 flex-shrink-0"></div>
                       </div>
                     </div>

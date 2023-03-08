@@ -1,9 +1,9 @@
 class MessagesController < ApplicationController
+  include PaginationParams
   # before_action :authenticate_user!
   before_action :set_messages, only: :index
 
   def index
-    render status: :ok, json: { messages: @messages.map(&:as_item_json) }
   end
 
   private
@@ -13,6 +13,6 @@ class MessagesController < ApplicationController
   end
 
   def set_messages
-    @messages = Message.includes(:user).last(20)
+    @messages = Message.includes(:user).order(created_at: :desc).page(page).per(per)
   end
 end
