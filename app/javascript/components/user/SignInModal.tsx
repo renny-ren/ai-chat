@@ -22,6 +22,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
   const nameRef = useRef(null)
   const [mode, setMode] = useState("sign_in")
   const [formErrors, setFormErrors] = useState([])
+  const [rememberMe, setRememberMe] = useState(true)
 
   const onSignIn = async (e) => {
     e.preventDefault()
@@ -33,6 +34,11 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
       message.success("登录成功！")
       setOpen(false)
       gon.user_meta = response.data.user_meta
+      if (rememberMe) {
+        localStorage.setItem("username", e.target.elements.username.value)
+      } else {
+        localStorage.removeItem("username")
+      }
     } catch (error) {
       setFormErrors([error.response.data.message])
     }
@@ -50,6 +56,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
       message.success("注册成功！")
       setOpen(false)
       gon.user_meta = response.data.user_meta
+      localStorage.setItem("username", e.target.elements.username.value)
     } catch (error) {
       if (error.response.status === 400) {
         setFormErrors(error.response.data.message)
@@ -117,6 +124,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
                               name="username"
                               type="username"
                               autoComplete="username"
+                              defaultValue={localStorage.getItem("username")}
                               ref={nameRef}
                               required
                               onInvalid={(e) => e.target.setCustomValidity("请输入用户名")}
@@ -146,12 +154,14 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
                         <div className="flex items-center justify-between">
                           <div className="flex items-center">
                             <input
-                              id="remember-me"
-                              name="remember-me"
+                              id="rememberMe"
+                              name="rememberMe"
                               type="checkbox"
+                              checked={rememberMe}
+                              onChange={(e) => setRememberMe(e.target.checked)}
                               className="h-4 w-4 rounded border-gray-300 text-emerald-500 focus:ring-emerald-500"
                             />
-                            <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
+                            <label htmlFor="rememberMe" className="ml-2 block text-sm text-gray-900">
                               记住我
                             </label>
                           </div>

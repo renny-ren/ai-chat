@@ -15,8 +15,7 @@ const handleLogOut = async (e) => {
   e.preventDefault()
   try {
     await axios.delete("/users/sign_out")
-    // gon.user_meta = undefined
-    window.location.reload()
+    window.location.href = "/"
     message.success("登出成功")
   } catch (error) {
     message.error(error.response.data.message)
