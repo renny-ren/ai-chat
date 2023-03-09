@@ -1,7 +1,6 @@
 import React, { Fragment, useState, useEffect, useRef } from "react"
 import MessageList from "./MessageList"
 import Footer from "./Footer"
-import currentUser from "stores/current_user_store"
 import axios from "axios"
 import consumer from "channels/consumer"
 import { Helmet } from "react-helmet"

@@ -1,19 +1,27 @@
-import React, { Fragment, useState } from "react"
+import React, { Fragment, useState, useEffect } from "react"
 import currentUser from "stores/current_user_store"
 import { Dialog, Transition } from "@headlessui/react"
+import axios from "axios"
+import { CDN_HOST } from "shared/constants"
 
 interface AnnouncementProps {}
 
-const Announcement: React.FC<AnnouncementProps> = ({ src, isRobot }) => {
-  let [isOpen, setIsOpen] = useState(false)
+const Announcement: React.FC<AnnouncementProps> = ({}) => {
+  let [isOpen, setIsOpen] = useState(currentUser.isSignedIn() && !currentUser.config().done_notice)
 
-  function closeModal() {
+  const closeModal = () => {
     setIsOpen(false)
+    updateUserConfig()
   }
 
   function openModal() {
     setIsOpen(true)
   }
+
+  const updateUserConfig = async () => {
+    await axios.put(`/v1/users/${currentUser.id()}`, { config: { done_notice: true } })
+  }
+
   return (
     <>
       <button
@@ -64,8 +72,8 @@ const Announcement: React.FC<AnnouncementProps> = ({ src, isRobot }) => {
                   <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
                     公告
                   </Dialog.Title>
-                  <div className="mt-2">
-                    <p className="text-sm text-gray-500">
+                  <ul className="mt-2 c-list">
+                    <li className="text-sm text-gray-500">
                       <span>
                         点击下方聊天框左边
                         <svg
@@ -81,15 +89,18 @@ const Announcement: React.FC<AnnouncementProps> = ({ src, isRobot }) => {
                             fill="#cdcdcd"
                           ></path>
                         </svg>
-                        机器人按钮即可与AI交流
+                        机器人按钮即可与 AI 交流
                       </span>
-                    </p>
-                  </div>
+                    </li>
+                    {/*<li className="text-sm text-gray-500">机器人目前可记忆你和他之间的最近 20 条对话</li>*/}
+                    <li className="text-sm text-gray-500">保存下方二维码可将本群分享给好友</li>
+                  </ul>
+                  <img className="w-40 m-auto" src={`${CDN_HOST}/assets/aii_chat_qrcode.png`} />
 
-                  <div className="mt-4">
+                  <div className="mt-4 flex justify-center">
                     <button
                       type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                       onClick={closeModal}
                     >
                       好的

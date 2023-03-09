@@ -31,7 +31,7 @@ class User < ApplicationRecord
   # end
 
   def frontend_attributes
-    { id: self.id, nickname: self.nickname, email: self.email, avatar_url: avatar_url }
+    { id: self.id, nickname: self.nickname, email: self.email, config: self.config, avatar_url: avatar_url }
   end
 
   def ai_conversations

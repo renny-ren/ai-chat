@@ -20,8 +20,9 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.permit(:nickname, :avatar).tap do |param|
+    params.permit(:nickname, :avatar, config: {}).tap do |param|
       param[:email] = params[:email] if params[:email].present?
+      param[:config] = current_user.config.merge(params[:config].permit!) if params[:config].present?
     end
   end
 end

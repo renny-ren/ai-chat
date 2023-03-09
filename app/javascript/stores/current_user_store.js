@@ -22,6 +22,10 @@ const currentUser = {
   avatarUrl() {
     return gon.user_meta.avatar_url
   },
+
+  config() {
+    return gon.user_meta?.config
+  },
 }
 
 export default currentUser
