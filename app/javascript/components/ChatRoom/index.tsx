@@ -22,6 +22,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal, setCustomContent }
   const [isFetching, setIsFetching] = useState(false)
   const [channel, setChannel] = useState()
   const [isOpenClearModal, setIsOpenClearModal] = useState(false)
+  const [pagination, setPagination] = useState({})
 
   messagesRef.current = messages
 
@@ -112,6 +113,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal, setCustomContent }
       },
     })
     setMessages([...response.data.messages.reverse(), ...messagesRef.current])
+    setPagination(response.data.pagination_meta)
     setIsFetching(false)
   }
 
@@ -134,6 +136,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal, setCustomContent }
                           fetchMessages={fetchMessages}
                           isFetching={isFetching}
                           openModal={openModal}
+                          pagination={pagination}
                         />
                         <div className="w-full h-2 sm:h-6 flex-shrink-0"></div>
                       </div>

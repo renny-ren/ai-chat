@@ -10,7 +10,7 @@ import Avatar from "./Avatar"
 import useInfiniteScroll from "react-infinite-scroll-hook"
 import { Spin } from "antd"
 
-const MessageList = ({ messages, fetchMessages, isFetching, openModal }) => {
+const MessageList = ({ messages, fetchMessages, isFetching, openModal, pagination }) => {
   const [currentPage, setCurrentPage] = useState(1)
   const scrollableRootRef = useRef<HTMLDivElement | null>(null)
   const lastScrollDistanceToBottomRef = useRef<number>()
@@ -72,7 +72,7 @@ const MessageList = ({ messages, fetchMessages, isFetching, openModal }) => {
 
   const [infiniteRef, { rootRef }] = useInfiniteScroll({
     loading: isFetching,
-    hasNextPage: currentPage <= 20,
+    hasNextPage: pagination.current < pagination.total && currentPage <= 20,
     onLoadMore: fetchMoreData,
     rootMargin: "400px 0px 0px 0px",
   })
