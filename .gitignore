@@ -40,3 +40,5 @@
 
 .env
 .rufo
+
+/config/credentials/production.key
