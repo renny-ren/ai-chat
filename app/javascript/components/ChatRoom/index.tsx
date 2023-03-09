@@ -1,6 +1,7 @@
 import React, { Fragment, useState, useEffect, useRef } from "react"
 import MessageList from "./MessageList"
 import Footer from "./Footer"
+import Notification from "./Notification"
 import axios from "axios"
 import consumer from "channels/consumer"
 import { Helmet } from "react-helmet"
@@ -22,6 +23,17 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal, setCustomContent }
   const [channel, setChannel] = useState()
   const [isOpenClearModal, setIsOpenClearModal] = useState(false)
   const [pagination, setPagination] = useState({})
+  const [isShowNotice, setIsShowNotice] = useState(false)
+  const [noticeContent, setNoticeContent] = useState("")
+
+  const showNotice = (content) => {
+    setNoticeContent(content)
+    setIsShowNotice(true)
+    setTimeout(() => {
+      setIsShowNotice(false)
+      setNoticeContent("")
+    }, 3000)
+  }
 
   messagesRef.current = messages
 
@@ -146,11 +158,13 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal, setCustomContent }
             </div>
           </div>
         </div>
+        <Notification noticeContent={noticeContent} isShowNotice={isShowNotice} setIsShowNotice={setIsShowNotice} />
         <Footer
           cable={consumer}
           showSignInModal={showSignInModal}
           isGenerating={isGenerating}
           setIsGenerating={setIsGenerating}
+          showNotice={showNotice}
         />
       </div>
       <ClearConversationModal isOpen={isOpenClearModal} closeModal={closeModal} />

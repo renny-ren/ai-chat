@@ -11,9 +11,10 @@ interface FooterProps {
   showSignInModal: () => void
   isGenerating: boolean
   setIsGenerating: () => void
+  showNotice: () => void
 }
 
-const Footer: React.FC<FooterProps> = ({ cable, showSignInModal, isGenerating, setIsGenerating }) => {
+const Footer: React.FC<FooterProps> = ({ cable, showSignInModal, isGenerating, setIsGenerating, showNotice }) => {
   const [content, setContent] = useState("")
   const [isToAI, setIsToAI] = useState(false)
 
@@ -26,7 +27,7 @@ const Footer: React.FC<FooterProps> = ({ cable, showSignInModal, isGenerating, s
     if (isToAI) {
       setIsGenerating(true)
       if (isGenerating) {
-        return message.info("机器人回答不过来了，请稍后再问")
+        return showNotice("机器人回答不过来了，请稍后再问")
       }
     }
 
@@ -42,8 +43,7 @@ const Footer: React.FC<FooterProps> = ({ cable, showSignInModal, isGenerating, s
   const handleContentChange = (event) => {
     value = event.target.value
     if (value.length > 300) {
-      message.error("消息已达最大长度限制")
-      return
+      return showNotice("消息已达最大长度限制")
     }
     setContent(value)
   }

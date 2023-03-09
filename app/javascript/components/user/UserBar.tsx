@@ -26,7 +26,7 @@ const UserBar: React.FC<UserBarProps> = ({}) => {
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
-        <Menu.Button>
+        <Menu.Button className="outline-none">
           <img className="inline-block h-8 w-8 rounded-full ring-2 ring-white" src={currentUser.avatarUrl()} />
         </Menu.Button>
       </div>
