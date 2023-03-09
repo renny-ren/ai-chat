@@ -1,8 +1,6 @@
 class Message < ApplicationRecord
   # include ActionController::Live
 
-  GPT_USER_ID = Rails.application.credentials.gpt_user_id
-
   belongs_to :user
   has_many :replies, class_name: "::Message", foreign_key: :parent_id, dependent: :destroy
   belongs_to :parent, class_name: "::Message", foreign_key: :parent_id, optional: true

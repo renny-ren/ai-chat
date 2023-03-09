@@ -21,7 +21,7 @@ module Gonable
   def set_golbal_config
     gon.global_config = {
       env: Rails.env,
-      robot_name: "GPT机器人"
+      robot_name: User.find(GPT_USER_ID)&.nickname,
     }
   end
 end
