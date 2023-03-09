@@ -2,6 +2,7 @@ import React, { Fragment, useState, useEffect } from "react"
 import currentUser from "stores/current_user_store"
 import { Dialog, Transition } from "@headlessui/react"
 import axios from "axios"
+import { CDN_HOST } from "shared/constants"
 
 interface SponsorshipProps {}
 
@@ -53,7 +54,7 @@ const Sponsorship: React.FC<SponsorshipProps> = ({ src, isRobot }) => {
               <p>且看二维码，玉手轻扫， 投资前程，点燃梦火。 </p>
             </div>
             <div className="text-center">
-              <img className="inline-block h-60 w-60" src="/assets/reward_qrcode.png" />
+              <img className="inline-block h-60 w-60" src={`${CDN_HOST}/assets/reward_qrcode.png`} />
             </div>
           </div>
 
@@ -94,7 +95,10 @@ const Sponsorship: React.FC<SponsorshipProps> = ({ src, isRobot }) => {
                     <li className={`${i + 1 === sponsorships.length ? "pt-3 pb-0 sm:pt-4" : "py-3 sm:py-4"}`}>
                       <div className="flex items-center space-x-4">
                         <div className="flex-shrink-0">
-                          <img className="w-8 h-8 rounded-full" src={s.user?.avatar_url || "/assets/person.png"} />
+                          <img
+                            className="w-8 h-8 rounded-full"
+                            src={s.user?.avatar_url || `${CDN_HOST}/assets/person.png`}
+                          />
                         </div>
                         <div className="flex-1 min-w-0 text-left">
                           <p className="text-sm font-medium text-gray-900 truncate dark:text-white">

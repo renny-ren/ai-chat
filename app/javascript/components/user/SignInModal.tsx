@@ -4,6 +4,7 @@ import { ExclamationTriangleIcon } from "@heroicons/react/24/outline"
 import { LockClosedIcon } from "@heroicons/react/20/solid"
 import { message } from "antd"
 import axios from "axios"
+import { CDN_HOST } from "shared/constants"
 
 axios.interceptors.request.use((config) => {
   config.headers["Content-Type"] = "application/json"
@@ -92,7 +93,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
                   <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
                     <div className="w-full max-w-md space-y-8">
                       <div>
-                        <img className="mx-auto h-16 w-auto" src="/assets/logo2.png" alt="aii.chat" />
+                        <img className="mx-auto h-16 w-auto" src={`${CDN_HOST}/assets/logo2.png`} alt="aii.chat" />
                         <h2 className="mt-2 text-center text-3xl font-bold tracking-tight text-gray-900">登录账号</h2>
                         <p className="mt-2 text-center text-sm text-gray-600">
                           或{" "}
@@ -207,7 +208,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
                   <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
                     <div className="w-full max-w-md space-y-8">
                       <div>
-                        <img className="mx-auto h-16 w-auto" src="/assets/logo2.png" alt="aii.chat" />
+                        <img className="mx-auto h-16 w-auto" src={`${CDN_HOST}/assets/logo2.png`} alt="aii.chat" />
                         <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">注册账号</h2>
                         <p className="mt-2 text-center text-sm text-gray-600">
                           或{" "}

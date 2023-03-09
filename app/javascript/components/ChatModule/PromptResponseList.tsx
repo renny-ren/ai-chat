@@ -2,6 +2,7 @@ import React, { FC, useEffect, useRef } from "react"
 import ReactMarkdown from "react-markdown"
 import { ResponseInterface } from "./response-interface"
 import hljs from "highlight.js"
+import { CDN_HOST } from "shared/constants"
 
 interface PromptResponseListProps {
   responseList: ResponseInterface[]
@@ -36,7 +37,7 @@ const PromptResponseList: FC<PromptResponseListProps> = ({ responseList, message
             <div className="w-[30px] h-[30px] flex flex-col relative items-end">
               <img
                 className="avatar-image rounded-sm"
-                src={responseData.selfFlag ? "/assets/person.png" : "/assets/chatgpt_logo.png"}
+                src={responseData.selfFlag ? `${CDN_HOST}/assets/person.png` : `${CDN_HOST}/assets/chatgpt_logo.png`}
               />
             </div>
             <div className="relative flex w-[calc(100%-50px)] flex-col gap-1 md:gap-3 lg:w-[calc(100%-115px)]">

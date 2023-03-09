@@ -4,6 +4,7 @@ import Sidebar from "./Sidebar"
 import MobileMenu from "./MobileMenu"
 import UserBar from "./user/UserBar"
 import { Transition } from "@headlessui/react"
+import { CDN_HOST } from "shared/constants"
 
 interface HeaderProps {
   setIsShowModal: () => void
@@ -32,7 +33,7 @@ const Header: React.FC<HeaderProps> = ({ setIsShowModal, customContent }) => {
             <div className="absolute inset-x-0 top-full h-px transition bg-zinc-900/[.075] dark:bg-white/[.075]"></div>
             <div className="hidden lg:block lg:max-w-md lg:flex-auto">
               <a aria-label="Home" href="/">
-                <img src="/assets/logo.png" width="60px" />
+                <img src={`${CDN_HOST}/assets/logo.png`} width="60px" />
               </a>
             </div>
             <div className="flex items-center gap-5 lg:hidden">
@@ -53,12 +54,12 @@ const Header: React.FC<HeaderProps> = ({ setIsShowModal, customContent }) => {
                 </svg>
               </button>
               <a aria-label="Home" href="/">
-                <img src="/assets/logo.png" width="60px" />
+                <img src={`${CDN_HOST}/assets/logo.png`} width="60px" />
               </a>
             </div>
             <div className="flex items-center gap-5">
               <nav className="hidden md:block">
-                <ul role="list" className="flex items-center gap-8">
+                {/*<ul role="list" className="flex items-center gap-8">
                   <li>
                     <a
                       className="text-sm leading-5 text-zinc-600 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
@@ -67,7 +68,7 @@ const Header: React.FC<HeaderProps> = ({ setIsShowModal, customContent }) => {
                       Support
                     </a>
                   </li>
-                </ul>
+                </ul>*/}
               </nav>
               <div className="hidden md:block md:h-5 md:w-px md:bg-zinc-900/10 md:dark:bg-white/15"></div>
               <div className="flex gap-4">

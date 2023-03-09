@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import Sidebar from "./Sidebar"
 import Menu from "./Menu"
+import { CDN_HOST } from "shared/constants"
 
 interface MobileMenuProps {
   setIsShow: boolean
@@ -63,7 +64,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ setIsShow, onShowSignInModal })
                     </svg>
                   </button>
                   <a aria-label="Home" href="/">
-                    <img src="/assets/logo.png" width="60px" />
+                    <img src={`${CDN_HOST}/assets/logo.png`} width="60px" />
                   </a>
                 </div>
               </div>

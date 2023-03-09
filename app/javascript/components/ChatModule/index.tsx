@@ -5,6 +5,7 @@ import PromptInput from "./PromptInput"
 import { ResponseInterface } from "./ResponseInterface"
 import PromptResponseList from "./PromptResponseList"
 import Typed from "typed.js"
+import { CDN_HOST } from "shared/constants"
 
 type ModelValueType = "gpt" | "codex" | "image"
 const ChatModule = () => {
@@ -133,7 +134,7 @@ const ChatModule = () => {
   const defaultPrompts = [
     {
       title: "AI 创作",
-      img_src: "/assets/e1.png",
+      img_src: `${CDN_HOST}/assets/e1.png`,
       prompts: [
         "写一首赞美祖国的诗",
         "给10岁的孩子过生日有什么创意吗",
@@ -143,12 +144,12 @@ const ChatModule = () => {
     },
     {
       title: "有趣的提问",
-      img_src: "/assets/e2.png",
+      img_src: `${CDN_HOST}/assets/e2.png`,
       prompts: ["有哪些有趣的科学实验", "AI 会替代人类工作吗", "如何问一个让 AI 也答不出的问题", "帮我制定一个减肥计划"],
     },
     {
       title: "AI 百科",
-      img_src: "/assets/e3.png",
+      img_src: `${CDN_HOST}/assets/e3.png`,
       prompts: [
         "用简单的术语来解释人工智能",
         "莲藕排骨汤的做法",
