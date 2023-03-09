@@ -16,7 +16,7 @@ class User < ApplicationRecord
 
   def avatar_url(size = 80)
     # ActiveStorage::Current.url_options = { host: "localhost", port: 3000 }
-    avatar.url || "https://ui-avatars.com/api/?name=#{username}&size=#{size}"
+    avatar.url || "https://ui-avatars.com/api/?name=#{nickname}&size=#{size}"
   end
 
   def avatar=(new_avatar)
