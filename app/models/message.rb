@@ -67,7 +67,7 @@ class Message < ApplicationRecord
             content: @result[:text],
             is_first_chunk: @result[:is_first_chunk],
             user_id: robot_user.id,
-            user_nickname: "GPT robot",
+            user_nickname: robot_user.nickname,
             user_avatar_url: robot_user.avatar_url,
             mentioned_users_nickname: mentioned_users.map(&:nickname),
           })

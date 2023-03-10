@@ -92,8 +92,8 @@ const Announcement: React.FC<AnnouncementProps> = ({}) => {
                         机器人按钮即可与 AI 交流
                       </span>
                     </li>
-                    {/*<li className="text-sm text-gray-500">机器人目前可记忆你和他之间的最近 20 条对话</li>*/}
                     <li className="text-sm text-gray-500">本站基于 OpenAI 官方最新 gpt-3.5-turbo API 搭建</li>
+                    <li className="text-sm text-gray-500">机器人可记忆你和他之间的最近20条对话，保存时间1天</li>
                     <li className="text-sm text-gray-500">
                       <p>我们一直在更新，欢迎进入微信群交流</p>
                       <p>保存下方右侧二维码可将本站分享给好友</p>
