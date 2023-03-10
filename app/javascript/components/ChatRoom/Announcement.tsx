@@ -93,10 +93,19 @@ const Announcement: React.FC<AnnouncementProps> = ({}) => {
                       </span>
                     </li>
                     {/*<li className="text-sm text-gray-500">机器人目前可记忆你和他之间的最近 20 条对话</li>*/}
-                    <li className="text-sm text-gray-500">保存下方二维码可将本群分享给好友</li>
+                    <li className="text-sm text-gray-500">本站基于 OpenAI 官方最新 gpt-3.5-turbo API 搭建</li>
+                    <li className="text-sm text-gray-500">
+                      <p>我们一直在更新，欢迎进入微信群交流</p>
+                      <p>保存下方右侧二维码可将本站分享给好友</p>
+                    </li>
                   </ul>
-                  <img className="w-40 m-auto" src={`${CDN_HOST}/assets/aii_chat_qrcode.png`} />
-
+                  <div className="flex gap-6 justify-center">
+                    <img
+                      className="w-40"
+                      src="https://aii-chat-assets.oss-cn-chengdu.aliyuncs.com/images/invite_qrcode.jpeg"
+                    />
+                    <img className="w-40" src={`${CDN_HOST}/assets/aii_chat_qrcode.png`} />
+                  </div>
                   <div className="mt-4 flex justify-center">
                     <button
                       type="button"
