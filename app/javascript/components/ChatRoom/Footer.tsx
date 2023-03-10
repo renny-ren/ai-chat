@@ -25,10 +25,10 @@ const Footer: React.FC<FooterProps> = ({ cable, showSignInModal, isGenerating, s
       return
     }
     if (isToAI) {
-      setIsGenerating(true)
       if (isGenerating) {
         return showNotice("机器人回答不过来了，请稍后再问")
       }
+      setIsGenerating(true)
     }
 
     cable.subscriptions.subscriptions[0].send({

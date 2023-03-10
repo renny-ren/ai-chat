@@ -119,24 +119,36 @@ const MessageList = ({ messages, fetchMessages, isFetching, openModal, paginatio
         <div className="grid grid-cols-12 gap-y-2">
           {messages.map((message, i) => {
             return isSelf(message) ? (
-              <div key={i} className="col-start-3 col-end-13 p-3 rounded-lg">
-                <div className="flex items-center justify-start flex-row-reverse">
+              <div key={i} className="col-start-2 col-end-13 p-3 rounded-lg">
+                <div className="flex items-start justify-start flex-row-reverse">
                   <Avatar src={currentUser.avatarUrl()} />
-                  <div className="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl">
-                    {renderContent(message)}
+                  <div className="flex flex-col gap-1 items-end">
+                    <div className="flex items-baseline mr-3">
+                      <div className="text-sm font-medium">{message.user_nickname}</div>
+                      <p className="text-xs text-gray-500 ml-2">{message.created_at}</p>
+                    </div>
+                    <div className="relative ml-4 mr-2 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl">
+                      {renderContent(message)}
+                    </div>
                   </div>
                 </div>
               </div>
             ) : (
-              <div key={i} className="col-start-1 col-end-11 md:col-end-8 p-3 rounded-lg">
+              <div key={i} className="col-start-1 col-end-12 md:col-end-8 p-3 rounded-lg">
                 <div className="flex flex-row items-start">
                   <Avatar src={message.user_avatar_url} isRobot={isRobot(message)} openModal={openModal} />
-                  <div
-                    className={`relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl break-words whitespace-pre-line overflow-x-scroll ${
-                      message.loading ? "ai-response-loading" : ""
-                    }`}
-                  >
-                    {renderContent(message)}
+                  <div className="flex flex-col gap-1 w-full">
+                    <div className="flex items-baseline">
+                      <div className="text-sm font-medium ml-3">{message.user_nickname}</div>
+                      <p className="text-xs text-gray-500 ml-2">{message.created_at}</p>
+                    </div>
+                    <div
+                      className={`relative ml-2 mr-4 text-sm bg-white py-2 px-4 shadow rounded-xl break-words whitespace-pre-line overflow-x-scroll ${
+                        message.loading ? "ai-response-loading" : ""
+                      }`}
+                    >
+                      {renderContent(message)}
+                    </div>
                   </div>
                 </div>
               </div>
