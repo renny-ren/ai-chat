@@ -54,7 +54,7 @@ const MessageList = ({ messages, fetchMessages, isFetching, openModal, paginatio
         renderer={renderer}
       />
     ) : (
-      <div className="flex items-center">
+      <div className="">
         {message.mentioned_users_nickname.map((name) => `@${name}`)} {message.content}
       </div>
     )
@@ -119,7 +119,7 @@ const MessageList = ({ messages, fetchMessages, isFetching, openModal, paginatio
         <div className="grid grid-cols-12 gap-y-2">
           {messages.map((message, i) => {
             return isSelf(message) ? (
-              <div key={i} className="col-start-2 col-end-13 p-3 rounded-lg">
+              <div key={i} className="col-start-2 md:col-start-4 col-end-13 p-3 rounded-lg">
                 <div className="flex items-start justify-start flex-row-reverse">
                   <Avatar src={currentUser.avatarUrl()} />
                   <div className="flex flex-col gap-1 items-end">
@@ -134,10 +134,10 @@ const MessageList = ({ messages, fetchMessages, isFetching, openModal, paginatio
                 </div>
               </div>
             ) : (
-              <div key={i} className="col-start-1 col-end-12 md:col-end-8 p-3 rounded-lg">
+              <div key={i} className="col-start-1 col-end-12 md:col-end-10 p-3 rounded-lg">
                 <div className="flex flex-row items-start">
                   <Avatar src={message.user_avatar_url} isRobot={isRobot(message)} openModal={openModal} />
-                  <div className="flex flex-col gap-1 w-full">
+                  <div className="flex flex-col gap-1 max-w-full">
                     <div className="flex items-baseline">
                       <div className="text-sm font-medium ml-3">{message.user_nickname}</div>
                       <p className="text-xs text-gray-500 ml-2">{message.created_at}</p>

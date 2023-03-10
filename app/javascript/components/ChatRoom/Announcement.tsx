@@ -104,7 +104,7 @@ const Announcement: React.FC<AnnouncementProps> = ({}) => {
                       className="w-36"
                       src="https://aii-chat-assets.oss-cn-chengdu.aliyuncs.com/images/invite_qrcode.jpeg"
                     />
-                    <img className="w-36" src={`${CDN_HOST}/assets/aii_chat_qrcode.png`} />
+                    <img className="w-32" src={`${CDN_HOST}/assets/aii_chat_qrcode.png`} />
                   </div>
                   <div className="mt-4 flex justify-center">
                     <button
