@@ -42,7 +42,7 @@ const Footer: React.FC<FooterProps> = ({ cable, showSignInModal, isGenerating, s
 
   const handleContentChange = (event) => {
     value = event.target.value
-    if (value.length > 300) {
+    if (value.length > 500) {
       return showNotice("消息已达最大长度限制")
     }
     setContent(value)
