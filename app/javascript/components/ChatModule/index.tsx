@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react"
 import { Button, Space, Card } from "antd"
 import axios from "axios"
 import PromptInput from "./PromptInput"
-import { ResponseInterface } from "./ResponseInterface"
+import type { ResponseInterface } from "./types"
 import PromptResponseList from "./PromptResponseList"
 import Typed from "typed.js"
 import { CDN_HOST } from "shared/constants"
@@ -88,47 +88,40 @@ const ChatModule = () => {
       await delay(50)
     }
 
-    try {
-      // const csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content")
-      // const response = await axios.post(
-      //   "/v1/completions",
-      //   {
-      //     prompt: _prompt,
-      //     model: modelValue,
-      //   },
-      //   {
-      //     headers: {
-      //       "X-CSRF-Token": csrf,
-      //     },
-      //   }
-      // )
-      // console.log(response)
-      // if (modelValue === "image") {
-      //   // Show image for `Create image` model
-      //   updateResponse(uniqueId, {
-      //     image: response.data,
-      //   })
-      // } else {
-      //   updateResponse(uniqueId, {
-      //     response: response.data.message.trim(),
-      //   })
-      // }
-
-      updateResponse(uniqueId, { response: "\n\n我正在升级中，暂不支持个人会话，请进入聊天室与我交流。" })
-
-      setPromptToRetry(null)
-      setUniqueIdToRetry(null)
-    } catch (err) {
-      setPromptToRetry(_prompt)
-      setUniqueIdToRetry(uniqueId)
-      updateResponse(uniqueId, {
-        // @ts-ignore
-        response: `Error: ${err.message}`,
-        error: true,
-      })
-    } finally {
-      setIsLoading(false)
+    const evtSource = new EventSource(`/v1/completions/live_stream?prompt=${_prompt}`)
+    evtSource.onmessage = (event) => {
+      if (!event) {
+        console.log("closed")
+        evtSource.close()
+      } else {
+        const parsedData = JSON.parse(event.data)
+        console.log(event)
+        console.log("=data", parsedData)
+        updateResponse(uniqueId, {
+          response: response.data.message.trim(),
+        })
+        setPromptToRetry(null)
+        setUniqueIdToRetry(null)
+      }
     }
+    evtSource.onerror = function () {
+      setIsLoading(false)
+      evtSource.close()
+    }
+
+    // try {
+    //   // updateResponse(uniqueId, { response: "\n\n我正在升级中，暂不支持个人会话，请进入聊天室与我交流。" })
+    // } catch (err) {
+    //   setPromptToRetry(_prompt)
+    //   setUniqueIdToRetry(uniqueId)
+    //   updateResponse(uniqueId, {
+    //     // @ts-ignore
+    //     response: `Error: ${err.message}`,
+    //     error: true,
+    //   })
+    // } finally {
+    //   setIsLoading(false)
+    // }
   }
 
   const defaultPrompts = [

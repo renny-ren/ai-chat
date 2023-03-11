@@ -12,7 +12,9 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
   scope "v1" do
-    resources :completions, only: :create
+    resources :completions, only: :create do
+      get "live_stream", on: :collection
+    end
     resources :messages, only: :index
     resources :users, only: [:update] do
       post :clear_conversations, on: :collection

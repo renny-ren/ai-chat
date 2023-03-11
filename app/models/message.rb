@@ -2,6 +2,7 @@ class Message < ApplicationRecord
   # include ActionController::Live
 
   belongs_to :user
+  belongs_to :conversation, optional: true
   has_many :replies, class_name: "::Message", foreign_key: :parent_id, dependent: :destroy
   belongs_to :parent, class_name: "::Message", foreign_key: :parent_id, optional: true
 
@@ -9,6 +10,8 @@ class Message < ApplicationRecord
   delegate :avatar_url, to: :user, prefix: true
 
   after_commit :generate_ai_response, on: :create, if: :mentioned_ai?
+
+  enum role: { user: 0, assistant: 1 }
 
   # scope :to_ai, -> { where("mentioned_user_ids @> ?", GPT_USER_ID) }
   scope :to_ai, -> { where("? = ANY(mentioned_user_ids)", GPT_USER_ID) }
