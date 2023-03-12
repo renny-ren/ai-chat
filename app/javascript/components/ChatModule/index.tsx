@@ -2,19 +2,21 @@ import React, { useState, useEffect, useRef } from "react"
 import { Button, Space, Card } from "antd"
 import axios from "axios"
 import PromptInput from "./PromptInput"
-import type { ResponseInterface } from "./types"
-import PromptResponseList from "./PromptResponseList"
+import type { MessageInterface } from "./types"
+import MessageList from "./MessageList"
 import Typed from "typed.js"
 import { CDN_HOST } from "shared/constants"
 
 type ModelValueType = "gpt" | "codex" | "image"
 const ChatModule = () => {
-  const [responseList, setResponseList] = useState<ResponseInterface[]>([])
+  // const [responseList, setResponseList] = useState<MessageInterface[]>([])
+  const [messages, setMessages] = useState<MessageInterface[]>([])
   const [prompt, setPrompt] = useState<string>("")
   const [promptToRetry, setPromptToRetry] = useState<string | null>(null)
   const [uniqueIdToRetry, setUniqueIdToRetry] = useState<string | null>(null)
   const [modelValue, setModelValue] = useState<ModelValueType>("gpt")
   const [isLoading, setIsLoading] = useState(false)
+  const [conversationId, setConversationId] = useState("")
 
   const generateUniqueId = () => {
     const timestamp = Date.now()
@@ -66,6 +68,84 @@ const ChatModule = () => {
     await getGPTResult(promptToRetry, uniqueIdToRetry)
   }
 
+  useEffect(() => {
+    if (isLoading) {
+      fetchResponse()
+      setPrompt("")
+    }
+  }, [isLoading])
+
+  const fetchResponse = () => {
+    const evtSource = new EventSource(`/v1/completions/live_stream?prompt=${prompt}&conversation_id=${conversationId}`)
+    evtSource.onmessage = (event) => {
+      if (event) {
+        const response = JSON.parse(event.data)
+        console.log("=data", response)
+        // updateResponse(uniqueId, {
+        //   response: response.data.message.trim(),
+        // })
+        updateMessage(response)
+      } else {
+        evtSource.close()
+      }
+    }
+    evtSource.onerror = () => {
+      setIsLoading(false)
+      evtSource.close()
+    }
+  }
+
+  const handleSubmit = async (e) => {
+    if (!prompt) {
+      return
+    }
+    if (isLoading) {
+      // return showNotice("机器人回答不过来了，请稍后再问")
+      return
+    }
+    addMessage({ role: "user", content: prompt })
+    addMessage({ role: "assistant", content: htmlToText("123"), isLoading: true })
+    setIsLoading(true)
+  }
+
+  const addMessage = (msg) => {
+    // setMessages([...messages, msg])
+    setMessages((prevMessages) => [...prevMessages, msg])
+  }
+
+  const updateMessage = (response) => {
+    messages.map((message) => {
+      if (message.isLoading) {
+        if (response.done) {
+          message.isLoading = false
+          setConversationId(response.conversation_id)
+        } else {
+          message.content = response.content
+        }
+      }
+      return message
+    })
+    setMessages([...messages])
+
+    // setMessages((prevMessages) => {
+    //   prevMessages.map((message) => {
+    //     if (message.isLoading) {
+    //       if (response.done) {
+    //         message.isLoading = false
+    //       } else {
+    //         message.content = response.content
+    //       }
+    //     }
+
+    //     return message
+    //   })
+
+    //   return prevMessages
+    // })
+    // console.log("n", messages)
+    // setMessages([...messages])
+  }
+
   const getGPTResult = async (_promptToRetry?: string | null, _uniqueIdToRetry?: string | null) => {
     // Get the prompt input
     const _prompt = _promptToRetry ?? htmlToText(prompt)
@@ -104,8 +184,8 @@ const ChatModule = () => {
         setUniqueIdToRetry(null)
       }
     }
-    evtSource.onerror = function () {
-      setIsLoading(false)
+    evtSource.onerror = () => {
+      // setIsLoading(false)
       evtSource.close()
     }
 
@@ -191,7 +271,7 @@ const ChatModule = () => {
       <div className="flex-1 overflow-hidden relative">
         <div className="prompt-response-list h-full dark:bg-gray-800">
           <div className="h-full w-full overflow-y-auto">
-            {!responseList.length ? (
+            {!messages.length ? (
               <>
                 <div className="flex flex-col items-center text-sm dark:bg-gray-800">
                   <div className="text-gray-800 w-full md:max-w-2xl lg:max-w-3xl md:h-full md:flex md:flex-col px-4 md:px-6 dark:text-gray-100">
@@ -228,12 +308,7 @@ const ChatModule = () => {
                 </div>
               </>
             ) : (
-              <PromptResponseList
-                messagesEndRef={messagesEndRef}
-                isLoading={isLoading}
-                responseList={responseList}
-                key="response-list"
-              />
+              <MessageList messagesEndRef={messagesEndRef} isLoading={true} messages={messages} />
             )}
           </div>
         </div>
@@ -267,14 +342,9 @@ const ChatModule = () => {
               )}
             </div>
             <div className="flex flex-col w-full py-2 flex-grow md:py-3 md:pl-4 relative border border-black/10 bg-white dark:border-gray-900/50 dark:text-white dark:bg-gray-700 rounded-md shadow-[0_0_10px_rgba(0,0,0,0.10)] dark:shadow-[0_0_15px_rgba(0,0,0,0.10)]">
-              <PromptInput
-                prompt={prompt}
-                onSubmit={() => getGPTResult()}
-                key="prompt-input"
-                updatePrompt={(prompt) => setPrompt(prompt)}
-              />
+              <PromptInput prompt={prompt} setPrompt={setPrompt} onSubmit={handleSubmit} key="prompt-input" />
               <button
-                onClick={() => getGPTResult()}
+                onClick={handleSubmit}
                 type="button"
                 className="absolute p-1 rounded-md text-gray-500 bottom-1.5 right-1 md:bottom-2.5 md:right-2 hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent"
               >

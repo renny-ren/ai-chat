@@ -17,7 +17,19 @@ class CompletionsController < ApplicationController
 
   def live_stream
     response.headers["Content-Type"] = "text/event-stream"
+    response.headers["Last-Modified"] = Time.now.httpdate
+
     sse = SSE.new(response.stream, retry: 300)
+    # sse.write(id: "chatcmpl-6tEcfvsNYJKPOidWfZnCIk95Q9Qra", role: "assistant", content: "How")
+    # sleep 1
+    # sse.write(id: "chatcmpl-6tEcfvsNYJKPOidWfZnCIk95Q9Qra", role: "assistant", content: "How van")
+    # sleep 1
+    # sse.write(id: "chatcmpl-6tEcfvsNYJKPOidWfZnCIk95Q9Qra", role: "assistant", content: "How can I ")
+    # sleep 1
+    # sse.write(id: "chatcmpl-6tEcfvsNYJKPOidWfZnCIk95Q9Qra", role: "assistant", content: "How can I htl")
+    # sleep 1
+    # sse.write(id: "chatcmpl-6tEcfvsNYJKPOidWfZnCIk95Q9Qra", role: "assistant", content: "How can I help you !")
+    # sse.write({ done: true })
     message = current_user.messages.create!(
       conversation_id: conversation.id,
       content: params[:prompt],
@@ -40,6 +52,7 @@ class CompletionsController < ApplicationController
       headers: headers,
     )
 
+    result = ""
     conn.post("/v1/chat/completions") do |req|
       req.body = params.to_json
       req.options.on_data = Proc.new do |chunk, overall_received_bytes, env|
@@ -47,9 +60,22 @@ class CompletionsController < ApplicationController
         puts "===data: #{chunk[/data: (.*)\n\n$/, 1]}"
         data = chunk[/data: (.*)\n\n$/, 1]
 
-        sse.write({ data: data })
-
-        sse.close if data == "[DONE]"
+        if data == "[DONE]"
+          sse.write({ done: true, conversation_id: conversation.id })
+          sse.close
+          response_message = conversation.messages.create!(
+            role: Message.roles["assistant"],
+            content: result,
+            user_id: GPT_USER_ID,
+          )
+          response_message.save!
+        else
+          response = JSON.parse(data)
+          if response.dig("choices", 0, "delta", "content")
+            result = result + response.dig("choices", 0, "delta", "content")
+          end
+          sse.write(id: response.dig("id"), role: "assistant", content: result)
+        end
       end
     end
   ensure

@@ -163,7 +163,7 @@ class Message < ApplicationRecord
   end
 
   def mentioned_ai?
-    self.mentioned_user_ids.include?(robot_user.id)
+    self.mentioned_user_ids&.include?(robot_user.id)
   end
 
   def conversation_history

@@ -3,11 +3,11 @@ import ContentEditable from "react-contenteditable"
 
 interface PromptInputProps {
   prompt: string
+  setPrompt: (prompt: string) => void
   onSubmit: () => void
-  updatePrompt: (prompt: string) => void
 }
 
-const PromptInput: React.FC<PromptInputProps> = ({ prompt, onSubmit, updatePrompt }) => {
+const PromptInput: React.FC<PromptInputProps> = ({ prompt, setPrompt, onSubmit }) => {
   const checkKeyPress = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === "Enter") {
@@ -40,7 +40,7 @@ const PromptInput: React.FC<PromptInputProps> = ({ prompt, onSubmit, updatePromp
         disabled={false}
         id="prompt-input"
         className="prompt-input"
-        onChange={(e) => updatePrompt(e.target.value)}
+        onChange={(e) => setPrompt(e.target.value)}
       />*/}
       <textarea
         className="m-0 w-full resize-none border-0 bg-transparent p-0 pl-2 pr-7 focus:ring-0 focus-visible:ring-0 dark:bg-transparent md:pl-0"
@@ -48,7 +48,7 @@ const PromptInput: React.FC<PromptInputProps> = ({ prompt, onSubmit, updatePromp
         style={{ maxHeight: "200px", height: "24px", overflowY: "hidden" }}
         rows="1"
         placeholder=""
-        onChange={(e) => updatePrompt(e.target.value)}
+        onChange={(e) => setPrompt(e.target.value)}
         value={prompt}
       ></textarea>
     </>

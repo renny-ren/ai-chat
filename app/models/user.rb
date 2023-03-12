@@ -6,6 +6,7 @@ class User < ApplicationRecord
 
   has_many :messages
   has_many :sponsorships
+  has_many :conversations
 
   has_one_attached :avatar, dependent: :purge
 
