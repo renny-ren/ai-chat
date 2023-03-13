@@ -1,4 +1,5 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
+import axios from "axios"
 
 interface MenuProps {
   isMobile?: boolean
@@ -6,6 +7,26 @@ interface MenuProps {
 }
 
 const Menu: React.FC<MenuProps> = ({ onShowSignInModal, isMobile = false }) => {
+  const [conversations, setConversations] = useState([])
+  const [isFetching, setIsFetching] = useState(false)
+
+  useEffect(() => {
+    fetchConversations()
+  }, [])
+
+  const fetchConversations = async (page = 1) => {
+    setIsFetching(true)
+    const csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content")
+    const response = await axios.get(`/v1/conversations`, {
+      headers: {
+        "X-CSRF-Token": csrf,
+      },
+    })
+    setConversations(response.data.conversations)
+    console.log("conversations", response.data.conversations)
+    setIsFetching(false)
+  }
+
   return (
     <>
       <ul role="list">
@@ -58,18 +79,23 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, isMobile = false }) => {
             ></div>
             <div className="absolute inset-y-0 left-2 w-px bg-zinc-900/10 dark:bg-white/5"></div>
             <ul role="list" className="border-l border-transparent">
-              <li
-                className={`relative ${
-                  window.location.pathname === "/chat" ? "border-l border-emerald-400 bg-zinc-800/[.025]" : ""
-                }`}
-              >
-                <a
-                  className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-                  href="/chat"
+              {conversations.map((conversation, i) => (
+                <li
+                  key={i}
+                  className={`relative ${
+                    window.location.pathname === `/chats/${conversation.id}`
+                      ? "border-l border-emerald-400 bg-zinc-800/[.025]"
+                      : ""
+                  }`}
                 >
-                  <span className="truncate">新的会话</span>
-                </a>
-              </li>
+                  <a
+                    className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+                    href={`/chats/${conversation.id}`}
+                  >
+                    <span className="truncate">{conversation.title || `新的会话${i + 1}`}</span>
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
         </li>

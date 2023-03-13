@@ -1,7 +1,7 @@
-import React, { Fragment, useState, useEffect } from "react"
+import React from "react"
 import ChatModule from "./ChatModule"
 
-const Chat = ({ setIsShowModal }) => {
+const Chat = () => {
   return (
     <>
       <div className="h-full relative pt-14">

@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef } from "react"
-import { Button, Space, Card } from "antd"
+import React, { useState, useEffect, useRef, useParams } from "react"
+import { useParams } from "react-router-dom"
+import { Button, Space, Card, Spin } from "antd"
 import axios from "axios"
 import PromptInput from "./PromptInput"
 import type { MessageInterface } from "./types"
@@ -16,7 +17,8 @@ const ChatModule = () => {
   const [uniqueIdToRetry, setUniqueIdToRetry] = useState<string | null>(null)
   const [modelValue, setModelValue] = useState<ModelValueType>("gpt")
   const [isLoading, setIsLoading] = useState(false)
-  const [conversationId, setConversationId] = useState("")
+  const [conversationId, setConversationId] = useState(useParams().conversationId)
+  const [isFetchingMsgs, setIsFetchingMsgs] = useState(false)
 
   const generateUniqueId = () => {
     const timestamp = Date.now()
@@ -69,11 +71,31 @@ const ChatModule = () => {
   }
 
   useEffect(() => {
+    if (conversationId) {
+      fetchMessages()
+    }
+  }, [])
+
+  useEffect(() => {
     if (isLoading) {
       fetchResponse()
       setPrompt("")
     }
   }, [isLoading])
+
+  const fetchMessages = async () => {
+    setIsFetchingMsgs(true)
+    const csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content")
+    const response = await axios.get(`/v1/messages?conversation_id=${conversationId}&per=9999`, {
+      headers: {
+        "X-CSRF-Token": csrf,
+      },
+    })
+    console.log("mgsgs", response.data.messages)
+    setMessages(response.data.messages)
+    // setPagination(response.data.pagination_meta)
+    setIsFetchingMsgs(false)
+  }
 
   const fetchResponse = () => {
     const evtSource = new EventSource(`/v1/completions/live_stream?prompt=${prompt}&conversation_id=${conversationId}`)
@@ -273,39 +295,47 @@ const ChatModule = () => {
           <div className="h-full w-full overflow-y-auto">
             {!messages.length ? (
               <>
-                <div className="flex flex-col items-center text-sm dark:bg-gray-800">
-                  <div className="text-gray-800 w-full md:max-w-2xl lg:max-w-3xl md:h-full md:flex md:flex-col px-4 md:px-6 dark:text-gray-100">
-                    <div className="hidden md:block type-wrap text-lg md:text-xl lg:text-2xl leading-6 lg:leading-8 h-56 py-6 px-6 w-full md:max-w-2xl lg:max-w-3xl">
-                      <span style={{ whiteSpace: "pre" }} ref={el} />
-                    </div>
-                    <div>
-                      <div className="flex items-start text-center gap-3.5">
-                        {defaultPrompts.map((item, idx) => (
-                          <div key={idx} className="flex flex-col gap-3.5 flex-1">
-                            <div className="m:auto">
-                              <div className="inline-block w-6 h-6">
-                                <img src={item.img_src} width="24" height="24" />
-                              </div>
-                            </div>
-                            <h2 className="text-lg font-sans font-normal">{item.title}</h2>
-                            <ul className="flex flex-col gap-3.5">
-                              {item.prompts.map((text, i) => (
-                                <li
-                                  key={i}
-                                  onClick={() => setPrompt(text)}
-                                  className="w-full bg-gray-50 dark:bg-white/5 p-3 rounded-md hover:bg-gray-200 dark:hover:bg-gray-900 cursor-pointer"
-                                >
-                                  <div>{text}</div>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
+                {isFetchingMsgs ? (
+                  <div className="flex h-full justify-center items-center">
+                    <Spin size="large" />
                   </div>
-                  <div className="w-full h-24 flex-shrink-0"></div>
-                </div>
+                ) : (
+                  <>
+                    <div className="flex flex-col items-center text-sm dark:bg-gray-800">
+                      <div className="text-gray-800 w-full md:max-w-2xl lg:max-w-3xl md:h-full md:flex md:flex-col px-4 md:px-6 dark:text-gray-100">
+                        <div className="hidden md:block type-wrap text-lg md:text-xl lg:text-2xl leading-6 lg:leading-8 h-56 py-6 px-6 w-full md:max-w-2xl lg:max-w-3xl">
+                          <span style={{ whiteSpace: "pre" }} ref={el} />
+                        </div>
+                        <div>
+                          <div className="flex items-start text-center gap-3.5">
+                            {defaultPrompts.map((item, idx) => (
+                              <div key={idx} className="flex flex-col gap-3.5 flex-1">
+                                <div className="m:auto">
+                                  <div className="inline-block w-6 h-6">
+                                    <img src={item.img_src} width="24" height="24" />
+                                  </div>
+                                </div>
+                                <h2 className="text-lg font-sans font-normal">{item.title}</h2>
+                                <ul className="flex flex-col gap-3.5">
+                                  {item.prompts.map((text, i) => (
+                                    <li
+                                      key={i}
+                                      onClick={() => setPrompt(text)}
+                                      className="w-full bg-gray-50 dark:bg-white/5 p-3 rounded-md hover:bg-gray-200 dark:hover:bg-gray-900 cursor-pointer"
+                                    >
+                                      <div>{text}</div>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="w-full h-24 flex-shrink-0"></div>
+                    </div>
+                  </>
+                )}
               </>
             ) : (
               <MessageList messagesEndRef={messagesEndRef} isLoading={true} messages={messages} />

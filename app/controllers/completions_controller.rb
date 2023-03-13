@@ -61,7 +61,7 @@ class CompletionsController < ApplicationController
         data = chunk[/data: (.*)\n\n$/, 1]
 
         if data == "[DONE]"
-          sse.write({ done: true, conversation_id: conversation.id })
+          sse.write({ done: true, conversation_id: conversation.id, conversation_title: conversation.title })
           sse.close
           response_message = conversation.messages.create!(
             role: Message.roles["assistant"],
@@ -106,6 +106,8 @@ class CompletionsController < ApplicationController
   end
 
   def conversation
-    @conversation ||= current_user.conversations.find_or_create_by(id: params[:conversation_id])
+    @conversation ||= current_user.conversations.find_or_create_by(id: params[:conversation_id]) do
+      title: params[:prompt][0..10]
+    end
   end
 end

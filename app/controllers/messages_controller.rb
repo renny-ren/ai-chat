@@ -13,6 +13,8 @@ class MessagesController < ApplicationController
   end
 
   def set_messages
-    @messages = Message.includes(:user).order(created_at: :desc).page(page).per(per)
+    @messages = Message.includes(:user)
+    @messages = @messages.where(conversation_id: params[:conversation_id]) if params[:conversation_id].present?
+    @messages = @messages.order(created_at: :desc).page(page).per(per)
   end
 end

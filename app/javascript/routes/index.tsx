@@ -11,7 +11,8 @@ export default ({ setIsShowModal, setCustomContent }) => {
       <Routes>
         <Route exact path="/" element={<Home setIsShowModal={setIsShowModal} setCustomContent={setCustomContent} />} />
         <Route path="/disclaimer" element={<Disclaimer />} />
-        <Route path="/chat" element={<Chat />} />
+        <Route exact path="/chats/new" element={<Chat />} />
+        <Route path="/chats/:conversationId" element={<Chat />} />
         <Route path="/settings" element={<Settings />} />
       </Routes>
     </Router>
