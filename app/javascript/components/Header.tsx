@@ -9,9 +9,10 @@ import { CDN_HOST } from "shared/constants"
 interface HeaderProps {
   setIsShowModal: () => void
   customContent?: any
+  conversations: any
 }
 
-const Header: React.FC<HeaderProps> = ({ setIsShowModal, customContent }) => {
+const Header: React.FC<HeaderProps> = ({ setIsShowModal, customContent, conversations }) => {
   const [isShowMobileMenu, setIsShowMobileMenu] = useState(false)
 
   const onShowSignInModal = () => {
@@ -104,7 +105,7 @@ const Header: React.FC<HeaderProps> = ({ setIsShowModal, customContent }) => {
               </div>
             </div>
           </div>
-          <Sidebar />
+          <Sidebar conversations={conversations} />
         </div>
       </header>
       <Transition
@@ -116,7 +117,7 @@ const Header: React.FC<HeaderProps> = ({ setIsShowModal, customContent }) => {
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
       >
-        <MobileMenu setIsShow={setIsShowMobileMenu} onShowSignInModal={onShowSignInModal} />
+        <MobileMenu setIsShow={setIsShowMobileMenu} onShowSignInModal={onShowSignInModal} conversations={conversations} />
       </Transition>
     </>
   )

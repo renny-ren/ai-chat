@@ -118,7 +118,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal, setCustomContent }
   const fetchMessages = async (page = 1) => {
     setIsFetching(true)
     const csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content")
-    const response = await axios.get(`/v1/messages?page=${page}`, {
+    const response = await axios.get(`/v1/messages?source=chatroom&page=${page}`, {
       headers: {
         "X-CSRF-Token": csrf,
       },

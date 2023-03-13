@@ -106,8 +106,8 @@ class CompletionsController < ApplicationController
   end
 
   def conversation
-    @conversation ||= current_user.conversations.find_or_create_by(id: params[:conversation_id]) do
-      title: params[:prompt][0..10]
+    @conversation ||= current_user.conversations.find_or_create_by(id: params[:conversation_id]) do |conversation|
+      conversation.title = params[:prompt][0..30]
     end
   end
 end

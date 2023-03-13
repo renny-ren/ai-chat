@@ -15,6 +15,8 @@ class Message < ApplicationRecord
 
   # scope :to_ai, -> { where("mentioned_user_ids @> ?", GPT_USER_ID) }
   scope :to_ai, -> { where("? = ANY(mentioned_user_ids)", GPT_USER_ID) }
+  scope :chatroom, -> { where("conversation_id is NULL") }
+  scope :for_conversation, ->(conversation_id) { where(conversation_id: conversation_id) }
 
   def update_conversation_history
     update_history(role: "user", content: self.content)

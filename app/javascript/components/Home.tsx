@@ -1,6 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react"
 import { Link } from "react-router-dom"
-import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import ChatModule from "./ChatModule"
 import ChatRoom from "./ChatRoom"
 

@@ -1,32 +1,14 @@
 import React, { useState, useEffect } from "react"
-import axios from "axios"
+import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from "@heroicons/react/24/outline"
+import { LockClosedIcon } from "@heroicons/react/20/solid"
 
 interface MenuProps {
   isMobile?: boolean
   onShowSignInModal?: () => void
+  conversations: any
 }
 
-const Menu: React.FC<MenuProps> = ({ onShowSignInModal, isMobile = false }) => {
-  const [conversations, setConversations] = useState([])
-  const [isFetching, setIsFetching] = useState(false)
-
-  useEffect(() => {
-    fetchConversations()
-  }, [])
-
-  const fetchConversations = async (page = 1) => {
-    setIsFetching(true)
-    const csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content")
-    const response = await axios.get(`/v1/conversations`, {
-      headers: {
-        "X-CSRF-Token": csrf,
-      },
-    })
-    setConversations(response.data.conversations)
-    console.log("conversations", response.data.conversations)
-    setIsFetching(false)
-  }
-
+const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, isMobile = false }) => {
   return (
     <>
       <ul role="list">
@@ -64,7 +46,28 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, isMobile = false }) => {
           </div>
         </li>
         <li className="relative mt-6">
-          <h2 className="text-xs font-semibold text-zinc-900 dark:text-white">个人会话</h2>
+          <div className="flex items-center justify-between">
+            <span className="relative text-xs font-semibold text-zinc-900 dark:text-white">个人会话</span>
+            <a
+              title="新的会话"
+              href="/chats/new"
+              rel="next"
+              className="inline-flex ml-2 px-2 py-1 text-xs text-gray-600 transition-colors duration-300 transform border rounded-lg dark:text-gray-200 dark:border-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="inline-block w-4 h-4"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+              </svg>
+              <span>新的会话</span>
+            </a>
+          </div>
+
           <div className="relative mt-3 pl-2">
             <div
               className="absolute inset-x-0 top-0 bg-zinc-800/2.5 will-change-transform dark:bg-white/2.5"
@@ -83,7 +86,7 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, isMobile = false }) => {
                 <li
                   key={i}
                   className={`relative ${
-                    window.location.pathname === `/chats/${conversation.id}`
+                    window.location.pathname === `/chats/${conversation.id}` || !!conversation.current
                       ? "border-l border-emerald-400 bg-zinc-800/[.025]"
                       : ""
                   }`}

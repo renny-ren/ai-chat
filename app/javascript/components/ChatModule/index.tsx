@@ -9,7 +9,7 @@ import Typed from "typed.js"
 import { CDN_HOST } from "shared/constants"
 
 type ModelValueType = "gpt" | "codex" | "image"
-const ChatModule = () => {
+const ChatModule = ({ setConversations }) => {
   // const [responseList, setResponseList] = useState<MessageInterface[]>([])
   const [messages, setMessages] = useState<MessageInterface[]>([])
   const [prompt, setPrompt] = useState<string>("")
@@ -17,7 +17,7 @@ const ChatModule = () => {
   const [uniqueIdToRetry, setUniqueIdToRetry] = useState<string | null>(null)
   const [modelValue, setModelValue] = useState<ModelValueType>("gpt")
   const [isLoading, setIsLoading] = useState(false)
-  const [conversationId, setConversationId] = useState(useParams().conversationId)
+  const [conversationId, setConversationId] = useState(useParams().conversationId || "")
   const [isFetchingMsgs, setIsFetchingMsgs] = useState(false)
 
   const generateUniqueId = () => {
@@ -86,7 +86,7 @@ const ChatModule = () => {
   const fetchMessages = async () => {
     setIsFetchingMsgs(true)
     const csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content")
-    const response = await axios.get(`/v1/messages?conversation_id=${conversationId}&per=9999`, {
+    const response = await axios.get(`/v1/messages?conversation_id=${conversationId}`, {
       headers: {
         "X-CSRF-Token": csrf,
       },
@@ -141,6 +141,12 @@ const ChatModule = () => {
         if (response.done) {
           message.isLoading = false
           setConversationId(response.conversation_id)
+          setConversations((prevConversations) => {
+            return [
+              { current: true, id: response.conversation_id, title: response.conversation_title },
+              ...prevConversations,
+            ]
+          })
         } else {
           message.content = response.content
         }
