@@ -47,7 +47,7 @@ const Avatar: React.FC<AvatarProps> = ({ src, isRobot, openModal }) => {
           </Popover>
         </>
       ) : (
-        <img className="mt-1 cursor-pointer inline-block h-10 w-10 rounded-full ring-2 ring-white aspect-square" src={src} />
+        <img className="mt-1 inline-block h-10 w-10 rounded-full ring-2 ring-white aspect-square" src={src} />
       )}
     </>
   )

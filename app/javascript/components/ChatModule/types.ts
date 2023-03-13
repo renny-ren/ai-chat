@@ -1,7 +1,8 @@
 export interface MessageInterface {
-  id: string
-  response?: string
-  selfFlag: boolean
-  error?: boolean
-  image?: string
+  id: number
+  content: string
+  user_id: number
+  user_nickname: string
+  user_avatar_url: string
+  role: string
 }
