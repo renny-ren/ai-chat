@@ -91,7 +91,6 @@ const ChatModule = ({ setConversations }) => {
         "X-CSRF-Token": csrf,
       },
     })
-    console.log("mgsgs", response.data.messages)
     setMessages(response.data.messages)
     // setPagination(response.data.pagination_meta)
     setIsFetchingMsgs(false)

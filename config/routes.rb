@@ -20,7 +20,7 @@ Rails.application.routes.draw do
       post :clear_conversations, on: :collection
     end
     resources :sponsorships, only: :index
-    resources :conversations, only: :index
+    resources :conversations, only: [:index, :destroy]
   end
   get "/*path" => "homepage#index", format: false, constraints: ->(req) { !req.xhr? && req.format.html? }
   # get "/settings" => "homepage#index"
