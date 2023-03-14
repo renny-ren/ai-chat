@@ -1,7 +1,7 @@
 import React from "react"
 import ChatModule from "./ChatModule"
 
-const Chat = ({ setConversations }) => {
+const Chat = ({ setConversations, setIsShowModal }) => {
   return (
     <>
       <div className="h-full relative pt-14">
@@ -29,7 +29,7 @@ const Chat = ({ setConversations }) => {
               </div>
             </div>
           </div>
-          <ChatModule setConversations={setConversations} />
+          <ChatModule setConversations={setConversations} setIsShowModal={setIsShowModal} />
         </main>
       </div>
     </>
