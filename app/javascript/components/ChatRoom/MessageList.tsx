@@ -143,7 +143,7 @@ const MessageList = ({ messages, fetchMessages, isFetching, openModal, paginatio
                       <p className="text-xs text-gray-500 ml-2">{message.created_at}</p>
                     </div>
                     <div
-                      className={`relative ml-2 mr-4 text-sm bg-white py-2 px-4 shadow rounded-xl break-words whitespace-pre-line ${
+                      className={`relative ml-2 mr-4 text-sm bg-white py-2 px-4 shadow rounded-xl break-words whitespace-pre-line max-w-fit ${
                         message.loading ? "ai-response-loading" : ""
                       }`}
                     >
