@@ -3,6 +3,7 @@ import Routes from "../routes"
 import SignInModal from "./user/SignInModal"
 import Header from "./Header"
 import axios from "axios"
+import currentUser from "stores/current_user_store"
 
 const App = (props) => {
   const [isShowModal, setIsShowModal] = useState(false)
@@ -10,8 +11,10 @@ const App = (props) => {
   const [conversations, setConversations] = useState([])
 
   useEffect(() => {
-    fetchConversations()
-  }, [])
+    if (currentUser.isSignedIn()) {
+      fetchConversations()
+    }
+  }, [gon.user_meta])
 
   const fetchConversations = async () => {
     const csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content")

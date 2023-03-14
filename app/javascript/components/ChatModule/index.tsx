@@ -7,6 +7,7 @@ import MessageList from "./MessageList"
 import Footer from "./Footer"
 import Typed from "typed.js"
 import { CDN_HOST } from "shared/constants"
+import currentUser from "stores/current_user_store"
 
 const ChatModule = ({ setConversations, setIsShowModal }) => {
   const [messages, setMessages] = useState<MessageInterface[]>([])
@@ -40,7 +41,7 @@ const ChatModule = ({ setConversations, setIsShowModal }) => {
   }
 
   useEffect(() => {
-    if (conversationId) {
+    if (currentUser.isSignedIn() && conversationId) {
       fetchMessages()
     }
   }, [])
@@ -70,7 +71,6 @@ const ChatModule = ({ setConversations, setIsShowModal }) => {
     evtSource.onmessage = (event) => {
       if (event) {
         const response = JSON.parse(event.data)
-        console.log("=data", response)
         // updateResponse(uniqueId, {
         //   response: response.data.message.trim(),
         // })
@@ -86,17 +86,17 @@ const ChatModule = ({ setConversations, setIsShowModal }) => {
   }
 
   const handleSubmit = async (e) => {
-    console.log("==submit")
-    // if (!prompt) {
-    //   return
-    // }
-    // if (isLoading) {
-    //   // return showNotice("机器人回答不过来了，请稍后再问")
-    //   return
-    // }
-    // addMessage({ role: "user", content: prompt })
-    // addMessage({ role: "assistant", content: htmlToText("123"), isLoading: true })
-    // setIsLoading(true)
+    e.preventDefault()
+    if (!prompt) {
+      return
+    }
+    if (isLoading) {
+      // return showNotice("机器人回答不过来了，请稍后再问")
+      return
+    }
+    addMessage({ role: "user", content: prompt })
+    addMessage({ role: "assistant", content: htmlToText("123"), isLoading: true })
+    setIsLoading(true)
   }
 
   const addMessage = (msg) => {
@@ -215,6 +215,7 @@ const ChatModule = ({ setConversations, setIsShowModal }) => {
   const el = useRef(null)
   const typed = useRef(null)
   const messagesEndRef = useRef(null)
+  const inputRef = useRef(null)
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -300,7 +301,13 @@ const ChatModule = ({ setConversations, setIsShowModal }) => {
           </div>
         </div>
       </div>
-      <Footer setIsShowModal={setIsShowModal} prompt={prompt} setPrompt={setPrompt} handleSubmit={handleSubmit} />
+      <Footer
+        setIsShowModal={setIsShowModal}
+        prompt={prompt}
+        setPrompt={setPrompt}
+        handleSubmit={handleSubmit}
+        inputRef={inputRef}
+      />
     </main>
   )
 }
