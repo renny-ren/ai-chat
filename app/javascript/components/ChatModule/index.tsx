@@ -76,14 +76,19 @@ const ChatModule: FC<ChatModuleProps> = ({ setIsShowModal, setConversations }) =
   const fetchMessages = async () => {
     setIsFetchingMsgs(true)
     const csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content")
-    const response = await axios.get(`/v1/messages?conversation_id=${conversationId}`, {
-      headers: {
-        "X-CSRF-Token": csrf,
-      },
-    })
-    setMessages(response.data.messages)
-    // setPagination(response.data.pagination_meta)
-    setIsFetchingMsgs(false)
+    try {
+      const response = await axios.get(`/v1/messages?conversation_id=${conversationId}`, {
+        headers: {
+          "X-CSRF-Token": csrf,
+        },
+      })
+      setMessages(response.data.messages)
+      // setPagination(response.data.pagination_meta)
+    } catch (error) {
+      message.error(error.response.data.message)
+    } finally {
+      setIsFetchingMsgs(false)
+    }
   }
 
   const fetchResponse = () => {
