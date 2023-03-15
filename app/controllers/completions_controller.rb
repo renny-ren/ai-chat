@@ -22,11 +22,17 @@ class CompletionsController < ApplicationController
     response.headers["Last-Modified"] = Time.now.httpdate
     sse = SSE.new(response.stream, retry: 300)
     ChatCompletion::LiveStreamService.new(sse, current_user, params).call
+    update_used_count
   ensure
     sse.close
   end
 
   private
+
+  def update_used_count
+    current_count = Rails.cache.read(current_user.used_count_cache_key) || 0
+    Rails.cache.write(current_user.used_count_cache_key, current_count + 1, expires_at: Time.now.end_of_day)
+  end
 
   def authenticate_user!
     warden.authenticate!

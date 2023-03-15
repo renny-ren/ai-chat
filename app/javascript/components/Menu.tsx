@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react"
 import axios from "axios"
+import { message } from "antd"
 
 interface MenuProps {
   isMobile?: boolean
@@ -23,6 +24,13 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, isMobile 
       default:
         return ""
     }
+  }
+
+  const newConversation = () => {
+    if (conversations.length >= 20) {
+      return message.error("目前最多能创建 20 个会话，请删除现有会话后再试")
+    }
+    window.location.href = "/chats/new"
   }
 
   const deleteConversation = async (conversationId) => {
@@ -69,11 +77,10 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, isMobile 
         <li className="relative mt-6">
           <div className="flex items-center justify-between">
             <span className="relative text-xs font-semibold text-zinc-900 dark:text-white">个人会话</span>
-            <a
+            <button
               title="新的会话"
-              href="/chats/new"
-              rel="next"
-              className="inline-flex ml-2 px-2 py-1 text-xs text-gray-600 transition-colors duration-300 transform border rounded-lg dark:text-gray-200 dark:border-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none"
+              onClick={newConversation}
+              className="outline-none inline-flex ml-2 px-2 py-1 text-xs text-gray-600 transition-colors duration-300 transform border rounded-lg dark:text-gray-200 dark:border-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -86,7 +93,7 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, isMobile 
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
               </svg>
               <span>新的会话</span>
-            </a>
+            </button>
           </div>
 
           <div className="relative mt-3 pl-2 max-h-72 overflow-y-auto">

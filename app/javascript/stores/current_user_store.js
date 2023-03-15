@@ -23,6 +23,10 @@ const currentUser = {
     return gon.user_meta.avatar_url
   },
 
+  usedMessageCount() {
+    return gon.user_meta.used_message_count
+  },
+
   config() {
     return gon.user_meta?.config
   },

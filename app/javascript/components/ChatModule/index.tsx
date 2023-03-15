@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react"
 import { useParams } from "react-router-dom"
-import { Button, Space, Card, Spin } from "antd"
+import { Button, Space, Card, Spin, message } from "antd"
 import axios from "axios"
 import type { MessageInterface } from "./types"
 import MessageList from "./MessageList"
@@ -9,7 +9,12 @@ import Typed from "typed.js"
 import { CDN_HOST } from "shared/constants"
 import currentUser from "stores/current_user_store"
 
-const ChatModule = ({ setConversations, setIsShowModal }) => {
+interface ChatModuleProps {
+  setIsShowModal: () => void
+  setConversations?: () => void
+}
+
+const ChatModule: FC<ChatModuleProps> = ({ setIsShowModal, setConversations }) => {
   const [messages, setMessages] = useState<MessageInterface[]>([])
   const [prompt, setPrompt] = useState<string>("")
   const [promptToRetry, setPromptToRetry] = useState<string | null>(null)
@@ -17,6 +22,8 @@ const ChatModule = ({ setConversations, setIsShowModal }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [conversationId, setConversationId] = useState(useParams().conversationId || "")
   const [isFetchingMsgs, setIsFetchingMsgs] = useState(false)
+  const [usedMessageCount, setUsedMessageCount] = useState(currentUser.usedMessageCount())
+  const MESSAGE_LIMIT_PER_DAY = 5
 
   const generateUniqueId = () => {
     const timestamp = Date.now()
@@ -91,11 +98,13 @@ const ChatModule = ({ setConversations, setIsShowModal }) => {
       return
     }
     if (isLoading) {
-      // return showNotice("机器人回答不过来了，请稍后再问")
-      return
+      return message.error("机器人回答不过来了，请稍后再问")
+    }
+    if (usedMessageCount >= MESSAGE_LIMIT_PER_DAY) {
+      return message.error("今日与 AI 聊天次数已到上限，请明日再来，或前往聊天室聊天")
     }
     addMessage({ role: "user", content: prompt })
-    addMessage({ role: "assistant", content: htmlToText("123"), isLoading: true })
+    addMessage({ role: "assistant", content: "", isLoading: true })
     setIsLoading(true)
   }
 
@@ -109,13 +118,17 @@ const ChatModule = ({ setConversations, setIsShowModal }) => {
       if (message.isLoading) {
         if (response.done) {
           message.isLoading = false
+          setUsedMessageCount(usedMessageCount + 1)
           setConversationId(response.conversation_id)
-          setConversations((prevConversations) => {
-            return [
-              { current: true, id: response.conversation_id, title: response.conversation_title },
-              ...prevConversations,
-            ]
-          })
+          if (setConversations) {
+            // Add new conversation to sidebar
+            setConversations((prevConversations) => {
+              return [
+                { current: true, id: response.conversation_id, title: response.conversation_title },
+                ...prevConversations,
+              ]
+            })
+          }
         } else {
           message.content = response.content
         }
@@ -217,6 +230,10 @@ const ChatModule = ({ setConversations, setIsShowModal }) => {
   const messagesEndRef = useRef(null)
   const inputRef = useRef(null)
 
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages])
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }
@@ -307,6 +324,7 @@ const ChatModule = ({ setConversations, setIsShowModal }) => {
         setPrompt={setPrompt}
         handleSubmit={handleSubmit}
         inputRef={inputRef}
+        messageLimitPerDay={MESSAGE_LIMIT_PER_DAY}
       />
     </main>
   )

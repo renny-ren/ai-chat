@@ -61,7 +61,7 @@ const MessageList: FC<MessageListProps> = ({ messages, messagesEndRef, isLoading
                     msg.error ? "error-response" : ""
                   }`}
                 >
-                  <Markdown value={msg.content} renderer={renderer} />
+                  {msg.content ? <Markdown value={msg.content} renderer={renderer} /> : <p></p>}
                 </div>
               </div>
             </div>
