@@ -1,4 +1,6 @@
 class CompletionsController < ApplicationController
+  MESSAGE_LIMIT_PER_DAY = 5.freeze
+
   include ActionController::Live
 
   before_action :authenticate_user!
@@ -21,17 +23,33 @@ class CompletionsController < ApplicationController
     response.headers["Content-Type"] = "text/event-stream"
     response.headers["Last-Modified"] = Time.now.httpdate
     sse = SSE.new(response.stream, retry: 300)
-    ChatCompletion::LiveStreamService.new(sse, current_user, params).call
-    update_used_count
+    if can_chat?
+      ChatCompletion::LiveStreamService.new(sse, current_user, params).call
+      update_used_count
+    else
+      sse.write(status: 400, message: "limit exceeded")
+    end
   ensure
     sse.close
   end
 
   private
 
+  def can_chat?
+    used_message_count < MESSAGE_LIMIT_PER_DAY
+  end
+
+  def used_message_count
+    @used_message_count ||= [
+      Rails.cache.read(current_user.used_count_cache_key).to_i,
+      Rails.cache.read("used_count:ip_#{request.remote_ip}").to_i,
+    ].max
+  end
+
   def update_used_count
-    current_count = Rails.cache.read(current_user.used_count_cache_key) || 0
-    Rails.cache.write(current_user.used_count_cache_key, current_count + 1, expires_at: Time.now.end_of_day)
+    updated_count = used_message_count + 1
+    Rails.cache.write(current_user.used_count_cache_key, updated_count, expires_at: Time.now.end_of_day)
+    Rails.cache.write("used_count:ip_#{request.remote_ip}", updated_count, expires_at: Time.now.end_of_day)
   end
 
   def authenticate_user!

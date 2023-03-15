@@ -12,7 +12,7 @@ interface FooterProps {
   setPrompt: () => void
   handleSubmit: () => void
   inputRef: any
-  messageLimitPerDay: integer
+  remainingMessageCount: integer
 }
 
 const Footer: React.FC<FooterProps> = ({
@@ -23,7 +23,7 @@ const Footer: React.FC<FooterProps> = ({
   setPrompt,
   handleSubmit,
   inputRef,
-  messageLimitPerDay,
+  remainingMessageCount,
 }) => {
   const checkKeyPress = (e) => {
     if (e.key === "Enter") {
@@ -131,9 +131,7 @@ const Footer: React.FC<FooterProps> = ({
           )}
         </form>
         <footer className="px-3 pt-2 pb-2 text-center text-xs text-black/50 dark:text-white/50 md:px-4 md:pt-3">
-          <span className="mr-4">
-            {currentUser.isSignedIn() && <span>今日剩余次数：{messageLimitPerDay - currentUser.usedMessageCount()}</span>}
-          </span>
+          <span className="mr-4">{currentUser.isSignedIn() && <span>今日剩余次数：{remainingMessageCount}</span>}</span>
           本站点基于外部 API 开发，仅供学习交流使用，使用前请知晓
           <a className="underline" href="/disclaimer" rel="noreferrer">
             免责申明

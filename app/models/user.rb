@@ -37,17 +37,12 @@ class User < ApplicationRecord
       nickname: self.nickname,
       email: self.email,
       config: self.config,
-      avatar_url: avatar_url,
-      used_message_count: used_message_count,
+      avatar_url: self.avatar_url,
     }
   end
 
   def ai_conversations
     Rails.cache.read(conversation_cache_key)
-  end
-
-  def used_message_count
-    Rails.cache.read(self.used_count_cache_key) || 0
   end
 
   def conversation_cache_key

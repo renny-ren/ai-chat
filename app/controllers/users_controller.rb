@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_user
 
   def update
     current_user.update!(user_params)
@@ -13,10 +14,21 @@ class UsersController < ApplicationController
     render_json_response :ok
   end
 
+  def show
+    @used_message_count = [
+      Rails.cache.read(current_user.used_count_cache_key).to_i,
+      Rails.cache.read("used_count:ip_#{request.remote_ip}").to_i,
+    ].max
+  end
+
   private
 
   def authenticate_user!
     warden.authenticate!
+  end
+
+  def set_user
+    @user = User.find(params[:id])
   end
 
   def user_params

@@ -4,7 +4,7 @@ const Disclaimer = () => {
   return (
     <>
       <div className="h-full relative pt-14">
-        <main className="h-full pt-8">
+        <main className="h-full py-8">
           <div className="absolute inset-0 -z-10 mx-0 max-w-none overflow-hidden">
             <div className="absolute left-1/2 top-0 ml-[-38rem] h-[25rem] w-[81.25rem] dark:[mask-image:linear-gradient(white,transparent)]">
               <div className="absolute inset-0 bg-gradient-to-r from-[#36b49f] to-[#DBFF75] opacity-40 [mask-image:radial-gradient(farthest-side_at_top,white,transparent)] dark:from-[#36b49f]/30 dark:to-[#DBFF75]/30 dark:opacity-100">
@@ -28,7 +28,7 @@ const Disclaimer = () => {
               </div>
             </div>
           </div>
-          <article className="mx-auto max-w-3xl">
+          <article className="mx-auto max-w-3xl pb-4">
             <div>
               <h2 className="text-xl text-center font-medium">aii.chat 免责申明</h2>
               <div className="text-gray-800 mt-2">

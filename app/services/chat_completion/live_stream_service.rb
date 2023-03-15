@@ -1,7 +1,6 @@
 module ChatCompletion
   class LiveStreamService
     MODEL = "gpt-3.5-turbo".freeze
-    MESSAGE_LIMIT_PER_DAY = 5.freeze
 
     attr_reader :sse, :current_user, :params
 
@@ -12,12 +11,6 @@ module ChatCompletion
     end
 
     def call
-      if current_user.used_message_count >= MESSAGE_LIMIT_PER_DAY
-        sse.write({ error: true, message: "limit excceeded" })
-        sse.close
-        return
-      end
-
       # dummy_call
       current_user.messages.create!(
         conversation_id: conversation.id,

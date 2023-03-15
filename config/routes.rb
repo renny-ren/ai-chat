@@ -16,7 +16,7 @@ Rails.application.routes.draw do
       get "live_stream", on: :collection
     end
     resources :messages, only: :index
-    resources :users, only: [:update] do
+    resources :users, only: [:update, :show] do
       post :clear_conversations, on: :collection
     end
     resources :sponsorships, only: :index

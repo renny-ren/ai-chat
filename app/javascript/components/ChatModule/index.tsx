@@ -22,7 +22,7 @@ const ChatModule: FC<ChatModuleProps> = ({ setIsShowModal, setConversations }) =
   const [isLoading, setIsLoading] = useState(false)
   const [conversationId, setConversationId] = useState(useParams().conversationId || "")
   const [isFetchingMsgs, setIsFetchingMsgs] = useState(false)
-  const [usedMessageCount, setUsedMessageCount] = useState(currentUser.usedMessageCount())
+  const [usedMessageCount, setUsedMessageCount] = useState(0)
   const MESSAGE_LIMIT_PER_DAY = 5
 
   const generateUniqueId = () => {
@@ -48,8 +48,11 @@ const ChatModule: FC<ChatModuleProps> = ({ setIsShowModal, setConversations }) =
   }
 
   useEffect(() => {
-    if (currentUser.isSignedIn() && conversationId) {
-      fetchMessages()
+    if (currentUser.isSignedIn()) {
+      fetchUser()
+      if (conversationId) {
+        fetchMessages()
+      }
     }
   }, [])
 
@@ -59,6 +62,16 @@ const ChatModule: FC<ChatModuleProps> = ({ setIsShowModal, setConversations }) =
       setPrompt("")
     }
   }, [isLoading])
+
+  const fetchUser = async () => {
+    const csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content")
+    const response = await axios.get(`/v1/users/${currentUser.id()}`, {
+      headers: {
+        "X-CSRF-Token": csrf,
+      },
+    })
+    setUsedMessageCount(response.data.user.used_message_count)
+  }
 
   const fetchMessages = async () => {
     setIsFetchingMsgs(true)
@@ -324,7 +337,7 @@ const ChatModule: FC<ChatModuleProps> = ({ setIsShowModal, setConversations }) =
         setPrompt={setPrompt}
         handleSubmit={handleSubmit}
         inputRef={inputRef}
-        messageLimitPerDay={MESSAGE_LIMIT_PER_DAY}
+        remainingMessageCount={MESSAGE_LIMIT_PER_DAY - usedMessageCount}
       />
     </main>
   )
