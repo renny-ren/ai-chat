@@ -211,6 +211,14 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, isMobile 
               <li className="relative">
                 <a
                   className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+                  href="/pricing"
+                >
+                  <span className="truncate">升级服务</span>
+                </a>
+              </li>
+              <li className="relative">
+                <a
+                  className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
                   href="/disclaimer"
                 >
                   <span className="truncate">免责声明</span>

@@ -4,6 +4,7 @@ import Home from "components/Home"
 import Disclaimer from "components/Disclaimer"
 import Chat from "components/Chat"
 import Settings from "components/user/Settings"
+import Pricing from "components/Pricing"
 
 export default ({ setIsShowModal, setCustomContent, setConversations }) => {
   return (
@@ -18,6 +19,7 @@ export default ({ setIsShowModal, setCustomContent, setConversations }) => {
         />
         <Route path="/chats/:conversationId" element={<Chat setIsShowModal={setIsShowModal} />} />
         <Route path="/settings" element={<Settings />} />
+        <Route path="/pricing" element={<Pricing />} />
       </Routes>
     </Router>
   )
