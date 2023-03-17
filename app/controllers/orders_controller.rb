@@ -8,26 +8,30 @@ class OrdersController < ApplicationController
   end
 
   def create
-    plan = MembershipPlan.find_by(name: params[:plan_name])
+    plan = MembershipPlan.find_by(name: params[:name])
     if plan.present?
       Order.transaction do
-        response = precreate_alipay_trade
+        @alipay_resp = precreate_alipay_trade(plan)
         order = current_user.orders.create!(
           owner: plan,
           amount: plan.amount,
-          data: { out_trade_no: response.out_trade_no },
+          data: { out_trade_no: @alipay_resp[:out_trade_no] },
         )
       end
+      render_json_response :ok, id: order.id, qr_code_url: @alipay_resp[:qr_code_url]
+      # render_json_response :ok, trade_no: "202303171620545090", qr_code_url: "https://qr.alipay.com/bax08311ig2okdd4zow72533"
+    else
+      render_json_response :error, message: "Invalid plan"
     end
-    render_json_response :ok, data: { trade_no: response.out_trade_no, qr_code_url: response.qr_code_url }
   rescue => e
     render_json_response :error, message: e.message
   end
 
   # This endpoint is a callback endpoint, so it doesn't have authentication.
   def notify
-    order = Order.find_by("data ->> 'out_trade_no' = ?", params[:out_trade_no])
-    order.fullfill! if order.present?
+    puts "params====#{params}"
+    # order = Order.find_by("data ->> 'out_trade_no' = ?", params[:out_trade_no])
+    # order.fullfill! if order.present?
   end
 
   private
@@ -40,7 +44,7 @@ class OrdersController < ApplicationController
     warden.authenticate!
   end
 
-  def precreate_alipay_trade
+  def precreate_alipay_trade(plan)
     AlipayTrade::PrecreateService.new(plan).call
   end
 end
