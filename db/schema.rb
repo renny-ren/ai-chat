@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_11_080350) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_17_065906) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -51,6 +51,28 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_11_080350) do
     t.index ["user_id"], name: "index_conversations_on_user_id"
   end
 
+  create_table "membership_plans", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "description"
+    t.decimal "amount", precision: 10, scale: 2
+    t.integer "duration", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "membership_subscriptions", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "membership_plan_id", null: false
+    t.datetime "start_at"
+    t.datetime "end_at"
+    t.integer "status", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["membership_plan_id"], name: "index_membership_subscriptions_on_membership_plan_id"
+    t.index ["status"], name: "index_membership_subscriptions_on_status"
+    t.index ["user_id"], name: "index_membership_subscriptions_on_user_id"
+  end
+
   create_table "messages", force: :cascade do |t|
     t.text "content"
     t.bigint "user_id", null: false
@@ -62,6 +84,20 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_11_080350) do
     t.integer "role", default: 0, null: false
     t.index ["conversation_id"], name: "index_messages_on_conversation_id"
     t.index ["user_id"], name: "index_messages_on_user_id"
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.decimal "amount", precision: 10, scale: 2
+    t.integer "status", default: 0, null: false
+    t.string "owner_type"
+    t.bigint "owner_id"
+    t.json "data", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["owner_type", "owner_id"], name: "index_orders_on_owner"
+    t.index ["status"], name: "index_orders_on_status"
+    t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
   create_table "sponsorships", force: :cascade do |t|
@@ -90,6 +126,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_11_080350) do
     t.datetime "updated_at", null: false
     t.string "nickname"
     t.jsonb "config", default: {}
+    t.integer "membership", default: 0, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true
@@ -98,6 +135,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_11_080350) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "conversations", "users"
+  add_foreign_key "membership_subscriptions", "membership_plans"
+  add_foreign_key "membership_subscriptions", "users"
   add_foreign_key "messages", "users"
+  add_foreign_key "orders", "users"
   add_foreign_key "sponsorships", "users"
 end

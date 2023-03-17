@@ -21,6 +21,9 @@ Rails.application.routes.draw do
     end
     resources :sponsorships, only: :index
     resources :conversations, only: [:index, :destroy]
+    resources :orders, only: [:show, :create] do
+      post :notify, on: :collection
+    end
   end
   get "/*path" => "homepage#index", format: false, constraints: ->(req) { !req.xhr? && req.format.html? }
   # get "/settings" => "homepage#index"

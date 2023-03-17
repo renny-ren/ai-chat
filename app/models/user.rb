@@ -7,6 +7,8 @@ class User < ApplicationRecord
   has_many :messages
   has_many :sponsorships
   has_many :conversations
+  has_many :orders
+  has_many :membership_subscriptions
 
   has_one_attached :avatar, dependent: :purge
 
@@ -14,6 +16,8 @@ class User < ApplicationRecord
   validates :nickname, presence: true, uniqueness: true, length: 1..16
   validates_format_of :username, with: /^[a-zA-Z0-9_\.]*$/, multiline: true # Only allow letter, number, underscore and punctuation.
   validates :email, uniqueness: true, allow_blank: true, format: { with: URI::MailTo::EMAIL_REGEXP, message: "email is not valid" }
+
+  enum membership: { free: 0, basic: 1, advanced: 2 }
 
   def avatar_url(size = 80)
     # ActiveStorage::Current.url_options = { host: "localhost", port: 3000 }

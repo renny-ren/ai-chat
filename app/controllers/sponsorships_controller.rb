@@ -1,5 +1,4 @@
 class SponsorshipsController < ApplicationController
-  # before_action :authenticate_user!
   before_action :set_resources, only: :index
 
   def index
@@ -12,6 +11,6 @@ class SponsorshipsController < ApplicationController
   end
 
   def set_resources
-    @sponsorships = Sponsorship.includes(:user).all
+    @sponsorships = Sponsorship.includes(:user).order(created_at: :desc)
   end
 end
