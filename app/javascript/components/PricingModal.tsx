@@ -13,7 +13,7 @@ interface PricingModalProps {
 
 const PricingModal: React.FC<PricingModalProps> = ({ isOpen, setIsOpenModal }) => {
   const [isLoading, setIsLoading] = useState(false)
-  const [pendingPayment, setPendingPayment] = useState(false)
+  const [isPaid, setIsPaid] = useState(false)
   const [qrCodeUrl, setQrCodeUrl] = useState("")
   let [poll, setPoll] = useState()
 
@@ -33,18 +33,15 @@ const PricingModal: React.FC<PricingModalProps> = ({ isOpen, setIsOpenModal }) =
   }
 
   const pollStatus = async (orderId) => {
-    try {
-      setPendingPayment(true)
-      const response = await axios.get(`/v1/orders/${orderId}`)
-      if (response.data.status === "paid") {
-        setPendingPayment(false)
-        message.success("支付成功！")
+    const response = await axios.get(`/v1/orders/${orderId}`)
+    if (response.data.status === "paid") {
+      setIsPaid(true)
+      setTimeout(() => {
+        message.success("升级成功！")
         closeModal()
-      }
-    } catch (error) {
-      message.error(error.response.data.message)
-    } finally {
-      setPendingPayment(false)
+        setIsPaid(false)
+        window.location.reload()
+      }, 2000)
     }
   }
 
@@ -92,23 +89,35 @@ const PricingModal: React.FC<PricingModalProps> = ({ isOpen, setIsOpenModal }) =
               >
                 <Dialog.Panel className="w-full max-w-sm transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all opacity-100 scale-100">
                   <div className="flex min-h-full items-center justify-center">
-                    <div className="w-full space-y-8">
-                      <div className="py-4 text-sm text-gray-500">
+                    <div className="w-full">
+                      <div className="py-4 text-sm text-gray-500 text-center">
                         {isLoading ? (
                           <Spin size="large" />
                         ) : (
-                          <div className="text-center">
+                          <>
                             <img className="m-auto h-16 p-2" src="assets/alipay-logo-1e.png" />
                             <div className="py-2">
-                              <QRCode className="m-auto" size={256} value={qrCodeUrl} viewBox={`0 0 256 256`} level="M" />
+                              <QRCode
+                                className="m-auto"
+                                size={256}
+                                value={qrCodeUrl || ""}
+                                viewBox={`0 0 256 256`}
+                                level="M"
+                              />
                             </div>
                             <div className="pt-2">
                               <p>请使用支付宝扫描二维码支付</p>
                               <p>支付完成后页面会自动刷新</p>
                             </div>
-                          </div>
+                          </>
                         )}
                       </div>
+                      {isPaid && (
+                        <div className="text-md font-semibold text-emerald-500 text-center">
+                          支付成功，正在升级
+                          <Spin className="ml-2" />
+                        </div>
+                      )}
                     </div>
                   </div>
                 </Dialog.Panel>

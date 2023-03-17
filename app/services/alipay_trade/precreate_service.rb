@@ -18,8 +18,7 @@ module AlipayTrade
     def call
       response = client.execute(
         method: "alipay.trade.precreate",
-        # notify_url: "https://aii.chat/v1/orders/notify",
-        notify_url: "https://renny.ren/orders/notify",
+        notify_url: "https://aii.chat/webhooks/alipay",
         biz_content: JSON.generate({
           out_trade_no: out_trade_no,
           # total_amount: plan.amount,

@@ -78,3 +78,4 @@ gem "dalli"
 gem "kaminari"
 gem "activestorage-aliyun"
 gem "alipay"
+gem "whenever", require: false
