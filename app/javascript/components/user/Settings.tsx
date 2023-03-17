@@ -14,12 +14,10 @@ axios.interceptors.request.use((config) => {
 const Settings: React.FC<SettingsProps> = ({}) => {
   const [nickname, setNickname] = useState(currentUser.nickname() || "")
   const [email, setEmail] = useState(currentUser.email() || "")
-  const [avatarFile, setAvatarFile] = useState()
 
   const onSave = async (e) => {
     e.preventDefault()
     const formData = new FormData()
-    formData.append("avatar", avatarFile)
     formData.append("nickname", nickname)
     formData.append("email", email)
 
