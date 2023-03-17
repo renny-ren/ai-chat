@@ -1,3 +1,1 @@
-json.order do
-  json.status @order.status
-end
+json.status @order.status

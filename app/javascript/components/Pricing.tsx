@@ -1,8 +1,15 @@
 import React, { useState } from "react"
+import PricingModal from "./PricingModal"
 
 interface PricingProps {}
 
 const Pricing: React.FC<PricingProps> = ({}) => {
+  const [isOpenModal, setIsOpenModal] = useState(false)
+
+  const openModal = () => {
+    setIsOpenModal(true)
+  }
+
   const renderItem = (content, can = true) => (
     <p className="flex items-center space-x-2 text-base text-body-color leading-loose mb-1">
       {can ? (
@@ -131,12 +138,12 @@ const Pricing: React.FC<PricingProps> = ({}) => {
                       {renderItem("导出个人会话内容", false)}
                       {renderItem("回答图片内容", false)}
                     </div>
-                    <a
-                      href="#"
+                    <button
+                      onClick={openModal}
                       className="w-full block text-base font-semibold text-emerald-500 bg-transparent border border-emerald-500 rounded-md text-center p-4 hover:text-white hover:bg-emerald-500 hover:border-emerald-500 transition"
                     >
                       升级到基础版
-                    </a>
+                    </button>
                     <div>
                       <span className="absolute right-0 top-7 z-[-1]">
                         <svg width="77" height="172" viewBox="0 0 77 172" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -209,6 +216,7 @@ const Pricing: React.FC<PricingProps> = ({}) => {
             </div>
           </section>
         </main>
+        <PricingModal isOpen={isOpenModal} setIsOpenModal={setIsOpenModal} />
       </div>
     </>
   )

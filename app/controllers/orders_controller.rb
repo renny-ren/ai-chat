@@ -1,6 +1,7 @@
 class OrdersController < ApplicationController
   before_action :authenticate_user!
   skip_before_action :authenticate_user!, only: :notify
+  skip_before_action :verify_authenticity_token, only: :notify
 
   def show
     @order = Order.find(params[:id])
@@ -12,14 +13,15 @@ class OrdersController < ApplicationController
     if plan.present?
       Order.transaction do
         @alipay_resp = precreate_alipay_trade(plan)
-        order = current_user.orders.create!(
+        @order = current_user.orders.create!(
           owner: plan,
           amount: plan.amount,
           data: { out_trade_no: @alipay_resp[:out_trade_no] },
         )
       end
-      render_json_response :ok, id: order.id, qr_code_url: @alipay_resp[:qr_code_url]
+      render_json_response :ok, id: @order.id, qr_code_url: @alipay_resp[:qr_code_url]
       # render_json_response :ok, trade_no: "202303171620545090", qr_code_url: "https://qr.alipay.com/bax08311ig2okdd4zow72533"
+      # render_json_response :ok, id: Order.last.id, qr_code_url: "https://qr.alipay.com/bax08311ig2okdd4zow72533"
     else
       render_json_response :error, message: "Invalid plan"
     end

@@ -1,6 +1,5 @@
 import React, { Fragment, useRef, useState, useEffect } from "react"
 import { Dialog, Transition } from "@headlessui/react"
-import { ExclamationTriangleIcon } from "@heroicons/react/24/outline"
 import { LockClosedIcon } from "@heroicons/react/20/solid"
 import { message } from "antd"
 import axios from "axios"

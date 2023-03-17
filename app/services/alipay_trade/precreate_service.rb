@@ -10,6 +10,7 @@ module AlipayTrade
         app_id: Rails.application.credentials.alipay.app_id,
         app_private_key: Rails.application.credentials.alipay.app_private_key,
         alipay_public_key: Rails.application.credentials.alipay.alipay_public_key,
+        charset: "utf-8",
       )
       @out_trade_no = "#{Time.now.strftime("%Y%m%d%H%M%S%L")}#{SecureRandom.rand(9)}"
     end
@@ -17,10 +18,12 @@ module AlipayTrade
     def call
       response = client.execute(
         method: "alipay.trade.precreate",
-        notify_url: "https://aii.chat/v1/orders/notify",
+        # notify_url: "https://aii.chat/v1/orders/notify",
+        notify_url: "https://renny.ren/orders/notify",
         biz_content: JSON.generate({
           out_trade_no: out_trade_no,
-          total_amount: plan.amount,
+          # total_amount: plan.amount,
+          total_amount: 0.1,
           subject: plan.description,
         }, ascii_only: true),
       )

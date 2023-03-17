@@ -14,6 +14,7 @@ class Order < ApplicationRecord
         end_at: Time.now + (plan.duration).days,
       )
       user.update!(membership: plan.name)
+      paid!
     end
   end
 end

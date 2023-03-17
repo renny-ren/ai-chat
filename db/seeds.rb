@@ -12,3 +12,18 @@ robot_user = User.create(
   password: Rails.application.credentials.gpt_user_password,
   password_confirmation: password: Rails.application.credentials.gpt_user_password
 )
+
+
+MembershipPlan.create(
+  name: 'basic',
+  description: '基础版会员',
+  amount: 9,
+  duration: 30,
+)
+
+MembershipPlan.create(
+  name: 'advanced',
+  description: '高级版会员',
+  amount: 18,
+  duration: 60,
+)
