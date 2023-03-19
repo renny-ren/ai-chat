@@ -3,6 +3,7 @@ class CompletionsController < ApplicationController
 
   before_action :authenticate_user!
 
+  # Deprecated
   def create
     client = OpenAI::Client.new(OPENAI_API_KEY)
     res = client.create_completion(completion_params.merge(
@@ -34,6 +35,8 @@ class CompletionsController < ApplicationController
   private
 
   def can_chat?
+    return false if current_user.openai_account.nil?
+
     data = YAML.load_file(Rails.root.join("config", "membership_plans.yml"))
     used_message_count < data.dig(current_user.membership, "message_limit_per_day")
   end

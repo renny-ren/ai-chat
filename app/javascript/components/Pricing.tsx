@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import PricingModal from "./PricingModal"
+import currentUser from "stores/current_user_store"
 
 interface PricingProps {}
 
@@ -98,7 +99,7 @@ const Pricing: React.FC<PricingProps> = ({}) => {
                       {renderItem("AI 生成图片内容", false)}
                     </div>
                     <a className="w-full block text-base font-semibold text-emerald-500 bg-transparent border border-emerald-500 rounded-md text-center p-4 transition">
-                      免费版
+                      {currentUser.membership() === "free" ? "当前版本" : "免费版"}
                     </a>
                     <div>
                       <span className="absolute right-0 top-7 z-[-1]">

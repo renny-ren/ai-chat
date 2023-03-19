@@ -96,7 +96,7 @@ module ChatCompletion
     def headers
       {
         "Content-Type" => "application/json",
-        "Authorization" => "Bearer #{OPENAI_API_KEY}",
+        "Authorization" => "Bearer #{current_user.openai_account.secret_key || OPENAI_API_KEY}",
       }
     end
   end

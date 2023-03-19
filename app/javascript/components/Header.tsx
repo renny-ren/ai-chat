@@ -29,17 +29,18 @@ const Header: React.FC<HeaderProps> = ({ setIsShowModal, customContent, conversa
             <a aria-label="Home" href="/"></a>
           </div>
           <div
-            className="fixed inset-x-0 top-0 z-50 flex h-14 items-center justify-between gap-12 px-4 transition sm:px-6 lg:left-64 lg:z-30 lg:px-8 xl:left-72 backdrop-blur-sm dark:backdrop-blur lg:left-64 xl:left-72 bg-white/[var(--bg-opacity-light)] dark:bg-zinc-900/[var(--bg-opacity-dark)]"
+            className="fixed inset-x-0 top-0 z-50 flex h-12 md:h-14 items-center justify-between gap-12 px-4 transition sm:px-6 lg:left-64 lg:z-30 lg:px-8 xl:left-72 backdrop-blur-sm dark:backdrop-blur lg:left-64 xl:left-72 bg-white/[var(--bg-opacity-light)] dark:bg-zinc-900/[var(--bg-opacity-dark)]"
             style={{ "--bg-opacity-light": "0.5", "--bg-opacity-dark": "0.2" }}
           >
             <div className="absolute inset-x-0 top-full h-px transition bg-zinc-900/[.075] dark:bg-white/[.075]"></div>
-            <div className="flex space-x-4">
+            <div className="flex items-center">
               <div className="hidden lg:block lg:max-w-md lg:flex-auto">
                 <a aria-label="Home" href="/">
                   <img src={`${CDN_HOST}/assets/logo.png`} width="60px" />
                 </a>
               </div>
-              <div className="flex items-center gap-5 lg:hidden">
+
+              <div className="flex items-center gap-4 lg:hidden">
                 <button
                   type="button"
                   className="flex h-6 w-6 items-center justify-center rounded-md transition hover:bg-zinc-900/5 dark:hover:bg-white/5"
@@ -60,16 +61,16 @@ const Header: React.FC<HeaderProps> = ({ setIsShowModal, customContent, conversa
                   <img src={`${CDN_HOST}/assets/logo.png`} width="60px" />
                 </a>
               </div>
-              <Tag className="text-gray-500">{currentUser.membershipName()}</Tag>
-              {/*<a
-                href="/pricing"
-                className="outline-none inline-flex ml-2 px-2 py-1 text-xs text-gray-600 transition-colors duration-300 transform border rounded-lg dark:text-gray-200 dark:border-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
-              >
-                <span>高级版</span>
-              </a>*/}
+              {currentUser.isSignedIn() && (
+                <div className="ml-4">
+                  <a href="/pricing">
+                    <Tag className="text-gray-500">{currentUser.membershipName()}</Tag>
+                  </a>
+                </div>
+              )}
             </div>
 
-            <div className="flex items-center gap-5">
+            <div className="flex items-end gap-5">
               <nav className="hidden md:block">
                 {/*<ul role="list" className="flex items-center gap-8">
                   <li>
@@ -82,7 +83,7 @@ const Header: React.FC<HeaderProps> = ({ setIsShowModal, customContent, conversa
                   </li>
                 </ul>*/}
               </nav>
-              <div className="hidden md:block md:h-5 md:w-px md:bg-zinc-900/10 md:dark:bg-white/15"></div>
+              {/*<div className="hidden md:block md:h-5 md:w-px md:bg-zinc-900/10 md:dark:bg-white/15"></div>*/}
               <div className="flex gap-4">
                 {/*<button
                   type="button"

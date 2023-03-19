@@ -17,7 +17,7 @@ const Avatar: React.FC<AvatarProps> = ({ src, isRobot, openModal }) => {
             {({ open }) => (
               <>
                 <Popover.Button className={`${open ? "" : "text-opacity-90"} outline-none inline-block h-10 w-10`}>
-                  <img className="cursor-pointer rounded-full ring-2 ring-white" src={src} />
+                  <img className="cursor-pointer rounded-full" src={src} />
                 </Popover.Button>
                 <Transition
                   as={Fragment}
@@ -47,7 +47,7 @@ const Avatar: React.FC<AvatarProps> = ({ src, isRobot, openModal }) => {
           </Popover>
         </>
       ) : (
-        <img className="mt-1 inline-block h-10 w-10 rounded-full ring-2 ring-white aspect-square" src={src} />
+        <img className="mt-1 inline-block h-10 w-10 rounded-full aspect-square" src={src} />
       )}
     </>
   )
