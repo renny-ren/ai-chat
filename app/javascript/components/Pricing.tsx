@@ -136,7 +136,7 @@ const Pricing: React.FC<PricingProps> = ({}) => {
                       {renderItem("有效期 30 天")}
                       {renderItem("最大提问长度 300 字")}
                       {renderItem("导出个人会话内容", false)}
-                      {renderItem("回答图片内容", false)}
+                      {renderItem("AI 生成图片内容", false)}
                     </div>
                     <button
                       onClick={() => openModal("basic")}
@@ -181,7 +181,7 @@ const Pricing: React.FC<PricingProps> = ({}) => {
                       {renderItem("有效期 60 天")}
                       {renderItem("最大提问长度 1000 字")}
                       {renderItem("导出个人会话内容")}
-                      {renderItem("回答图片内容")}
+                      {renderItem("AI 生成图片内容")}
                     </div>
                     <button
                       onClick={() => openModal("advanced")}

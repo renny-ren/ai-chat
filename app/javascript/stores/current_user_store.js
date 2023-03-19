@@ -27,6 +27,10 @@ const currentUser = {
     return gon.user_meta.membership_name
   },
 
+  plan() {
+    return gon.user_meta.plan
+  },
+
   config() {
     return gon.user_meta?.config
   },

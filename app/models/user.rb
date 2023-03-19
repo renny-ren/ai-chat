@@ -45,6 +45,7 @@ class User < ApplicationRecord
       avatar_url: self.avatar_url,
       membership: self.membership,
       membership_name: self.membership_name,
+      plan: YAML.load_file(Rails.root.join("config", "membership_plans.yml")).dig(self.membership),
     }
   end
 

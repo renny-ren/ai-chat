@@ -36,7 +36,7 @@ const Footer: React.FC<FooterProps> = ({
 
   const handlePromptChange = (e) => {
     value = e.target.value
-    if (value.length > 500) {
+    if (value.length > currentUser.plan().max_question_length) {
       return message.error("消息已达最大长度限制")
     }
     setPrompt(value)

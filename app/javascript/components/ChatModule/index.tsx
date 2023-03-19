@@ -23,7 +23,7 @@ const ChatModule: FC<ChatModuleProps> = ({ setIsShowModal, setConversations }) =
   const [conversationId, setConversationId] = useState(useParams().conversationId || "")
   const [isFetchingMsgs, setIsFetchingMsgs] = useState(false)
   const [usedMessageCount, setUsedMessageCount] = useState(0)
-  const MESSAGE_LIMIT_PER_DAY = 5
+  const messageLimitPerDay = currentUser.plan().message_limit_per_day
 
   const generateUniqueId = () => {
     const timestamp = Date.now()
@@ -118,7 +118,7 @@ const ChatModule: FC<ChatModuleProps> = ({ setIsShowModal, setConversations }) =
     if (isLoading) {
       return message.error("机器人回答不过来了，请稍后再问")
     }
-    if (usedMessageCount >= MESSAGE_LIMIT_PER_DAY) {
+    if (usedMessageCount >= messageLimitPerDay) {
       return message.error("今日与 AI 聊天次数已到上限，请明日再来，或前往聊天室聊天")
     }
     addMessage({ role: "user", content: prompt })
@@ -342,7 +342,7 @@ const ChatModule: FC<ChatModuleProps> = ({ setIsShowModal, setConversations }) =
         setPrompt={setPrompt}
         handleSubmit={handleSubmit}
         inputRef={inputRef}
-        remainingMessageCount={MESSAGE_LIMIT_PER_DAY - usedMessageCount}
+        remainingMessageCount={messageLimitPerDay - usedMessageCount}
       />
     </main>
   )

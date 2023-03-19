@@ -1,6 +1,4 @@
 class CompletionsController < ApplicationController
-  MESSAGE_LIMIT_PER_DAY = 5.freeze
-
   include ActionController::Live
 
   before_action :authenticate_user!
@@ -36,7 +34,8 @@ class CompletionsController < ApplicationController
   private
 
   def can_chat?
-    used_message_count < MESSAGE_LIMIT_PER_DAY
+    data = YAML.load_file(Rails.root.join("config", "membership_plans.yml"))
+    used_message_count < data.dig(current_user.membership, "message_limit_per_day")
   end
 
   def used_message_count
