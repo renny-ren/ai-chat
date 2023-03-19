@@ -22,3 +22,7 @@
 every 1.minute do
   runner "ClosePendingOrderJob.perform_now"
 end
+
+every 12.hours do
+  runner "ExpireMembershipJob.perform_now"
+end

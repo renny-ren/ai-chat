@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_17_065906) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_19_061859) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -86,6 +86,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_17_065906) do
     t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
+  create_table "openai_accounts", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "secret_key"
+    t.string "email"
+    t.string "password"
+    t.decimal "credit", precision: 6, scale: 2
+    t.decimal "used_amount", precision: 6, scale: 2
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_openai_accounts_on_user_id"
+  end
+
   create_table "orders", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.decimal "amount", precision: 10, scale: 2
@@ -138,6 +150,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_17_065906) do
   add_foreign_key "membership_subscriptions", "membership_plans"
   add_foreign_key "membership_subscriptions", "users"
   add_foreign_key "messages", "users"
+  add_foreign_key "openai_accounts", "users"
   add_foreign_key "orders", "users"
   add_foreign_key "sponsorships", "users"
 end

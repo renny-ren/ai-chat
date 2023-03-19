@@ -9,6 +9,7 @@ class User < ApplicationRecord
   has_many :conversations
   has_many :orders
   has_many :membership_subscriptions
+  has_one :openai_account
 
   has_one_attached :avatar, dependent: :purge
 
