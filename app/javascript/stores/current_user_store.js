@@ -23,6 +23,10 @@ const currentUser = {
     return gon.user_meta.avatar_url
   },
 
+  membershipName() {
+    return gon.user_meta.membership_name
+  },
+
   config() {
     return gon.user_meta?.config
   },

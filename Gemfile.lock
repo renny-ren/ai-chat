@@ -97,6 +97,8 @@ GEM
       warden (~> 1.2.3)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
+    enumize (0.2.1)
+      rails (>= 5.0.0)
     erubi (1.12.0)
     faraday (2.7.4)
       faraday-net_http (>= 2.0, < 3.1)
@@ -270,6 +272,7 @@ DEPENDENCIES
   dalli
   debug
   devise
+  enumize
   faraday
   gon
   jbuilder

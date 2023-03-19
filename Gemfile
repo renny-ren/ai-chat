@@ -79,3 +79,4 @@ gem "kaminari"
 gem "activestorage-aliyun"
 gem "alipay"
 gem "whenever", require: false
+gem "enumize"

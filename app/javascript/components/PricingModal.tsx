@@ -9,9 +9,10 @@ import { Spin } from "antd"
 interface PricingModalProps {
   isOpen: boolean
   setIsOpenModal: () => void
+  planName: string
 }
 
-const PricingModal: React.FC<PricingModalProps> = ({ isOpen, setIsOpenModal }) => {
+const PricingModal: React.FC<PricingModalProps> = ({ isOpen, setIsOpenModal, planName }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [isPaid, setIsPaid] = useState(false)
   const [qrCodeUrl, setQrCodeUrl] = useState("")
@@ -48,7 +49,7 @@ const PricingModal: React.FC<PricingModalProps> = ({ isOpen, setIsOpenModal }) =
   const getQrCode = async () => {
     try {
       setIsLoading(true)
-      const response = await axios.post("/v1/orders", { name: "basic" }, { headers: headers })
+      const response = await axios.post("/v1/orders", { name: planName }, { headers: headers })
       setQrCodeUrl(response.data.qr_code_url)
       poll = setInterval(pollStatus, 1500, response.data.id)
       setPoll(poll)

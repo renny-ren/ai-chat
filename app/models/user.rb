@@ -42,6 +42,8 @@ class User < ApplicationRecord
       email: self.email,
       config: self.config,
       avatar_url: self.avatar_url,
+      membership: self.membership,
+      membership_name: self.membership_name,
     }
   end
 

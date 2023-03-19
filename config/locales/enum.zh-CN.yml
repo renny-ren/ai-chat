@@ -1,0 +1,8 @@
+zh-CN:
+  activerecord:
+    enums:
+      user:
+        membership:
+          free: "免费版"
+          basic: "基础版"
+          advanced: "高级版"

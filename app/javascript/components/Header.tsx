@@ -5,6 +5,7 @@ import MobileMenu from "./MobileMenu"
 import UserBar from "./user/UserBar"
 import { Transition } from "@headlessui/react"
 import { CDN_HOST } from "shared/constants"
+import { Tag } from "antd"
 
 interface HeaderProps {
   setIsShowModal: () => void
@@ -32,32 +33,42 @@ const Header: React.FC<HeaderProps> = ({ setIsShowModal, customContent, conversa
             style={{ "--bg-opacity-light": "0.5", "--bg-opacity-dark": "0.2" }}
           >
             <div className="absolute inset-x-0 top-full h-px transition bg-zinc-900/[.075] dark:bg-white/[.075]"></div>
-            <div className="hidden lg:block lg:max-w-md lg:flex-auto">
-              <a aria-label="Home" href="/">
-                <img src={`${CDN_HOST}/assets/logo.png`} width="60px" />
-              </a>
-            </div>
-            <div className="flex items-center gap-5 lg:hidden">
-              <button
-                type="button"
-                className="flex h-6 w-6 items-center justify-center rounded-md transition hover:bg-zinc-900/5 dark:hover:bg-white/5"
-                aria-label="Toggle navigation"
-                onClick={() => setIsShowMobileMenu((isShowMobileMenu) => !isShowMobileMenu)}
-              >
-                <svg
-                  viewBox="0 0 10 9"
-                  fill="none"
-                  strokeLinecap="round"
-                  aria-hidden="true"
-                  className="w-2.5 stroke-zinc-900 dark:stroke-white"
+            <div className="flex space-x-4">
+              <div className="hidden lg:block lg:max-w-md lg:flex-auto">
+                <a aria-label="Home" href="/">
+                  <img src={`${CDN_HOST}/assets/logo.png`} width="60px" />
+                </a>
+              </div>
+              <div className="flex items-center gap-5 lg:hidden">
+                <button
+                  type="button"
+                  className="flex h-6 w-6 items-center justify-center rounded-md transition hover:bg-zinc-900/5 dark:hover:bg-white/5"
+                  aria-label="Toggle navigation"
+                  onClick={() => setIsShowMobileMenu((isShowMobileMenu) => !isShowMobileMenu)}
                 >
-                  <path d="M.5 1h9M.5 8h9M.5 4.5h9"></path>
-                </svg>
-              </button>
-              <a aria-label="Home" href="/">
-                <img src={`${CDN_HOST}/assets/logo.png`} width="60px" />
-              </a>
+                  <svg
+                    viewBox="0 0 10 9"
+                    fill="none"
+                    strokeLinecap="round"
+                    aria-hidden="true"
+                    className="w-2.5 stroke-zinc-900 dark:stroke-white"
+                  >
+                    <path d="M.5 1h9M.5 8h9M.5 4.5h9"></path>
+                  </svg>
+                </button>
+                <a aria-label="Home" href="/">
+                  <img src={`${CDN_HOST}/assets/logo.png`} width="60px" />
+                </a>
+              </div>
+              <Tag className="text-gray-500">{currentUser.membershipName()}</Tag>
+              {/*<a
+                href="/pricing"
+                className="outline-none inline-flex ml-2 px-2 py-1 text-xs text-gray-600 transition-colors duration-300 transform border rounded-lg dark:text-gray-200 dark:border-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+              >
+                <span>高级版</span>
+              </a>*/}
             </div>
+
             <div className="flex items-center gap-5">
               <nav className="hidden md:block">
                 {/*<ul role="list" className="flex items-center gap-8">

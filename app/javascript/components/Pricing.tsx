@@ -5,9 +5,11 @@ interface PricingProps {}
 
 const Pricing: React.FC<PricingProps> = ({}) => {
   const [isOpenModal, setIsOpenModal] = useState(false)
+  const [planName, setPlanName] = useState("")
 
-  const openModal = () => {
+  const openModal = (plan) => {
     setIsOpenModal(true)
+    setPlanName(plan)
   }
 
   const renderItem = (content, can = true) => (
@@ -90,11 +92,10 @@ const Pricing: React.FC<PricingProps> = ({}) => {
                     <h2 className="font-bold text-dark mb-2 text-[42px]">¥0</h2>
                     <p className="text-base text-body-color pb-6 mb-6 border-b border-[#F2F2F2]">免费体验使用</p>
                     <div className="mb-7 min-h-[250px]">
-                      {renderItem("每日 3 次 AI 对话次数")}
-                      {renderItem("最多保存 2 条个人会话记录")}
-                      {renderItem("最大提问长度 200 字")}
+                      {renderItem("每日 2 次 AI 对话次数")}
+                      {renderItem("最大提问长度 100 字")}
                       {renderItem("导出个人会话内容", false)}
-                      {renderItem("回答图片内容", false)}
+                      {renderItem("AI 生成图片内容", false)}
                     </div>
                     <a className="w-full block text-base font-semibold text-emerald-500 bg-transparent border border-emerald-500 rounded-md text-center p-4 transition">
                       免费版
@@ -131,16 +132,16 @@ const Pricing: React.FC<PricingProps> = ({}) => {
                     </h2>
                     <p className="text-base text-body-color pb-6 mb-6 border-b border-[#F2F2F2]">个人基础使用</p>
                     <div className="mb-7 min-h-[250px]">
-                      {renderItem("无限对话次数")}
+                      {renderItem("每日 10 次 AI 对话次数")}
                       {renderItem("有效期 30 天")}
-                      {renderItem("最多保存 20 条个人会话记录")}
-                      {renderItem("最大提问长度 500 字")}
+                      {renderItem("最大提问长度 300 字")}
                       {renderItem("导出个人会话内容", false)}
                       {renderItem("回答图片内容", false)}
                     </div>
                     <button
-                      onClick={openModal}
-                      className="w-full block text-base font-semibold text-emerald-500 bg-transparent border border-emerald-500 rounded-md text-center p-4 hover:text-white hover:bg-emerald-500 hover:border-emerald-500 transition"
+                      onClick={() => openModal("basic")}
+                      // className="w-full block text-base font-semibold text-emerald-500 bg-transparent border border-emerald-500 rounded-md text-center p-4 hover:text-white hover:bg-emerald-500 hover:border-emerald-500 transition"
+                      className="w-full block text-base font-semibold text-white bg-emerald-500 border border-emerald-500 rounded-md text-center p-4 hover:bg-opacity-90 transition"
                     >
                       升级到基础版
                     </button>
@@ -178,17 +179,17 @@ const Pricing: React.FC<PricingProps> = ({}) => {
                     <div className="mb-7 min-h-[250px]">
                       {renderItem("无限对话次数")}
                       {renderItem("有效期 60 天")}
-                      {renderItem("最多保存 50 条个人会话记录")}
                       {renderItem("最大提问长度 1000 字")}
                       {renderItem("导出个人会话内容")}
                       {renderItem("回答图片内容")}
                     </div>
-                    <a
-                      href="#"
+                    <button
+                      onClick={() => openModal("advanced")}
+                      // className="w-full block text-base font-semibold text-emerald-500 bg-transparent border border-emerald-500 rounded-md text-center p-4 hover:text-white hover:bg-emerald-500 hover:border-emerald-500 transition"
                       className="w-full block text-base font-semibold text-white bg-emerald-500 border border-emerald-500 rounded-md text-center p-4 hover:bg-opacity-90 transition"
                     >
                       升级到高级版
-                    </a>
+                    </button>
                     <div>
                       <span className="absolute right-0 top-7 z-[-1]">
                         <svg width="77" height="172" viewBox="0 0 77 172" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -216,7 +217,7 @@ const Pricing: React.FC<PricingProps> = ({}) => {
             </div>
           </section>
         </main>
-        <PricingModal isOpen={isOpenModal} setIsOpenModal={setIsOpenModal} />
+        <PricingModal isOpen={isOpenModal} setIsOpenModal={setIsOpenModal} planName={planName} />
       </div>
     </>
   )
