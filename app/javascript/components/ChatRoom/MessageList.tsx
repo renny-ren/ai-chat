@@ -54,9 +54,7 @@ const MessageList = ({ messages, fetchMessages, isFetching, openModal, paginatio
         renderer={renderer}
       />
     ) : (
-      <div className="whitespace-pre-line">
-        {message.mentioned_users_nickname.map((name) => `@${name}`)} {message.content}
-      </div>
+      <div className="whitespace-pre-line">{message.content}</div>
     )
   }
 

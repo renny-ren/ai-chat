@@ -25,6 +25,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal, setCustomContent }
   const [pagination, setPagination] = useState({})
   const [isShowNotice, setIsShowNotice] = useState(false)
   const [noticeContent, setNoticeContent] = useState("")
+  const [subscribers, setSubscribers] = useState([{ id: 0, nickname: gon.global_config.robot_name }])
 
   const showNotice = (content) => {
     setNoticeContent(content)
@@ -79,7 +80,11 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal, setCustomContent }
     const channel = consumer.subscriptions.create("MessagesChannel", {
       received: (data) => {
         // console.log("==received==", data)
-        !data.id || data.is_first_chunk ? addMessage(data) : updateMessage(data)
+        if (data.type === "appearance") {
+          setSubscribers(data.subscribers)
+        } else {
+          !data.id || data.is_first_chunk ? addMessage(data) : updateMessage(data)
+        }
       },
       connected() {
         // Called when the subscription is ready for use on the server
@@ -165,6 +170,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal, setCustomContent }
           isGenerating={isGenerating}
           setIsGenerating={setIsGenerating}
           showNotice={showNotice}
+          subscribers={subscribers}
         />
       </div>
       <ClearConversationModal isOpen={isOpenClearModal} closeModal={closeModal} />

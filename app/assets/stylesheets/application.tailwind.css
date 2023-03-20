@@ -1,5 +1,6 @@
 @import "./components/chat_module.scss";
 @import "./components/pricing.scss";
+@import "./mention.scss";
 
 @tailwind base;
 @tailwind components;

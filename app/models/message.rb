@@ -19,7 +19,7 @@ class Message < ApplicationRecord
   scope :for_conversation, ->(conversation_id) { where(conversation_id: conversation_id) }
 
   def update_conversation_history
-    update_history(role: "user", content: self.content)
+    update_history(role: "user", content: self.content.sub("@#{robot_user.nickname} ", ""))
   end
 
   def generate_ai_response
@@ -130,7 +130,7 @@ class Message < ApplicationRecord
   def mentioned_users_nickname
     return [] if mentioned_user_ids.nil?
 
-    id_nickname_array = Rails.cache.fetch("id_nickname_array", expires_in: 30.seconds) do
+    id_nickname_array = Rails.cache.fetch("id_nickname_array", expires_in: 2.minutes) do
       User.all.pluck(:id, :nickname)
     end
     id_nickname_array.select { |item| mentioned_user_ids.include?(item[0]) }.map { |item| item[1] }

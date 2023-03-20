@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react"
 import currentUser from "stores/current_user_store"
 import { message } from "antd"
+import { MentionsInput, Mention } from "react-mentions"
 
 message.config({
   maxCount: 1,
@@ -12,12 +13,21 @@ interface FooterProps {
   isGenerating: boolean
   setIsGenerating: () => void
   showNotice: () => void
+  subscribers: any
 }
 
-const Footer: React.FC<FooterProps> = ({ cable, showSignInModal, isGenerating, setIsGenerating, showNotice }) => {
+const Footer: React.FC<FooterProps> = ({
+  cable,
+  showSignInModal,
+  isGenerating,
+  setIsGenerating,
+  showNotice,
+  subscribers,
+}) => {
   const [content, setContent] = useState("")
   const [isToAI, setIsToAI] = useState(false)
   const inputRef = useRef(null)
+  const gptUserNickname = gon.global_config.robot_name
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -34,7 +44,7 @@ const Footer: React.FC<FooterProps> = ({ cable, showSignInModal, isGenerating, s
 
     cable.subscriptions.subscriptions[0].send({
       content: content,
-      mentions: isToAI || content.startsWith(gon.global_config.robot_name) ? [gon.global_config.robot_name] : [],
+      mentions: content.match(/@(\S+)/g)?.map((mention) => mention.substring(1)) || [],
     })
 
     setContent("")
@@ -54,16 +64,28 @@ const Footer: React.FC<FooterProps> = ({ cable, showSignInModal, isGenerating, s
 
   const handleContentChange = (e) => {
     value = e.target.value
+    setIsToAI(value.startsWith(`@${gptUserNickname}`))
     if (value.length > 500) {
       return showNotice("消息已达最大长度限制")
     }
     setContent(value)
-    e.target.style.height = "24px"
-    e.target.style.height = e.target.scrollHeight + "px"
+    inputRef.current.style.height = "24px"
+    inputRef.current.style.height = inputRef.current.scrollHeight + "px"
+
+    // e.target.style.height = "24px"
+    // e.target.style.height = e.target.scrollHeight + "px"
   }
 
   const toggleIsToAI = (e) => {
+    setContent(isToAI ? content.replace(`@${gptUserNickname} `, "") : `@${gptUserNickname} ${content}`)
     setIsToAI(!isToAI)
+    inputRef.current.focus()
+  }
+
+  const onMention = (id, display) => {
+    if (display === gptUserNickname) {
+      setIsToAI(true)
+    }
   }
 
   return (
@@ -77,7 +99,7 @@ const Footer: React.FC<FooterProps> = ({ cable, showSignInModal, isGenerating, s
             {currentUser.isSignedIn() ? (
               <div className="flex flex-col justify-end w-full py-2 flex-grow md:py-3 md:pl-2 relative border border-black/10 bg-white dark:border-gray-900/50 dark:text-white dark:bg-gray-700 rounded-md shadow-[0_0_10px_rgba(0,0,0,0.10)] dark:shadow-[0_0_15px_rgba(0,0,0,0.10)]">
                 <button
-                  className="absolute ml-1 text-gray-500 md:hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900 outline-none"
+                  className="absolute z-10 ml-1 text-gray-500 md:hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900 outline-none"
                   type="button"
                   onClick={toggleIsToAI}
                 >
@@ -95,14 +117,37 @@ const Footer: React.FC<FooterProps> = ({ cable, showSignInModal, isGenerating, s
                     ></path>
                   </svg>
                 </button>
-                <textarea
-                  ref={inputRef}
-                  className="max-h-52 m-0 w-full resize-none border-0 bg-transparent p-0 pl-8 pr-7 focus:ring-0 focus-visible:ring-0 dark:bg-transparent"
+                <MentionsInput
+                  className="mentions"
+                  // className="max-h-52 m-0 w-full resize-none border-0 bg-transparent p-0 pl-8 pr-7 focus:ring-0 focus-visible:ring-0 dark:bg-transparent"
+                  inputRef={inputRef}
+                  style={{
+                    input: {
+                      maxHeight: "13rem",
+                      margin: 0,
+                      width: "100%",
+                      resize: "none",
+                      borderWidth: 0,
+                      backgroundColor: "initial",
+                      padding: "0 1.75rem 0 2rem",
+                      boxShadow: "none",
+                    },
+                  }}
                   value={content}
                   onChange={handleContentChange}
-                  style={{ height: "24px" }}
-                  onKeyPress={checkKeyPress}
-                ></textarea>
+                  onKeyDown={checkKeyPress}
+                  forceSuggestionsAboveCursor={true}
+                >
+                  <Mention
+                    trigger="@"
+                    displayTransform={(id, display) => `@${display}`}
+                    markup="@__display__"
+                    appendSpaceOnAdd={true}
+                    data={subscribers.map((user) => ({ id: user.id, display: user.nickname }))}
+                    onAdd={onMention}
+                  />
+                </MentionsInput>
+
                 <button
                   type="submit"
                   className="absolute p-1 rounded-md text-gray-500 bottom-1.5 right-1 md:bottom-2.5 md:right-2 md:hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent outline-none"
