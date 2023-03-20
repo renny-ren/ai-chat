@@ -1,16 +1,35 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import PricingModal from "./PricingModal"
 import currentUser from "stores/current_user_store"
+import axios from "axios"
+import { Badge } from "antd"
 
 interface PricingProps {}
 
 const Pricing: React.FC<PricingProps> = ({}) => {
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [planName, setPlanName] = useState("")
+  const [subscriptions, setSubscriptions] = useState([])
+
+  useEffect(() => {
+    if (currentUser.isSignedIn()) {
+      fetchSubscriptions()
+    }
+  }, [])
 
   const openModal = (plan) => {
     setIsOpenModal(true)
     setPlanName(plan)
+  }
+
+  const fetchSubscriptions = async (page = 1) => {
+    const csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content")
+    const response = await axios.get(`/v1/membership_subscriptions`, {
+      headers: {
+        "X-CSRF-Token": csrf,
+      },
+    })
+    setSubscriptions(response.data.subscriptions)
   }
 
   const renderItem = (content, can = true) => (
@@ -49,8 +68,8 @@ const Pricing: React.FC<PricingProps> = ({}) => {
 
   return (
     <>
-      <div className="h-full relative pt-14">
-        <main className="h-full pt-4">
+      <div className="h-full relative pt-12 md:pt-14">
+        <main className="h-full">
           <div className="absolute inset-0 -z-10 mx-0 max-w-none overflow-hidden">
             <div className="absolute left-1/2 top-0 ml-[-38rem] h-[25rem] w-[81.25rem] dark:[mask-image:linear-gradient(white,transparent)]">
               <div className="absolute inset-0 bg-gradient-to-r from-[#36b49f] to-[#DBFF75] opacity-40 [mask-image:radial-gradient(farthest-side_at_top,white,transparent)] dark:from-[#36b49f]/30 dark:to-[#DBFF75]/30 dark:opacity-100">
@@ -77,7 +96,68 @@ const Pricing: React.FC<PricingProps> = ({}) => {
 
           <section className="pb-12 lg:pb-[90px] relative z-20 overflow-hidden">
             <div className="px-4">
-              <div className="flex flex-wrap -mx-4">
+              {!!subscriptions.length && (
+                <div className="md:mx-14 border border-emerald-500 border-opacity-20 bg-white shadow-sm rounded-sm border border-gray-200">
+                  <header className="px-5 py-4 border-b border-gray-100">
+                    <h2 className="font-semibold text-gray-700">当前套餐</h2>
+                  </header>
+                  <div className="p-3">
+                    <div className="overflow-x-auto">
+                      <table className="table-auto w-full">
+                        <thead className="text-xs font-semibold uppercase text-gray-400 bg-gray-50">
+                          <tr>
+                            <th className="p-2 whitespace-nowrap">
+                              <div className="font-semibold text-left">版本</div>
+                            </th>
+                            <th className="p-2 whitespace-nowrap">
+                              <div className="font-semibold text-left">状态</div>
+                            </th>
+                            <th className="p-2 whitespace-nowrap">
+                              <div className="font-semibold text-left">剩余时间</div>
+                            </th>
+                            <th className="p-2 whitespace-nowrap">
+                              <div className="font-semibold text-left">开始日期</div>
+                            </th>
+                            <th className="p-2 whitespace-nowrap">
+                              <div className="font-semibold text-left">结束日期</div>
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody className="text-sm text-zinc-600 divide-y divide-gray-100">
+                          {subscriptions.map((subscription, i) => (
+                            <tr key={i}>
+                              <td className="p-2 whitespace-nowrap">
+                                <div className="flex items-center">
+                                  <div>{subscription.plan_name}</div>
+                                </div>
+                              </td>
+                              <td className="p-2 whitespace-nowrap">
+                                <div>
+                                  <Badge
+                                    className="mr-1"
+                                    status={subscription.status === "active" ? "success" : "default"}
+                                  />
+                                  {subscription.status_name}
+                                </div>
+                              </td>
+                              <td className="p-2 whitespace-nowrap">
+                                <div>{subscription.left_days} 天</div>
+                              </td>
+                              <td className="p-2 whitespace-nowrap">
+                                <div>{subscription.start_at}</div>
+                              </td>
+                              <td className="p-2 whitespace-nowrap">
+                                <div>{subscription.end_at}</div>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              )}
+              <div className="flex flex-wrap mt-4 -mx-4">
                 <div className="w-full px-4">
                   <div className="text-center mx-auto mb-8 max-w-[510px]">
                     <span className="font-semibold text-lg text-emerald-500 mb-2 block">价格表</span>

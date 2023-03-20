@@ -22,6 +22,7 @@ Rails.application.routes.draw do
     resources :sponsorships, only: :index
     resources :conversations, only: [:index, :destroy]
     resources :orders, only: [:show, :create]
+    resources :membership_subscriptions, only: [:index]
   end
   scope "webhooks" do
     post "alipay" => "webhooks#alipay"

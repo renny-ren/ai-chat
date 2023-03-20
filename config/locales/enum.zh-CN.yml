@@ -6,3 +6,7 @@ zh-CN:
           free: "免费版"
           basic: "基础版"
           advanced: "高级版"
+      membership_subscription:
+        status:
+          active: 使用中
+          expired: 已过期
