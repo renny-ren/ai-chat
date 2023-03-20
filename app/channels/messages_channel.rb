@@ -2,7 +2,7 @@ class MessagesChannel < ApplicationCable::Channel
   @@subscribed_users = [{ id: GPT_USER_ID, nickname: User.find(GPT_USER_ID)&.nickname }]
 
   def subscribed
-    appear_user if current_user.present?
+    # appear_user if current_user.present?
     stream_from "MessagesChannel"
   end
 
@@ -17,14 +17,18 @@ class MessagesChannel < ApplicationCable::Channel
   end
 
   def receive(data)
-    Message.transaction do
-      mentioned_users = User.where(nickname: data["mentions"])
-      message = Message.create!(
-        content: data["content"],
-        user_id: current_user.id,
-        mentioned_user_ids: mentioned_users.ids,
-      )
-      ActionCable.server.broadcast("MessagesChannel", message.as_item_json)
+    if data["type"] == "appearance"
+      appear_user if current_user.present?
+    else
+      Message.transaction do
+        mentioned_users = User.where(nickname: data["mentions"])
+        message = Message.create!(
+          content: data["content"],
+          user_id: current_user.id,
+          mentioned_user_ids: mentioned_users.ids,
+        )
+        ActionCable.server.broadcast("MessagesChannel", message.as_item_json)
+      end
     end
   end
 

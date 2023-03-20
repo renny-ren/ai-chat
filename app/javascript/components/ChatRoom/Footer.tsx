@@ -1,11 +1,6 @@
 import React, { useEffect, useState, useRef } from "react"
 import currentUser from "stores/current_user_store"
-import { message } from "antd"
 import { MentionsInput, Mention } from "react-mentions"
-
-message.config({
-  maxCount: 1,
-})
 
 interface FooterProps {
   cable: any
@@ -48,7 +43,6 @@ const Footer: React.FC<FooterProps> = ({
     })
 
     setContent("")
-    inputRef.current.style.height = "24px"
     setIsToAI(false)
   }
 
@@ -69,11 +63,8 @@ const Footer: React.FC<FooterProps> = ({
       return showNotice("消息已达最大长度限制")
     }
     setContent(value)
-    inputRef.current.style.height = "24px"
-    inputRef.current.style.height = inputRef.current.scrollHeight + "px"
-
-    // e.target.style.height = "24px"
-    // e.target.style.height = e.target.scrollHeight + "px"
+    // inputRef.current.style.height = "24px"
+    // inputRef.current.style.height = inputRef.current.scrollHeight + "px"
   }
 
   const toggleIsToAI = (e) => {
@@ -132,6 +123,9 @@ const Footer: React.FC<FooterProps> = ({
                       padding: "0 1.75rem 0 2rem",
                       boxShadow: "none",
                     },
+                    highlighter: {
+                      border: 0,
+                    },
                   }}
                   value={content}
                   onChange={handleContentChange}
@@ -143,11 +137,12 @@ const Footer: React.FC<FooterProps> = ({
                     displayTransform={(id, display) => `@${display}`}
                     markup="@__display__"
                     appendSpaceOnAdd={true}
-                    data={subscribers.map((user) => ({ id: user.id, display: user.nickname }))}
+                    data={subscribers
+                      .filter((user) => user.id != currentUser.id())
+                      .map((user) => ({ id: user.id, display: user.nickname }))}
                     onAdd={onMention}
                   />
                 </MentionsInput>
-
                 <button
                   type="submit"
                   className="absolute p-1 rounded-md text-gray-500 bottom-1.5 right-1 md:bottom-2.5 md:right-2 md:hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent outline-none"

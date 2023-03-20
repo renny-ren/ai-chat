@@ -1,0 +1,22 @@
+zh-CN:
+  activerecord:
+    attributes:
+      user:
+        nickname: 昵称
+        email: 邮箱
+        username: 用户名
+        password: 密码
+        password_confirmation: 两次输入的密码
+    errors:
+      messages:
+        too_short: 太短
+        too_long: 太长
+        taken: 已经被使用
+        invalid: 不合法
+      models:
+        user:
+          attributes:
+            nickname:
+              taken: 已经被使用
+            password_confirmation:
+              confirmation: 不一致

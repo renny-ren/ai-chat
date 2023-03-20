@@ -89,6 +89,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal, setCustomContent }
       connected() {
         // Called when the subscription is ready for use on the server
         console.log("==connected==")
+        consumer.subscriptions.subscriptions[0].send({ type: "appearance" })
       },
       disconnected() {
         // Called when the subscription has been terminated by the server
