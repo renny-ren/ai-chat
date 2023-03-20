@@ -8,7 +8,7 @@ class MessagesChannel < ApplicationCable::Channel
 
   def unsubscribed
     # Any cleanup needed when channel is unsubscribed
-    disappear_user if current_user.present?
+    disappear_user
     stop_all_streams
   end
 
@@ -18,7 +18,7 @@ class MessagesChannel < ApplicationCable::Channel
 
   def receive(data)
     if data["type"] == "appearance"
-      appear_user if current_user.present?
+      appear_user
     else
       Message.transaction do
         mentioned_users = User.where(nickname: data["mentions"])
@@ -33,7 +33,11 @@ class MessagesChannel < ApplicationCable::Channel
   end
 
   def appear_user
-    @@subscribed_users << { id: current_user.id, nickname: current_user.nickname, avatar_url: current_user.avatar_url }
+    @@subscribed_users << {
+      id: current_user.id,
+      nickname: "#{current_user.nickname}#{current_user.is_a?(Visitor) ? @@subscribed_users.size : ""}",
+      avatar_url: current_user.avatar_url,
+    }
     ActionCable.server.broadcast("MessagesChannel", { type: "appearance", subscribers: @@subscribed_users.uniq })
   end
 

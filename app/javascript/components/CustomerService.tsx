@@ -1,25 +1,17 @@
 import React, { Fragment, useState, useEffect } from "react"
-import currentUser from "stores/current_user_store"
 import { Dialog, Transition } from "@headlessui/react"
-import axios from "axios"
-import { CDN_HOST } from "shared/constants"
 
 interface CustomerServiceProps {}
 
 const CustomerService: React.FC<CustomerServiceProps> = ({}) => {
-  let [isOpen, setIsOpen] = useState(currentUser.isSignedIn() && !currentUser.config().done_notice)
+  let [isOpen, setIsOpen] = useState(false)
 
   const closeModal = () => {
     setIsOpen(false)
-    updateUserConfig()
   }
 
   function openModal() {
     setIsOpen(true)
-  }
-
-  const updateUserConfig = async () => {
-    await axios.put(`/v1/users/${currentUser.id()}`, { config: { done_notice: true } })
   }
 
   return (

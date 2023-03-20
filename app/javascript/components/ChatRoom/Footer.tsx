@@ -144,6 +144,7 @@ const Footer: React.FC<FooterProps> = ({
                     data={(search) =>
                       subscribers
                         .filter((user) => user.id != currentUser.id())
+                        .filter((user) => !user.nickname.startsWith("游客"))
                         .filter((user) => user.nickname.toLowerCase().indexOf(search.toLowerCase()) != -1)
                         .map((user) => ({ id: user.id, display: user.nickname }))
                     }

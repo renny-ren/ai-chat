@@ -48,21 +48,34 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal, setCustomContent }
   }, [])
 
   useEffect(() => {
+    const subscribersForDispaly = subscribers.filter((user) => user.nickname != gon.global_config.robot_name)
     setCustomContent(
       <>
         <Sponsorship />
         <Announcement />
-        {subscribers.length > 1 && (
+        {subscribersForDispaly.length > 1 && (
           <AntdAvatar.Group
             size="small"
             maxCount={2}
             maxStyle={{ color: "#fff", backgroundColor: "rgba(0, 0, 0, 0.5)", fontSize: "12px", borderRadius: "4px" }}
           >
-            {subscribers
-              .filter((user) => user.nickname != gon.global_config.robot_name)
-              .map((user, i) => (
-                <AntdAvatar key={i} shape="square" src={user.avatar_url} />
-              ))}
+            {subscribersForDispaly.map((user, i) => {
+              if (i > 1) {
+                return (
+                  <div key={i}>
+                    <AntdAvatar shape="square" src={user.avatar_url} />
+                    <span className="text-zinc-600 ml-1">{user.nickname}</span>
+                    {i === subscribersForDispaly.length - 1 && (
+                      <div className="border-t border-gray-200 mt-2 pt-1 text-xs text-gray-400">
+                        当前共{subscribersForDispaly.length}人在线
+                      </div>
+                    )}
+                  </div>
+                )
+              } else {
+                return <AntdAvatar key={i} shape="square" src={user.avatar_url} />
+              }
+            })}
           </AntdAvatar.Group>
         )}
       </>
