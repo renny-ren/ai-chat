@@ -76,7 +76,7 @@ const Pricing: React.FC<PricingProps> = ({}) => {
           </div>
 
           <section className="pb-12 lg:pb-[90px] relative z-20 overflow-hidden">
-            <div className="container">
+            <div className="px-4">
               <div className="flex flex-wrap -mx-4">
                 <div className="w-full px-4">
                   <div className="text-center mx-auto mb-8 max-w-[510px]">

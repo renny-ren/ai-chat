@@ -70,7 +70,7 @@ const Header: React.FC<HeaderProps> = ({ setIsShowModal, customContent, conversa
               )}
             </div>
 
-            <div className="flex items-end gap-5">
+            <div className="flex items-center gap-4">
               <nav className="hidden md:block">
                 {/*<ul role="list" className="flex items-center gap-8">
                   <li>
@@ -84,7 +84,7 @@ const Header: React.FC<HeaderProps> = ({ setIsShowModal, customContent, conversa
                 </ul>*/}
               </nav>
               {/*<div className="hidden md:block md:h-5 md:w-px md:bg-zinc-900/10 md:dark:bg-white/15"></div>*/}
-              <div className="flex gap-4">
+              <div className="flex gap-2 md:gap-4">
                 {/*<button
                   type="button"
                   className="flex h-6 w-6 items-center justify-center rounded-md transition hover:bg-zinc-900/5 dark:hover:bg-white/5"
@@ -103,6 +103,8 @@ const Header: React.FC<HeaderProps> = ({ setIsShowModal, customContent, conversa
                 </button>*/}
                 {customContent}
               </div>
+              <div className="hidden md:block md:h-5 md:w-px md:bg-zinc-900/10 md:dark:bg-white/15"></div>
+
               <div>
                 {currentUser.isSignedIn() ? (
                   <UserBar />

@@ -9,6 +9,7 @@ import Announcement from "./Announcement"
 import Sponsorship from "./Sponsorship"
 import ClearConversationModal from "./ClearConversationModal"
 import type { ChatMessage } from "./types"
+import { Avatar as AntdAvatar, Tooltip } from "antd"
 
 interface ChatRoomProps {
   showSignInModal: () => void
@@ -40,16 +41,32 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal, setCustomContent }
 
   useEffect(() => {
     fetchMessages()
-    setCustomContent(
-      <>
-        <Sponsorship />
-        <Announcement />
-      </>
-    )
     return () => {
       consumer.disconnect()
     }
   }, [])
+
+  useEffect(() => {
+    setCustomContent(
+      <>
+        <Sponsorship />
+        {/*<Announcement />*/}
+        {subscribers.length > 1 && (
+          <AntdAvatar.Group
+            size="small"
+            maxCount={2}
+            maxStyle={{ color: "#fff", backgroundColor: "rgba(0, 0, 0, 0.5)", fontSize: "12px", borderRadius: "4px" }}
+          >
+            {subscribers
+              .filter((user) => user.nickname != gon.global_config.robot_name)
+              .map((user) => (
+                <AntdAvatar shape="square" src={user.avatar_url} />
+              ))}
+          </AntdAvatar.Group>
+        )}
+      </>
+    )
+  }, [subscribers])
 
   useEffect(() => {
     resubscribeChannel()
@@ -155,7 +172,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal, setCustomContent }
                           openModal={openModal}
                           pagination={pagination}
                         />
-                        <div className="w-full h-2 sm:h-6 flex-shrink-0"></div>
+                        {/*<div className="w-full h-2 sm:h-6 flex-shrink-0"></div>*/}
                       </div>
                     </div>
                   </div>

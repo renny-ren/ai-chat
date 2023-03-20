@@ -1,5 +1,5 @@
 class MessagesChannel < ApplicationCable::Channel
-  @@subscribed_users = [{ id: GPT_USER_ID, nickname: User.find(GPT_USER_ID)&.nickname }]
+  @@subscribed_users = [{ id: GPT_USER_ID, nickname: User.find(GPT_USER_ID).nickname }]
 
   def subscribed
     # appear_user if current_user.present?
@@ -33,7 +33,7 @@ class MessagesChannel < ApplicationCable::Channel
   end
 
   def appear_user
-    @@subscribed_users << { id: current_user.id, nickname: current_user.nickname }
+    @@subscribed_users << { id: current_user.id, nickname: current_user.nickname, avatar_url: current_user.avatar_url }
     ActionCable.server.broadcast("MessagesChannel", { type: "appearance", subscribers: @@subscribed_users })
   end
 

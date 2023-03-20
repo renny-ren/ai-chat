@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react"
+import React, { useState, useRef } from "react"
 import currentUser from "stores/current_user_store"
 import { MentionsInput, Mention } from "react-mentions"
 
@@ -56,13 +56,12 @@ const Footer: React.FC<FooterProps> = ({
     }
   }
 
-  const handleContentChange = (e) => {
-    value = e.target.value
-    setIsToAI(value.startsWith(`@${gptUserNickname}`))
-    if (value.length > 500) {
+  const handleContentChange = (e, newValue, newPlainTextValue, mentions) => {
+    setIsToAI(newPlainTextValue.startsWith(`@${gptUserNickname}`))
+    if (newPlainTextValue.length > 500) {
       return showNotice("消息已达最大长度限制")
     }
-    setContent(value)
+    setContent(newPlainTextValue)
     // inputRef.current.style.height = "24px"
     // inputRef.current.style.height = inputRef.current.scrollHeight + "px"
   }
@@ -135,11 +134,13 @@ const Footer: React.FC<FooterProps> = ({
                   <Mention
                     trigger="@"
                     displayTransform={(id, display) => `@${display}`}
-                    markup="@__display__"
                     appendSpaceOnAdd={true}
-                    data={subscribers
-                      .filter((user) => user.id != currentUser.id())
-                      .map((user) => ({ id: user.id, display: user.nickname }))}
+                    data={(search) =>
+                      subscribers
+                        .filter((user) => user.id != currentUser.id())
+                        .filter((user) => user.nickname.toLowerCase().indexOf(search.toLowerCase()) != -1)
+                        .map((user) => ({ id: user.id, display: user.nickname }))
+                    }
                     onAdd={onMention}
                   />
                 </MentionsInput>

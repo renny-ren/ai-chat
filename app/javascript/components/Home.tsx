@@ -13,7 +13,7 @@ const Home = ({ setIsShowModal, setCustomContent }) => {
           </div>
         </div>
       </div>*/}
-      <div className="h-full relative pt-14">
+      <div className="h-full relative pt-12 md:pt-14">
         <main className="h-full">
           <div className="absolute inset-0 -z-10 mx-0 max-w-none overflow-hidden">
             <div className="absolute left-1/2 top-0 ml-[-38rem] h-[25rem] w-[81.25rem] dark:[mask-image:linear-gradient(white,transparent)]">
