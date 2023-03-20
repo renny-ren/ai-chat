@@ -150,7 +150,7 @@ class Message < ApplicationRecord
   def headers
     {
       "Content-Type" => "application/json",
-      "Authorization" => "Bearer #{OPENAI_API_KEY}",
+      "Authorization" => "Bearer #{[OPENAI_API_KEY, OPENAI_API_KEY2].sample}",
     }
   end
 

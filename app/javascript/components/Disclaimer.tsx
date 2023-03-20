@@ -3,8 +3,8 @@ import React, { useState } from "react"
 const Disclaimer = () => {
   return (
     <>
-      <div className="h-full relative pt-14">
-        <main className="h-full py-8">
+      <div className="h-full relative pt-12 md:pt-14">
+        <main className="h-full p-8">
           <div className="absolute inset-0 -z-10 mx-0 max-w-none overflow-hidden">
             <div className="absolute left-1/2 top-0 ml-[-38rem] h-[25rem] w-[81.25rem] dark:[mask-image:linear-gradient(white,transparent)]">
               <div className="absolute inset-0 bg-gradient-to-r from-[#36b49f] to-[#DBFF75] opacity-40 [mask-image:radial-gradient(farthest-side_at_top,white,transparent)] dark:from-[#36b49f]/30 dark:to-[#DBFF75]/30 dark:opacity-100">

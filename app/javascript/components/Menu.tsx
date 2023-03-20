@@ -202,12 +202,12 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, isMobile 
               </li>*/}
               <li
                 className={`relative ${
-                  window.location.pathname === "/qa" ? "border-l border-emerald-400 bg-zinc-800/[.025]" : ""
+                  window.location.pathname === "/faqs" ? "border-l border-emerald-400 bg-zinc-800/[.025]" : ""
                 }`}
               >
                 <a
                   className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-                  href="/qa"
+                  href="/faqs"
                 >
                   <span className="truncate">常见问题</span>
                 </a>

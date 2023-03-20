@@ -93,7 +93,7 @@ const Pricing: React.FC<PricingProps> = ({}) => {
                     <span className="text-emerald-500 font-semibold text-lg block mb-4">免费版</span>
                     <h2 className="font-bold text-dark mb-2 text-[42px]">¥0</h2>
                     <p className="text-base text-body-color pb-6 mb-6 border-b border-[#F2F2F2]">免费体验使用</p>
-                    <div className="mb-7 min-h-[250px]">
+                    <div className="mb-7 min-h-[200px]">
                       {renderItem("每日 2 次 AI 对话次数")}
                       {renderItem("最大提问长度 100 字")}
                       {renderItem("导出个人会话内容", false)}
@@ -133,7 +133,7 @@ const Pricing: React.FC<PricingProps> = ({}) => {
                       <span className="ml-2 text-base text-gray-400 font-medium line-through">¥18</span>
                     </h2>
                     <p className="text-base text-body-color pb-6 mb-6 border-b border-[#F2F2F2]">个人基础使用</p>
-                    <div className="mb-7 min-h-[250px]">
+                    <div className="mb-7 min-h-[200px]">
                       {renderItem("每日 10 次 AI 对话次数")}
                       {renderItem("有效期 30 天")}
                       {renderItem("最大提问长度 300 字")}
@@ -178,7 +178,7 @@ const Pricing: React.FC<PricingProps> = ({}) => {
                       <span className="ml-2 text-base text-gray-400 font-medium line-through">¥39</span>
                     </h2>
                     <p className="text-base text-body-color pb-6 mb-6 border-b border-[#F2F2F2]">个人畅享使用</p>
-                    <div className="mb-7 min-h-[250px]">
+                    <div className="mb-7 min-h-[200px]">
                       {renderItem("无限对话次数")}
                       {renderItem("有效期 60 天")}
                       {renderItem("最大提问长度 1000 字")}
