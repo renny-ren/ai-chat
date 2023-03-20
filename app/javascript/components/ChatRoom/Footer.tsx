@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react"
+import React, { useState, useRef, useEffect } from "react"
 import currentUser from "stores/current_user_store"
 import { MentionsInput, Mention } from "react-mentions"
 
@@ -9,6 +9,8 @@ interface FooterProps {
   setIsGenerating: () => void
   showNotice: () => void
   subscribers: any
+  content: string
+  setContent: () => void
 }
 
 const Footer: React.FC<FooterProps> = ({
@@ -18,11 +20,17 @@ const Footer: React.FC<FooterProps> = ({
   setIsGenerating,
   showNotice,
   subscribers,
+  content,
+  setContent,
 }) => {
-  const [content, setContent] = useState("")
   const [isToAI, setIsToAI] = useState(false)
   const inputRef = useRef(null)
   const gptUserNickname = gon.global_config.robot_name
+
+  useEffect(() => {
+    setIsToAI(content.startsWith(`@${gptUserNickname}`))
+    inputRef.current.focus()
+  }, [content])
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -57,7 +65,6 @@ const Footer: React.FC<FooterProps> = ({
   }
 
   const handleContentChange = (e, newValue, newPlainTextValue, mentions) => {
-    setIsToAI(newPlainTextValue.startsWith(`@${gptUserNickname}`))
     if (newPlainTextValue.length > 500) {
       return showNotice("消息已达最大长度限制")
     }
@@ -69,7 +76,6 @@ const Footer: React.FC<FooterProps> = ({
   const toggleIsToAI = (e) => {
     setContent(isToAI ? content.replace(`@${gptUserNickname} `, "") : `@${gptUserNickname} ${content}`)
     setIsToAI(!isToAI)
-    inputRef.current.focus()
   }
 
   const onMention = (id, display) => {

@@ -10,7 +10,7 @@ import Avatar from "./Avatar"
 import useInfiniteScroll from "react-infinite-scroll-hook"
 import { Spin } from "antd"
 
-const MessageList = ({ messages, fetchMessages, isFetching, openModal, pagination }) => {
+const MessageList = ({ messages, fetchMessages, isFetching, openModal, pagination, setPrompt }) => {
   const [currentPage, setCurrentPage] = useState(1)
   const scrollableRootRef = useRef<HTMLDivElement | null>(null)
   const lastScrollDistanceToBottomRef = useRef<number>()
@@ -134,7 +134,14 @@ const MessageList = ({ messages, fetchMessages, isFetching, openModal, paginatio
             ) : (
               <div key={i} className="col-start-1 col-end-12 md:col-end-10 p-3 rounded-lg">
                 <div className="flex flex-row items-start">
-                  <Avatar src={message.user_avatar_url} isRobot={isRobot(message)} openModal={openModal} />
+                  <Avatar
+                    src={message.user_avatar_url}
+                    nickname={message.user_nickname}
+                    setPrompt={setPrompt}
+                    isRobot={isRobot(message)}
+                    isSelf={false}
+                    openModal={openModal}
+                  />
                   <div className="flex flex-col gap-1 max-w-full">
                     <div className="flex items-baseline">
                       <div className="text-sm font-medium ml-3">{message.user_nickname}</div>

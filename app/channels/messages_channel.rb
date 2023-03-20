@@ -34,11 +34,11 @@ class MessagesChannel < ApplicationCable::Channel
 
   def appear_user
     @@subscribed_users << { id: current_user.id, nickname: current_user.nickname, avatar_url: current_user.avatar_url }
-    ActionCable.server.broadcast("MessagesChannel", { type: "appearance", subscribers: @@subscribed_users })
+    ActionCable.server.broadcast("MessagesChannel", { type: "appearance", subscribers: @@subscribed_users.uniq })
   end
 
   def disappear_user
     @@subscribed_users.delete_if { |user| user[:id] == current_user.id }
-    ActionCable.server.broadcast("MessagesChannel", { type: "appearance", subscribers: @@subscribed_users })
+    ActionCable.server.broadcast("MessagesChannel", { type: "appearance", subscribers: @@subscribed_users.uniq })
   end
 end

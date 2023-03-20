@@ -27,6 +27,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal, setCustomContent }
   const [isShowNotice, setIsShowNotice] = useState(false)
   const [noticeContent, setNoticeContent] = useState("")
   const [subscribers, setSubscribers] = useState([{ id: 0, nickname: gon.global_config.robot_name }])
+  const [prompt, setPrompt] = useState("")
 
   const showNotice = (content) => {
     setNoticeContent(content)
@@ -50,7 +51,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal, setCustomContent }
     setCustomContent(
       <>
         <Sponsorship />
-        {/*<Announcement />*/}
+        <Announcement />
         {subscribers.length > 1 && (
           <AntdAvatar.Group
             size="small"
@@ -59,8 +60,8 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal, setCustomContent }
           >
             {subscribers
               .filter((user) => user.nickname != gon.global_config.robot_name)
-              .map((user) => (
-                <AntdAvatar shape="square" src={user.avatar_url} />
+              .map((user, i) => (
+                <AntdAvatar key={i} shape="square" src={user.avatar_url} />
               ))}
           </AntdAvatar.Group>
         )}
@@ -171,6 +172,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal, setCustomContent }
                           isFetching={isFetching}
                           openModal={openModal}
                           pagination={pagination}
+                          setPrompt={setPrompt}
                         />
                         {/*<div className="w-full h-2 sm:h-6 flex-shrink-0"></div>*/}
                       </div>
@@ -189,6 +191,8 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal, setCustomContent }
           setIsGenerating={setIsGenerating}
           showNotice={showNotice}
           subscribers={subscribers}
+          content={prompt}
+          setContent={setPrompt}
         />
       </div>
       <ClearConversationModal isOpen={isOpenClearModal} closeModal={closeModal} />
