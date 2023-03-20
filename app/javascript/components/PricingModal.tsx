@@ -110,6 +110,7 @@ const PricingModal: React.FC<PricingModalProps> = ({ isOpen, setIsOpenModal, pla
                               <p>请使用支付宝扫描二维码支付</p>
                               <p>支付完成后页面会自动刷新</p>
                             </div>
+                            <div className="text-xs pt-1 text-gray-400">（如需其他方式支付请点击右上角联系客服）</div>
                           </>
                         )}
                       </div>

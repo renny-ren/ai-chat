@@ -70,7 +70,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
 
   return (
     <Transition.Root show={isShow} as={Fragment}>
-      <Dialog as="div" className="relative z-10" initialFocus={nameRef} onClose={() => setOpen(false)}>
+      <Dialog as="div" className="relative z-50" initialFocus={nameRef} onClose={() => setOpen(false)}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"

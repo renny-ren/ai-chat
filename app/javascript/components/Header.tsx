@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import currentUser from "stores/current_user_store"
 import Sidebar from "./Sidebar"
 import MobileMenu from "./MobileMenu"
+import CustomerService from "./CustomerService"
 import UserBar from "./user/UserBar"
 import { Transition } from "@headlessui/react"
 import { CDN_HOST } from "shared/constants"
@@ -101,6 +102,7 @@ const Header: React.FC<HeaderProps> = ({ setIsShowModal, customContent, conversa
                     <path d="M15.224 11.724a5.5 5.5 0 0 1-6.949-6.949 5.5 5.5 0 1 0 6.949 6.949Z"></path>
                   </svg>
                 </button>*/}
+                <CustomerService />
                 {customContent}
               </div>
               <div className="hidden md:block md:h-5 md:w-px md:bg-zinc-900/10 md:dark:bg-white/15"></div>
