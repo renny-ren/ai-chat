@@ -1,10 +1,18 @@
 import React from "react"
+import ReactDOM from "react-dom"
 import { createRoot } from "react-dom/client"
 import App from "./App"
 
-document.addEventListener("turbo:load", () => {
+const renderApp = () => {
   const newDiv = document.createElement("div")
   newDiv.classList.add("h-full")
+  newDiv.setAttribute("id", "main-container")
   const root = createRoot(document.body.appendChild(newDiv))
   root.render(<App />)
+}
+
+document.addEventListener("turbo:load", () => {
+  const existingDiv = document.getElementById("main-container")
+  if (existingDiv) existingDiv.remove()
+  renderApp()
 })
