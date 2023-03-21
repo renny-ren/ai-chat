@@ -24,6 +24,6 @@ MembershipPlan.create(
 MembershipPlan.create(
   name: 'advanced',
   description: '高级版会员',
-  amount: 18,
+  amount: 19,
   duration: 60,
 )

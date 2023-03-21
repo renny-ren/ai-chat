@@ -265,7 +265,7 @@ const Pricing: React.FC<PricingProps> = ({ setIsShowSignInModal }) => {
                   <div className="rounded-xl relative z-10 overflow-hidden border border-emerald-500 border-opacity-20 shadow-pricing py-10 px-8 sm:p-12 lg:py-10 lg:px-6 xl:p-12 mb-10">
                     <span className="text-emerald-500 font-semibold text-lg block mb-4">高级版（限时特惠）</span>
                     <h2 className="font-bold text-dark mb-2 text-[42px]">
-                      ¥18
+                      ¥19
                       <span className="ml-2 text-base text-gray-400 font-medium line-through">¥39</span>
                     </h2>
                     <p className="text-base text-body-color pb-6 mb-6 border-b border-[#F2F2F2]">个人畅享使用</p>
