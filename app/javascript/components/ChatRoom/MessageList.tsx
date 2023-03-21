@@ -111,7 +111,7 @@ const MessageList = ({ messages, fetchMessages, isFetching, openModal, paginatio
   return (
     <>
       <div
-        className="message-list-container overflow-hidden hover:overflow-auto"
+        className="message-list-container overflow-auto"
         style={{ scrollbarGutter: "stable both-edges" }}
         ref={rootRefSetter}
         onScroll={handleRootScroll}

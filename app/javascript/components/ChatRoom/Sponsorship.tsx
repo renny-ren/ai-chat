@@ -92,7 +92,7 @@ const Sponsorship: React.FC<SponsorshipProps> = ({ src, isRobot }) => {
               <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
                 {sponsorships.map((s, i) => {
                   return (
-                    <li className={`${i + 1 === sponsorships.length ? "pt-3 pb-0 sm:pt-4" : "py-3 sm:py-4"}`}>
+                    <li key={i} className={`${i + 1 === sponsorships.length ? "pt-3 pb-0 sm:pt-4" : "py-3 sm:py-4"}`}>
                       <div className="flex items-center space-x-4">
                         <div className="flex-shrink-0">
                           <img

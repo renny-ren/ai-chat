@@ -171,7 +171,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal, setCustomContent }
   return (
     <>
       <Helmet>
-        <title>ChatGPT 交流群</title>
+        <title>ChatGPT 聊天室</title>
       </Helmet>
       <div className="relative h-full w-full transition-width flex flex-col overflow-hidden items-stretch flex-1 pb-14">
         <div className="flex-1 overflow-hidden relative">

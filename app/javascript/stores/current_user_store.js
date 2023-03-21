@@ -32,7 +32,7 @@ const currentUser = {
   },
 
   plan() {
-    return gon.user_meta.plan
+    return gon.user_meta?.plan
   },
 
   config() {

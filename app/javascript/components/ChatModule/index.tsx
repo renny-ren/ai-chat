@@ -23,7 +23,7 @@ const ChatModule: FC<ChatModuleProps> = ({ setIsShowModal, setConversations }) =
   const [conversationId, setConversationId] = useState(useParams().conversationId || "")
   const [isFetchingMsgs, setIsFetchingMsgs] = useState(false)
   const [usedMessageCount, setUsedMessageCount] = useState(0)
-  const messageLimitPerDay = currentUser.plan().message_limit_per_day
+  const messageLimitPerDay = currentUser.plan()?.message_limit_per_day
 
   const generateUniqueId = () => {
     const timestamp = Date.now()
