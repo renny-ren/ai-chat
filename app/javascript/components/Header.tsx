@@ -124,15 +124,7 @@ const Header: React.FC<HeaderProps> = ({ setIsShowModal, customContent, conversa
           <Sidebar conversations={conversations} />
         </div>
       </header>
-      <Transition
-        show={isShowMobileMenu}
-        enter="transition-opacity duration-75"
-        enterFrom="opacity-0"
-        enterTo="opacity-100"
-        leave="transition-opacity duration-150"
-        leaveFrom="opacity-100"
-        leaveTo="opacity-0"
-      >
+      <Transition show={isShowMobileMenu}>
         <MobileMenu setIsShow={setIsShowMobileMenu} onShowSignInModal={onShowSignInModal} conversations={conversations} />
       </Transition>
     </>

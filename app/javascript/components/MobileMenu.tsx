@@ -12,33 +12,9 @@ interface MobileMenuProps {
 const MobileMenu: React.FC<MobileMenuProps> = ({ setIsShow, onShowSignInModal, conversations }) => {
   return (
     <div>
-      <div data-headlessui-portal="">
-        <button
-          type="button"
-          data-headlessui-focus-guard="true"
-          aria-hidden="true"
-          style={{
-            position: "fixed",
-            top: "1px",
-            left: "1px",
-            width: "1px",
-            height: "0px",
-            padding: "0px",
-            margin: "-1px",
-            overflow: "hidden",
-            clip: "rect(0px, 0px, 0px, 0px)",
-            whiteSpace: "nowrap",
-            borderWidth: "0px",
-          }}
-        ></button>
+      <div>
         <div>
-          <div
-            className="fixed inset-0 z-50 lg:hidden"
-            id="headlessui-dialog-:r4s:"
-            role="dialog"
-            aria-modal="true"
-            data-headlessui-state="open"
-          >
+          <div className="fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal="true" data-headlessui-state="open">
             <div className="fixed inset-0 top-14 bg-zinc-400/20 backdrop-blur-sm dark:bg-black/40 opacity-100"></div>
             <div id="headlessui-dialog-panel-:r4t:" data-headlessui-state="open">
               <div
@@ -75,24 +51,6 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ setIsShow, onShowSignInModal, c
             </div>
           </div>
         </div>
-        <button
-          type="button"
-          data-headlessui-focus-guard="true"
-          aria-hidden="true"
-          style={{
-            position: "fixed",
-            top: "1px",
-            left: "1px",
-            width: "1px",
-            height: "0px",
-            padding: "0px",
-            margin: "-1px",
-            overflow: "hidden",
-            clip: "rect(0px, 0px, 0px, 0px)",
-            whiteSpace: "nowrap",
-            borderWidth: "0px",
-          }}
-        ></button>
       </div>
     </div>
   )
