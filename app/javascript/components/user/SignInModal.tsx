@@ -166,7 +166,10 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
                           </div>
 
                           <div className="text-sm">
-                            <a href="#" className="font-medium text-emerald-500 hover:text-emerald-400">
+                            <a
+                              onClick={() => message.info("请重新注册一个账号即可")}
+                              className="cursor-pointer font-medium text-emerald-500 hover:text-emerald-400"
+                            >
                               忘记密码?
                             </a>
                           </div>

@@ -20,7 +20,7 @@ export default ({ setIsShowModal, setCustomContent, setConversations }) => {
         />
         <Route path="/chats/:conversationId" element={<Chat setIsShowModal={setIsShowModal} />} />
         <Route path="/settings" element={<Settings />} />
-        <Route path="/pricing" element={<Pricing />} />
+        <Route path="/pricing" element={<Pricing setIsShowSignInModal={setIsShowModal} />} />
         <Route path="/faqs" element={<Faqs />} />
       </Routes>
     </Router>

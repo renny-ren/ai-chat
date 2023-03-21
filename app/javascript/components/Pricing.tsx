@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react"
 import PricingModal from "./PricingModal"
 import currentUser from "stores/current_user_store"
 import axios from "axios"
-import { Badge } from "antd"
+import { Badge, message } from "antd"
 
-interface PricingProps {}
+interface PricingProps {
+  setIsShowSignInModal: () => void
+}
 
-const Pricing: React.FC<PricingProps> = ({}) => {
+const Pricing: React.FC<PricingProps> = ({ setIsShowSignInModal }) => {
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [planName, setPlanName] = useState("")
   const [subscriptions, setSubscriptions] = useState([])
@@ -16,6 +18,15 @@ const Pricing: React.FC<PricingProps> = ({}) => {
       fetchSubscriptions()
     }
   }, [])
+
+  const onClickUpgrade = (plan) => {
+    if (currentUser.isSignedIn()) {
+      openModal(plan)
+    } else {
+      message.error("请先登录或注册账号")
+      setIsShowSignInModal(true)
+    }
+  }
 
   const openModal = (plan) => {
     setIsOpenModal(true)
@@ -221,7 +232,7 @@ const Pricing: React.FC<PricingProps> = ({}) => {
                       {renderItem("AI 生成图片内容", false)}
                     </div>
                     <button
-                      onClick={() => openModal("basic")}
+                      onClick={() => onClickUpgrade("basic")}
                       // className="w-full block text-base font-semibold text-emerald-500 bg-transparent border border-emerald-500 rounded-md text-center p-4 hover:text-white hover:bg-emerald-500 hover:border-emerald-500 transition"
                       className="w-full block text-base font-semibold text-white bg-emerald-500 border border-emerald-500 rounded-md text-center p-4 hover:bg-opacity-90 transition"
                     >
@@ -266,7 +277,7 @@ const Pricing: React.FC<PricingProps> = ({}) => {
                       {renderItem("AI 生成图片内容")}
                     </div>
                     <button
-                      onClick={() => openModal("advanced")}
+                      onClick={() => onClickUpgrade("advanced")}
                       // className="w-full block text-base font-semibold text-emerald-500 bg-transparent border border-emerald-500 rounded-md text-center p-4 hover:text-white hover:bg-emerald-500 hover:border-emerald-500 transition"
                       className="w-full block text-base font-semibold text-white bg-emerald-500 border border-emerald-500 rounded-md text-center p-4 hover:bg-opacity-90 transition"
                     >
