@@ -66,6 +66,12 @@ class User < ApplicationRecord
     self.is_admin
   end
 
+  def self.gpt_user_nickname
+    Rails.cache.fetch("gpt_user_nickname", expires_in: 6.hours) do
+      User.find(GPT_USER_ID).nickname
+    end
+  end
+
   protected
 
   def email_required?

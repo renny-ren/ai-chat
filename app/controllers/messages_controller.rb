@@ -22,7 +22,7 @@ class MessagesController < ApplicationController
         render status: 401, json: { message: "Unauthorized" }
       else
         @messages = conversation.messages.where("user_id = ? OR user_id = ?", current_user.id, GPT_USER_ID)
-        @messages = @messages.order(:created_at).page(page).per(999)
+        @messages = @messages.includes(:user).order(:created_at).page(page).per(999)
       end
     end
   end
