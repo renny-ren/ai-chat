@@ -3,11 +3,10 @@ class WebhooksController < ApplicationController
 
   # This endpoint is a callback endpoint, so it doesn't have authentication.
   def alipay
-    puts "params====#{params}"
     case params["trade_status"]
     when "TRADE_SUCCESS"
       order = Order.find_by("data ->> 'out_trade_no' = ?", params["out_trade_no"])
-      if order.present? && order.pending?
+      if order.present? && !order.paid?
         order.fulfill!
         puts "===order_#{order.id}_success!==="
       end
@@ -15,7 +14,7 @@ class WebhooksController < ApplicationController
     end
     render status: 200, json: nil
   rescue Exception => e
-    App::Error.track(e)
+    App::Error.track(e, title: "Alipay webhook exception", body: params.to_s)
   end
 
   # Example params:

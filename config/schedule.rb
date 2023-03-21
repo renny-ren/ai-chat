@@ -19,7 +19,7 @@
 
 # Learn more: http://github.com/javan/whenever
 
-every 1.minute do
+every 2.hours do
   runner "ClosePendingOrderJob.perform_now"
 end
 

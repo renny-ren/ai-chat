@@ -5,7 +5,7 @@ class Order < ApplicationRecord
   enum status: { pending: 0, paid: 1, closed: 2 }
 
   def fulfill!
-    return unless self.pending?
+    return if self.paid?
 
     plan = self.owner
     ActiveRecord::Base.transaction do
