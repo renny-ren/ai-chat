@@ -80,3 +80,4 @@ gem "activestorage-aliyun"
 gem "alipay"
 gem "whenever", require: false
 gem "enumize"
+gem "exception-track"

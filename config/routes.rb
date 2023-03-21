@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   mount ActionCable.server => "/cable"
 
+  authenticate :user, ->(u) { u.admin? } do
+    mount ExceptionTrack::Engine => "/exception-track"
+  end
+
   devise_for :users, controllers: {
                        registrations: :registrations,
                        sessions: :sessions,

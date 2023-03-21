@@ -10,6 +10,10 @@ module ChatCompletion
       @params = params
     end
 
+    # ==返回消息示例==
+    # 消息请求正常，接收中：sse.write(id: "chatcmpl-6tEcfvsNYJKPOidWfZnCIk95Q9Qra", role: "assistant", content: "How can I help")
+    # 消息请求正常，接收完成：sse.write(done: true, status: 200, conversation_id: id, conversation_title: title)
+    # 消息请求异常：sse.write(done: true, status: 400, content: "Too Many Requests")
     def call
       # dummy_call
       current_user.messages.create!(
@@ -23,30 +27,39 @@ module ChatCompletion
         url: "https://api.openai.com",
         headers: headers,
       )
-      conn.post("/v1/chat/completions") do |req|
-        req.body = request_body.to_json
-        req.options.on_data = Proc.new do |chunk, overall_received_bytes, env|
-          # puts "---chunk: #{chunk}"
-          # puts "===data: #{chunk[/data: (.*)\n\n$/, 1]}"
-          data = chunk[/data: (.*)\n\n$/, 1]
+      Retry.run(count: 2, after_retry: method(:notify_failure)) do
+        @resp = conn.post("/v1/chat/completions") do |req|
+          req.body = request_body.to_json
+          req.options.on_data = Proc.new do |chunk, overall_received_bytes, env|
+            # puts "---chunk: #{chunk}"
+            # puts "===data: #{chunk[/data: (.*)\n\n$/, 1]}"
+            data = chunk[/data: (.*)\n\n$/, 1]
 
-          if data == "[DONE]"
-            sse.write({ done: true, conversation_id: conversation.id, conversation_title: conversation.title })
-            sse.close
-            conversation.messages.create!(
-              role: Message.roles["assistant"],
-              content: result,
-              user_id: GPT_USER_ID,
-            )
-          else
-            response = JSON.parse(data)
-            if response.dig("choices", 0, "delta", "content")
-              result = result + response.dig("choices", 0, "delta", "content")
+            if data.present?
+              if data == "[DONE]"
+                sse.write({ done: true, status: 200, conversation_id: conversation.id, conversation_title: conversation.title })
+                sse.close
+                conversation.messages.create!(
+                  role: Message.roles["assistant"],
+                  content: result,
+                  user_id: GPT_USER_ID,
+                )
+              else
+                response = JSON.parse(data)
+                if response.dig("choices", 0, "delta", "content")
+                  result = result + response.dig("choices", 0, "delta", "content")
+                end
+                sse.write(id: response.dig("id"), role: "assistant", content: result)
+              end
             end
-            sse.write(id: response.dig("id"), role: "assistant", content: result)
           end
         end
+        raise @resp.reason_phrase if @resp.status != 200
       end
+    end
+
+    def notify_failure
+      sse.write({ done: true, status: @resp.status, content: @resp.reason_phrase })
     end
 
     private

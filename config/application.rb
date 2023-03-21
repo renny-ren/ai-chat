@@ -35,5 +35,6 @@ module AiChat
     config.generators.system_tests = nil
     config.time_zone = "Beijing"
     config.i18n.default_locale = "zh-CN"
+    config.autoload_paths << Rails.root.join("lib")
   end
 end

@@ -131,6 +131,9 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal, setCustomContent }
   }
 
   const addMessage = (data) => {
+    if (data.done && data.status !== 200) {
+      data.content = "哎呀呀，出了点小意外，我现在脑子有点短路，您可以给我喝点咖啡或者让我稍微休息一下再试试看！"
+    }
     setMessages([...messagesRef.current, data])
   }
 

@@ -9,6 +9,7 @@ class User < ApplicationRecord
   has_many :conversations
   has_many :orders
   has_many :membership_subscriptions
+  has_one :active_subscription, -> { active }, class_name: "MembershipSubscription"
   has_one :openai_account
 
   has_one_attached :avatar, dependent: :purge
@@ -59,6 +60,10 @@ class User < ApplicationRecord
 
   def used_count_cache_key
     "used_count:user_#{id}"
+  end
+
+  def admin?
+    self.is_admin
   end
 
   protected

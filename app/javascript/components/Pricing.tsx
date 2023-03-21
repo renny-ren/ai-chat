@@ -152,7 +152,7 @@ const Pricing: React.FC<PricingProps> = ({ setIsShowSignInModal }) => {
                                 </div>
                               </td>
                               <td className="p-2 whitespace-nowrap">
-                                <div>{subscription.left_days} 天</div>
+                                <div>{`${subscription.left_days < 0 ? "-" : `${subscription.left_days} 天`}`}</div>
                               </td>
                               <td className="p-2 whitespace-nowrap">
                                 <div>{subscription.start_at}</div>

@@ -26,7 +26,7 @@ class CompletionsController < ApplicationController
       ChatCompletion::LiveStreamService.new(sse, current_user, params).call
       update_used_count
     else
-      sse.write(status: 400, message: "limit exceeded")
+      sse.write(done: true, status: 400, content: "limit exceeded")
     end
   ensure
     sse.close

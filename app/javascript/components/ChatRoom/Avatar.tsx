@@ -1,5 +1,6 @@
 import React, { useState, Fragment } from "react"
 import { Popover, Transition } from "@headlessui/react"
+import currentUser from "stores/current_user_store"
 
 interface AvatarProps {
   src: string
@@ -18,7 +19,7 @@ const Avatar: React.FC<AvatarProps> = ({ src, nickname, openModal, setPrompt, is
 
   return (
     <>
-      {isSelf ? (
+      {!currentUser.isSignedIn() || isSelf ? (
         <img className="mt-1 inline-block h-10 w-10 rounded-full aspect-square" src={src} />
       ) : (
         <>

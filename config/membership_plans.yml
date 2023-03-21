@@ -9,7 +9,7 @@ basic:
   export_conversation: false
   image_model: false
 advanced:
-  message_limit_per_day: 99999
+  message_limit_per_day: 999
   max_question_length: 1000
   export_conversation: true
   image_model: true

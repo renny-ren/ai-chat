@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_19_061859) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_21_072011) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -49,6 +49,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_19_061859) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_conversations_on_user_id"
+  end
+
+  create_table "exception_tracks", force: :cascade do |t|
+    t.string "title"
+    t.text "body"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "membership_plans", force: :cascade do |t|
@@ -139,6 +146,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_19_061859) do
     t.string "nickname"
     t.jsonb "config", default: {}
     t.integer "membership", default: 0, null: false
+    t.boolean "is_admin", default: false, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true

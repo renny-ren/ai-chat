@@ -22,6 +22,10 @@ class Message < ApplicationRecord
     update_history(role: "user", content: self.content.sub("@#{robot_user.nickname} ", ""))
   end
 
+  def robot_mentioned_users
+    User.where(id: self.user_id)
+  end
+
   def generate_ai_response
     update_conversation_history
     params = {
@@ -40,52 +44,69 @@ class Message < ApplicationRecord
       headers: headers,
     )
     @result = { text: "", detail: {}, is_first_chunk: true }
-    mentioned_users = User.where(id: self.user_id)
 
-    conn.post("/v1/chat/completions") do |req|
-      req.body = params.to_json
-      req.options.on_data = Proc.new do |chunk, overall_received_bytes, env|
-        # puts "Received #{overall_received_bytes} characters"
-        # puts "---chunk: #{chunk}"
-        # puts "===data: #{chunk[/data: (.*)\n\n$/, 1]}"
-        data = chunk[/data: (.*)\n\n$/, 1]
-
-        if data == "[DONE]"
-          # TODO: close connection
-          signal_done(@message_id)
-          Message.transaction do
-            message = Message.create!(
-              content: @result[:text],
-              user_id: robot_user.id,
-              mentioned_user_ids: mentioned_users.ids,
-            )
-            update_history(role: "assistant", content: message.content)
+    Retry.run(count: 2, after_retry: method(:notify_failure)) do
+      @resp = conn.post("/v1/chat/completions") do |req|
+        req.body = params.to_json
+        req.options.on_data = Proc.new do |chunk, overall_received_bytes, env|
+          # puts "Received #{overall_received_bytes} characters"
+          # puts "---chunk: #{chunk}"
+          # puts "===data: #{chunk[/data: (.*)\n\n$/, 1]}"
+          data = chunk[/data: (.*)\n\n$/, 1]
+          if data.present?
+            if data == "[DONE]"
+              # TODO: close connection
+              signal_done(@message_id)
+              Message.transaction do
+                message = Message.create!(
+                  content: @result[:text],
+                  user_id: robot_user.id,
+                  mentioned_user_ids: robot_mentioned_users.ids,
+                )
+                update_history(role: "assistant", content: message.content)
+              end
+            else
+              response = JSON.parse(data)
+              @message_id = response.dig("id")
+              @result = build_result(response)
+              ActionCable.server.broadcast("MessagesChannel", {
+                id: @message_id,
+                role: "assistant",
+                done: false,
+                content: @result[:text],
+                is_first_chunk: @result[:is_first_chunk],
+                user_id: robot_user.id,
+                user_nickname: robot_user.nickname,
+                user_avatar_url: robot_user.avatar_url,
+                mentioned_users_nickname: robot_mentioned_users.map(&:nickname),
+              })
+              @result[:is_first_chunk] = false
+            end
           end
-        else
-          response = JSON.parse(data)
-          @message_id = response.dig("id")
-          @result = build_result(response)
-          ActionCable.server.broadcast("MessagesChannel", {
-            id: @message_id,
-            role: "assistant",
-            done: false,
-            content: @result[:text],
-            is_first_chunk: @result[:is_first_chunk],
-            user_id: robot_user.id,
-            user_nickname: robot_user.nickname,
-            user_avatar_url: robot_user.avatar_url,
-            mentioned_users_nickname: mentioned_users.map(&:nickname),
-          })
-          @result[:is_first_chunk] = false
         end
       end
+      raise @resp.reason_phrase if @resp.status != 200
     end
   end
 
   def signal_done(message_id)
     ActionCable.server.broadcast("MessagesChannel", {
+      status: 200,
       id: message_id,
       done: true,
+    })
+  end
+
+  def notify_failure
+    ActionCable.server.broadcast("MessagesChannel", {
+      role: "assistant",
+      done: true,
+      status: @resp.status,
+      content: @resp.reason_phrase,
+      user_id: robot_user.id,
+      user_nickname: robot_user.nickname,
+      user_avatar_url: robot_user.avatar_url,
+      mentioned_users_nickname: robot_mentioned_users.map(&:nickname),
     })
   end
 

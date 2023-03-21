@@ -136,16 +136,20 @@ const ChatModule: FC<ChatModuleProps> = ({ setIsShowModal, setConversations }) =
       if (message.isLoading) {
         if (response.done) {
           message.isLoading = false
-          setUsedMessageCount(usedMessageCount + 1)
-          setConversationId(response.conversation_id)
-          if (setConversations) {
-            // Add new conversation to sidebar
-            setConversations((prevConversations) => {
-              return [
-                { current: true, id: response.conversation_id, title: response.conversation_title },
-                ...prevConversations,
-              ]
-            })
+          if (response.status === 200) {
+            setUsedMessageCount(usedMessageCount + 1)
+            setConversationId(response.conversation_id)
+            if (setConversations) {
+              // Add new conversation to sidebar
+              setConversations((prevConversations) => {
+                return [
+                  { current: true, id: response.conversation_id, title: response.conversation_title },
+                  ...prevConversations,
+                ]
+              })
+            }
+          } else {
+            message.content = "哎呀呀，出了点小意外，我现在脑子有点短路，您可以给我喝点咖啡或者让我稍微休息一下再试试看！"
           }
         } else {
           message.content = response.content
