@@ -44,6 +44,10 @@ const PricingModal: React.FC<PricingModalProps> = ({ isOpen, setIsOpenModal, pla
         window.location.reload()
       }, 2000)
     }
+    if (response.data.status === "closed") {
+      message.error("当前二维码已失效")
+      closeModal()
+    }
   }
 
   const getQrCode = async () => {

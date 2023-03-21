@@ -1,4 +1,5 @@
 require_relative "boot"
+require_relative "../app/middlewares/handle_bad_encoding_middleware.rb"
 
 require "rails"
 # Pick the frameworks you want:
@@ -36,5 +37,8 @@ module AiChat
     config.time_zone = "Beijing"
     config.i18n.default_locale = "zh-CN"
     config.autoload_paths << Rails.root.join("lib")
+
+    config.middleware.insert 0, Rack::UTF8Sanitizer
+    config.middleware.insert_before Rack::Runtime, HandleBadEncodingMiddleware
   end
 end
