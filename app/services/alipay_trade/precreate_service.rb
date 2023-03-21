@@ -21,8 +21,7 @@ module AlipayTrade
         notify_url: "https://aii.chat/webhooks/alipay",
         biz_content: JSON.generate({
           out_trade_no: out_trade_no,
-          # total_amount: plan.amount,
-          total_amount: 0.1,
+          total_amount: plan.amount,
           subject: plan.description,
         }, ascii_only: true),
       )

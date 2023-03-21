@@ -14,6 +14,8 @@ class WebhooksController < ApplicationController
     else
     end
     render status: 200, json: nil
+  rescue Exception => e
+    App::Error.track(e)
   end
 
   # Example params:

@@ -1,4 +1,5 @@
 @import "./components/chat_module.scss";
+@import "./components/chatroom.scss";
 @import "./components/pricing.scss";
 @import "./mention.scss";
 

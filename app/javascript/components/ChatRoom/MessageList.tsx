@@ -110,7 +110,12 @@ const MessageList = ({ messages, fetchMessages, isFetching, openModal, paginatio
 
   return (
     <>
-      <div className="container" style={{ overflow: "auto" }} ref={rootRefSetter} onScroll={handleRootScroll}>
+      <div
+        className="message-list-container overflow-hidden hover:overflow-auto"
+        style={{ scrollbarGutter: "stable both-edges" }}
+        ref={rootRefSetter}
+        onScroll={handleRootScroll}
+      >
         <div className="sentry text-center" ref={infiniteRef}>
           {isFetching && <Spin />}
         </div>
