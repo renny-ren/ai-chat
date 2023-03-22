@@ -14,3 +14,16 @@
   background-color: #7c7c7c;
 }
 */
+
+.ai-response p:first-of-type {
+  display: inline;
+}
+
+.ai-response-loading :last-child::after {
+  -webkit-animation: blink 1s steps(5, start) infinite;
+  animation: blink 1s steps(5, start) infinite;
+  /*  content: "▋";*/
+  content: "▍";
+  margin-left: 0.25rem;
+  vertical-align: baseline;
+}
