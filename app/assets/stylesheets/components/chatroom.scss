@@ -19,7 +19,7 @@
   display: inline;
 }
 
-.ai-response-loading :last-child::after {
+.ai-response-loading > :last-child::after {
   -webkit-animation: blink 1s steps(5, start) infinite;
   animation: blink 1s steps(5, start) infinite;
   /*  content: "▋";*/
