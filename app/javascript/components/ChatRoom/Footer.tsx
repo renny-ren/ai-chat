@@ -29,7 +29,7 @@ const Footer: React.FC<FooterProps> = ({
 
   useEffect(() => {
     setIsToAI(content.startsWith(`@${gptUserNickname}`))
-    if (content && document.activeElement != inputRef.current) inputRef.current.focus()
+    if (content) inputRef.current.focus()
   }, [content])
 
   const handleSubmit = (event) => {

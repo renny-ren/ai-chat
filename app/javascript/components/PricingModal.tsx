@@ -35,7 +35,7 @@ const PricingModal: React.FC<PricingModalProps> = ({ isOpen, setIsOpenModal, pla
 
   const pollStatus = async (orderId) => {
     const response = await axios.get(`/v1/orders/${orderId}`)
-    if (response.data.status === "paid") {
+    if (response.data.status === "paid" || response.data.status === "fulfilled") {
       setIsPaid(true)
       setTimeout(() => {
         message.success("升级成功！")
