@@ -6,9 +6,9 @@ class WebhooksController < ApplicationController
     case params["trade_status"]
     when "TRADE_SUCCESS"
       order = Order.find_by("data ->> 'out_trade_no' = ?", params["out_trade_no"])
-      if order.present? && !order.paid?
-        order.fulfill!
-        puts "===order_#{order.id}_success!==="
+      if order.present? && order.pending?
+        order.paid!
+        order.complete!
       end
     else
     end

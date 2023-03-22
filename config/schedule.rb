@@ -19,10 +19,6 @@
 
 # Learn more: http://github.com/javan/whenever
 
-every 2.hours do
-  runner "ClosePendingOrderJob.perform_now"
-end
-
 every 12.hours do
   runner "ExpireMembershipJob.perform_now"
 end
