@@ -11,6 +11,5 @@ class SessionsController < Devise::SessionsController
 
   def destroy
     sign_out current_user
-    # render_json_response :ok
   end
 end

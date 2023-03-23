@@ -172,7 +172,7 @@ const Pricing: React.FC<PricingProps> = ({ setIsShowSignInModal }) => {
                 <div className="w-full px-4">
                   <div className="text-center mx-auto mb-8 max-w-[510px]">
                     <span className="font-semibold text-lg text-emerald-500 mb-2 block">价格表</span>
-                    <h2 className="font-bold text-3xl sm:text-4xl md:text-[40px] text-dark mb-4">升级服务</h2>
+                    <h2 className="font-bold text-3xl sm:text-4xl md:text-[40px] text-dark mb-4">升级套餐</h2>
                     <p className="text-base text-body-color">感谢你的支持</p>
                     <p className="text-base text-body-color">祝你每一天都充满欢笑和幸福，生活愉快！</p>
                   </div>

@@ -2,7 +2,6 @@ class MessagesChannel < ApplicationCable::Channel
   @@subscribed_users = [{ id: GPT_USER_ID, nickname: User.gpt_user_nickname }]
 
   def subscribed
-    # appear_user if current_user.present?
     stream_from "MessagesChannel"
   end
 

@@ -1,6 +1,4 @@
 class Message < ApplicationRecord
-  # include ActionController::Live
-
   belongs_to :user
   belongs_to :conversation, optional: true
   has_many :replies, class_name: "::Message", foreign_key: :parent_id, dependent: :destroy
