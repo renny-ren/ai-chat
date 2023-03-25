@@ -117,6 +117,7 @@ const Footer: React.FC<FooterProps> = ({
                   className="mentions"
                   // className="max-h-52 m-0 w-full resize-none border-0 bg-transparent p-0 pl-8 pr-7 focus:ring-0 focus-visible:ring-0 dark:bg-transparent"
                   inputRef={inputRef}
+                  // placeholder="← 点击左边图标可与 AI 交流，你的提问越精确，答案就越合适。"
                   style={{
                     input: {
                       maxHeight: "13rem",
