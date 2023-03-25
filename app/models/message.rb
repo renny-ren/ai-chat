@@ -36,50 +36,42 @@ class Message < ApplicationRecord
       presence_penalty: 0,
       stream: true,
     }
-    conn = Faraday.new(
-      url: "https://api.openai.com",
-      params: params,
-      headers: headers,
-    )
+
     @result = { text: "", detail: {}, is_first_chunk: true }
 
     Retry.run(count: 2, after_retry: method(:notify_failure)) do
-      @resp = conn.post("/v1/chat/completions") do |req|
-        req.body = params.to_json
-        req.options.on_data = Proc.new do |chunk, overall_received_bytes, env|
-          # puts "Received #{overall_received_bytes} characters"
-          # puts "---chunk: #{chunk}"
-          # puts "===data: #{chunk[/data: (.*)\n\n$/, 1]}"
-          data = chunk[/data: (.*)\n\n$/, 1]
-          if data.present?
-            if data == "[DONE]"
-              # TODO: close connection
-              signal_done(@message_id)
-              Message.transaction do
-                message = Message.create!(
-                  content: @result[:text],
-                  user_id: robot_user.id,
-                  mentioned_user_ids: robot_mentioned_users.ids,
-                )
-                update_history(role: "assistant", content: message.content)
-              end
-            else
-              response = JSON.parse(data)
-              @message_id = response.dig("id")
-              @result = build_result(response)
-              ActionCable.server.broadcast("MessagesChannel", {
-                id: @message_id,
-                role: "assistant",
-                done: false,
+      client = OpenAI::Client.new([OPENAI_API_KEY, OPENAI_API_KEY2].sample)
+      @resp = client.create_chat_completion(params) do |chunk, overall_received_bytes, env|
+        data = chunk[/data: (.*)\n\n$/, 1]
+
+        if data.present?
+          if data == "[DONE]"
+            # TODO: close connection
+            signal_done(@message_id)
+            Message.transaction do
+              message = Message.create!(
                 content: @result[:text],
-                is_first_chunk: @result[:is_first_chunk],
                 user_id: robot_user.id,
-                user_nickname: robot_user.nickname,
-                user_avatar_url: robot_user.avatar_url,
-                mentioned_users_nickname: robot_mentioned_users.map(&:nickname),
-              })
-              @result[:is_first_chunk] = false
+                mentioned_user_ids: robot_mentioned_users.ids,
+              )
+              update_history(role: "assistant", content: message.content)
             end
+          else
+            response = JSON.parse(data)
+            @message_id = response.dig("id")
+            @result = build_result(response)
+            ActionCable.server.broadcast("MessagesChannel", {
+              id: @message_id,
+              role: "assistant",
+              done: false,
+              content: @result[:text],
+              is_first_chunk: @result[:is_first_chunk],
+              user_id: robot_user.id,
+              user_nickname: robot_user.nickname,
+              user_avatar_url: robot_user.avatar_url,
+              mentioned_users_nickname: robot_mentioned_users.map(&:nickname),
+            })
+            @result[:is_first_chunk] = false
           end
         end
       end
@@ -116,36 +108,6 @@ class Message < ApplicationRecord
     @result
   end
 
-  # def generate_response
-  #   client = OpenAI::Client.new(OPENAI_API_KEY)
-  #   res = client.create_completion(
-  #     model: "text-davinci-003",
-  #     max_tokens: 1000,
-  #     temperature: 0.6,
-  #     frequency_penalty: 0,
-  #     presence_penalty: 0,
-  #     prompt: build_session_prompt,
-  #     stream: true,
-  #   )
-  #   response = JSON.parse(res.body)
-
-  #   Message.transaction do
-  #     mentioned_users = User.where(id: self.user_id)
-  #     message = Message.create!(
-  #       content: response.dig("choices", 0, "text").strip,
-  #       user_id: robot_user.id,
-  #       mentioned_user_ids: mentioned_users.ids,
-  #     )
-  #     ActionCable.server.broadcast("MessagesChannel", {
-  #       content: message.content,
-  #       user_id: message.user_id,
-  #       user_nickname: message.user_nickname,
-  #       user_avatar_url: message.user_avatar_url,
-  #       mentioned_users_nickname: mentioned_users.map(&:nickname),
-  #     })
-  #   end
-  # end
-
   def mentioned_users_nickname
     return [] if mentioned_user_ids.nil?
 
@@ -165,13 +127,6 @@ class Message < ApplicationRecord
   end
 
   private
-
-  def headers
-    {
-      "Content-Type" => "application/json",
-      "Authorization" => "Bearer #{[OPENAI_API_KEY, OPENAI_API_KEY2].sample}",
-    }
-  end
 
   def initial_messages
     [
