@@ -47,6 +47,7 @@ const Footer: React.FC<FooterProps> = ({
 
     cable.subscriptions.subscriptions[0].send({
       content: content,
+      is_to_ai: isToAI,
       mentions: content.match(/@(\S+)/g)?.map((mention) => mention.substring(1)) || [],
     })
 

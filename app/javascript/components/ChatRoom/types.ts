@@ -3,6 +3,6 @@ export interface ChatMessage {
   user_id: number
   user_nickname: string
   user_avatar_url: string
-  mentioned_users_nickname: any
   role: string
+  mentions: any
 }

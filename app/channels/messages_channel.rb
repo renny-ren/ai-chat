@@ -20,13 +20,16 @@ class MessagesChannel < ApplicationCable::Channel
       appear_user
     else
       Message.transaction do
-        mentioned_users = User.where(nickname: data["mentions"])
-        message = Message.create!(
+        @message = Message.create!(
+          mentions: data["mentions"],
           content: data["content"],
           user_id: current_user.id,
-          mentioned_user_ids: mentioned_users.ids,
         )
-        ActionCable.server.broadcast("MessagesChannel", message.as_item_json)
+        ActionCable.server.broadcast("MessagesChannel", @message.as_item_json)
+      end
+      if data["is_to_ai"]
+        @message.update_ai_conversation_history
+        GenerateAiResponseJob.perform_now(@message.id)
       end
     end
   end

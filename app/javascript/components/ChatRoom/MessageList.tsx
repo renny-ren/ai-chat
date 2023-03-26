@@ -50,7 +50,7 @@ const MessageList = ({ messages, fetchMessages, isFetching, openModal, paginatio
   const renderContent = (message) => {
     return isRobot(message) ? (
       <>
-        <span>{message.mentioned_users_nickname.map((name) => `@${name}`)} </span>
+        <span>{message.mentions?.map((name) => `@${name}`)} </span>
         <Markdown value={message.content} renderer={renderer} />
       </>
     ) : (

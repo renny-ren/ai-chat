@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_21_072011) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_25_104905) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -88,7 +88,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_21_072011) do
     t.integer "mentioned_user_ids", array: true
     t.integer "parent_id"
     t.bigint "conversation_id"
-    t.integer "role", default: 0, null: false
+    t.string "mentions", array: true
     t.index ["conversation_id"], name: "index_messages_on_conversation_id"
     t.index ["user_id"], name: "index_messages_on_user_id"
   end
