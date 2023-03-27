@@ -20,6 +20,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal, setCustomContent }
   const messagesRef = useRef()
   const [messages, setMessages] = useState([])
   const [isGenerating, setIsGenerating] = useState(false)
+  const [generatingMsgId, setGeneratingMsgId] = useState(0)
   const [isFetching, setIsFetching] = useState(false)
   const [channel, setChannel] = useState()
   const [isOpenClearModal, setIsOpenClearModal] = useState(false)
@@ -114,7 +115,10 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal, setCustomContent }
         if (data.type === "appearance") {
           setSubscribers(data.subscribers)
         } else {
-          !data.id || data.is_first_chunk ? addMessage(data) : updateMessage(data)
+          if (data.done && data.status !== 200) return notifyFailure(data)
+          setGeneratingMsgId(data.done ? 0 : data.id)
+          newMessageIndex = messagesRef.current.findIndex((msg) => msg.id === data.id)
+          newMessageIndex === -1 ? addMessage(data) : updateMessage(data, newMessageIndex)
         }
       },
       connected() {
@@ -131,28 +135,24 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal, setCustomContent }
   }
 
   const addMessage = (data) => {
-    if (data.done && data.status !== 200) {
-      data.content = "哎呀呀，出了点小意外，我现在脑子有点短路，您可以给我喝点咖啡或者让我稍微休息一下再试试看！"
-    }
     setMessages([...messagesRef.current, data])
   }
 
-  const updateMessage = (data) => {
-    messagesRef.current.map((message) => {
-      if (message.id === data.id) {
-        if (data.done) {
-          setIsGenerating(false)
-          message.loading = false
-        } else {
-          message.loading = true
-          message.content = data.content
-        }
-        message
-      } else {
-        message
-      }
-    })
-    setMessages([...messagesRef.current])
+  const updateMessage = (data, index) => {
+    if (data.done) return
+    const updatedMessages = [...messagesRef.current]
+    updatedMessages[index] = data
+    setMessages(updatedMessages)
+  }
+
+  const notifyFailure = (data) => {
+    setMessages([
+      ...messagesRef.current,
+      {
+        ...data,
+        content: "哎呀呀，出了点小意外，我现在脑子有点短路，您可以等我喝点咖啡或者让我稍微休息一下再试试看！",
+      },
+    ])
   }
 
   const fetchMessages = async (page = 1) => {
@@ -189,6 +189,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal, setCustomContent }
                           openModal={openModal}
                           pagination={pagination}
                           setPrompt={setPrompt}
+                          generatingMsgId={generatingMsgId}
                         />
                         {/*<div className="w-full h-2 sm:h-6 flex-shrink-0"></div>*/}
                       </div>

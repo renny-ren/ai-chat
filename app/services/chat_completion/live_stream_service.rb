@@ -19,38 +19,29 @@ module ChatCompletion
       current_user.messages.create!(
         conversation_id: conversation.id,
         content: params[:prompt],
-        role: Message.roles["user"],
       )
 
       result = ""
-      conn = Faraday.new(
-        url: "https://api.openai.com",
-        headers: headers,
-      )
       Retry.run(count: 2, after_retry: method(:notify_failure)) do
-        @resp = conn.post("/v1/chat/completions") do |req|
-          req.body = request_body.to_json
-          req.options.on_data = Proc.new do |chunk, overall_received_bytes, env|
-            # puts "---chunk: #{chunk}"
-            # puts "===data: #{chunk[/data: (.*)\n\n$/, 1]}"
-            data = chunk[/data: (.*)\n\n$/, 1]
+        @resp = client.create_chat_completion(request_body) do |chunk, overall_received_bytes, env|
+          # puts "---chunk: #{chunk}"
+          # puts "===data: #{chunk[/data: (.*)\n\n$/, 1]}"
+          data = chunk[/data: (.*)\n\n$/, 1]
 
-            if data.present?
-              if data == "[DONE]"
-                sse.write({ done: true, status: 200, conversation_id: conversation.id, conversation_title: conversation.title })
-                sse.close
-                conversation.messages.create!(
-                  role: Message.roles["assistant"],
-                  content: result,
-                  user_id: GPT_USER_ID,
-                )
-              else
-                response = JSON.parse(data)
-                if response.dig("choices", 0, "delta", "content")
-                  result = result + response.dig("choices", 0, "delta", "content")
-                end
-                sse.write(id: response.dig("id"), role: "assistant", content: result)
+          if data.present?
+            if data == "[DONE]"
+              sse.write({ done: true, status: 200, conversation_id: conversation.id, conversation_title: conversation.title })
+              sse.close
+              conversation.messages.create!(
+                content: result,
+                user_id: GPT_USER_ID,
+              )
+            else
+              response = JSON.parse(data)
+              if response.dig("choices", 0, "delta", "content")
+                result = result + response.dig("choices", 0, "delta", "content")
               end
+              sse.write(id: response.dig("id"), role: "assistant", content: result)
             end
           end
         end
@@ -63,6 +54,10 @@ module ChatCompletion
     end
 
     private
+
+    def client
+      @client ||= OpenAI::Client.new(current_user.openai_account.secret_key || OPENAI_API_KEY)
+    end
 
     def dummy_call
       sse.write(id: "chatcmpl-6tEcfvsNYJKPOidWfZnCIk95Q9Qra", role: "assistant", content: "How")
@@ -104,13 +99,6 @@ module ChatCompletion
       @conversation ||= current_user.conversations.find_or_create_by(id: params[:conversation_id]) do |conversation|
         conversation.title = params[:prompt][0..30]
       end
-    end
-
-    def headers
-      {
-        "Content-Type" => "application/json",
-        "Authorization" => "Bearer #{current_user.openai_account.secret_key || OPENAI_API_KEY}",
-      }
     end
   end
 end

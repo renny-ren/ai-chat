@@ -1,7 +1,5 @@
 module ChatCompletion
   class CreateService
-    MODEL = "gpt-3.5-turbo".freeze
-
     attr_reader :user_message, :params, :message_id
     attr_accessor :result
 
@@ -19,12 +17,12 @@ module ChatCompletion
 
           if data.present?
             if data == "[DONE]"
-              signal_done
+              notify_done
               Message.transaction do
                 message = Message.create!(
                   content: result,
                   user_id: GPT_USER_ID,
-                  mentions: user_message.user_nickname,
+                  mentions: [user_message.user_nickname],
                 )
                 user_message.update_history(role: "assistant", content: result)
               end
@@ -38,7 +36,7 @@ module ChatCompletion
                 user_id: robot_user.id,
                 user_nickname: robot_user.nickname,
                 user_avatar_url: robot_user.avatar_url,
-                mentions: user_message.user_nickname,
+                mentions: [user_message.user_nickname],
               })
             end
           end
@@ -47,13 +45,60 @@ module ChatCompletion
       end
     end
 
+    # dummy call
+    # def call
+    #   ActionCable.server.broadcast("MessagesChannel", {
+    #     role: "assistant",
+    #     id: message_id,
+    #     content: "mo",
+    #     user_id: robot_user.id,
+    #     user_nickname: robot_user.nickname,
+    #     user_avatar_url: robot_user.avatar_url,
+    #     mentions: ["test"],
+    #   })
+    #   sleep 1
+    #   ActionCable.server.broadcast("MessagesChannel", {
+    #     role: "assistant",
+    #     id: message_id,
+    #     content: "mock",
+    #     user_id: robot_user.id,
+    #     user_nickname: robot_user.nickname,
+    #     user_avatar_url: robot_user.avatar_url,
+    #     mentions: ["test"],
+    #   })
+    #   sleep 1
+    #   ActionCable.server.broadcast("MessagesChannel", {
+    #     role: "assistant",
+    #     id: message_id,
+    #     content: "mock con",
+    #     user_id: robot_user.id,
+    #     user_nickname: robot_user.nickname,
+    #     user_avatar_url: robot_user.avatar_url,
+    #     mentions: ["test"],
+    #   })
+    #   sleep 1
+    #   5.times do
+    #     ActionCable.server.broadcast("MessagesChannel", {
+    #       id: message_id,
+    #       role: "assistant",
+    #       content: "mock content",
+    #       user_id: robot_user.id,
+    #       user_nickname: robot_user.nickname,
+    #       user_avatar_url: robot_user.avatar_url,
+    #       mentions: ["test"],
+    #     })
+    #   end
+    #   sleep 1
+    #   signal_done
+    # end
+
     private
 
     def client
       @client ||= OpenAI::Client.new([OPENAI_API_KEY, OPENAI_API_KEY2].sample)
     end
 
-    def signal_done
+    def notify_done
       ActionCable.server.broadcast("MessagesChannel", {
         status: 200,
         id: message_id,
@@ -63,14 +108,15 @@ module ChatCompletion
 
     def notify_failure
       ActionCable.server.broadcast("MessagesChannel", {
-        role: "assistant",
-        done: true,
         status: @resp.status,
+        done: true,
+        id: message_id,
+        role: "assistant",
         content: @resp.reason_phrase,
         user_id: robot_user.id,
         user_nickname: robot_user.nickname,
         user_avatar_url: robot_user.avatar_url,
-        mentioned_users_nickname: robot_mentioned_users.map(&:nickname),
+        mentions: [user_message.user_nickname],
       })
     end
 
