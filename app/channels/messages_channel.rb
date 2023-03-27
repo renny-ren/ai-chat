@@ -25,7 +25,7 @@ class MessagesChannel < ApplicationCable::Channel
           content: data["content"],
           user_id: current_user.id,
         )
-        ActionCable.server.broadcast("MessagesChannel", @message.as_item_json)
+        ActionCable.server.broadcast("MessagesChannel", JSON.parse(@message.to_builder.target!))
       end
       if data["is_to_ai"]
         @message.update_ai_conversation_history

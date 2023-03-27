@@ -20,6 +20,13 @@ class Message < ApplicationRecord
     user_id == GPT_USER_ID ? "assistant" : "user"
   end
 
+  def to_builder
+    Jbuilder.new do |message|
+      message.(self, :id, :content, :user_id, :user_nickname, :user_avatar_url, :mentions, :role)
+      message.created_at self.created_at.in_time_zone("Asia/Shanghai").strftime("%H:%M:%S")
+    end
+  end
+
   def as_item_json
     as_json(only: %i[content user_id mentions], methods: %i[user_nickname user_avatar_url role], include: { user: { only: [:nickname, :id] } })
   end

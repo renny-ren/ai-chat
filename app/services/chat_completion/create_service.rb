@@ -37,6 +37,7 @@ module ChatCompletion
                 user_nickname: robot_user.nickname,
                 user_avatar_url: robot_user.avatar_url,
                 mentions: [user_message.user_nickname],
+                created_at: Time.now.in_time_zone("Asia/Shanghai").strftime("%H:%M:%S"),
               })
             end
           end

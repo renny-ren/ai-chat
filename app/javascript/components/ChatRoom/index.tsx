@@ -115,7 +115,12 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal, setCustomContent }
         if (data.type === "appearance") {
           setSubscribers(data.subscribers)
         } else {
-          if (data.done && data.status !== 200) return notifyFailure(data)
+          if (data.done) {
+            setIsGenerating(false)
+            if (data.status !== 200) {
+              return notifyFailure(data)
+            }
+          }
           setGeneratingMsgId(data.done ? 0 : data.id)
           newMessageIndex = messagesRef.current.findIndex((msg) => msg.id === data.id)
           newMessageIndex === -1 ? addMessage(data) : updateMessage(data, newMessageIndex)
