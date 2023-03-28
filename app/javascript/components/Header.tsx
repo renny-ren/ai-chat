@@ -22,6 +22,16 @@ const Header: React.FC<HeaderProps> = ({ setIsShowModal, customContent, conversa
     setIsShowModal(true)
   }
 
+  const toggleDarkMode = () => {
+    if (document.documentElement.classList.contains("dark")) {
+      localStorage.theme = "light"
+      document.documentElement.classList.remove("dark")
+    } else {
+      localStorage.theme = "dark"
+      document.documentElement.classList.add("dark")
+    }
+  }
+
   return (
     <>
       <header className="contents lg:pointer-events-none lg:fixed lg:inset-0 lg:z-40 lg:flex">
@@ -65,7 +75,7 @@ const Header: React.FC<HeaderProps> = ({ setIsShowModal, customContent, conversa
               {currentUser.isSignedIn() && (
                 <div className="ml-4">
                   <a href="/pricing">
-                    <Tag className="text-gray-500">{currentUser.membershipName()}</Tag>
+                    <Tag className="text-gray-500 dark:text-white">{currentUser.membershipName()}</Tag>
                   </a>
                 </div>
               )}
@@ -85,27 +95,28 @@ const Header: React.FC<HeaderProps> = ({ setIsShowModal, customContent, conversa
                 </ul>*/}
               </nav>
               {/*<div className="hidden md:block md:h-5 md:w-px md:bg-zinc-900/10 md:dark:bg-white/15"></div>*/}
-              <div className="flex gap-2 md:gap-4">
-                {/*<button
-                  type="button"
-                  className="flex h-6 w-6 items-center justify-center rounded-md transition hover:bg-zinc-900/5 dark:hover:bg-white/5"
-                  aria-label="Toggle dark mode"
-                >
-                  <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className="h-5 w-5 stroke-zinc-900 dark:hidden">
-                    <path d="M12.5 10a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"></path>
-                    <path
-                      strokeLinecap="round"
-                      d="M10 5.5v-1M13.182 6.818l.707-.707M14.5 10h1M13.182 13.182l.707.707M10 15.5v-1M6.11 13.889l.708-.707M4.5 10h1M6.11 6.111l.708.707"
-                    ></path>
-                  </svg>
-                  <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className="hidden h-5 w-5 stroke-white dark:block">
-                    <path d="M15.224 11.724a5.5 5.5 0 0 1-6.949-6.949 5.5 5.5 0 1 0 6.949 6.949Z"></path>
-                  </svg>
-                </button>*/}
-                <CustomerService />
+              <div className="flex gap-2 md:gap-5">
+                <CustomerService className="hidden md:block" />
                 {customContent}
               </div>
               <div className="hidden md:block md:h-5 md:w-px md:bg-zinc-900/10 md:dark:bg-white/15"></div>
+              <button
+                type="button"
+                className="hidden md:block flex h-6 w-6 items-center justify-center rounded-md transition hover:bg-zinc-900/5 dark:hover:bg-white/5"
+                aria-label="Toggle dark mode"
+                onClick={toggleDarkMode}
+              >
+                <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className="h-5 w-5 stroke-zinc-900 dark:hidden">
+                  <path d="M12.5 10a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"></path>
+                  <path
+                    strokeLinecap="round"
+                    d="M10 5.5v-1M13.182 6.818l.707-.707M14.5 10h1M13.182 13.182l.707.707M10 15.5v-1M6.11 13.889l.708-.707M4.5 10h1M6.11 6.111l.708.707"
+                  ></path>
+                </svg>
+                <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" className="hidden h-5 w-5 stroke-white dark:block">
+                  <path d="M15.224 11.724a5.5 5.5 0 0 1-6.949-6.949 5.5 5.5 0 1 0 6.949 6.949Z"></path>
+                </svg>
+              </button>
 
               <div>
                 {currentUser.isSignedIn() ? (
@@ -125,7 +136,12 @@ const Header: React.FC<HeaderProps> = ({ setIsShowModal, customContent, conversa
         </div>
       </header>
       <Transition show={isShowMobileMenu}>
-        <MobileMenu setIsShow={setIsShowMobileMenu} onShowSignInModal={onShowSignInModal} conversations={conversations} />
+        <MobileMenu
+          setIsShow={setIsShowMobileMenu}
+          onShowSignInModal={onShowSignInModal}
+          conversations={conversations}
+          toggleDarkMode={toggleDarkMode}
+        />
       </Transition>
     </>
   )

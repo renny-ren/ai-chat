@@ -135,7 +135,7 @@ const Sponsorship: React.FC<SponsorshipProps> = ({ src, isRobot }) => {
       <button
         onClick={openModal}
         type="button"
-        className="relative top-0.5 flex h-6 w-6 outline-none sm:hover:bg-zinc-900/5 dark:hover:bg-white/5"
+        className="relative top-0.5 flex outline-none sm:hover:bg-zinc-900/5 dark:hover:bg-white/5"
       >
         <svg className="h-5 w-5 icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
           <path

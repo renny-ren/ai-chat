@@ -127,7 +127,7 @@ const MessageList = ({ messages, fetchMessages, isFetching, openModal, paginatio
                   <Avatar src={currentUser.avatarUrl()} />
                   <div className="flex flex-col gap-1 items-end">
                     <div className="flex items-baseline mr-3">
-                      <div className="text-sm font-medium">{message.user_nickname}</div>
+                      <div className="text-sm font-medium dark:text-white">{message.user_nickname}</div>
                       <p className="text-xs text-gray-500 ml-2">{message.created_at}</p>
                     </div>
                     <div className="relative ml-4 mr-2 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl">
@@ -149,7 +149,7 @@ const MessageList = ({ messages, fetchMessages, isFetching, openModal, paginatio
                   />
                   <div className="flex flex-col gap-1 max-w-full">
                     <div className="flex items-baseline">
-                      <div className="text-sm font-medium ml-3">{message.user_nickname}</div>
+                      <div className="text-sm font-medium ml-3 dark:text-white">{message.user_nickname}</div>
                       <p className="text-xs text-gray-500 ml-2">{message.created_at}</p>
                     </div>
                     <div

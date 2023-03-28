@@ -1,9 +1,11 @@
 import React, { Fragment, useState, useEffect } from "react"
 import { Dialog, Transition } from "@headlessui/react"
 
-interface CustomerServiceProps {}
+interface CustomerServiceProps {
+  className: string
+}
 
-const CustomerService: React.FC<CustomerServiceProps> = ({}) => {
+const CustomerService: React.FC<CustomerServiceProps> = ({ className = "" }) => {
   let [isOpen, setIsOpen] = useState(false)
 
   const closeModal = () => {
@@ -19,9 +21,7 @@ const CustomerService: React.FC<CustomerServiceProps> = ({}) => {
       <button
         onClick={openModal}
         type="button"
-        className={`relative flex h-6 w-6 outline-none sm:hover:bg-zinc-900/5 dark:hover:bg-white/5 md:block ${
-          window.location.pathname === `/` ? "hidden" : ""
-        }`}
+        className={`relative flex outline-none sm:hover:bg-zinc-900/5 dark:hover:bg-white/5 ${className}`}
       >
         <svg
           t="1679320459415"

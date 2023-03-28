@@ -108,14 +108,14 @@ const Pricing: React.FC<PricingProps> = ({ setIsShowSignInModal }) => {
           <section className="pb-12 lg:pb-[90px] relative z-20 overflow-hidden">
             <div className="px-4">
               {!!subscriptions.length && (
-                <div className="md:mx-14 border border-emerald-500 border-opacity-20 bg-white shadow-sm rounded-sm border border-gray-200">
+                <div className="md:mx-14 border border-emerald-500 border-opacity-20 bg-white dark:bg-transparent shadow-sm rounded-sm border border-gray-200">
                   <header className="px-5 py-4 border-b border-gray-100">
-                    <h2 className="font-semibold text-gray-700">当前套餐</h2>
+                    <h2 className="font-semibold text-gray-700 dark:text-white">当前套餐</h2>
                   </header>
                   <div className="p-3">
                     <div className="overflow-x-auto">
                       <table className="table-auto w-full">
-                        <thead className="text-xs font-semibold uppercase text-gray-400 bg-gray-50">
+                        <thead className="text-xs font-semibold uppercase text-gray-400 bg-gray-50 dark:bg-transparent">
                           <tr>
                             <th className="p-2 whitespace-nowrap">
                               <div className="font-semibold text-left">版本</div>
@@ -134,7 +134,7 @@ const Pricing: React.FC<PricingProps> = ({ setIsShowSignInModal }) => {
                             </th>
                           </tr>
                         </thead>
-                        <tbody className="text-sm text-zinc-600 divide-y divide-gray-100">
+                        <tbody className="text-sm text-zinc-600 dark:text-zinc-400 divide-y divide-gray-100">
                           {subscriptions.map((subscription, i) => (
                             <tr key={i}>
                               <td className="p-2 whitespace-nowrap">
@@ -172,7 +172,9 @@ const Pricing: React.FC<PricingProps> = ({ setIsShowSignInModal }) => {
                 <div className="w-full px-4">
                   <div className="text-center mx-auto mb-8 max-w-[510px]">
                     <span className="font-semibold text-lg text-emerald-500 mb-2 block">价格表</span>
-                    <h2 className="font-bold text-3xl sm:text-4xl md:text-[40px] text-dark mb-4">升级套餐</h2>
+                    <h2 className="font-bold text-3xl sm:text-4xl md:text-[40px] text-dark dark:text-white mb-4">
+                      升级套餐
+                    </h2>
                     <p className="text-base text-body-color">感谢你的支持</p>
                     <p className="text-base text-body-color">祝你每一天都充满欢笑和幸福，生活愉快！</p>
                   </div>
@@ -182,7 +184,7 @@ const Pricing: React.FC<PricingProps> = ({ setIsShowSignInModal }) => {
                 <div className="w-full md:w-1/2 lg:w-1/3 px-6">
                   <div className="rounded-xl relative z-10 overflow-hidden border border-emerald-500 border-opacity-20 shadow-pricing py-10 px-8 sm:p-12 lg:py-10 lg:px-6 xl:p-12 mb-10">
                     <span className="text-emerald-500 font-semibold text-lg block mb-4">免费版</span>
-                    <h2 className="font-bold text-dark mb-2 text-[42px]">¥0</h2>
+                    <h2 className="font-bold text-dark mb-2 text-[42px] dark:text-white">¥0</h2>
                     <p className="text-base text-body-color pb-6 mb-6 border-b border-[#F2F2F2]">免费体验使用</p>
                     <div className="mb-7 min-h-[200px]">
                       {renderItem("每日 2 次 AI 对话次数")}
@@ -219,7 +221,7 @@ const Pricing: React.FC<PricingProps> = ({ setIsShowSignInModal }) => {
                 <div className="w-full md:w-1/2 lg:w-1/3 px-6">
                   <div className="rounded-xl relative z-10 overflow-hidden border border-emerald-500 border-opacity-20 shadow-pricing py-10 px-8 sm:p-12 lg:py-10 lg:px-6 xl:p-12 mb-10">
                     <span className="text-emerald-500 font-semibold text-lg block mb-4">基础版（限时特惠）</span>
-                    <h2 className="font-bold text-dark mb-2 text-[42px]">
+                    <h2 className="font-bold text-dark mb-2 text-[42px] dark:text-white">
                       ¥9
                       <span className="ml-2 text-base text-gray-400 font-medium line-through">¥18</span>
                     </h2>
@@ -264,7 +266,7 @@ const Pricing: React.FC<PricingProps> = ({ setIsShowSignInModal }) => {
                 <div className="w-full md:w-1/2 lg:w-1/3 px-6">
                   <div className="rounded-xl relative z-10 overflow-hidden border border-emerald-500 border-opacity-20 shadow-pricing py-10 px-8 sm:p-12 lg:py-10 lg:px-6 xl:p-12 mb-10">
                     <span className="text-emerald-500 font-semibold text-lg block mb-4">高级版（限时特惠）</span>
-                    <h2 className="font-bold text-dark mb-2 text-[42px]">
+                    <h2 className="font-bold text-dark mb-2 text-[42px] dark:text-white">
                       ¥19
                       <span className="ml-2 text-base text-gray-400 font-medium line-through">¥39</span>
                     </h2>

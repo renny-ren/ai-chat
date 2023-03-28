@@ -27,7 +27,7 @@ const Announcement: React.FC<AnnouncementProps> = ({}) => {
       <button
         onClick={openModal}
         type="button"
-        className="relative hidden md:block flex h-6 w-6 outline-none sm:hover:bg-zinc-900/5 dark:hover:bg-white/5"
+        className="relative hidden md:block flex outline-none sm:hover:bg-zinc-900/5 dark:hover:bg-white/5"
       >
         {/* https://www.iconfont.cn/collections/detail?spm=a313x.7781069.0.da5a778a4&cid=33
         https://www.iconfont.cn/collections/detail?spm=a313x.7781069.0.da5a778a4&cid=12583*/}

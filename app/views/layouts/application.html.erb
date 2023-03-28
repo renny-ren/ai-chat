@@ -16,9 +16,26 @@
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+    <script type="text/javascript">
+      const prefersDarkMode = window.matchMedia("(prefers-color-scheme: dark)")
+      if (localStorage.theme === "dark" || (!("theme" in localStorage) && prefersDarkMode.matches)) {
+        document.documentElement.classList.add("dark")
+      } else {
+        document.documentElement.classList.remove("dark")
+      }
+      prefersDarkMode.addEventListener('change', (e) => {
+        if (e.matches) {
+          document.documentElement.classList.add("dark")
+          localStorage.theme = "dark"
+        } else {
+          document.documentElement.classList.remove("dark")
+          localStorage.theme = "light"
+        }
+      })
+    </script>
   </head>
 
-  <body style="height: 100%">
+  <body style="height: 100%" class="bg-white antialiased dark:bg-zinc-900">
     <%= yield %>
   </body>
 </html>

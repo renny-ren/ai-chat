@@ -230,7 +230,7 @@ const faqs = [
     a: (
       <>
         保存下方二维码可将本站分享给好友
-        <img className="w-36" src="/assets/aii_chat_qrcode.png" />
+        <img className="mt-2 w-36" src="/assets/aii_chat_qrcode.png" />
       </>
     ),
   },
@@ -302,8 +302,12 @@ const Faqs: React.FC<FaqsProps> = ({}) => {
 
           <div className="px-8 pb-8">
             <div className="rounded-lg">
-              <h4 className="text-4xl font-bold text-gray-800 tracking-widest uppercase text-center">常见问题</h4>
-              <p className="text-center text-gray-600 text-sm mt-2">Here are some of the frequently asked questions</p>
+              <h4 className="text-4xl font-bold text-gray-800 dark:text-white tracking-widest uppercase text-center">
+                常见问题
+              </h4>
+              <p className="text-center text-gray-600 dark:text-zinc-400 text-sm mt-2">
+                Here are some of the frequently asked questions
+              </p>
               <div className="space-y-12 px-2 xl:px-16 mt-12">
                 {/*<div className="grid grid-cols-1 md:grid-cols-2 gap-4 xl:gap-12 px-2 xl:px-12 mt-4">*/}
                 {faqs.map((faq, i) => (
@@ -321,7 +325,7 @@ const Faqs: React.FC<FaqsProps> = ({}) => {
                         <span className="text-lg text-emerald-500 font-semibold">{faq.q}</span>
                       </div>
                       <div className="flex items-center py-2">
-                        <span className={`text-gray-500 ${faq.className}`}>{faq.a}</span>
+                        <span className={`text-gray-500 ${faq.className || ""}`}>{faq.a}</span>
                       </div>
                     </div>
                   </div>
