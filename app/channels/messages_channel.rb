@@ -1,5 +1,5 @@
 class MessagesChannel < ApplicationCable::Channel
-  @@subscribed_users = [{ id: GPT_USER_ID, nickname: User.gpt_user_nickname }]
+  @@subscribed_users = [{ id: GPT_USER_ID, nickname: User.gpt_user[:nickname] }]
 
   def subscribed
     stream_from "MessagesChannel"
@@ -28,7 +28,6 @@ class MessagesChannel < ApplicationCable::Channel
         ActionCable.server.broadcast("MessagesChannel", JSON.parse(@message.to_builder.target!))
       end
       if data["is_to_ai"]
-        @message.update_ai_conversation_history
         GenerateAiResponseJob.perform_now(@message.id)
       end
     end

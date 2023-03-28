@@ -23,7 +23,9 @@ class User < ApplicationRecord
 
   def avatar_url(size = 80)
     # ActiveStorage::Current.url_options = { host: "localhost", port: 3000 }
-    avatar.url || "https://ui-avatars.com/api/?name=#{nickname}&size=#{size}"
+    Rails.cache.fetch("user_#{id}_avatar_url", expires_in: 10.minutes) do
+      avatar.url || "https://ui-avatars.com/api/?name=#{nickname}&size=#{size}"
+    end
   end
 
   def avatar=(new_avatar)
@@ -50,8 +52,28 @@ class User < ApplicationRecord
     }
   end
 
-  def ai_conversations
-    Rails.cache.read(conversation_cache_key)
+  def ai_conversation_history
+    Rails.cache.fetch(conversation_cache_key, expires_in: 1.day) do
+      initial_messages
+    end
+  end
+
+  def cut_ai_conversation_history
+    updated_history = ai_conversation_history
+    until updated_history.to_s.size < 4000
+      updated_history.delete_at(1)
+      updated_history.delete_at(2)
+    end
+    Rails.cache.write(conversation_cache_key, updated_history, expires_in: 1.day)
+  end
+
+  def update_history(role:, content:)
+    updated_history = ai_conversation_history << { role: role, content: content }
+    if updated_history.size > 20
+      updated_history.delete_at(1)
+      updated_history.delete_at(2)
+    end
+    Rails.cache.write(conversation_cache_key, updated_history, expires_in: 1.day)
   end
 
   def conversation_cache_key
@@ -66,10 +88,19 @@ class User < ApplicationRecord
     self.is_admin
   end
 
-  def self.gpt_user_nickname
-    Rails.cache.fetch("gpt_user_nickname", expires_in: 1.day) do
-      User.find(GPT_USER_ID).nickname
+  def self.gpt_user
+    Rails.cache.fetch("gpt_user", expires_in: 1.day) do
+      gpt_user = User.find(GPT_USER_ID)
+      { nickname: gpt_user.nickname, avatar_url: gpt_user.avatar_url }
     end
+  end
+
+  private
+
+  def initial_messages
+    [
+      { role: "system", content: "You are ChatGPT, a large language model trained by OpenAI. Answer as concisely as possible. Current date: #{Date.today.to_s}" },
+    ]
   end
 
   protected

@@ -13,7 +13,7 @@ class Retry
     end
   end
 
-  def self.run(time: 5.seconds, count: 3, after_retry: nil, &block)
+  def self.run(time: 3.seconds, count: 3, after_retry: nil, &block)
     retries ||= 0
     block.call
   rescue => e
