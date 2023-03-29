@@ -89,7 +89,7 @@ const Sponsorship: React.FC<SponsorshipProps> = ({ src, isRobot }) => {
               <p>（此名单每日更新）</p>
             </div>
             <div className="flow-root max-h-60 overflow-y-scroll">
-              <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
+              <ul role="list" className="divide-y divide-gray-200">
                 {sponsorships.map((s, i) => {
                   return (
                     <li key={i} className={`${i + 1 === sponsorships.length ? "pt-3 pb-0 sm:pt-4" : "py-3 sm:py-4"}`}>
@@ -101,14 +101,10 @@ const Sponsorship: React.FC<SponsorshipProps> = ({ src, isRobot }) => {
                           />
                         </div>
                         <div className="flex-1 min-w-0 text-left">
-                          <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                            {s.user?.nickname || "匿名"}
-                          </p>
-                          <p className="text-sm text-gray-500 truncate dark:text-gray-400">{s.sponsor_at}</p>
+                          <p className="text-sm font-medium text-gray-900 truncate">{s.user?.nickname || "匿名"}</p>
+                          <p className="text-sm text-gray-500 truncate">{s.sponsor_at}</p>
                         </div>
-                        <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                          ¥{s.amount}
-                        </div>
+                        <div className="inline-flex items-center text-base font-semibold text-gray-900">¥{s.amount}</div>
                       </div>
                     </li>
                   )
@@ -135,7 +131,7 @@ const Sponsorship: React.FC<SponsorshipProps> = ({ src, isRobot }) => {
       <button
         onClick={openModal}
         type="button"
-        className="relative top-0.5 flex outline-none sm:hover:bg-zinc-900/5 dark:hover:bg-white/5"
+        className="relative top-0.5 md:top-0 md:block flex outline-none sm:hover:bg-zinc-900/5 dark:hover:bg-white/5"
       >
         <svg className="h-5 w-5 icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
           <path

@@ -95,7 +95,7 @@ const Header: React.FC<HeaderProps> = ({ setIsShowModal, customContent, conversa
                 </ul>*/}
               </nav>
               {/*<div className="hidden md:block md:h-5 md:w-px md:bg-zinc-900/10 md:dark:bg-white/15"></div>*/}
-              <div className="flex gap-2 md:gap-5">
+              <div className="flex gap-4 md:gap-5">
                 <CustomerService className="hidden md:block" />
                 {customContent}
               </div>
