@@ -30,7 +30,7 @@ const Disclaimer = () => {
           </div>
           <article className="mx-auto max-w-3xl pb-4">
             <div>
-              <h2 className="text-xl dark: text-white text-center font-medium">aii.chat 免责申明</h2>
+              <h2 className="text-xl dark:text-white text-center font-medium">aii.chat 免责申明</h2>
               <div className="text-gray-800 dark:text-zinc-400 mt-2">
                 <p>
                   <span>在使用本网站提供的 AI 服务前，请您务必仔细阅读并理解本《免责声明》（以下简称“本声明”）。</span>
