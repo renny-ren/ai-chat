@@ -1,9 +1,13 @@
 class ConversationsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_conversations, only: :index
-  before_action :set_conversation, only: :destroy
+  before_action :set_conversation, only: [:update, :destroy]
 
   def index
+  end
+
+  def update
+    @conversation.update!(title: params[:title])
   end
 
   def destroy
