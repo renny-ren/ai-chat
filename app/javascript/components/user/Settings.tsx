@@ -91,6 +91,7 @@ const Settings: React.FC<SettingsProps> = ({}) => {
                           type="email"
                           autoComplete="email"
                           value={email}
+                          placeholder="可用于找回密码"
                           onChange={(e) => setEmail(e.target.value)}
                         />
                       </div>
