@@ -61,8 +61,7 @@ class User < ApplicationRecord
   def cut_ai_conversation_history
     updated_history = ai_conversation_history
     until updated_history.to_s.size < 4000
-      updated_history.delete_at(1)
-      updated_history.delete_at(2)
+      updated_history.slice!(1, 2) # Removes 2 elements starting from index 1 (the second and third elements)
     end
     Rails.cache.write(conversation_cache_key, updated_history, expires_in: 1.day)
   end
@@ -70,8 +69,7 @@ class User < ApplicationRecord
   def update_history(role:, content:)
     updated_history = ai_conversation_history << { role: role, content: content }
     if updated_history.size > 20
-      updated_history.delete_at(1)
-      updated_history.delete_at(2)
+      updated_history.slice!(1, 2)
     end
     Rails.cache.write(conversation_cache_key, updated_history, expires_in: 1.day)
   end

@@ -96,9 +96,7 @@ const ChatModule: FC<ChatModuleProps> = ({ setIsShowModal, setConversations }) =
     evtSource.onmessage = (event) => {
       if (event) {
         const response = JSON.parse(event.data)
-        // updateResponse(uniqueId, {
-        //   response: response.data.message.trim(),
-        // })
+        if (response.done) return handleMessageDone(response)
         updateMessage(response)
       } else {
         evtSource.close()
@@ -107,6 +105,17 @@ const ChatModule: FC<ChatModuleProps> = ({ setIsShowModal, setConversations }) =
     evtSource.onerror = () => {
       setIsLoading(false)
       evtSource.close()
+    }
+  }
+
+  const handleMessageDone = (response) => {
+    setUsedMessageCount(usedMessageCount + 1)
+    // Add new conversation to sidebar
+    if (messages.length <= 2) {
+      setConversationId(response.conversation_id)
+      setConversations((prevConversations) => {
+        return [{ current: true, id: response.conversation_id, title: response.conversation_title }, ...prevConversations]
+      })
     }
   }
 
@@ -132,30 +141,12 @@ const ChatModule: FC<ChatModuleProps> = ({ setIsShowModal, setConversations }) =
   }
 
   const updateMessage = (response) => {
-    messages.map((message) => {
-      if (message.isLoading) {
-        if (response.done) {
-          message.isLoading = false
-          if (response.status === 200) {
-            setUsedMessageCount(usedMessageCount + 1)
-            setConversationId(response.conversation_id)
-            // Add new conversation to sidebar
-            setConversations((prevConversations) => {
-              return [
-                { current: true, id: response.conversation_id, title: response.conversation_title },
-                ...prevConversations,
-              ]
-            })
-          } else {
-            message.content = "哎呀呀，出了点小意外，我现在脑子有点短路，您可以给我喝点咖啡或者让我稍微休息一下再试试看！"
-          }
-        } else {
-          message.content = response.content
-        }
-      }
-      return message
-    })
-    setMessages([...messages])
+    if (response.status !== 200) {
+      response.content = "哎呀呀，出了点小意外，我现在脑子有点短路，您可以等我喝点咖啡或者让我稍微休息一下再试试看！"
+    }
+    const updatedMessages = [...messages]
+    updatedMessages[messages.length - 1] = response
+    setMessages(updatedMessages)
   }
 
   const getGPTResult = async (_promptToRetry?: string | null, _uniqueIdToRetry?: string | null) => {
@@ -333,7 +324,7 @@ const ChatModule: FC<ChatModuleProps> = ({ setIsShowModal, setConversations }) =
                 )}
               </>
             ) : (
-              <MessageList messagesEndRef={messagesEndRef} isLoading={true} messages={messages} />
+              <MessageList messagesEndRef={messagesEndRef} messages={messages} isLoading={isLoading} />
             )}
           </div>
         </div>

@@ -23,7 +23,7 @@ class CompletionsController < ApplicationController
     response.headers["Last-Modified"] = Time.now.httpdate
     sse = SSE.new(response.stream, retry: 300)
     if can_chat?
-      ChatCompletion::LiveStreamService.new(sse, current_user, params).call
+      ChatCompletion::LiveStreamService.new(sse, current_user, live_stream_params).call
       update_used_count
     else
       sse.write(done: true, status: 400, content: "limit exceeded")
@@ -60,5 +60,9 @@ class CompletionsController < ApplicationController
 
   def completion_params
     params.require(:completion).permit(:prompt, :temperature, :top_p, :frequency_penalty, :presence_penalty, :stop)
+  end
+
+  def live_stream_params
+    params.permit(:prompt, :conversation_id)
   end
 end
