@@ -9,6 +9,8 @@ module OpenAi
     def call
       res = Faraday.get("https://api.openai.com/dashboard/billing/credit_grants", nil, headers)
       JSON.parse(res.body)
+    rescue Exception => e
+      App::Error.track(e)
     end
 
     private

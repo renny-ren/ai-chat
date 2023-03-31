@@ -22,3 +22,7 @@
 every 12.hours do
   runner "ExpireMembershipJob.perform_now"
 end
+
+every 1.day do
+  runner "SyncOpenaiAccountCreditJob.perform_now"
+end
