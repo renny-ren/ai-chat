@@ -57,7 +57,7 @@ const MessageList: FC<MessageListProps> = ({ messages, messagesEndRef, isLoading
             <div className="relative flex w-[calc(100%-50px)] flex-col gap-1 md:gap-3 lg:w-[calc(100%-115px)]">
               <div className="min-h-[20px] flex flex-col items-start gap-4 whitespace-pre-wrap">
                 <div
-                  className={`prompt-content max-w-full ${
+                  className={`markdown prompt-content max-w-full ${
                     !isSelf(msg) && isLoading && i === messages.length - 1 ? "ai-response-loading" : ""
                   } ${msg.error ? "error-response" : ""}`}
                 >

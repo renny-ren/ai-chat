@@ -3,6 +3,7 @@ import currentUser from "stores/current_user_store"
 import { message, Tooltip } from "antd"
 import data from "@emoji-mart/data"
 import Picker from "@emoji-mart/react"
+import axios from "axios"
 
 message.config({
   maxCount: 1,
@@ -83,13 +84,18 @@ const Footer: React.FC<FooterProps> = ({
     addMessage({ role: "assistant", content: "", isLoading: true })
     setIsLoading(true)
     setShowEmojiPicker(false)
-    setPrompt("")
   }
 
   const fetchResponse = () => {
-    const evtSource = new EventSource(
-      `/v1/completions/live_stream?mode=${mode}&prompt=${prompt}&conversation_id=${conversationId}`
-    )
+    if (mode === "text") {
+      fetchChatResponse()
+    } else {
+      fetchImageResponse()
+    }
+  }
+
+  const fetchChatResponse = () => {
+    const evtSource = new EventSource(`/v1/completions/live_stream?prompt=${prompt}&conversation_id=${conversationId}`)
     evtSource.onmessage = (event) => {
       if (event) {
         const response = JSON.parse(event.data)
@@ -102,6 +108,18 @@ const Footer: React.FC<FooterProps> = ({
     evtSource.onerror = () => {
       setIsLoading(false)
       evtSource.close()
+    }
+  }
+
+  const fetchImageResponse = async () => {
+    try {
+      const response = await axios.post("/v1/images/generations", { prompt: prompt, conversation_id: conversationId })
+      updateMessage({ status: response.status, content: response.data.content })
+      handleMessageDone(response.data)
+    } catch (error) {
+      message.error(error.response.data.message)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -260,11 +278,14 @@ const Footer: React.FC<FooterProps> = ({
                 </div>
                 <textarea
                   ref={inputRef}
-                  className="max-h-52 m-0 w-full resize-none border-0 bg-transparent p-0 pl-14 pr-7 focus:ring-0 focus-visible:ring-0 dark:bg-transparent"
+                  className="user-input max-h-52 m-0 w-full resize-none border-0 bg-transparent p-0 pl-14 pr-7 focus:ring-0 focus-visible:ring-0 dark:bg-transparent"
                   value={prompt}
                   onChange={handlePromptChange}
                   style={{ height: "24px" }}
                   onKeyPress={checkKeyPress}
+                  placeholder={
+                    mode === "text" ? "你的提问越精确，答案就越合适" : "请输入图片描述 (图片模式下只会回复图片内容)"
+                  }
                 ></textarea>
                 <button
                   onClick={handleSubmit}
