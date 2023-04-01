@@ -36,7 +36,7 @@ class CompletionsController < ApplicationController
 
   def can_chat?
     data = YAML.load_file(Rails.root.join("config", "membership_plans.yml"))
-    used_message_count < data.dig(current_user.membership, "message_limit_per_day")
+    current_user.used_message_count(request.remote_ip) < data.dig(current_user.membership, "message_limit_per_day")
   end
 
   def authenticate_user!
