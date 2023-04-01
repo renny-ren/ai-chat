@@ -99,8 +99,8 @@ module ChatCompletion
     end
 
     def build_messages
-      messages = [initial_messages << conversation.messages.order(:created_at).last(20).map { |i| { role: i.role, content: i.content } }].flatten
-      until messages.to_s.size < 4000
+      messages = [initial_messages << conversation.messages.order(:created_at).last(16).map { |i| { role: i.role, content: i.content } }].flatten
+      until messages.to_s.size < 2000
         messages.slice!(1, 2) # Removes 2 elements starting from index 1 (the second and third elements)
       end
       messages
