@@ -23,8 +23,6 @@ const ChatModule: FC<ChatModuleProps> = ({ setIsShowModal, setConversations }) =
   const [conversationId, setConversationId] = useState(useParams().conversationId || "")
   const [isFetchingMsgs, setIsFetchingMsgs] = useState(false)
   const [usedMessageCount, setUsedMessageCount] = useState(0)
-  const [showEmojiPicker, setShowEmojiPicker] = useState(false)
-  const messageLimitPerDay = currentUser.plan()?.message_limit_per_day
 
   const generateUniqueId = () => {
     const timestamp = Date.now()
@@ -57,13 +55,6 @@ const ChatModule: FC<ChatModuleProps> = ({ setIsShowModal, setConversations }) =
     }
   }, [])
 
-  useEffect(() => {
-    if (isLoading) {
-      fetchResponse()
-      setPrompt("")
-    }
-  }, [isLoading])
-
   const fetchUser = async () => {
     const csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content")
     const response = await axios.get(`/v1/users/${currentUser.id()}`, {
@@ -90,65 +81,6 @@ const ChatModule: FC<ChatModuleProps> = ({ setIsShowModal, setConversations }) =
     } finally {
       setIsFetchingMsgs(false)
     }
-  }
-
-  const fetchResponse = () => {
-    const evtSource = new EventSource(`/v1/completions/live_stream?prompt=${prompt}&conversation_id=${conversationId}`)
-    evtSource.onmessage = (event) => {
-      if (event) {
-        const response = JSON.parse(event.data)
-        if (response.done) return handleMessageDone(response)
-        updateMessage(response)
-      } else {
-        evtSource.close()
-      }
-    }
-    evtSource.onerror = () => {
-      setIsLoading(false)
-      evtSource.close()
-    }
-  }
-
-  const handleMessageDone = (response) => {
-    setUsedMessageCount(usedMessageCount + 1)
-    // Add new conversation to sidebar
-    if (messages.length <= 2) {
-      setConversationId(response.conversation_id)
-      setConversations((prevConversations) => {
-        return [{ current: true, id: response.conversation_id, title: response.conversation_title }, ...prevConversations]
-      })
-    }
-  }
-
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    if (!prompt) {
-      return
-    }
-    if (isLoading) {
-      return message.error("机器人回答不过来了，请稍后再问")
-    }
-    if (usedMessageCount >= messageLimitPerDay) {
-      return message.error("今日与 AI 聊天次数已到上限，请明日再来，或前往聊天室聊天")
-    }
-    addMessage({ role: "user", content: prompt })
-    addMessage({ role: "assistant", content: "", isLoading: true })
-    setIsLoading(true)
-    setShowEmojiPicker(false)
-  }
-
-  const addMessage = (msg) => {
-    // setMessages([...messages, msg])
-    setMessages((prevMessages) => [...prevMessages, msg])
-  }
-
-  const updateMessage = (response) => {
-    if (response.status !== 200) {
-      response.content = "哎呀呀，出了点小意外，我现在脑子有点短路，您可以等我喝点咖啡或者让我稍微休息一下再试试看！"
-    }
-    const updatedMessages = [...messages]
-    updatedMessages[messages.length - 1] = response
-    setMessages(updatedMessages)
   }
 
   const getGPTResult = async (_promptToRetry?: string | null, _uniqueIdToRetry?: string | null) => {
@@ -334,10 +266,14 @@ const ChatModule: FC<ChatModuleProps> = ({ setIsShowModal, setConversations }) =
         setIsShowModal={setIsShowModal}
         prompt={prompt}
         setPrompt={setPrompt}
-        handleSubmit={handleSubmit}
-        remainingMessageCount={messageLimitPerDay - usedMessageCount}
-        showEmojiPicker={showEmojiPicker}
-        setShowEmojiPicker={setShowEmojiPicker}
+        isLoading={isLoading}
+        setIsLoading={setIsLoading}
+        usedMessageCount={usedMessageCount}
+        setUsedMessageCount={setUsedMessageCount}
+        conversationId={conversationId}
+        messages={messages}
+        setMessages={setMessages}
+        setConversations={setConversations}
       />
     </main>
   )

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react"
 import currentUser from "stores/current_user_store"
-import { message } from "antd"
+import { message, Tooltip } from "antd"
 import data from "@emoji-mart/data"
 import Picker from "@emoji-mart/react"
 
@@ -12,10 +12,14 @@ interface FooterProps {
   setIsShowModal: () => void
   prompt: string
   setPrompt: () => void
-  handleSubmit: () => void
-  remainingMessageCount: integer
-  showEmojiPicker: boolean
-  setShowEmojiPicker: () => void
+  isLoading: boolean
+  setIsLoading: () => void
+  messages: any
+  setMessages: () => void
+  setConversations: () => void
+  setUsedMessageCount: () => void
+  usedMessageCount: number
+  conversationId: number
 }
 
 const Footer: React.FC<FooterProps> = ({
@@ -24,12 +28,26 @@ const Footer: React.FC<FooterProps> = ({
   regenerateResponse,
   prompt,
   setPrompt,
-  handleSubmit,
-  remainingMessageCount,
-  showEmojiPicker,
-  setShowEmojiPicker,
+  isLoading,
+  setIsLoading,
+  usedMessageCount,
+  conversationId,
+  messages,
+  setMessages,
+  setConversations,
+  setUsedMessageCount,
 }) => {
   const inputRef = useRef(null)
+  const [mode, setMode] = useState("text")
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false)
+  const messageLimitPerDay = currentUser.plan()?.message_limit_per_day
+
+  useEffect(() => {
+    if (isLoading) {
+      fetchResponse()
+      setPrompt("")
+    }
+  }, [isLoading])
 
   const checkKeyPress = (e) => {
     if (e.key === "Enter") {
@@ -48,6 +66,68 @@ const Footer: React.FC<FooterProps> = ({
     setPrompt(value)
     e.target.style.height = "24px"
     e.target.style.height = e.target.scrollHeight + "px"
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    if (!prompt) {
+      return
+    }
+    if (isLoading) {
+      return message.error("机器人回答不过来了，请稍后再问")
+    }
+    if (usedMessageCount >= messageLimitPerDay) {
+      return message.error("今日与 AI 聊天次数已到上限，请明日再来，或前往聊天室聊天")
+    }
+    addMessage({ role: "user", content: prompt })
+    addMessage({ role: "assistant", content: "", isLoading: true })
+    setIsLoading(true)
+    setShowEmojiPicker(false)
+    setPrompt("")
+  }
+
+  const fetchResponse = () => {
+    const evtSource = new EventSource(
+      `/v1/completions/live_stream?mode=${mode}&prompt=${prompt}&conversation_id=${conversationId}`
+    )
+    evtSource.onmessage = (event) => {
+      if (event) {
+        const response = JSON.parse(event.data)
+        if (response.done) return handleMessageDone(response)
+        updateMessage(response)
+      } else {
+        evtSource.close()
+      }
+    }
+    evtSource.onerror = () => {
+      setIsLoading(false)
+      evtSource.close()
+    }
+  }
+
+  const handleMessageDone = (response) => {
+    setUsedMessageCount(usedMessageCount + 1)
+    // Add new conversation to sidebar
+    if (messages.length <= 2) {
+      setConversationId(response.conversation_id)
+      setConversations((prevConversations) => {
+        return [{ current: true, id: response.conversation_id, title: response.conversation_title }, ...prevConversations]
+      })
+    }
+  }
+
+  const addMessage = (msg) => {
+    // setMessages([...messages, msg])
+    setMessages((prevMessages) => [...prevMessages, msg])
+  }
+
+  const updateMessage = (response) => {
+    if (response.status !== 200) {
+      response.content = "哎呀呀，出了点小意外，我现在脑子有点短路，您可以等我喝点咖啡或者让我稍微休息一下再试试看！"
+    }
+    const updatedMessages = [...messages]
+    updatedMessages[messages.length - 1] = response
+    setMessages(updatedMessages)
   }
 
   const onClickOutside = (e) => {
@@ -112,7 +192,55 @@ const Footer: React.FC<FooterProps> = ({
                 )}
               </div>
               <div className="flex flex-col w-full py-2 flex-grow md:py-3 md:pl-4 relative border border-black/10 bg-white dark:border-gray-900/50 dark:text-white dark:bg-gray-700 rounded-md shadow-[0_0_10px_rgba(0,0,0,0.10)] dark:shadow-[0_0_15px_rgba(0,0,0,0.10)]">
-                <div className="flex items-center absolute gap-1.5">
+                <div className="flex items-center absolute gap-1.5 md:gap-2.5">
+                  {mode === "text" ? (
+                    <Tooltip placement="topLeft" title="当前为文本模式 (GPT-3.5 model)">
+                      <button
+                        className="z-10 ml-2 md:ml-0 pt-px text-gray-500 md:hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900 outline-none"
+                        type="button"
+                        onClick={() => setMode("image")}
+                      >
+                        <svg className="h-5 w-5" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                          <path
+                            d="M938.66 85.33H85.33c-23.57 0-42.67 19.11-42.67 42.67v640c0 23.57 19.11 42.67 42.67 42.67h238.33l158.17 158.16c8.33 8.33 19.25 12.5 30.17 12.5s21.84-4.16 30.17-12.5l158.17-158.16h238.32c23.57 0 42.67-19.11 42.67-42.67V128c0-23.57-19.11-42.67-42.67-42.67z m-42.66 640H682.67c-11.32 0-22.17 4.5-30.17 12.5L512 878.33l-140.5-140.5c-8-8-18.86-12.5-30.17-12.5H128V170.67h768v554.66z"
+                            fill="#808080"
+                          ></path>
+                          <path
+                            d="M298.67 384h426.66c23.57 0 42.68-19.1 42.68-42.67s-19.11-42.67-42.67-42.67H298.67c-23.57 0-42.67 19.1-42.67 42.67S275.1 384 298.67 384zM298.67 597.33h256c23.56 0 42.67-19.09 42.67-42.66S578.23 512 554.67 512h-256C275.1 512 256 531.09 256 554.66s19.11 42.67 42.67 42.67z"
+                            fill="#808080"
+                          ></path>
+                        </svg>
+                      </button>
+                    </Tooltip>
+                  ) : (
+                    <Tooltip
+                      placement="topLeft"
+                      title={
+                        <>
+                          <p>当前为图片模式 (DALL·E model)</p>
+                          <p>AI 将会回复图片内容</p>
+                        </>
+                      }
+                    >
+                      <button
+                        className="z-10 ml-2 md:ml-0 pt-px text-gray-500 md:hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900 outline-none"
+                        type="button"
+                        onClick={() => setMode("text")}
+                      >
+                        <svg className="h-5 w-5" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                          <path
+                            d="M896 64H128c-23.56 0-42.67 19.1-42.67 42.67v810.67c0 23.56 19.1 42.67 42.67 42.67h768c23.56 0 42.67-19.1 42.67-42.67V106.67C938.67 83.1 919.56 64 896 64z m-42.67 85.33v464.43c-34.51 29.77-65.47 48.64-120.75 48.64-67.12 0-98.61-28.33-138.49-64.21C549.2 557.78 498.31 512 398.29 512c-99.89 0-150.73 45.77-195.58 86.15-10.94 9.85-21.38 18.88-32.04 27.2V149.33h682.66zM170.67 874.67V725.42c37.02-17.21 64.47-41.64 89.14-63.84 39.86-35.9 71.35-64.24 138.49-64.24 67.28 0 98.81 28.36 138.73 64.28 44.85 40.36 95.7 86.11 195.56 86.11 51.08 0 89.82-12.53 120.75-29.42v156.36H170.67z"
+                            fill="#808080"
+                          ></path>
+                          <path
+                            d="M661.33 341.33m-85.33 0a85.33 85.33 0 1 0 170.66 0 85.33 85.33 0 1 0-170.66 0Z"
+                            fill="#808080"
+                          ></path>
+                        </svg>
+                      </button>
+                    </Tooltip>
+                  )}
+
                   <button
                     className="z-10 ml-2 md:ml-0 pt-px text-gray-500 md:hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900 outline-none"
                     type="button"
@@ -132,7 +260,7 @@ const Footer: React.FC<FooterProps> = ({
                 </div>
                 <textarea
                   ref={inputRef}
-                  className="max-h-52 m-0 w-full resize-none border-0 bg-transparent p-0 pl-8 pr-7 focus:ring-0 focus-visible:ring-0 dark:bg-transparent"
+                  className="max-h-52 m-0 w-full resize-none border-0 bg-transparent p-0 pl-14 pr-7 focus:ring-0 focus-visible:ring-0 dark:bg-transparent"
                   value={prompt}
                   onChange={handlePromptChange}
                   style={{ height: "24px" }}
@@ -185,7 +313,9 @@ const Footer: React.FC<FooterProps> = ({
           )}
         </form>
         <footer className="px-3 pt-2 pb-2 text-center text-xs text-black/50 dark:text-white/50 md:px-4 md:pt-3">
-          <span className="mr-4">{currentUser.isSignedIn() && <span>今日剩余次数：{remainingMessageCount}</span>}</span>
+          <span className="mr-4">
+            {currentUser.isSignedIn() && <span>今日剩余次数：{messageLimitPerDay - usedMessageCount}</span>}
+          </span>
           本站点基于外部 API 开发，仅供学习交流使用，使用前请知晓
           <a className="underline" href="/disclaimer" rel="noreferrer">
             免责申明
