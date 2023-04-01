@@ -62,7 +62,7 @@ module ChatCompletion
         error_code = JSON.parse(chunk).dig("error", "code")
         error_message = JSON.parse(chunk).dig("error", "message")
         sse.write({ status: 400, content: error_code })
-        raise "#{error_code}: #{error_message}"
+        raise "[user_#{current_user.id}] #{error_code}: #{error_message}"
       end
     end
 

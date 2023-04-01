@@ -23,6 +23,7 @@ const ChatModule: FC<ChatModuleProps> = ({ setIsShowModal, setConversations }) =
   const [conversationId, setConversationId] = useState(useParams().conversationId || "")
   const [isFetchingMsgs, setIsFetchingMsgs] = useState(false)
   const [usedMessageCount, setUsedMessageCount] = useState(0)
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false)
   const messageLimitPerDay = currentUser.plan()?.message_limit_per_day
 
   const generateUniqueId = () => {
@@ -133,6 +134,7 @@ const ChatModule: FC<ChatModuleProps> = ({ setIsShowModal, setConversations }) =
     addMessage({ role: "user", content: prompt })
     addMessage({ role: "assistant", content: "", isLoading: true })
     setIsLoading(true)
+    setShowEmojiPicker(false)
   }
 
   const addMessage = (msg) => {
@@ -239,7 +241,6 @@ const ChatModule: FC<ChatModuleProps> = ({ setIsShowModal, setConversations }) =
   const el = useRef(null)
   const typed = useRef(null)
   const messagesEndRef = useRef(null)
-  const inputRef = useRef(null)
 
   useEffect(() => {
     scrollToBottom()
@@ -275,7 +276,7 @@ const ChatModule: FC<ChatModuleProps> = ({ setIsShowModal, setConversations }) =
   }, [])
 
   return (
-    <main className="relative h-full w-full transition-width flex flex-col overflow-hidden items-stretch flex-1 pb-14">
+    <main className="relative h-full w-full transition-width flex flex-col overflow-hidden items-stretch flex-1 pb-20">
       <div className="flex-1 overflow-hidden relative">
         <div className="prompt-response-list h-full dark:bg-gray-800">
           <div className="h-full w-full overflow-y-auto">
@@ -334,8 +335,9 @@ const ChatModule: FC<ChatModuleProps> = ({ setIsShowModal, setConversations }) =
         prompt={prompt}
         setPrompt={setPrompt}
         handleSubmit={handleSubmit}
-        inputRef={inputRef}
         remainingMessageCount={messageLimitPerDay - usedMessageCount}
+        showEmojiPicker={showEmojiPicker}
+        setShowEmojiPicker={setShowEmojiPicker}
       />
     </main>
   )

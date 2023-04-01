@@ -69,7 +69,7 @@ const MessageList: FC<MessageListProps> = ({ messages, messagesEndRef, isLoading
         </div>
       ))}
       <div ref={messagesEndRef}></div>
-      <div className="w-full h-24 flex-shrink-0"></div>
+      <div className="w-full h-16 flex-shrink-0"></div>
     </div>
   )
 }

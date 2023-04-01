@@ -200,7 +200,6 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal, setCustomContent }
                           setPrompt={setPrompt}
                           generatingMsgId={generatingMsgId}
                         />
-                        {/*<div className="w-full h-2 sm:h-6 flex-shrink-0"></div>*/}
                       </div>
                     </div>
                   </div>

@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useRef } from "react"
 import currentUser from "stores/current_user_store"
 import { message } from "antd"
+import data from "@emoji-mart/data"
+import Picker from "@emoji-mart/react"
 
 message.config({
   maxCount: 1,
@@ -11,8 +13,9 @@ interface FooterProps {
   prompt: string
   setPrompt: () => void
   handleSubmit: () => void
-  inputRef: any
   remainingMessageCount: integer
+  showEmojiPicker: boolean
+  setShowEmojiPicker: () => void
 }
 
 const Footer: React.FC<FooterProps> = ({
@@ -22,9 +25,12 @@ const Footer: React.FC<FooterProps> = ({
   prompt,
   setPrompt,
   handleSubmit,
-  inputRef,
   remainingMessageCount,
+  showEmojiPicker,
+  setShowEmojiPicker,
 }) => {
+  const inputRef = useRef(null)
+
   const checkKeyPress = (e) => {
     if (e.key === "Enter") {
       if (e.ctrlKey || e.shiftKey) {
@@ -44,9 +50,39 @@ const Footer: React.FC<FooterProps> = ({
     e.target.style.height = e.target.scrollHeight + "px"
   }
 
+  const onClickOutside = (e) => {
+    if (e.target.tagName.toLowerCase() === "div") {
+      setShowEmojiPicker(false)
+    }
+  }
+
+  const onEmojiSelect = (item) => {
+    inputRef.current.focus()
+    setPrompt(prompt.concat(item.native))
+  }
+
+  const getIconStrokeColor = () => {
+    if (document.documentElement.classList.contains("dark")) {
+      return prompt ? "#cdcdcd" : "currentColor"
+    } else {
+      return prompt ? "currentColor" : "#cdcdcd"
+    }
+  }
+
   return (
     <>
       <div className="absolute bottom-0 left-0 w-full dark:border-transparent bg-vert-light-gradient dark:bg-vert-dark-gradient input-area">
+        {showEmojiPicker && (
+          <div className="pl-2 pb-px lg:mx-auto lg:max-w-3xl">
+            <Picker
+              data={data}
+              onEmojiSelect={onEmojiSelect}
+              onClickOutside={onClickOutside}
+              locale="zh"
+              previewPosition="none"
+            />
+          </div>
+        )}
         <form className="stretch mx-2 flex flex-row gap-3 last:mb-2 md:last:mb-6 lg:mx-auto lg:max-w-3xl">
           {currentUser.isSignedIn() ? (
             <div className="relative flex h-full flex-1 flex-col">
@@ -76,9 +112,27 @@ const Footer: React.FC<FooterProps> = ({
                 )}
               </div>
               <div className="flex flex-col w-full py-2 flex-grow md:py-3 md:pl-4 relative border border-black/10 bg-white dark:border-gray-900/50 dark:text-white dark:bg-gray-700 rounded-md shadow-[0_0_10px_rgba(0,0,0,0.10)] dark:shadow-[0_0_15px_rgba(0,0,0,0.10)]">
+                <div className="flex items-center absolute gap-1.5">
+                  <button
+                    className="z-10 ml-2 md:ml-0 pt-px text-gray-500 md:hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900 outline-none"
+                    type="button"
+                    onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                  >
+                    <svg className="h-5 w-5" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M512 981.333333C253.866667 981.333333 42.666667 770.133333 42.666667 512S253.866667 42.666667 512 42.666667s469.333333 211.2 469.333333 469.333333-211.2 469.333333-469.333333 469.333333z m0-853.333333C300.8 128 128 300.8 128 512s172.8 384 384 384 384-172.8 384-384S723.2 128 512 128z"
+                        fill={showEmojiPicker ? "#31c48d" : "#808080"}
+                      ></path>
+                      <path
+                        d="M640 469.333333c36.266667 0 64-27.733333 64-64s-27.733333-64-64-64-64 27.733333-64 64 29.866667 64 64 64M384 469.333333c36.266667 0 64-27.733333 64-64s-27.733333-64-64-64-64 27.733333-64 64 29.866667 64 64 64M512 725.333333c78.933333 0 151.466667-38.4 194.133333-104.533333 12.8-19.2 8.533333-46.933333-12.8-59.733333-19.2-12.8-46.933333-8.533333-59.733333 12.8-25.6 40.533333-72.533333 66.133333-121.6 66.133333s-96-25.6-123.733333-66.133333c-12.8-19.2-40.533333-25.6-59.733334-12.8-19.2 12.8-25.6 40.533333-12.8 59.733333 44.8 66.133333 117.333333 104.533333 196.266667 104.533333"
+                        fill={showEmojiPicker ? "#31c48d" : "#808080"}
+                      ></path>
+                    </svg>
+                  </button>
+                </div>
                 <textarea
                   ref={inputRef}
-                  className="max-h-52 m-0 w-full resize-none border-0 bg-transparent p-0 pl-2 md:pl-0 pr-7 focus:ring-0 focus-visible:ring-0 dark:bg-transparent"
+                  className="max-h-52 m-0 w-full resize-none border-0 bg-transparent p-0 pl-8 pr-7 focus:ring-0 focus-visible:ring-0 dark:bg-transparent"
                   value={prompt}
                   onChange={handlePromptChange}
                   style={{ height: "24px" }}
@@ -87,10 +141,10 @@ const Footer: React.FC<FooterProps> = ({
                 <button
                   onClick={handleSubmit}
                   type="button"
-                  className="absolute p-1 rounded-md text-gray-500 bottom-1.5 right-1 md:bottom-2.5 md:right-2 hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent"
+                  className="absolute p-1 rounded-md text-gray-500 right-1 md:right-2 hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent"
                 >
                   <svg
-                    stroke={prompt ? "currentColor" : "#cdcdcd"}
+                    stroke={getIconStrokeColor()}
                     fill="none"
                     strokeWidth="2"
                     viewBox="0 0 24 24"

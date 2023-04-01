@@ -70,3 +70,7 @@ ol.c-ordered-list {
 .markdown tbody tr:last-child td:first-child {
   border-bottom-left-radius: 0.375rem;
 }
+
+.markdown a {
+  text-decoration: underline;
+}
