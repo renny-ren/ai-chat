@@ -27,6 +27,9 @@ Rails.application.routes.draw do
     resources :conversations, only: [:index, :update, :destroy]
     resources :orders, only: [:show, :create]
     resources :membership_subscriptions, only: [:index]
+    scope "images" do
+      post "generations" => "images#generations"
+    end
   end
   scope "webhooks" do
     post "alipay" => "webhooks#alipay"
