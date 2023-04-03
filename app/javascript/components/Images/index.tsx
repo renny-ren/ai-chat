@@ -5,9 +5,11 @@ import Footer from "./Footer"
 import Background from "components/common/Background"
 import { Helmet } from "react-helmet"
 
-interface ImagesProps {}
+interface ImagesProps {
+  setIsShowSignInModal: () => void
+}
 
-const Images: React.FC<ImagesProps> = ({}) => {
+const Images: React.FC<ImagesProps> = ({ setIsShowSignInModal }) => {
   const [images, setImages] = useState([])
   const [isLoading, setIsLoading] = useState(false)
 
@@ -19,6 +21,7 @@ const Images: React.FC<ImagesProps> = ({}) => {
       <div className="h-full relative pt-12 md:pt-14">
         <main className="h-full">
           <Background />
+
           <div className="relative h-full w-full transition-width flex flex-col overflow-y-auto items-stretch flex-1 pb-20">
             <div className="flex-1 overflow-y-auto relative">
               <div className="flex flex-wrap items-center justify-center">
@@ -37,7 +40,13 @@ const Images: React.FC<ImagesProps> = ({}) => {
               </div>
             </div>
           </div>
-          <Footer setImages={setImages} isLoading={isLoading} setIsLoading={setIsLoading} />
+
+          <Footer
+            setImages={setImages}
+            isLoading={isLoading}
+            setIsLoading={setIsLoading}
+            setIsShowSignInModal={setIsShowSignInModal}
+          />
         </main>
       </div>
     </>

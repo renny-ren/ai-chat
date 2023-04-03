@@ -7,9 +7,10 @@ interface FooterProps {
   setImages: () => void
   isLoading: boolean
   setIsLoading: () => void
+  setIsShowSignInModal: () => void
 }
 
-const Footer: React.FC<FooterProps> = ({ setImages, isLoading, setIsLoading }) => {
+const Footer: React.FC<FooterProps> = ({ setImages, isLoading, setIsLoading, setIsShowSignInModal }) => {
   const inputRef = useRef(null)
   const [prompt, setPrompt] = useState("")
   const [imageCount, setImageCount] = useState(1)
@@ -63,7 +64,7 @@ const Footer: React.FC<FooterProps> = ({ setImages, isLoading, setIsLoading }) =
       return message.error("今日 AI 使用次数已到上限，请明日再来，或升级套餐")
     }
     setIsLoading(true)
-    setPrompt("")
+    // setPrompt("")
     setImages([...Array(imageCount)].map((el, i) => (el = { url: i })))
     inputRef.current.blur()
     generateImage()
@@ -145,7 +146,7 @@ const Footer: React.FC<FooterProps> = ({ setImages, isLoading, setIsLoading }) =
             </>
           ) : (
             <div
-              onClick={() => setIsShowModal(true)}
+              onClick={() => setIsShowSignInModal(true)}
               className="cursor-pointer flex flex-col w-full py-2 flex-grow md:py-3 md:pl-2 relative border border-black/10 bg-white dark:border-gray-900/50 dark:text-white dark:bg-gray-700 rounded-md shadow-[0_0_10px_rgba(0,0,0,0.10)] dark:shadow-[0_0_15px_rgba(0,0,0,0.10)]"
             >
               <div className="flex h-6 w-full items-center pl-2 pr-3 text-sm text-zinc-500 transition dark:bg-white/5 dark:text-zinc-400 focus:[&amp;:not(:focus-visible)]:outline-none">
@@ -161,7 +162,7 @@ const Footer: React.FC<FooterProps> = ({ setImages, isLoading, setIsLoading }) =
                   ></path>
                   <path fill="none" strokeLinecap="round" strokeLinejoin="round" d="M7.5 8.5h5M8.5 11.5h3"></path>
                 </svg>
-                <span className="pl-1">登录以开始使用</span>
+                <span className="pl-1">登录即可开始使用 AI 绘画</span>
               </div>
             </div>
           )}

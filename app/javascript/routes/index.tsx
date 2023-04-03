@@ -23,7 +23,7 @@ export default ({ setIsShowModal, setCustomContent, setConversations }) => {
         <Route path="/settings" element={<Settings />} />
         <Route path="/pricing" element={<Pricing setIsShowSignInModal={setIsShowModal} />} />
         <Route path="/faqs" element={<Faqs />} />
-        <Route path="/images" element={<Images />} />
+        <Route path="/images" element={<Images setIsShowSignInModal={setIsShowModal} />} />
       </Routes>
     </Router>
   )

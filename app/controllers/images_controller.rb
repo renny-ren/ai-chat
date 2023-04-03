@@ -3,12 +3,15 @@ class ImagesController < ApplicationController
 
   def generations
     if can?
-      resp = Image::GenerateService.new(current_user, image_params.merge(size: "256x256")).call
-      @images = resp.dig("data")
+      res = Image::GenerateService.new(current_user, image_params.merge(size: "256x256")).call
+      raise "#{res.reason_phrase}: #{res.body}" if res.status != 200
+
+      @images = JSON.parse(res.body).dig("data")
       current_user.update_used_count(request.remote_ip)
     end
   rescue => e
-    render_json_response :error, message: e.message
+    App::Error.track(e)
+    render_json_response :error, message: '图片生成失败，请稍后再试'
   end
 
   private
