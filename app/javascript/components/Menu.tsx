@@ -92,6 +92,26 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, isMobile 
           </div>
         </li>
         <li className="relative mt-6">
+          <h2 className="text-xs font-semibold text-zinc-900 dark:text-white">功能</h2>
+          <div className="relative mt-3 pl-2">
+            <div className="absolute inset-y-0 left-2 w-px bg-zinc-900/10 dark:bg-white/5"></div>
+            <ul role="list" className="border-l border-transparent">
+              <li
+                className={`relative ${
+                  window.location.pathname === "/images" ? "border-l border-emerald-400 bg-zinc-800/[.025]" : ""
+                }`}
+              >
+                <a
+                  className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+                  href="/images"
+                >
+                  <span className="truncate">AI 绘画</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </li>
+        <li className="relative mt-6">
           <h2 className="text-xs font-semibold text-zinc-900 dark:text-white">菜单</h2>
           <div className="relative mt-3 pl-2">
             <div className="absolute inset-y-0 left-2 w-px bg-zinc-900/10 dark:bg-white/5"></div>

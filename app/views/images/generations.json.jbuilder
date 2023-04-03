@@ -1,3 +1,5 @@
-json.image_url @image_url
-json.conversation_id @conversation.id
-json.conversation_title @conversation.title
+json.images do
+  json.array! @images.map do |image|
+    json.url image.dig("url")
+  end
+end
