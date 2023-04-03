@@ -57,6 +57,7 @@ const Footer: React.FC<FooterProps> = ({
     setContent("")
     setIsToAI(false)
     setShowEmojiPicker(false)
+    inputRef.current.blur()
   }
 
   const checkKeyPress = (e) => {
