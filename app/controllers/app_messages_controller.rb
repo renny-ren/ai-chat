@@ -4,39 +4,39 @@ class AppMessagesController < ApplicationController
   skip_forgery_protection only: [:push]
 
   before_action :authenticate_user!
-  before_action :set_message, only: [:push, :edit, :update]
+  before_action :set_message, only: [:show, :push, :update]
 
   def index
     @messages = AppMessage.includes(:creator, :updater).order(created_at: :desc).page(page).per(per)
   end
 
-  def new
-    @message = AppMessage.new
+  def show
   end
 
   def create
-    message = AppMessage.new(message_params)
+    message = AppMessage.new(message_params.merge(creator_id: current_user.id))
     if message.valid?
-      message.save
-      redirect_to internal_messages_path, notice: "消息创建成功"
+      message.save!
+      render_json_response :ok
     else
-      flash[:alert] = "创建失败：#{message.errors.full_messages}"
-      redirect_to new_internal_message_path
+      render_json_response :error, message: message.errors
     end
-  end
-
-  def edit
+  rescue => e
+    render_json_response :error, message: e.message
   end
 
   def update
-    @message.update(message_params)
-    redirect_to internal_messages_path, notice: "更新成功"
+    @message.update!(message_params)
+    render_json_response :ok
+  rescue => e
+    render_json_response :error, message: e.message
   end
 
   def push
-    audit! :push_message
-    AppMessage::PushService.new(@message).call
-    redirect_to internal_messages_path, notice: "消息推送成功"
+    AppMessagePushService.new(@message).call
+    render_json_response :ok
+  rescue => e
+    render_json_response :error, message: e.message
   end
 
   private
@@ -50,8 +50,6 @@ class AppMessagesController < ApplicationController
   end
 
   def message_params
-    params.require(:internal_message).permit(:title, :body, :msg_type, :user_ids, :creator_id, :updater_id, :is_important).tap do |param|
-      param[:user_ids] = params[:internal_message][:user_ids].split.map(&:to_i)
-    end
+    params.permit(:title, :body, :msg_type, :user_ids, :is_important)
   end
 end

@@ -15,3 +15,11 @@ zh-CN:
           chatgpt: 通用模型
           fortune: 命理大师
           developer: 程序员助手
+      app_message:
+        msg_type:
+          product: 产品消息
+          operation: 运维消息
+          other: 其他消息
+        status:
+          draft: 草稿
+          published: 已发送

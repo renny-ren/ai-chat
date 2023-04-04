@@ -39,12 +39,13 @@ Rails.application.routes.draw do
         end
       end
     end
-    resources :app_messages do
+    resources :app_messages, only: [:index, :show, :create, :update, :destroy] do
       member do
         post :push
       end
     end
   end
+
   scope "webhooks" do
     post "alipay" => "webhooks#alipay"
   end

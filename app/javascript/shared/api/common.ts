@@ -1,12 +1,21 @@
-import { get, post, put, patch, destroy } from "@rails/request.js"
+import { get, post, put, patch, destroy } from "../utils/request"
 
 export function fetchAppMessages(params) {
-  return get(`/v1/app_messages`)
+  return get("/v1/app_messages")
 }
 
-// const csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content")
-// const response = await axios.get(`/v1/notifications`, {
-//   headers: {
-//     "X-CSRF-Token": csrf,
-//   },
-// })
+export function fetchAppMessage(id) {
+  return get(`/v1/app_messages/${id}`)
+}
+
+export function createAppMessage(params) {
+  return post("/v1/app_messages", params)
+}
+
+export function updateAppMessage(id, params) {
+  return put(`/v1/app_messages/${id}`, params)
+}
+
+export function pushMessage(id) {
+  return post(`/v1/app_messages/${id}/push`)
+}

@@ -8,13 +8,15 @@ const AppMessageList = (props) => {
   const [loading, setLoading] = useState(false)
   const [pushing, setPushing] = useState(false)
 
-  const fetchMessages = (params) => {
+  const fetchMessages = async (params) => {
     setLoading(true)
-    CommonApi.fetchAppMessages(params).then((res) => {
-      setData(res.messages)
-      setPagination(res.pagination_meta)
+    const res = await CommonApi.fetchAppMessages(params)
+    if (res.ok) {
+      const body = await res.json
+      setData(body.messages)
+      setPagination(body.pagination_meta)
       setLoading(false)
-    })
+    }
   }
 
   useEffect(() => {
@@ -25,13 +27,14 @@ const AppMessageList = (props) => {
     fetchMessages({ page: pagination.current })
   }
 
-  const onClickPush = (id) => {
+  const onClickPush = async (id) => {
     setPushing(id)
-    CommonApi.pushMessage(id).then((res) => {
+    const res = await CommonApi.pushMessage(id)
+    if (res.ok) {
       message.success("pushed successfully!")
       window.location.reload()
       setPushing(false)
-    })
+    }
   }
 
   const columns = [
@@ -50,6 +53,8 @@ const AppMessageList = (props) => {
     {
       title: "是否重要",
       width: 80,
+      key: "is_important",
+
       render: (record) => (record.is_important ? "yes" : "no"),
     },
     {
@@ -67,6 +72,7 @@ const AppMessageList = (props) => {
     {
       title: "created_at",
       width: 100,
+      key: "created_at",
       render: (item) => item.created_at,
     },
     {
@@ -78,21 +84,28 @@ const AppMessageList = (props) => {
     {
       title: "updated_at",
       width: 100,
+      key: "updated_at",
       render: (item) => item.updated_at !== item.created_at && item.updated_at,
     },
     {
       title: "action",
       width: 80,
+      key: "action",
       render: (item) => (
         <div className="btn-group">
           {item.status !== "published" && (
             <div>
-              <Popconfirm title={"sure to push?"} onConfirm={() => onClickPush(item.id)} placement="bottom">
+              <Popconfirm
+                title={"sure to push?"}
+                onConfirm={() => onClickPush(item.id)}
+                placement="bottom"
+                okButtonProps={{ type: "default" }}
+              >
                 <Button size="small" loading={pushing === item.id}>
                   push
                 </Button>
               </Popconfirm>
-              <a href={`/internal_messages/${item.id}/edit`} className="btn btn-sm ml-2">
+              <a href={`/app_messages/${item.id}/edit`} className="btn btn-sm ml-2">
                 edit
               </a>
             </div>
@@ -104,6 +117,7 @@ const AppMessageList = (props) => {
 
   return (
     <div className="h-full relative pt-20 p-8">
+      <Button onClick={() => (window.location.href = "/app_messages/new")}>new message </Button>
       <Table
         loading={loading}
         rowClassName="msg-item"
