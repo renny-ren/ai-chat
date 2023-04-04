@@ -3,6 +3,7 @@ import currentUser from "stores/current_user_store"
 import Sidebar from "./Sidebar"
 import MobileMenu from "./MobileMenu"
 import CustomerService from "./CustomerService"
+import Notification from "./Notification"
 import UserBar from "./user/UserBar"
 import { Transition } from "@headlessui/react"
 import { CDN_HOST } from "shared/constants"
@@ -98,6 +99,7 @@ const Header: React.FC<HeaderProps> = ({ setIsShowModal, customContent, conversa
               <div className="flex gap-4 md:gap-5">
                 <CustomerService className="hidden md:block" />
                 {customContent}
+                <Notification />
               </div>
               <div className="hidden md:block md:h-5 md:w-px md:bg-zinc-900/10 md:dark:bg-white/15"></div>
               <button

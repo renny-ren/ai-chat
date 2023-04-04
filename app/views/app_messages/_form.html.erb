@@ -1,0 +1,41 @@
+<div class="card">
+  <div class="card-body">
+    <%= form_for @message do |f| %>
+      <div>
+        <div>
+          <%= form_group(f, :title, label_text: t('.biao_ti')) do %>
+            <%= f.text_field :title, class: "form-control" %>
+          <% end %>
+
+          <%= form_group(f, t('.message_type')) do %>
+            <%= f.select :msg_type, InternalMessage.msg_type_options, { include_blank: false }, class: "form-control" %>
+          <% end %>
+
+          <%= form_group(f, t('.message_receiver')) do %>
+            <%= f.select :user_ids, User.all.map { |user| ([user.name, user.id]) }.unshift([t('.all_users'), '']), {}, class: "form-control" %>
+          <% end %>
+
+          <%= form_group(f, :is_important, label: false) do %>
+            <%= f.check_box :is_important, class: "checkbox need_login" %>
+            <%= f.label :is_important, t('.shi_fou_zhong_yao_zhong_yao_xiao_xi_hui_yi_dan_chuang_xing_shi'), class: "checkbox" %>
+          <% end %>
+
+          <% if controller.action_name == 'new' %>
+            <%= f.hidden_field :creator_id, value: current_user.id %>
+          <% else %>
+            <%= f.hidden_field :updater_id, value: current_user.id %>
+          <% end %>
+
+          <%= form_group(f, :body, label: false) do %>
+            <%= rich_text_area_tag "internal_message[body]", @message.body, data: {} %>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <%= f.submit t('.bao_cun'), class: "btn btn-primary mr-1", data: { "disable-with": t('.submitting') } %>
+        <%= link_to t('.qu_xiao'), internal_messages_path, class: "btn btn-secondary" %>
+      </div>
+    <% end %>
+  </div>
+</div>

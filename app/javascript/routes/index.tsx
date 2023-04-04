@@ -9,6 +9,7 @@ import Faqs from "components/Faqs"
 import Images from "components/Images"
 import Fortune from "components/Fortune"
 import Developer from "components/Developer"
+import AppMessageList from "components/app_messages"
 
 export default ({ setIsShowModal, setCustomContent, setConversations }) => {
   return (
@@ -34,6 +35,7 @@ export default ({ setIsShowModal, setCustomContent, setConversations }) => {
           path="/developer_assistant"
           element={<Developer setIsShowSignInModal={setIsShowModal} setConversations={setConversations} />}
         />
+        <Route path="/app_messages" element={<AppMessageList />} />
       </Routes>
     </Router>
   )

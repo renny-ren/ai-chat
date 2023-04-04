@@ -82,3 +82,4 @@ gem "whenever", require: false
 gem "enumize"
 gem "exception-track"
 gem "rack-utf8_sanitizer"
+gem "notifications"

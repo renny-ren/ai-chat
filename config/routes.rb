@@ -30,6 +30,20 @@ Rails.application.routes.draw do
     scope "images" do
       post "generations" => "images#generations"
     end
+    namespace :notifications do
+      resources :notifications, only: :index, path: "" do
+        collection do
+          delete :clean
+          post :read
+          get :unread_count
+        end
+      end
+    end
+    resources :app_messages do
+      member do
+        post :push
+      end
+    end
   end
   scope "webhooks" do
     post "alipay" => "webhooks#alipay"
