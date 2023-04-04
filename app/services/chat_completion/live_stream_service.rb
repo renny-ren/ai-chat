@@ -17,6 +17,7 @@ module ChatCompletion
     # 消息请求正常，接收完成：sse.write(status: 200, done: true, conversation_id: id, conversation_title: title)
     # 消息请求异常：sse.write(status: 400, content: "Too Many Requests")
     def call
+      # dummy_call
       current_user.messages.create!(
         conversation_id: conversation.id,
         content: params[:prompt],
@@ -72,19 +73,19 @@ module ChatCompletion
       @client ||= OpenAI::Client.new(current_user.openai_account&.secret_key || OPENAI_API_KEY)
     end
 
-    # def dummy_call
-    #   sse.write(status: 200, id: "chatcmpl-6tEcfvsNYJKPOidWfZnCIk95Q9Qra", role: "assistant", content: "How")
-    #   sleep 1
-    #   sse.write(status: 200, id: "chatcmpl-6tEcfvsNYJKPOidWfZnCIk95Q9Qra", role: "assistant", content: "How can")
-    #   sleep 1
-    #   sse.write(status: 200, id: "chatcmpl-6tEcfvsNYJKPOidWfZnCIk95Q9Qra", role: "assistant", content: "How can I ")
-    #   sleep 1
-    #   sse.write(status: 200, id: "chatcmpl-6tEcfvsNYJKPOidWfZnCIk95Q9Qra", role: "assistant", content: "How can I help")
-    #   sleep 1
-    #   sse.write(status: 200, id: "chatcmpl-6tEcfvsNYJKPOidWfZnCIk95Q9Qra", role: "assistant", content: "How can I help you !")
-    #   sse.write(status: 200, done: true, conversation_id: "chatcmpl-6tEcfvsNYJKPOidWfZnCIk95Q9Qra", conversation_title: "This is a test title")
-    #   sse.close
-    # end
+    def dummy_call
+      sse.write(status: 200, id: "chatcmpl-6tEcfvsNYJKPOidWfZnCIk95Q9Qra", role: "assistant", content: "How")
+      sleep 1
+      sse.write(status: 200, id: "chatcmpl-6tEcfvsNYJKPOidWfZnCIk95Q9Qra", role: "assistant", content: "How can")
+      sleep 1
+      sse.write(status: 200, id: "chatcmpl-6tEcfvsNYJKPOidWfZnCIk95Q9Qra", role: "assistant", content: "How can I ")
+      sleep 1
+      sse.write(status: 200, id: "chatcmpl-6tEcfvsNYJKPOidWfZnCIk95Q9Qra", role: "assistant", content: "How can I help")
+      sleep 1
+      sse.write(status: 200, id: "chatcmpl-6tEcfvsNYJKPOidWfZnCIk95Q9Qra", role: "assistant", content: "How can I help you !")
+      sse.write(status: 200, done: true, conversation_id: "chatcmpl-6tEcfvsNYJKPOidWfZnCIk95Q9Qra", conversation_title: "This is a test title")
+      sse.close
+    end
 
     def request_body
       {
@@ -107,14 +108,14 @@ module ChatCompletion
     end
 
     def initial_messages
-      [
+      YAML.load_file(Rails.root.join("config", "prompts.yml")).dig(params[:type]) || [
         { role: "system", content: "You are ChatGPT, a large language model trained by OpenAI. Answer as concisely as possible. Current date: #{Date.today.to_s}" },
       ]
     end
 
     def conversation
       @conversation ||= current_user.conversations.find_or_create_by(id: params[:conversation_id]) do |conversation|
-        conversation.title = params[:prompt][0..30]
+        conversation.title = params[:conversation_title] || params[:prompt][0..30]
       end
     end
 

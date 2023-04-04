@@ -8,8 +8,7 @@ module Image
     end
 
     def call
-      res = client.images.generate(params)
-      JSON.parse(res.body)
+      client.images.generate(params)
     rescue Exception => e
       App::Error.track(e)
     end

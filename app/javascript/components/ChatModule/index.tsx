@@ -271,6 +271,7 @@ const ChatModule: FC<ChatModuleProps> = ({ setIsShowModal, setConversations }) =
         usedMessageCount={usedMessageCount}
         setUsedMessageCount={setUsedMessageCount}
         conversationId={conversationId}
+        setConversationId={setConversationId}
         messages={messages}
         setMessages={setMessages}
         setConversations={setConversations}

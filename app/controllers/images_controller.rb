@@ -2,21 +2,16 @@ class ImagesController < ApplicationController
   before_action :authenticate_user!
 
   def generations
-    current_user.messages.create!(
-      conversation_id: conversation.id,
-      content: image_params[:prompt],
-    )
     if can?
-      resp = Image::GenerateService.new(current_user, image_params.merge(size: "256x256")).call
-      @image_url = resp.dig("data", 0, "url")
-      conversation.messages.create!(
-        user_id: GPT_USER_ID,
-        content: "![#{image_params[:prompt][0..20]}](#{@image_url})",
-      )
+      res = Image::GenerateService.new(current_user, image_params.merge(size: "256x256")).call
+      raise "#{res.reason_phrase}: #{res.body}" if res.status != 200
+
+      @images = JSON.parse(res.body).dig("data")
       current_user.update_used_count(request.remote_ip)
     end
   rescue => e
-    render_json_response :error, message: e.message
+    App::Error.track(e)
+    render_json_response :error, message: '图片生成失败，请稍后再试'
   end
 
   private
@@ -31,12 +26,6 @@ class ImagesController < ApplicationController
   end
 
   def image_params
-    params.permit(:prompt)
-  end
-
-  def conversation
-    @conversation ||= current_user.conversations.find_or_create_by(id: params[:conversation_id]) do |conversation|
-      conversation.title = params[:prompt][0..30]
-    end
+    params.permit(:prompt, :n)
   end
 end

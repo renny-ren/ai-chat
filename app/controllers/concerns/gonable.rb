@@ -7,6 +7,7 @@ module Gonable
 
   def set_gon_data
     set_user_meta
+    set_gpt_user
     set_golbal_config
   end
 
@@ -16,6 +17,10 @@ module Gonable
     if user_signed_in?
       gon.watch.user_meta = current_user.frontend_attributes
     end
+  end
+
+  def set_gpt_user
+    gon.gpt_user = User.gpt_user
   end
 
   def set_golbal_config
