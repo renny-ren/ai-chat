@@ -117,7 +117,7 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, isMobile 
                   className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
                   href="/fortune"
                 >
-                  <span className="truncate">AI 算命</span>
+                  <span className="truncate">命理大师</span>
                 </a>
               </li>
             </ul>

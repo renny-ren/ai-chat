@@ -4,7 +4,13 @@ import Markdown from "marked-react"
 import SyntaxHighlighter from "react-syntax-highlighter"
 import { arduinoLight } from "react-syntax-highlighter/dist/esm/styles/hljs"
 
-const MessageList = ({ messages, isLoading }) => {
+interface MessageListProps {
+  messages: any
+  isLoading: boolean
+  gptName?: string
+}
+
+const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, gptName }) => {
   const messagesEndRef = useRef(null)
 
   const renderer = {
@@ -71,7 +77,7 @@ const MessageList = ({ messages, isLoading }) => {
 
                   <div className="flex flex-col gap-1 max-w-full">
                     <div className="flex items-baseline">
-                      <div className="text-sm font-medium ml-3 dark:text-white">AI 算命</div>
+                      <div className="text-sm font-medium ml-3 dark:text-white">{gptName || "ChatGPT"}</div>
                     </div>
                     <div
                       className={`markdown ai-response relative ml-2 mr-4 text-sm bg-white py-2 px-4 shadow rounded-xl break-words whitespace-pre-line max-w-max ${

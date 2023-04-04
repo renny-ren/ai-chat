@@ -7,28 +7,34 @@ interface FooterProps {
   isLoading: boolean
   setIsLoading: () => void
   setIsShowSignInModal: () => void
-  setConversationId: () => void
   setConversations: () => void
   messages: any
   setMessages: () => void
-  conversationId: any
+  signInPrompt?: string
+  placeholder?: string
+  loadingMessage?: string
+  conversationType?: string
+  conversationTitle?: string
 }
 
 const Footer: React.FC<FooterProps> = ({
   isLoading,
   setIsLoading,
   setIsShowSignInModal,
-  setConversationId,
   setConversations,
-  conversationId,
   setMessages,
   messages,
+  signInPrompt,
+  placeholder,
+  loadingMessage,
+  conversationType,
+  conversationTitle,
 }) => {
   const inputRef = useRef(null)
   const [prompt, setPrompt] = useState("")
-  const [imageCount, setImageCount] = useState(1)
   const [usedMessageCount, setUsedMessageCount] = useState(0)
   const messageLimitPerDay = currentUser.plan()?.message_limit_per_day
+  const [conversationId, setConversationId] = useState("")
 
   useEffect(() => {
     if (currentUser.isSignedIn()) {
@@ -74,26 +80,22 @@ const Footer: React.FC<FooterProps> = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!prompt) {
-      return
-    }
+    if (!prompt) return
     if (isLoading) {
-      return message.info("算命先生正在思考中，请耐心等待")
+      return message.info(loadingMessage || "加载中，请稍等")
     }
     if (usedMessageCount >= messageLimitPerDay) {
       return message.error("今日 AI 使用次数已到上限，请明日再来，或升级套餐")
     }
     addMessage({ role: "user", content: prompt })
-    addMessage({ role: "assistant", content: "", isLoading: true })
+    addMessage({ role: "assistant", content: "" })
     setIsLoading(true)
     inputRef.current.blur()
   }
 
   const fetchResponse = () => {
     const evtSource = new EventSource(
-      `/v1/completions/live_stream?type=fortune&prompt=${prompt}&conversation_id=${conversationId}&conversation_title=AI 算命 - ${new Date().toLocaleString(
-        "zh-cn"
-      )}`
+      `/v1/completions/live_stream?conversation_type=${conversationType}&prompt=${prompt}&conversation_id=${conversationId}&conversation_title=${conversationTitle}`
     )
     evtSource.onmessage = (event) => {
       if (event) {
@@ -156,7 +158,7 @@ const Footer: React.FC<FooterProps> = ({
                   onChange={handlePromptChange}
                   style={{ height: "24px" }}
                   onKeyPress={checkKeyPress}
-                  placeholder="请输入您想问的问题"
+                  placeholder={placeholder || "请输入您想问的问题"}
                 ></textarea>
                 <button
                   onClick={handleSubmit}
@@ -199,7 +201,7 @@ const Footer: React.FC<FooterProps> = ({
                   ></path>
                   <path fill="none" strokeLinecap="round" strokeLinejoin="round" d="M7.5 8.5h5M8.5 11.5h3"></path>
                 </svg>
-                <span className="pl-1">登录即可开始使用 AI 算命</span>
+                <span className="pl-1">{signInPrompt || "登录即可开始使用"}</span>
               </div>
             </div>
           )}
