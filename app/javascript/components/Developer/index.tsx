@@ -5,7 +5,7 @@ import Background from "components/common/Background"
 import MessageList from "components/common/MessageList"
 import Footer from "components/common/Footer"
 
-interface FortuneProps {
+interface DeveloperProps {
   setIsShowSignInModal: () => void
   setConversations: () => void
 }
@@ -14,22 +14,20 @@ const initMessages = [
   {
     role: "assistant",
     content:
-      "您好，我是一位精通易经、八字算命的大师，我可以为您提供专业的命理分析和预测排盘服务。我自幼对易学、命理学感兴趣，师承于传统名家，具有多年的实战经验，精通八字、风水、姓名学、紫微斗数等命理学术。\n\
-\\\n\
-通过精湛的技能和经验，我能够分析和解读个人的八字信息，深入剖析个人的财运、事业、婚姻、健康以及未来走势。同时，我还能根据您的需求提供相关的风水布局、起名改名、择良辰吉日等实用建议。\n\
-\\\n\
-需要注意的是，命理学术中存在不确定性，未来的命运会受到多种因素影响，并不局限于一个准确的命盘解读。因此，请您以谨慎和客观的态度对待命理占卜，不要将它作为唯一参考。",
+      "您好，我是一名全栈工程师，通晓多种编程语言和技术，具备全面的软件工程能力和项目经验。\n\
+      我擅长需求分析、架构设计、编码和测试等各个阶段的工作，能够帮助用户实现功能需求，并提供性能、安全、可扩展性等方面的优化建议。\n\
+      您有任何软件开发方面的需求都可以向我提问，我将非常乐意为您提供帮助。",
   },
 ]
 
-const Fortune: React.FC<FortuneProps> = ({ setIsShowSignInModal, setConversations }) => {
+const Developer: React.FC<DeveloperProps> = ({ setIsShowSignInModal, setConversations }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [messages, setMessages] = useState(initMessages)
 
   return (
     <>
       <Helmet>
-        <title>AI 算命</title>
+        <title>程序员助手</title>
       </Helmet>
       <div className="h-full relative pt-12 md:pt-14">
         <main className="h-full">
@@ -44,7 +42,7 @@ const Fortune: React.FC<FortuneProps> = ({ setIsShowSignInModal, setConversation
                       <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl h-full w-full md:max-w-3xl lg:max-w-4xl">
                         <div className="flex flex-col h-full md:pb-4">
                           <div className="flex flex-col h-full overflow-x-auto">
-                            <MessageList gptName="命理大师" messages={messages} isLoading={isLoading} />
+                            <MessageList gptName="程序员助手" messages={messages} isLoading={isLoading} />
                           </div>
                         </div>
                       </div>
@@ -62,10 +60,10 @@ const Fortune: React.FC<FortuneProps> = ({ setIsShowSignInModal, setConversation
             setConversations={setConversations}
             messages={messages}
             setMessages={setMessages}
-            signInPrompt="登录即可开始使用 AI 算命"
-            loadingMessage="算命先生正在思考中，请耐心等待"
-            conversationType="fortune"
-            conversationTitle={`命理大师 - ${new Date().toLocaleString("zh-CN", {
+            signInPrompt="登录即可开始使用程序员助手"
+            loadingMessage="程序员助手正在思考中，请耐心等待"
+            conversationType="developer"
+            conversationTitle={`程序员助手 - ${new Date().toLocaleString("zh-CN", {
               year: "2-digit",
               month: "numeric",
               day: "numeric",
@@ -79,4 +77,4 @@ const Fortune: React.FC<FortuneProps> = ({ setIsShowSignInModal, setConversation
   )
 }
 
-export default Fortune
+export default Developer

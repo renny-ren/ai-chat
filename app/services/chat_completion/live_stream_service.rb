@@ -108,7 +108,7 @@ module ChatCompletion
     end
 
     def initial_messages
-      YAML.load_file(Rails.root.join("config", "prompts.yml")).dig(params[:type]) || [
+      YAML.load_file(Rails.root.join("config", "prompts.yml")).dig(params[:conversation_type] || conversation.type) || [
         { role: "system", content: "You are ChatGPT, a large language model trained by OpenAI. Answer as concisely as possible. Current date: #{Date.today.to_s}" },
       ]
     end
@@ -116,6 +116,7 @@ module ChatCompletion
     def conversation
       @conversation ||= current_user.conversations.find_or_create_by(id: params[:conversation_id]) do |conversation|
         conversation.title = params[:conversation_title] || params[:prompt][0..30]
+        conversation.type = params[:conversation_type]
       end
     end
 

@@ -10,3 +10,8 @@ zh-CN:
         status:
           active: 使用中
           expired: 已过期
+      conversation:
+        type:
+          chatgpt: 通用模型
+          fortune: 命理大师
+          developer: 程序员助手
