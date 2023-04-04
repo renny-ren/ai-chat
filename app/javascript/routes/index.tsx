@@ -8,6 +8,7 @@ import Pricing from "components/Pricing"
 import Faqs from "components/Faqs"
 import Images from "components/Images"
 import Fortune from "components/Fortune"
+import Developer from "components/Developer"
 
 export default ({ setIsShowModal, setCustomContent, setConversations }) => {
   return (
@@ -28,6 +29,10 @@ export default ({ setIsShowModal, setCustomContent, setConversations }) => {
         <Route
           path="/fortune"
           element={<Fortune setIsShowSignInModal={setIsShowModal} setConversations={setConversations} />}
+        />
+        <Route
+          path="/developer_assistant"
+          element={<Developer setIsShowSignInModal={setIsShowModal} setConversations={setConversations} />}
         />
       </Routes>
     </Router>
