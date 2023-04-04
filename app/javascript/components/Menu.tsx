@@ -108,6 +108,18 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, isMobile 
                   <span className="truncate">AI 绘画</span>
                 </a>
               </li>
+              <li
+                className={`relative ${
+                  window.location.pathname === "/fortune" ? "border-l border-emerald-400 bg-zinc-800/[.025]" : ""
+                }`}
+              >
+                <a
+                  className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+                  href="/fortune"
+                >
+                  <span className="truncate">AI 算命</span>
+                </a>
+              </li>
             </ul>
           </div>
         </li>

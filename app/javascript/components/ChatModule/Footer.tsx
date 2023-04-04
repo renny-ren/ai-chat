@@ -21,6 +21,7 @@ interface FooterProps {
   setUsedMessageCount: () => void
   usedMessageCount: number
   conversationId: number
+  setConversationId: () => void
 }
 
 const Footer: React.FC<FooterProps> = ({
@@ -37,6 +38,7 @@ const Footer: React.FC<FooterProps> = ({
   setMessages,
   setConversations,
   setUsedMessageCount,
+  setConversationId,
 }) => {
   const inputRef = useRef(null)
   const [showEmojiPicker, setShowEmojiPicker] = useState(false)
