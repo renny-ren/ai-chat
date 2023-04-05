@@ -1,6 +1,8 @@
 import React, { Fragment, useState, useEffect } from "react"
 import { Popover, Transition } from "@headlessui/react"
 import { ChevronDownIcon } from "@heroicons/react/20/solid"
+import * as UserApi from "shared/api/user"
+import { Pagination, ConfigProvider, Spin } from "antd"
 
 interface NotificationProps {
   className: string
@@ -8,19 +10,27 @@ interface NotificationProps {
 
 const Notification: React.FC<NotificationProps> = ({ className = "" }) => {
   const [notifications, setNotifications] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [pagination, setPagination] = useState({})
 
   const onShowList = () => {
     fetchNotifications()
   }
 
-  const fetchNotifications = async () => {
-    const csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content")
-    const response = await axios.get(`/v1/notifications`, {
-      headers: {
-        "X-CSRF-Token": csrf,
-      },
-    })
-    setNotifications(response.data.notifications)
+  const fetchNotifications = async (page = 1) => {
+    setLoading(true)
+    const res = await UserApi.fetchNotifications(page)
+    if (res.ok) {
+      const data = await res.json
+      setNotifications(data.notifications)
+      setPagination(data.pagination_meta)
+      setLoading(false)
+    }
+  }
+
+  const onChangePage = (page, pageSize) => {
+    setPagination({ ...pagination, current: page })
+    fetchNotifications(page)
   }
 
   return (
@@ -49,33 +59,61 @@ const Notification: React.FC<NotificationProps> = ({ className = "" }) => {
                 leaveFrom="opacity-100 translate-y-0"
                 leaveTo="opacity-0 translate-y-1"
               >
-                <Popover.Panel className="absolute left-1/2 z-10 mt-3 w-screen max-w-sm -translate-x-1/2 transform px-4 sm:px-0 lg:max-w-3xl">
+                <Popover.Panel className="absolute -right-6 z-10 mt-3 w-60 md:w-96 max-w-sm transform px-4 sm:px-0 lg:max-w-3xl">
                   <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
-                    <div className="relative grid gap-8 bg-white p-7 lg:grid-cols-2">
-                      {notifications.map((item) => (
-                        <a
-                          key={item.name}
-                          href={item.href}
-                          className="-m-3 flex items-center rounded-lg p-2 transition duration-150 ease-in-out hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
-                        >
-                          <div className="ml-4">
-                            <p className="text-sm font-medium text-gray-900">{item.name}</p>
-                            <p className="text-sm text-gray-500">{item.description}</p>
-                          </div>
-                        </a>
-                      ))}
-                    </div>
-                    <div className="bg-gray-50 p-4">
-                      <a
-                        href="##"
-                        className="flow-root rounded-md px-2 py-2 transition duration-150 ease-in-out hover:bg-gray-100 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
-                      >
+                    <div className="bg-gray-50 px-4">
+                      <div className="flow-root rounded-md px-2 py-2">
                         <span className="flex items-center">
-                          <span className="text-sm font-medium text-gray-900">Documentation</span>
+                          <span className="text-sm font-medium text-gray-900">消息通知</span>
                         </span>
-                        <span className="block text-sm text-gray-500">Start integrating products and tools</span>
-                      </a>
+                      </div>
                     </div>
+                    {loading ? (
+                      <div className="flex items-center justify-center h-16 bg-white">
+                        <Spin />
+                      </div>
+                    ) : (
+                      <div className="relative bg-white">
+                        {notifications.length ? (
+                          <>
+                            {notifications.map((item, i) => (
+                              <div
+                                key={i}
+                                className="border-b border-gray-100 flex items-center p-2 transition duration-150 ease-in-out hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50"
+                              >
+                                <div className="ml-4">
+                                  <p className="text-sm font-medium text-gray-900">{item.title}</p>
+                                  <p className="text-sm text-gray-500">{item.body}</p>
+                                  <p className="text-xs text-gray-400">{item.created_at_in_words}</p>
+                                </div>
+                              </div>
+                            ))}
+                          </>
+                        ) : (
+                          <div className="flex items-center justify-center h-16 text-sm text-gray-500">暂无消息</div>
+                        )}
+                        <div className="p-2 text-right">
+                          <ConfigProvider
+                            theme={{
+                              token: {
+                                colorPrimary: "#10B981",
+                              },
+                            }}
+                          >
+                            <Pagination
+                              size="small"
+                              current={pagination.current || 1}
+                              total={pagination.total}
+                              defaultPageSize={4}
+                              hideOnSinglePage={true}
+                              showSizeChanger={false}
+                              defaultCurrent={1}
+                              onChange={onChangePage}
+                            />
+                          </ConfigProvider>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </Popover.Panel>
               </Transition>

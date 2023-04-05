@@ -5,7 +5,7 @@ module Notifications
     before_action :authenticate_user!
 
     def index
-      @notifications = current_user.notifications.includes(:target).order(created_at: :desc).page(page).per(per)
+      @notifications = current_user.notifications.includes(:target).order(created_at: :desc).page(page).per(4)
     end
 
     def read
