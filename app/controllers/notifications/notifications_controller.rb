@@ -9,13 +9,21 @@ module Notifications
     end
 
     def read
-      Notification.read!(current_user, params[:ids])
-      render json: { ok: 1 }
+      if params[:ids].present?
+        Notification.read!(current_user, params[:ids])
+      else
+        current_user.notifications.unread.touch_all(:read_at)
+      end
+      render_json_response :ok
     end
 
     def clean
       notifications.delete_all
       redirect_to notifications_path
+    end
+
+    def unread_count
+      render json: { unread_count: Notification.unread_count(current_user) }
     end
 
     private
