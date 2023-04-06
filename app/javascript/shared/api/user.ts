@@ -1,7 +1,7 @@
 import { get, post, put, patch, destroy } from "../utils/request"
 
-export function fetchNotifications(page) {
-  return get(`/v1/notifications?page=${page}`)
+export function fetchNotifications(page, q = "") {
+  return get(`/v1/notifications?page=${page}&q=${q}`)
 }
 
 export function fetchNotificationUnreadCount() {

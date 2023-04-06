@@ -42,7 +42,7 @@ class AppMessagesController < ApplicationController
   private
 
   def authenticate_user!
-    raise "Unauthorized" unless current_user.admin?
+    raise "Unauthorized" unless current_user && current_user.admin?
   end
 
   def set_message

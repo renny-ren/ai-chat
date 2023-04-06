@@ -4,8 +4,9 @@ import { ChevronDownIcon } from "@heroicons/react/20/solid"
 import * as UserApi from "shared/api/user"
 import { Pagination, ConfigProvider, Spin, Badge } from "antd"
 import { ClearOutlined, CheckOutlined } from "@ant-design/icons"
-import NotificationModal from "./modal"
+import NotificationModal from "./NotificationModal"
 import Markdown from "marked-react"
+import NotificationPopup from "./NotificationPopup"
 
 interface NotificationProps {
   className: string
@@ -17,8 +18,10 @@ const Notification: React.FC<NotificationProps> = ({ className = "" }) => {
   const [pagination, setPagination] = useState({})
   const [unreadCount, setUnreadCount] = useState(0)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isPopupOpen, setIsPopupOpen] = useState(false)
   const [notification, setNotification] = useState({})
   const [readIds, setReadIds] = useState([])
+  const [popupItems, setPopupItems] = useState([])
 
   const renderer = {
     list(body, ordered) {
@@ -31,17 +34,27 @@ const Notification: React.FC<NotificationProps> = ({ className = "" }) => {
 
   useEffect(() => {
     fetchUnreadCount()
+    fetchPopupItems()
   }, [])
 
-  const onShowList = () => {
-    fetchNotifications()
+  const onShowList = (isOpen) => {
+    if (!isOpen) fetchNotifications()
   }
 
   const fetchUnreadCount = async () => {
     const res = await UserApi.fetchNotificationUnreadCount()
     const data = await res.json
-    console.log(data.unread_count)
     setUnreadCount(data.unread_count)
+  }
+
+  const fetchPopupItems = async () => {
+    const res = await UserApi.fetchNotifications(1, "important")
+    const data = await res.json
+    const unreadImportantNotifications = data.notifications.filter((n) => !n.read_at).slice(0, 1)
+    setPopupItems(unreadImportantNotifications)
+    if (unreadImportantNotifications.length) {
+      setIsPopupOpen(true)
+    }
   }
 
   const fetchNotifications = async (page = 1) => {
@@ -68,16 +81,27 @@ const Notification: React.FC<NotificationProps> = ({ className = "" }) => {
       setUnreadCount(unreadCount - 1)
       setReadIds(readIds.concat(item.id))
     }
+    if (popupItems.map((i) => i.id).includes(item.id)) setIsPopupOpen(false)
   }
 
   const onReadAll = async () => {
     const res = await UserApi.readNotification()
     setReadIds(notifications.map((n) => n.id))
     setUnreadCount(0)
+    setIsModalOpen(false)
   }
 
   const closeModal = () => {
     setIsModalOpen(false)
+  }
+
+  const closePopup = async (item) => {
+    setIsPopupOpen(false)
+    const res = await UserApi.readNotification([item.id])
+    if (!item.read_at) {
+      setUnreadCount(unreadCount - 1)
+      setReadIds(readIds.concat(item.id))
+    }
   }
 
   return (
@@ -87,7 +111,7 @@ const Notification: React.FC<NotificationProps> = ({ className = "" }) => {
           {({ open }) => (
             <>
               <Popover.Button
-                onClick={onShowList}
+                onClick={() => onShowList(open)}
                 className="relative hidden md:block flex outline-none sm:hover:bg-zinc-900/5 dark:hover:bg-white/5"
               >
                 <Badge dot={unreadCount > 0} offset={[-1, 2]} className="block">
@@ -148,13 +172,15 @@ const Notification: React.FC<NotificationProps> = ({ className = "" }) => {
                                 >
                                   {notRead && <Badge status="processing" className="absolute" />}
                                   <div className="ml-4 w-full">
-                                    <p className={`text-sm ${notRead ? "font-medium" : "font-normal"} text-gray-900`}>
-                                      {item.title}
-                                    </p>
-                                    <p className="text-xs text-gray-500 mt-1">
+                                    <div className="flex justify-between items-center">
+                                      <span className={`text-sm ${notRead ? "font-medium" : "font-normal"} text-gray-900`}>
+                                        {item.title}
+                                      </span>
+                                      <span className="text-xs text-gray-400 mr-2">{item.created_at_in_words}</span>
+                                    </div>
+                                    <div className="text-xs text-gray-500 mt-1">
                                       <Markdown value={item.body} renderer={renderer} />
-                                    </p>
-                                    <p className="text-xs text-gray-400 mt-1">{item.created_at_in_words}</p>
+                                    </div>
                                   </div>
                                 </div>
                               )
@@ -193,6 +219,7 @@ const Notification: React.FC<NotificationProps> = ({ className = "" }) => {
         </Popover>
       </div>
       <NotificationModal isOpen={isModalOpen} closeModal={closeModal} notification={notification} />
+      <NotificationPopup isOpen={isPopupOpen} closePopup={closePopup} notifications={popupItems} renderer={renderer} />
     </>
   )
 }

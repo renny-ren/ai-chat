@@ -5,21 +5,24 @@ module Notifications
     before_action :authenticate_user!
 
     def index
-      @notifications = current_user.notifications.includes(:target).order(created_at: :desc).page(page).per(4)
+      @notifications = notifications.includes(:target)
+      if params[:q] == "important"
+        @notifications = @notifications.important.where(created_at: 5.days.ago..Time.now)
+      end
+      @notifications = @notifications.order(created_at: :desc).page(page).per(4)
     end
 
     def read
       if params[:ids].present?
         Notification.read!(current_user, params[:ids])
       else
-        current_user.notifications.unread.touch_all(:read_at)
+        notifications.unread.touch_all(:read_at)
       end
       render_json_response :ok
     end
 
     def clean
       notifications.delete_all
-      redirect_to notifications_path
     end
 
     def unread_count
@@ -33,7 +36,7 @@ module Notifications
     end
 
     def notifications
-      Notification.where(user_id: current_user.id)
+      current_user.notifications
     end
   end
 end

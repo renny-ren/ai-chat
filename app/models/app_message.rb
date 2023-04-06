@@ -6,6 +6,7 @@ class AppMessage < ApplicationRecord
 
   belongs_to :creator, class_name: "User", required: false
   belongs_to :updater, class_name: "User", required: false
+  has_many :notifications, as: :target, class_name: "Notification"
 
   scope :important, -> { where("is_important = ?", true) }
 end
