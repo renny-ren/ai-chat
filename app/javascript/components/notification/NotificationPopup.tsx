@@ -37,7 +37,7 @@ const NotificationPopup: React.FC<NotificationPopupProps> = ({ notifications, is
                 <div className="flex-1">
                   <h4 className="pr-6 text-gray-900">
                     {notification.title}{" "}
-                    <span className="ml-4 font-normal text-xs text-gray-400">{notification.created_at_in_words}</span>
+                    <span className="mx-4 font-normal text-xs text-gray-400">{notification.created_at_in_words}</span>
                   </h4>
                   <div className="mt-1 text-gray-500">
                     <Markdown value={notification.body} renderer={renderer} />

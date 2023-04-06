@@ -5,7 +5,6 @@ import Notification from "./Notification"
 import axios from "axios"
 import consumer from "channels/consumer"
 import { Helmet } from "react-helmet"
-import Announcement from "./Announcement"
 import Sponsorship from "./Sponsorship"
 import ClearConversationModal from "./ClearConversationModal"
 import type { ChatMessage } from "./types"
@@ -52,8 +51,6 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal, setCustomContent }
     const subscribersForDispaly = subscribers.filter((user) => user.nickname != gon.global_config.robot_name)
     setCustomContent(
       <>
-        <Sponsorship />
-        <Announcement />
         {subscribersForDispaly.length > 1 && (
           <AntdAvatar.Group
             size="small"
@@ -79,6 +76,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal, setCustomContent }
             })}
           </AntdAvatar.Group>
         )}
+        <Sponsorship />
       </>
     )
   }, [subscribers])

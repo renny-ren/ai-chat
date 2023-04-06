@@ -1,8 +1,6 @@
 class AppMessagesController < ApplicationController
   include PaginationParams
 
-  skip_forgery_protection only: [:push]
-
   before_action :authenticate_user!
   before_action :set_message, only: [:show, :push, :update]
 

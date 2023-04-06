@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react"
 import { Form, Input, Select, Checkbox, Button, message } from "antd"
 import { useParams } from "react-router-dom"
 import * as CommonApi from "shared/api/common"
+import Markdown from "marked-react"
 
 const AppMessageForm = ({ action }) => {
   const messageId = useParams().id
   const [form] = Form.useForm()
+  const [body, setBody] = useState("")
 
   useEffect(() => {
     if (action === "edit") {
@@ -47,11 +49,27 @@ const AppMessageForm = ({ action }) => {
     form.setFieldsValue(body.message)
   }
 
+  const onValuesChange = (changedValues) => {
+    if (changedValues.body) {
+      setBody(changedValues.body)
+    }
+  }
+
+  const renderer = {
+    list(body, ordered) {
+      return ordered ? <ol className="c-ordered-list-small">{body}</ol> : <ul className="c-list-small">{body}</ul>
+    },
+    paragraph(text) {
+      return <p className="line-clamp-3">{text}</p>
+    },
+  }
+
   return (
     <div className="h-full relative pt-20 p-8">
       <Form
         form={form}
         onFinish={onFinish}
+        onValuesChange={onValuesChange}
         className="max-w-md mx-auto my-8 bg-white rounded-lg shadow-lg px-8 pt-6 pb-8 mb-4"
       >
         <div className="mb-4">
@@ -63,6 +81,7 @@ const AppMessageForm = ({ action }) => {
           <Form.Item
             label="Message Type"
             name="msg_type"
+            initialValue={0}
             rules={[{ required: true, message: "Please select a message type" }]}
           >
             <Select>
@@ -79,8 +98,11 @@ const AppMessageForm = ({ action }) => {
         </div>
         <div className="mb-4">
           <Form.Item label="Body" name="body" rules={[{ required: true, message: "Please enter a message body" }]}>
-            <Input.TextArea />
+            <Input.TextArea autoSize={{ minRows: 3, maxRows: 6 }} />
           </Form.Item>
+        </div>
+        <div className="text-xs text-gray-500 mt-1">
+          <Markdown value={body} renderer={renderer} />
         </div>
         <div className="flex items-center justify-center">
           <Button htmlType="submit" className="bg-emerald-500 mt-4">
