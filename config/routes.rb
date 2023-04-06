@@ -39,7 +39,7 @@ Rails.application.routes.draw do
         end
       end
     end
-    resources :app_messages, only: [:index, :show, :create, :update, :destroy] do
+    resources :app_messages, except: [:new, :edit] do
       member do
         post :push
       end

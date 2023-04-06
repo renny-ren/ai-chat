@@ -2,7 +2,7 @@ import React, { Fragment, useState, useEffect } from "react"
 import { Dialog, Transition } from "@headlessui/react"
 
 interface CustomerServiceProps {
-  className: string
+  className?: string
 }
 
 const CustomerService: React.FC<CustomerServiceProps> = ({ className = "" }) => {

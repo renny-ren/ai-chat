@@ -9,7 +9,7 @@ class AppMessagePushService
     user_ids = message.user_ids.present? ? message.user_ids : User.all.ids
     ActiveRecord::Base.transaction do
       user_ids.each do |user_id|
-        Notification.create(
+        Notification.create!(
           notify_type: message.msg_type,
           target: message,
           user_id: user_id,

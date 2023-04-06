@@ -9,7 +9,7 @@ import Markdown from "marked-react"
 import NotificationPopup from "./NotificationPopup"
 
 interface NotificationProps {
-  className: string
+  className?: string
 }
 
 const Notification: React.FC<NotificationProps> = ({ className = "" }) => {
