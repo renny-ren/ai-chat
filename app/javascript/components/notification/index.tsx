@@ -133,7 +133,7 @@ const Notification: React.FC<NotificationProps> = ({ className = "" }) => {
               leaveFrom="opacity-100 translate-y-0"
               leaveTo="opacity-0 translate-y-1"
             >
-              <Popover.Panel className="absolute right-2 z-10 mt-[420px] sm:mt-10 w-60 md:w-96 max-w-sm transform px-4 sm:px-0 lg:max-w-3xl">
+              <Popover.Panel className="absolute right-2 z-10 top-14 w-64 md:w-96 max-w-sm transform px-4 sm:px-0 lg:max-w-3xl">
                 <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
                   <div className="bg-gray-50 px-2">
                     <div className="flow-root rounded-md px-2 py-2">
@@ -158,7 +158,7 @@ const Notification: React.FC<NotificationProps> = ({ className = "" }) => {
                       <Spin />
                     </div>
                   ) : (
-                    <div className="relative bg-white">
+                    <div className="bg-white">
                       {notifications.length ? (
                         <>
                           {notifications.map((item, i) => {
