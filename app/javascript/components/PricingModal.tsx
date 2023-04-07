@@ -67,7 +67,7 @@ const PricingModal: React.FC<PricingModalProps> = ({ isOpen, setIsOpenModal, pla
   return (
     <>
       <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-50" onClose={closeModal}>
+        <Dialog as="div" className="relative z-50" onClose={() => {}}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -95,6 +95,14 @@ const PricingModal: React.FC<PricingModalProps> = ({ isOpen, setIsOpenModal, pla
                 <Dialog.Panel className="w-full max-w-sm transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all opacity-100 scale-100">
                   <div className="flex min-h-full items-center justify-center">
                     <div className="w-full">
+                      <button
+                        onClick={closeModal}
+                        className="top-4 absolute right-4 ml-auto text-gray-500 hover:text-gray-900"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-5 w-5">
+                          <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
+                        </svg>
+                      </button>
                       <div className="py-4 text-sm text-gray-500 text-center">
                         {isLoading ? (
                           <Spin size="large" />

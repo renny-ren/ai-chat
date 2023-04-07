@@ -76,7 +76,13 @@ const Header: React.FC<HeaderProps> = ({ setIsShowModal, customContent, conversa
               {currentUser.isSignedIn() && (
                 <div className="ml-4">
                   <a href="/pricing">
-                    <Tag className="text-gray-500 dark:text-white">{currentUser.membershipName()}</Tag>
+                    {currentUser.membership() === "free" ? (
+                      <Tag className="text-gray-500 dark:text-white">{currentUser.membershipName()}</Tag>
+                    ) : (
+                      <Tag color="green" className="bg-transparent dark:text-gray-400 dark:border-gray-400">
+                        {currentUser.membershipName()}
+                      </Tag>
+                    )}
                   </a>
                 </div>
               )}

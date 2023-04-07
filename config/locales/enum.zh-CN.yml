@@ -5,6 +5,7 @@ zh-CN:
         membership:
           free: "免费版"
           basic: "基础版"
+          standard: "标准版"
           advanced: "高级版"
       membership_subscription:
         status:

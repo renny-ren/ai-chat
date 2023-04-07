@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useRef } from "react"
 import currentUser from "stores/current_user_store"
-import { message, Select, Spin } from "antd"
+import { message, Select } from "antd"
 import axios from "axios"
 import UpgradeModal from "components/common/UpgradeModal"
+import Spinner from "components/common/Spinner"
 
 interface FooterProps {
   setImages: () => void
@@ -126,10 +127,12 @@ const Footer: React.FC<FooterProps> = ({ setImages, isLoading, setIsLoading, set
                   <button
                     onClick={handleSubmit}
                     type="button"
-                    className="absolute p-1 rounded-md text-gray-500 right-1 md:right-2 hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent"
+                    className={`absolute ${
+                      isLoading ? "" : "p-1"
+                    } rounded-md text-gray-500 right-1 md:right-2 hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent`}
                   >
                     {isLoading ? (
-                      <Spin />
+                      <Spinner />
                     ) : (
                       <svg
                         stroke={getIconStrokeColor()}

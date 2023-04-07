@@ -15,16 +15,19 @@ const Images: React.FC<ImagesProps> = ({ setIsShowSignInModal }) => {
 
   const defaultImages = [
     {
+      className: "py-4 px-2",
       src: "https://aii-chat-assets.oss-cn-chengdu.aliyuncs.com/images/jumao1.png",
       prompt: "一只可爱的橘猫",
     },
     {
-      src: "https://aii-chat-assets.oss-cn-chengdu.aliyuncs.com/images/a%20beauty%20Asian%20stand%20in%20the%20snowfield%2C%20clear%20face.png",
-      prompt: "A beautiful Asian woman stands in the snowfield, clear face",
-    },
-    {
+      className: "py-4 px-2",
       src: "https://aii-chat-assets.oss-cn-chengdu.aliyuncs.com/images/%E4%B8%80%E5%89%AF%E6%BC%82%E4%BA%AE%E7%9A%84%E9%A3%8E%E6%99%AF%E6%BC%AB%E7%94%BB.png",
       prompt: "一副漂亮的风景漫画",
+    },
+    {
+      className: "py-2 px-2",
+      src: "https://aii-chat-assets.oss-cn-chengdu.aliyuncs.com/images/a%20beauty%20Asian%20stand%20in%20the%20snowfield%2C%20clear%20face.png",
+      prompt: "A beautiful Asian woman stands in the snowfield, clear face",
     },
   ]
 
@@ -75,7 +78,7 @@ const Images: React.FC<ImagesProps> = ({ setIsShowSignInModal }) => {
                         <div>
                           <img src={image.src} />
                         </div>
-                        <div className="text-center py-4 px-2">
+                        <div className={`text-center ${image.className}`}>
                           <p className="text-xs text-gray-400 font-normal">{image.prompt}</p>
                         </div>
                       </div>

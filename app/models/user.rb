@@ -20,7 +20,7 @@ class User < ApplicationRecord
   validates_format_of :username, with: /^[a-zA-Z0-9_\.]*$/, multiline: true # Only allow letter, number, underscore and punctuation.
   validates :email, uniqueness: true, allow_blank: true, format: { with: URI::MailTo::EMAIL_REGEXP, message: "email is not valid" }
 
-  enum membership: { free: 0, basic: 1, advanced: 2 }
+  enum membership: { free: 0, basic: 1, standard: 2, advanced: 3 }
 
   def avatar_url(size = 80)
     # ActiveStorage::Current.url_options = { host: "localhost", port: 3000 }

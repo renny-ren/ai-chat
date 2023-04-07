@@ -77,6 +77,39 @@ const Pricing: React.FC<PricingProps> = ({ setIsShowSignInModal }) => {
     </p>
   )
 
+  const renderFreeItem = () => {
+    return (
+      <div className="rounded-xl relative z-10 overflow-hidden border border-emerald-500 border-opacity-20 shadow-pricing py-10 px-8 sm:p-12 lg:py-10 lg:px-6 xl:p-12 mb-10">
+        <span className="text-emerald-500 font-semibold text-lg block mb-4">免费版</span>
+        <h2 className="font-bold text-dark mb-2 text-[42px] dark:text-white">¥0</h2>
+        <p className="text-base text-body-color pb-6 mb-6 border-b border-[#F2F2F2]">免费体验使用</p>
+        <div className="mb-7 min-h-[220px]">
+          {renderItem("每日 2 次 AI 对话")}
+          {renderItem("最大提问长度 100 字")}
+          {renderItem("导出个人会话", false)}
+          {renderItem("AI 绘画", false)}
+        </div>
+        <a className="w-full block text-base font-semibold text-emerald-500 bg-transparent border border-emerald-500 rounded-md text-center p-3 transition">
+          {currentUser.membership() === "free" ? "当前版本" : "免费版"}
+        </a>
+        <div>
+          <span className="absolute right-0 top-7 z-[-1]">
+            <svg width="77" height="172" viewBox="0 0 77 172" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="86" cy="86" r="86" fill="url(#paint0_linear)" />
+              <defs>
+                <linearGradient id="paint0_linear" x1="86" y1="0" x2="86" y2="172" gradientUnits="userSpaceOnUse">
+                  <stop stopColor="#3056D3" stopOpacity="0.09" />
+                  <stop offset="1" stopColor="#C4C4C4" stopOpacity="0" />
+                </linearGradient>
+              </defs>
+            </svg>
+          </span>
+          <span className="absolute right-4 top-4 z-[-1]"></span>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <>
       <div className="h-full relative pt-12 md:pt-14">
@@ -181,62 +214,26 @@ const Pricing: React.FC<PricingProps> = ({ setIsShowSignInModal }) => {
                 </div>
               </div>
               <div className="flex flex-wrap justify-center -mx-4 lg:mx-8">
-                <div className="w-full md:w-1/2 lg:w-1/3 px-6">
+                <div className="w-full sm:w-1/2 md:hidden 2xl:block 2xl:w-1/4 px-6">{renderFreeItem()}</div>
+                <div className="w-full sm:w-1/2 md:w-1/3 2xl:w-1/4 px-6">
                   <div className="rounded-xl relative z-10 overflow-hidden border border-emerald-500 border-opacity-20 shadow-pricing py-10 px-8 sm:p-12 lg:py-10 lg:px-6 xl:p-12 mb-10">
-                    <span className="text-emerald-500 font-semibold text-lg block mb-4">免费版</span>
-                    <h2 className="font-bold text-dark mb-2 text-[42px] dark:text-white">¥0</h2>
-                    <p className="text-base text-body-color pb-6 mb-6 border-b border-[#F2F2F2]">免费体验使用</p>
-                    <div className="mb-7 min-h-[200px]">
-                      {renderItem("每日 2 次 AI 对话次数")}
-                      {renderItem("最大提问长度 100 字")}
-                      {renderItem("导出个人会话内容", false)}
-                      {renderItem("AI 生成图片内容", false)}
-                    </div>
-                    <a className="w-full block text-base font-semibold text-emerald-500 bg-transparent border border-emerald-500 rounded-md text-center p-4 transition">
-                      {currentUser.membership() === "free" ? "当前版本" : "免费版"}
-                    </a>
-                    <div>
-                      <span className="absolute right-0 top-7 z-[-1]">
-                        <svg width="77" height="172" viewBox="0 0 77 172" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <circle cx="86" cy="86" r="86" fill="url(#paint0_linear)" />
-                          <defs>
-                            <linearGradient
-                              id="paint0_linear"
-                              x1="86"
-                              y1="0"
-                              x2="86"
-                              y2="172"
-                              gradientUnits="userSpaceOnUse"
-                            >
-                              <stop stopColor="#3056D3" stopOpacity="0.09" />
-                              <stop offset="1" stopColor="#C4C4C4" stopOpacity="0" />
-                            </linearGradient>
-                          </defs>
-                        </svg>
-                      </span>
-                      <span className="absolute right-4 top-4 z-[-1]"></span>
-                    </div>
-                  </div>
-                </div>
-                <div className="w-full md:w-1/2 lg:w-1/3 px-6">
-                  <div className="rounded-xl relative z-10 overflow-hidden border border-emerald-500 border-opacity-20 shadow-pricing py-10 px-8 sm:p-12 lg:py-10 lg:px-6 xl:p-12 mb-10">
-                    <span className="text-emerald-500 font-semibold text-lg block mb-4">基础版（限时特惠）</span>
+                    <span className="text-emerald-500 font-semibold text-lg block mb-4">基础版</span>
                     <h2 className="font-bold text-dark mb-2 text-[42px] dark:text-white">
                       ¥9
                       <span className="ml-2 text-base text-gray-400 font-medium line-through">¥18</span>
                     </h2>
                     <p className="text-base text-body-color pb-6 mb-6 border-b border-[#F2F2F2]">个人基础使用</p>
-                    <div className="mb-7 min-h-[200px]">
-                      {renderItem("每日 10 次 AI 对话次数")}
-                      {renderItem("有效期 30 天")}
+                    <div className="mb-7 min-h-[220px]">
+                      {renderItem("每日 10 次 AI 对话")}
+                      {renderItem("有效期 15 天")}
                       {renderItem("最大提问长度 300 字")}
-                      {renderItem("导出个人会话内容", false)}
-                      {renderItem("AI 生成图片内容", false)}
+                      {renderItem("导出个人会话", false)}
+                      {renderItem("AI 绘画", false)}
                     </div>
                     <button
                       onClick={() => onClickUpgrade("basic")}
-                      // className="w-full block text-base font-semibold text-emerald-500 bg-transparent border border-emerald-500 rounded-md text-center p-4 hover:text-white hover:bg-emerald-500 hover:border-emerald-500 transition"
-                      className="w-full block text-base font-semibold text-white bg-emerald-500 border border-emerald-500 rounded-md text-center p-4 hover:bg-opacity-90 transition"
+                      // className="w-full block text-base font-semibold text-emerald-500 bg-transparent border border-emerald-500 rounded-md text-center p-3 hover:text-white hover:bg-emerald-500 hover:border-emerald-500 transition"
+                      className="w-full block text-base font-semibold text-white bg-emerald-500 border border-emerald-500 rounded-md text-center p-3 hover:bg-opacity-90 transition"
                     >
                       升级到基础版
                     </button>
@@ -263,25 +260,72 @@ const Pricing: React.FC<PricingProps> = ({ setIsShowSignInModal }) => {
                     </div>
                   </div>
                 </div>
-                <div className="w-full md:w-1/2 lg:w-1/3 px-6">
+                <div className="w-full sm:w-1/2 md:w-1/3 2xl:w-1/4 px-6">
+                  <div className="rounded-xl relative z-10 overflow-hidden border border-emerald-500 border-opacity-20 shadow-pricing py-10 px-8 sm:p-12 lg:py-10 lg:px-6 xl:p-12 mb-10">
+                    <span className="text-emerald-500 font-semibold text-lg block mb-4">标准版</span>
+                    <h2 className="font-bold text-dark mb-2 text-[42px] dark:text-white">
+                      ¥19
+                      <span className="ml-2 text-base text-gray-400 font-medium line-through">¥36</span>
+                    </h2>
+                    <p className="text-base text-body-color pb-6 mb-6 border-b border-[#F2F2F2]">个人日常使用</p>
+                    <div className="mb-7 min-h-[220px]">
+                      {renderItem("每日 15 次 AI 对话")}
+                      {renderItem("有效期 30 天")}
+                      {renderItem("最大提问长度 300 字")}
+                      {renderItem("导出个人会话", true)}
+                      {renderItem("AI 绘画 10 张", true)}
+                    </div>
+                    <button
+                      onClick={() => onClickUpgrade("standard")}
+                      // className="w-full block text-base font-semibold text-emerald-500 bg-transparent border border-emerald-500 rounded-md text-center p-3 hover:text-white hover:bg-emerald-500 hover:border-emerald-500 transition"
+                      className="w-full block text-base font-semibold text-white bg-emerald-500 border border-emerald-500 rounded-md text-center p-3 hover:bg-opacity-90 transition"
+                    >
+                      升级到标准版
+                    </button>
+                    <div>
+                      <span className="absolute right-0 top-7 z-[-1]">
+                        <svg width="77" height="172" viewBox="0 0 77 172" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <circle cx="86" cy="86" r="86" fill="url(#paint0_linear)" />
+                          <defs>
+                            <linearGradient
+                              id="paint0_linear"
+                              x1="86"
+                              y1="0"
+                              x2="86"
+                              y2="172"
+                              gradientUnits="userSpaceOnUse"
+                            >
+                              <stop stopColor="#3056D3" stopOpacity="0.09" />
+                              <stop offset="1" stopColor="#C4C4C4" stopOpacity="0" />
+                            </linearGradient>
+                          </defs>
+                        </svg>
+                      </span>
+                      <span className="absolute right-4 top-4 z-[-1]">{/*svg*/}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="w-full sm:w-1/2 md:w-1/3 2xl:w-1/4 px-6">
                   <div className="rounded-xl relative z-10 overflow-hidden border border-emerald-500 border-opacity-20 shadow-pricing py-10 px-8 sm:p-12 lg:py-10 lg:px-6 xl:p-12 mb-10">
                     <span className="text-emerald-500 font-semibold text-lg block mb-4">高级版（限时特惠）</span>
                     <h2 className="font-bold text-dark mb-2 text-[42px] dark:text-white">
-                      ¥19
-                      <span className="ml-2 text-base text-gray-400 font-medium line-through">¥39</span>
+                      ¥28
+                      <span className="ml-2 text-base text-gray-400 font-medium line-through">¥69</span>
                     </h2>
                     <p className="text-base text-body-color pb-6 mb-6 border-b border-[#F2F2F2]">个人畅享使用</p>
-                    <div className="mb-7 min-h-[200px]">
+                    <div className="mb-7 min-h-[220px]">
                       {renderItem("无限对话次数")}
-                      {renderItem("有效期 60 天")}
+                      {renderItem("有效期 45 天")}
                       {renderItem("最大提问长度 1000 字")}
-                      {renderItem("导出个人会话内容")}
-                      {renderItem("AI 生成图片内容")}
+                      {renderItem("导出个人会话")}
+                      {renderItem("AI 绘画 60 张")}
+                      {renderItem("新功能免费体验")}
                     </div>
                     <button
                       onClick={() => onClickUpgrade("advanced")}
-                      // className="w-full block text-base font-semibold text-emerald-500 bg-transparent border border-emerald-500 rounded-md text-center p-4 hover:text-white hover:bg-emerald-500 hover:border-emerald-500 transition"
-                      className="w-full block text-base font-semibold text-white bg-emerald-500 border border-emerald-500 rounded-md text-center p-4 hover:bg-opacity-90 transition"
+                      // className="w-full block text-base font-semibold text-emerald-500 bg-transparent border border-emerald-500 rounded-md text-center p-3 hover:text-white hover:bg-emerald-500 hover:border-emerald-500 transition"
+                      className="w-full block text-base font-semibold text-white bg-emerald-500 border border-emerald-500 rounded-md text-center p-3 hover:bg-opacity-90 transition"
                     >
                       升级到高级版
                     </button>
@@ -308,6 +352,7 @@ const Pricing: React.FC<PricingProps> = ({ setIsShowSignInModal }) => {
                     </div>
                   </div>
                 </div>
+                <div className="w-full hidden sm:w-1/2 md:block md:w-1/3 2xl:hidden px-6">{renderFreeItem()}</div>
               </div>
             </div>
           </section>
