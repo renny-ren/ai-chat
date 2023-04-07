@@ -10,8 +10,8 @@ interface MenuProps {
 
 const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, isMobile = false }) => {
   const newConversation = () => {
-    if (conversations.length >= 20) {
-      return message.error("目前最多能创建 20 个会话，请删除现有会话后再试")
+    if (conversations.length >= 30) {
+      return message.error("目前最多能创建 30 个会话，请删除现有会话后再试")
     }
     window.location.href = "/chats/new"
   }

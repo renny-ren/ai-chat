@@ -83,6 +83,10 @@ class User < ApplicationRecord
     "used_count:user_#{id}"
   end
 
+  def image_count_cache_key
+    "used_image_count:user_#{id}"
+  end
+
   def used_message_count(ip)
     @used_message_count ||= [
       Rails.cache.read(used_count_cache_key).to_i,
@@ -94,6 +98,15 @@ class User < ApplicationRecord
     updated_count = used_message_count(ip) + 1
     Rails.cache.write(used_count_cache_key, updated_count, expires_at: Time.now.end_of_day)
     Rails.cache.write("used_count:ip_#{ip}", updated_count, expires_at: Time.now.end_of_day)
+  end
+
+  # TODO: use redis to store this
+  def update_image_count(count)
+    Rails.cache.write(image_count_cache_key, count)
+  end
+
+  def image_count
+    Rails.cache.read(image_count_cache_key).to_i
   end
 
   def admin?

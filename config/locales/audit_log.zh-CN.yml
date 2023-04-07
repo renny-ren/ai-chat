@@ -1,0 +1,4 @@
+zh-CN:
+  audit_log:
+    action:
+      generate_image: 生成图片

@@ -1,9 +1,12 @@
 class ConversationsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_conversations, only: :index
-  before_action :set_conversation, only: [:update, :destroy]
+  before_action :set_conversation, only: [:show, :update, :destroy]
 
   def index
+  end
+
+  def show
   end
 
   def update

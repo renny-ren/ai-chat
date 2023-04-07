@@ -50,7 +50,7 @@ const Notification: React.FC<NotificationProps> = ({ className = "" }) => {
   const fetchPopupItems = async () => {
     const res = await UserApi.fetchNotifications(1, "important")
     const data = await res.json
-    const unreadImportantNotifications = data.notifications.filter((n) => !n.read_at).slice(0, 1)
+    const unreadImportantNotifications = data.notifications.filter((n) => !n.read_at).slice(-1)
     setPopupItems(unreadImportantNotifications)
     if (unreadImportantNotifications.length) {
       setIsPopupOpen(true)

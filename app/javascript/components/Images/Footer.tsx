@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useRef } from "react"
 import currentUser from "stores/current_user_store"
-import { message, Select } from "antd"
+import { message, Select, Spin } from "antd"
 import axios from "axios"
+import UpgradeModal from "components/common/UpgradeModal"
 
 interface FooterProps {
   setImages: () => void
@@ -14,8 +15,8 @@ const Footer: React.FC<FooterProps> = ({ setImages, isLoading, setIsLoading, set
   const inputRef = useRef(null)
   const [prompt, setPrompt] = useState("")
   const [imageCount, setImageCount] = useState(1)
-  const [usedMessageCount, setUsedMessageCount] = useState(0)
-  const messageLimitPerDay = currentUser.plan()?.message_limit_per_day
+  const [userImageCredit, setUserImageCredit] = useState(0)
+  const [isUpgradeOpen, setIsUpgradeOpen] = useState(false)
 
   useEffect(() => {
     if (currentUser.isSignedIn()) {
@@ -30,7 +31,7 @@ const Footer: React.FC<FooterProps> = ({ setImages, isLoading, setIsLoading, set
         "X-CSRF-Token": csrf,
       },
     })
-    setUsedMessageCount(response.data.user.used_message_count)
+    setUserImageCredit(response.data.user.image_count)
   }
 
   const checkKeyPress = (e) => {
@@ -60,8 +61,9 @@ const Footer: React.FC<FooterProps> = ({ setImages, isLoading, setIsLoading, set
     if (isLoading) {
       return message.info("图片正在生成中，请耐心等待")
     }
-    if (usedMessageCount >= messageLimitPerDay) {
-      return message.error("今日 AI 使用次数已到上限，请明日再来，或升级套餐")
+    if (userImageCredit - imageCount < 0) {
+      setIsUpgradeOpen(true)
+      return
     }
     setIsLoading(true)
     // setPrompt("")
@@ -74,6 +76,7 @@ const Footer: React.FC<FooterProps> = ({ setImages, isLoading, setIsLoading, set
     try {
       const response = await axios.post("/v1/images/generations", { prompt: prompt, n: imageCount })
       setImages(response.data.images)
+      setUserImageCredit(userImageCredit - imageCount)
     } catch (error) {
       message.error(error.response.data.message)
     } finally {
@@ -125,21 +128,25 @@ const Footer: React.FC<FooterProps> = ({ setImages, isLoading, setIsLoading, set
                     type="button"
                     className="absolute p-1 rounded-md text-gray-500 right-1 md:right-2 hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent"
                   >
-                    <svg
-                      stroke={getIconStrokeColor()}
-                      fill="none"
-                      strokeWidth="2"
-                      viewBox="0 0 24 24"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="h-4 w-4 mr-1"
-                      height="1em"
-                      width="1em"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <line x1="22" y1="2" x2="11" y2="13"></line>
-                      <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                    </svg>
+                    {isLoading ? (
+                      <Spin />
+                    ) : (
+                      <svg
+                        stroke={getIconStrokeColor()}
+                        fill="none"
+                        strokeWidth="2"
+                        viewBox="0 0 24 24"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="h-4 w-4 mr-1"
+                        height="1em"
+                        width="1em"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                      </svg>
+                    )}
                   </button>
                 </div>
               </div>
@@ -167,10 +174,14 @@ const Footer: React.FC<FooterProps> = ({ setImages, isLoading, setIsLoading, set
             </div>
           )}
         </form>
+        <UpgradeModal
+          isOpen={isUpgradeOpen}
+          closeModal={() => setIsUpgradeOpen(false)}
+          title="提示"
+          body={"图片生成所需余额不足，请升级套餐"}
+        />
         <footer className="px-3 pt-2 pb-2 text-center text-xs text-black/50 dark:text-white/50 md:px-4 md:pt-3">
-          <span className="mr-4">
-            {currentUser.isSignedIn() && <span>今日剩余次数：{messageLimitPerDay - usedMessageCount}</span>}
-          </span>
+          <span className="mr-4">{currentUser.isSignedIn() && <span>剩余图片生成数：{userImageCredit}</span>}</span>
         </footer>
       </div>
     </>

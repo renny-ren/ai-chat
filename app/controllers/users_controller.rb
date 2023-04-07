@@ -18,6 +18,7 @@ class UsersController < ApplicationController
       Rails.cache.read(current_user.used_count_cache_key).to_i,
       Rails.cache.read("used_count:ip_#{request.remote_ip}").to_i,
     ].max
+    @image_count = current_user.image_count
   end
 
   private

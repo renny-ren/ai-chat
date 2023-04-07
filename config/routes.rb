@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   authenticate :user, ->(u) { u.admin? } do
     mount ExceptionTrack::Engine => "/exception-track"
+    mount AuditLog::Engine => "/audit-log"
   end
 
   devise_for :users, controllers: {
@@ -24,7 +25,7 @@ Rails.application.routes.draw do
       post :clear_conversations, on: :collection
     end
     resources :sponsorships, only: :index
-    resources :conversations, only: [:index, :update, :destroy]
+    resources :conversations, only: [:index, :show, :update, :destroy]
     resources :orders, only: [:show, :create]
     resources :membership_subscriptions, only: [:index]
     scope "images" do
