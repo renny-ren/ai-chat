@@ -9,9 +9,10 @@ class ImagesController < ApplicationController
       @images = JSON.parse(res.body).dig("data")
       current_user.update_image_count(current_user.image_count - image_params[:n])
     end
+    audit! :generate_image, nil, payload: { params: image_params, images: @images }
   rescue => e
     App::Error.track(e)
-    render_json_response :error, message: '图片生成失败，请稍后再试'
+    render_json_response :error, message: "图片生成失败，请稍后再试"
   end
 
   private

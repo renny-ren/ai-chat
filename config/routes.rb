@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   authenticate :user, ->(u) { u.admin? } do
     mount ExceptionTrack::Engine => "/exception-track"
+    mount AuditLog::Engine => "/audit-log"
   end
 
   devise_for :users, controllers: {
