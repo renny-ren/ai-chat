@@ -193,7 +193,7 @@ const Footer: React.FC<FooterProps> = ({
                 )}
               </div>
               <div className="flex items-center">
-                <DownloadButton messages={messages} conversationId={conversationId} />
+                {!!messages.length && <DownloadButton messages={messages} conversationId={conversationId} />}
                 <div className="flex flex-col w-full py-2 flex-grow md:py-3 md:pl-4 relative border border-black/10 bg-white dark:border-gray-900/50 dark:text-white dark:bg-gray-700 rounded-md shadow-[0_0_10px_rgba(0,0,0,0.10)] dark:shadow-[0_0_15px_rgba(0,0,0,0.10)]">
                   <div className="flex items-center absolute gap-1.5 md:gap-2.5">
                     <button

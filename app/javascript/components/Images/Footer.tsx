@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react"
 import currentUser from "stores/current_user_store"
 import { message, Select } from "antd"
 import axios from "axios"
+import UpgradeModal from "components/common/UpgradeModal"
 
 interface FooterProps {
   setImages: () => void
@@ -14,8 +15,8 @@ const Footer: React.FC<FooterProps> = ({ setImages, isLoading, setIsLoading, set
   const inputRef = useRef(null)
   const [prompt, setPrompt] = useState("")
   const [imageCount, setImageCount] = useState(1)
-  const [usedMessageCount, setUsedMessageCount] = useState(0)
-  const messageLimitPerDay = currentUser.plan()?.message_limit_per_day
+  const [userImageCredit, setUserImageCredit] = useState(0)
+  const [isUpgradeOpen, setIsUpgradeOpen] = useState(false)
 
   useEffect(() => {
     if (currentUser.isSignedIn()) {
@@ -30,7 +31,7 @@ const Footer: React.FC<FooterProps> = ({ setImages, isLoading, setIsLoading, set
         "X-CSRF-Token": csrf,
       },
     })
-    setUsedMessageCount(response.data.user.used_message_count)
+    setUserImageCredit(response.data.user.image_count)
   }
 
   const checkKeyPress = (e) => {
@@ -60,8 +61,9 @@ const Footer: React.FC<FooterProps> = ({ setImages, isLoading, setIsLoading, set
     if (isLoading) {
       return message.info("图片正在生成中，请耐心等待")
     }
-    if (usedMessageCount >= messageLimitPerDay) {
-      return message.error("今日 AI 使用次数已到上限，请明日再来，或升级套餐")
+    if (userImageCredit - imageCount < 0) {
+      setIsUpgradeOpen(true)
+      return
     }
     setIsLoading(true)
     // setPrompt("")
@@ -74,7 +76,7 @@ const Footer: React.FC<FooterProps> = ({ setImages, isLoading, setIsLoading, set
     try {
       const response = await axios.post("/v1/images/generations", { prompt: prompt, n: imageCount })
       setImages(response.data.images)
-      setUsedMessageCount(usedMessageCount + 1)
+      setUserImageCredit(userImageCredit - imageCount)
     } catch (error) {
       message.error(error.response.data.message)
     } finally {
@@ -168,10 +170,14 @@ const Footer: React.FC<FooterProps> = ({ setImages, isLoading, setIsLoading, set
             </div>
           )}
         </form>
+        <UpgradeModal
+          isOpen={isUpgradeOpen}
+          closeModal={() => setIsUpgradeOpen(false)}
+          title="提示"
+          body={"图片生成所需余额不足，请升级套餐"}
+        />
         <footer className="px-3 pt-2 pb-2 text-center text-xs text-black/50 dark:text-white/50 md:px-4 md:pt-3">
-          <span className="mr-4">
-            {currentUser.isSignedIn() && <span>今日剩余次数：{messageLimitPerDay - usedMessageCount}</span>}
-          </span>
+          <span className="mr-4">{currentUser.isSignedIn() && <span>剩余图片生成数：{userImageCredit}</span>}</span>
         </footer>
       </div>
     </>

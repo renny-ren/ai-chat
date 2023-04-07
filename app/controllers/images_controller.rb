@@ -7,7 +7,7 @@ class ImagesController < ApplicationController
       raise "#{res.reason_phrase}: #{res.body}" if res.status != 200
 
       @images = JSON.parse(res.body).dig("data")
-      current_user.update_used_count(request.remote_ip)
+      current_user.update_image_count(current_user.image_count - image_params[:n])
     end
   rescue => e
     App::Error.track(e)
@@ -17,8 +17,7 @@ class ImagesController < ApplicationController
   private
 
   def can?
-    data = YAML.load_file(Rails.root.join("config", "membership_plans.yml"))
-    current_user.used_message_count(request.remote_ip) < data.dig(current_user.membership, "message_limit_per_day")
+    current_user.image_count >= image_params[:n]
   end
 
   def authenticate_user!

@@ -116,7 +116,7 @@ module ChatCompletion
     def conversation
       @conversation ||= current_user.conversations.find_or_create_by(id: params[:conversation_id]) do |conversation|
         conversation.title = params[:conversation_title] || params[:prompt][0..30]
-        conversation.type = params[:conversation_type]
+        conversation.type = params[:conversation_type] if params[:conversation_type].present?
       end
     end
 
