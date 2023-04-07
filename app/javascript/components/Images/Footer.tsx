@@ -74,6 +74,7 @@ const Footer: React.FC<FooterProps> = ({ setImages, isLoading, setIsLoading, set
     try {
       const response = await axios.post("/v1/images/generations", { prompt: prompt, n: imageCount })
       setImages(response.data.images)
+      setUsedMessageCount(usedMessageCount + 1)
     } catch (error) {
       message.error(error.response.data.message)
     } finally {

@@ -11,3 +11,7 @@ export function fetchNotificationUnreadCount() {
 export function readNotification(ids) {
   return post(`/v1/notifications/read`, { ids: ids })
 }
+
+export function fetchConversation(id) {
+  return get(`/v1/conversations/${id}`)
+}

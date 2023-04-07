@@ -4,6 +4,7 @@ import { message, Tooltip } from "antd"
 import data from "@emoji-mart/data"
 import Picker from "@emoji-mart/react"
 import axios from "axios"
+import DownloadButton from "./DownloadButton"
 
 message.config({
   maxCount: 1,
@@ -175,8 +176,8 @@ const Footer: React.FC<FooterProps> = ({
                         fill="none"
                         strokeWidth="1.5"
                         viewBox="0 0 24 24"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                         className="h-3 w-3"
                         height="1em"
                         width="1em"
@@ -191,55 +192,58 @@ const Footer: React.FC<FooterProps> = ({
                   </button>
                 )}
               </div>
-              <div className="flex flex-col w-full py-2 flex-grow md:py-3 md:pl-4 relative border border-black/10 bg-white dark:border-gray-900/50 dark:text-white dark:bg-gray-700 rounded-md shadow-[0_0_10px_rgba(0,0,0,0.10)] dark:shadow-[0_0_15px_rgba(0,0,0,0.10)]">
-                <div className="flex items-center absolute gap-1.5 md:gap-2.5">
+              <div className="flex items-center">
+                <DownloadButton messages={messages} conversationId={conversationId} />
+                <div className="flex flex-col w-full py-2 flex-grow md:py-3 md:pl-4 relative border border-black/10 bg-white dark:border-gray-900/50 dark:text-white dark:bg-gray-700 rounded-md shadow-[0_0_10px_rgba(0,0,0,0.10)] dark:shadow-[0_0_15px_rgba(0,0,0,0.10)]">
+                  <div className="flex items-center absolute gap-1.5 md:gap-2.5">
+                    <button
+                      className="z-10 ml-2 md:ml-0 pt-px text-gray-500 md:hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900 outline-none"
+                      type="button"
+                      onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                    >
+                      <svg className="h-5 w-5" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M512 981.333333C253.866667 981.333333 42.666667 770.133333 42.666667 512S253.866667 42.666667 512 42.666667s469.333333 211.2 469.333333 469.333333-211.2 469.333333-469.333333 469.333333z m0-853.333333C300.8 128 128 300.8 128 512s172.8 384 384 384 384-172.8 384-384S723.2 128 512 128z"
+                          fill={showEmojiPicker ? "#31c48d" : "#808080"}
+                        ></path>
+                        <path
+                          d="M640 469.333333c36.266667 0 64-27.733333 64-64s-27.733333-64-64-64-64 27.733333-64 64 29.866667 64 64 64M384 469.333333c36.266667 0 64-27.733333 64-64s-27.733333-64-64-64-64 27.733333-64 64 29.866667 64 64 64M512 725.333333c78.933333 0 151.466667-38.4 194.133333-104.533333 12.8-19.2 8.533333-46.933333-12.8-59.733333-19.2-12.8-46.933333-8.533333-59.733333 12.8-25.6 40.533333-72.533333 66.133333-121.6 66.133333s-96-25.6-123.733333-66.133333c-12.8-19.2-40.533333-25.6-59.733334-12.8-19.2 12.8-25.6 40.533333-12.8 59.733333 44.8 66.133333 117.333333 104.533333 196.266667 104.533333"
+                          fill={showEmojiPicker ? "#31c48d" : "#808080"}
+                        ></path>
+                      </svg>
+                    </button>
+                  </div>
+                  <textarea
+                    ref={inputRef}
+                    className="user-input max-h-52 m-0 w-full resize-none border-0 bg-transparent p-0 pl-8 pr-7 focus:ring-0 focus-visible:ring-0 dark:bg-transparent"
+                    value={prompt}
+                    onChange={handlePromptChange}
+                    style={{ height: "24px" }}
+                    onKeyPress={checkKeyPress}
+                    placeholder="你的提问越精确，答案就越合适"
+                  ></textarea>
                   <button
-                    className="z-10 ml-2 md:ml-0 pt-px text-gray-500 md:hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900 outline-none"
+                    onClick={handleSubmit}
                     type="button"
-                    onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                    className="absolute p-1 rounded-md text-gray-500 right-1 md:right-2 hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent"
                   >
-                    <svg className="h-5 w-5" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
-                      <path
-                        d="M512 981.333333C253.866667 981.333333 42.666667 770.133333 42.666667 512S253.866667 42.666667 512 42.666667s469.333333 211.2 469.333333 469.333333-211.2 469.333333-469.333333 469.333333z m0-853.333333C300.8 128 128 300.8 128 512s172.8 384 384 384 384-172.8 384-384S723.2 128 512 128z"
-                        fill={showEmojiPicker ? "#31c48d" : "#808080"}
-                      ></path>
-                      <path
-                        d="M640 469.333333c36.266667 0 64-27.733333 64-64s-27.733333-64-64-64-64 27.733333-64 64 29.866667 64 64 64M384 469.333333c36.266667 0 64-27.733333 64-64s-27.733333-64-64-64-64 27.733333-64 64 29.866667 64 64 64M512 725.333333c78.933333 0 151.466667-38.4 194.133333-104.533333 12.8-19.2 8.533333-46.933333-12.8-59.733333-19.2-12.8-46.933333-8.533333-59.733333 12.8-25.6 40.533333-72.533333 66.133333-121.6 66.133333s-96-25.6-123.733333-66.133333c-12.8-19.2-40.533333-25.6-59.733334-12.8-19.2 12.8-25.6 40.533333-12.8 59.733333 44.8 66.133333 117.333333 104.533333 196.266667 104.533333"
-                        fill={showEmojiPicker ? "#31c48d" : "#808080"}
-                      ></path>
+                    <svg
+                      stroke={getIconStrokeColor()}
+                      fill="none"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="h-4 w-4 mr-1"
+                      height="1em"
+                      width="1em"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <line x1="22" y1="2" x2="11" y2="13"></line>
+                      <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
                     </svg>
                   </button>
                 </div>
-                <textarea
-                  ref={inputRef}
-                  className="user-input max-h-52 m-0 w-full resize-none border-0 bg-transparent p-0 pl-8 pr-7 focus:ring-0 focus-visible:ring-0 dark:bg-transparent"
-                  value={prompt}
-                  onChange={handlePromptChange}
-                  style={{ height: "24px" }}
-                  onKeyPress={checkKeyPress}
-                  placeholder="你的提问越精确，答案就越合适"
-                ></textarea>
-                <button
-                  onClick={handleSubmit}
-                  type="button"
-                  className="absolute p-1 rounded-md text-gray-500 right-1 md:right-2 hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent"
-                >
-                  <svg
-                    stroke={getIconStrokeColor()}
-                    fill="none"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-4 w-4 mr-1"
-                    height="1em"
-                    width="1em"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <line x1="22" y1="2" x2="11" y2="13"></line>
-                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                  </svg>
-                </button>
               </div>
             </div>
           ) : (
