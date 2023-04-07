@@ -3,6 +3,8 @@ import Sidebar from "./Sidebar"
 import Menu from "./Menu"
 import { CDN_HOST } from "shared/constants"
 import CustomerService from "./CustomerService"
+import Notification from "./notification"
+import currentUser from "stores/current_user_store"
 
 interface MobileMenuProps {
   setIsShow: boolean
@@ -48,6 +50,8 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ setIsShow, onShowSignInModal, c
                 </div>
                 <div className="flex items-center gap-4">
                   <CustomerService />
+                  {currentUser.isSignedIn() && <Notification />}
+
                   <div className="h-5 w-px bg-zinc-900/10 dark:bg-zinc-600"></div>
                   <button
                     type="button"

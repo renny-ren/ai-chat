@@ -6,6 +6,7 @@ import { CDN_HOST } from "shared/constants"
 
 interface AnnouncementProps {}
 
+// This component is deprecated, use notification instead
 const Announcement: React.FC<AnnouncementProps> = ({}) => {
   let [isOpen, setIsOpen] = useState(currentUser.isSignedIn() && !currentUser.config().done_notice)
 

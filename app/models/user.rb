@@ -9,6 +9,7 @@ class User < ApplicationRecord
   has_many :conversations
   has_many :orders
   has_many :membership_subscriptions
+  has_many :notifications
   has_one :active_subscription, -> { active }, class_name: "MembershipSubscription"
   has_one :openai_account
 

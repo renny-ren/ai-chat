@@ -74,7 +74,7 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, isMobile 
             </button>
           </div>
 
-          <div className="relative mt-3 pl-2 max-h-72 overflow-y-auto">
+          <div className="relative mt-3 pl-2 max-h-64 overflow-y-auto">
             <div
               className="absolute inset-x-0 top-0 bg-zinc-800/2.5 will-change-transform dark:bg-white/2.5"
               style={{
