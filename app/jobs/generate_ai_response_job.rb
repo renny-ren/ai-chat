@@ -1,5 +1,16 @@
 class GenerateAiResponseJob < ApplicationJob
+  include ActiveJob::Locking::Serialized
+
   queue_as :default
+
+  self.enqueue_time = 1
+
+  # Ensures that only one instance of GenerateAiResponseJob can be running at a time.
+  # With this approach, if the job is already running when a new instance is enqueued, the new instance
+  # will not be processed until the previous one completes.
+  def lock_key(*args)
+    self.class.name
+  end
 
   def perform(id)
     message = Message.find(id)

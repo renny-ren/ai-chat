@@ -75,7 +75,7 @@ module ChatCompletion
     #     user_avatar_url: User.gpt_user[:avatar_url],
     #     mentions: ["test"],
     #   })
-    #   sleep 1
+    #   sleep 10
     #   ActionCable.server.broadcast("MessagesChannel", {
     #     role: "assistant",
     #     id: message_id,
@@ -108,7 +108,7 @@ module ChatCompletion
     #     })
     #   end
     #   sleep 1
-    #   signal_done
+    #   notify_done
     # end
 
     private

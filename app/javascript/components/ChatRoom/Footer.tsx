@@ -3,6 +3,7 @@ import currentUser from "stores/current_user_store"
 import { MentionsInput, Mention } from "react-mentions"
 import data from "@emoji-mart/data"
 import Picker from "@emoji-mart/react"
+import Spinner from "components/common/Spinner"
 
 interface FooterProps {
   cable: any
@@ -43,7 +44,7 @@ const Footer: React.FC<FooterProps> = ({
     }
     if (isToAI) {
       if (isGenerating) {
-        return showNotice("机器人回答不过来了，请稍后再问")
+        return showNotice("机器人忙不过来了，请稍等")
       }
       setIsGenerating(true)
     }
