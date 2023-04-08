@@ -7,6 +7,10 @@ zh-CN:
         username: 用户名
         password: 密码
         password_confirmation: 两次输入的密码
+        membership: 会员
+        current_sign_in_at: 登录时间
+        sign_in_count: 登录次数
+        created_at: 创建时间
     errors:
       messages:
         too_short: 太短
@@ -20,6 +24,11 @@ zh-CN:
               taken: 已经被使用
             password_confirmation:
               confirmation: 不一致
+  time:
+    formats:
+      default: "%Y-%m-%d %H:%M:%S"
+      long: "%Y-%m-%d %H:%M:%S"
+      short: "%m 月%d 日 %H:%M"
   datetime:
     distance_in_words:
       about_x_hours:

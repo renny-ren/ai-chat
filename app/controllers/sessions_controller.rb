@@ -11,5 +11,11 @@ class SessionsController < Devise::SessionsController
 
   def destroy
     sign_out current_user
+    respond_to do |format|
+      format.html do
+        redirect_to root_path
+      end
+      format.json
+    end
   end
 end

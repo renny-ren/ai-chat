@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  ActiveAdmin.routes(self)
   mount ActionCable.server => "/cable"
 
   authenticate :user, ->(u) { u.admin? } do
@@ -9,7 +10,7 @@ Rails.application.routes.draw do
   devise_for :users, controllers: {
                        registrations: :registrations,
                        sessions: :sessions,
-                     }
+                     }, sign_out_via: [:delete, :get]
 
   root "homepage#index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
@@ -44,6 +45,12 @@ Rails.application.routes.draw do
       member do
         post :push
       end
+    end
+  end
+
+  namespace :admin do
+    resources :users, only: :index do
+      resources :messages, only: :index
     end
   end
 
