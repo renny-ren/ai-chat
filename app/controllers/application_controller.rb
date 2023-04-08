@@ -17,6 +17,10 @@ class ApplicationController < ActionController::Base
     render(render_options)
   end
 
+  def authenticate_admin_user!
+    raise "Unauthorized" unless current_user && current_user.admin?
+  end
+
   protected
 
   def configure_permitted_parameters
