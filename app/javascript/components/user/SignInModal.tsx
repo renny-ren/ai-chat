@@ -4,6 +4,7 @@ import { LockClosedIcon } from "@heroicons/react/20/solid"
 import { message } from "antd"
 import axios from "axios"
 import { CDN_HOST } from "shared/constants"
+import { EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons"
 
 axios.interceptors.request.use((config) => {
   config.headers["Content-Type"] = "application/json"
@@ -22,6 +23,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
   const [mode, setMode] = useState("sign_in")
   const [formErrors, setFormErrors] = useState([])
   const [rememberMe, setRememberMe] = useState(true)
+  const [showPassword, setShowPassword] = useState(false)
 
   const onSignIn = async (e) => {
     e.preventDefault()
@@ -132,14 +134,14 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
                               placeholder="用户名"
                             />
                           </div>
-                          <div>
+                          <div className="relative flex flex-row  items-center justify-between">
                             <label htmlFor="password" className="sr-only">
                               密码
                             </label>
                             <input
                               id="password"
                               name="password"
-                              type="password"
+                              type={showPassword ? "text" : "password"}
                               autoComplete="current-password"
                               required
                               onInvalid={(e) => e.target.setCustomValidity("请输入密码")}
@@ -147,6 +149,22 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
                               className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-emerald-500 focus:outline-none focus:ring-emerald-500 sm:text-sm"
                               placeholder="密码"
                             />
+                            <button
+                              type="button"
+                              onClick={() => setShowPassword(!showPassword)}
+                              className="inline-flex items-center"
+                            >
+                              <EyeOutlined
+                                className={`${
+                                  showPassword ? "hidden" : "block"
+                                } h-5 w-5 absolute right-2 z-10 text-gray-500`}
+                              />
+                              <EyeInvisibleOutlined
+                                className={`${
+                                  showPassword ? "block" : "hidden"
+                                } h-5 w-5 absolute right-2 z-10 text-gray-500`}
+                              />
+                            </button>
                           </div>
                         </div>
 
