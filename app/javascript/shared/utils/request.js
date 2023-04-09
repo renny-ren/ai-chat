@@ -5,11 +5,11 @@ export function get(url, options = {}) {
 }
 
 export function post(url, body, options = {}) {
-  return _post(url, { body: body }, options)
+  return _post(url, { ...options, body: body })
 }
 
 export function put(url, body, options = {}) {
-  return _put(url, { body: body }, options)
+  return _put(url, { ...options, body: body })
 }
 
 export { patch, destroy }
