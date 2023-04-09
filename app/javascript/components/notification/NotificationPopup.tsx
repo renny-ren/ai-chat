@@ -6,10 +6,15 @@ interface NotificationPopupProps {
   isOpen: boolean
   closeModal: () => void
   notifications: any
-  renderer: any
 }
 
-const NotificationPopup: React.FC<NotificationPopupProps> = ({ notifications, isOpen, closePopup, renderer }) => {
+const NotificationPopup: React.FC<NotificationPopupProps> = ({ notifications, isOpen, closePopup }) => {
+  const renderer = {
+    list(body, ordered) {
+      return ordered ? <ol className="c-ordered-list-small">{body}</ol> : <ul className="c-list-small">{body}</ul>
+    },
+  }
+
   return (
     <Transition
       as={Fragment}
@@ -36,10 +41,10 @@ const NotificationPopup: React.FC<NotificationPopupProps> = ({ notifications, is
               <div className="flex space-x-4">
                 <div className="flex-1">
                   <h4 className="pr-6 text-gray-900">
-                    {notification.title}{" "}
+                    {notification.title}
                     <span className="mx-4 font-normal text-xs text-gray-400">{notification.created_at_in_words}</span>
                   </h4>
-                  <div className="mt-1 text-gray-500">
+                  <div className="mt-1 text-gray-500 leading-normal">
                     <Markdown value={notification.body} renderer={renderer} />
                   </div>
                 </div>

@@ -45,7 +45,7 @@ const NotificationModal: React.FC<NotificationModalProps> = ({ notification, isO
                 <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
                   {notification.title}
                 </Dialog.Title>
-                <div className="mt-2 text-sm text-gray-600">
+                <div className="mt-2 text-sm text-gray-600 leading-normal">
                   <Markdown value={notification.body} renderer={renderer} />
                 </div>
                 <button className="absolute" type="button"></button>

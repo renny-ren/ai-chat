@@ -1,7 +1,7 @@
 class AppMessage < ApplicationRecord
   validates_presence_of :title, :body
 
-  enum msg_type: { product: 0, operation: 1, other: 2 }
+  enum msg_type: { product: 0, operation: 1, welcome: 2, other: 3 }
   enum status: { draft: 0, published: 1 }
 
   belongs_to :creator, class_name: "User", required: false

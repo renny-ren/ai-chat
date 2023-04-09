@@ -20,6 +20,7 @@ zh-CN:
         msg_type:
           product: 产品消息
           operation: 运维消息
+          welcome: 欢迎消息
           other: 其他消息
         status:
           draft: 草稿

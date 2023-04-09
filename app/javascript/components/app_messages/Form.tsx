@@ -87,7 +87,8 @@ const AppMessageForm = ({ action }) => {
             <Select>
               <Select.Option value={0}>Product</Select.Option>
               <Select.Option value={1}>Operation</Select.Option>
-              <Select.Option value={2}>Other</Select.Option>
+              <Select.Option value={2}>Welcome</Select.Option>
+              <Select.Option value={3}>Other</Select.Option>
             </Select>
           </Form.Item>
         </div>

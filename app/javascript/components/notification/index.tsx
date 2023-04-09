@@ -217,7 +217,7 @@ const Notification: React.FC<NotificationProps> = ({ className = "" }) => {
         )}
       </Popover>
       <NotificationModal isOpen={isModalOpen} closeModal={closeModal} notification={notification} />
-      <NotificationPopup isOpen={isPopupOpen} closePopup={closePopup} notifications={popupItems} renderer={renderer} />
+      <NotificationPopup isOpen={isPopupOpen} closePopup={closePopup} notifications={popupItems} />
     </>
   )
 }
