@@ -5,6 +5,7 @@ import data from "@emoji-mart/data"
 import Picker from "@emoji-mart/react"
 import axios from "axios"
 import DownloadButton from "./DownloadButton"
+import UpgradeModal from "components/common/UpgradeModal"
 
 message.config({
   maxCount: 1,
@@ -44,6 +45,7 @@ const Footer: React.FC<FooterProps> = ({
   const inputRef = useRef(null)
   const [showEmojiPicker, setShowEmojiPicker] = useState(false)
   const messageLimitPerDay = currentUser.plan()?.message_limit_per_day
+  const [isUpgradeOpen, setIsUpgradeOpen] = useState(false)
 
   useEffect(() => {
     if (isLoading) {
@@ -80,7 +82,8 @@ const Footer: React.FC<FooterProps> = ({
       return message.error("机器人回答不过来了，请稍后再问")
     }
     if (usedMessageCount >= messageLimitPerDay) {
-      return message.error("今日与 AI 聊天次数已到上限，请明日再来，或前往聊天室聊天")
+      setIsUpgradeOpen(true)
+      return
     }
     addMessage({ role: "user", content: prompt })
     addMessage({ role: "assistant", content: "", isLoading: true })
@@ -269,6 +272,19 @@ const Footer: React.FC<FooterProps> = ({
             </div>
           )}
         </form>
+        <UpgradeModal
+          isOpen={isUpgradeOpen}
+          closeModal={() => setIsUpgradeOpen(false)}
+          title="提示"
+          body={
+            <>
+              <p>本站素来免费，但有开发维护之成本</p>
+              <p>运营不易，费用不少</p>
+              <p>卿今日之 AI 聊天次数也已耗尽</p>
+              <p>愿君升级套餐，或明朝再来</p>
+            </>
+          }
+        />
         <footer className="px-3 pt-2 pb-2 text-center text-xs text-black/50 dark:text-white/50 md:px-4 md:pt-3">
           <div className="flex flex-wrap items-center justify-center">
             <span className="mr-4">

@@ -102,6 +102,8 @@ const Footer: React.FC<FooterProps> = ({ setImages, isLoading, setIsLoading, set
               <div className="flex flex-col">
                 <Select
                   defaultValue="1"
+                  popupClassName="dark:text-gray-400 text-emerald-500"
+                  style={{ color: "red" }}
                   bordered={false}
                   onChange={(value) => setImageCount(value)}
                   options={[

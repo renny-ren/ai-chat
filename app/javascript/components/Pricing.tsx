@@ -3,6 +3,7 @@ import PricingModal from "./PricingModal"
 import currentUser from "stores/current_user_store"
 import axios from "axios"
 import { Badge, message } from "antd"
+import { Helmet } from "react-helmet"
 
 interface PricingProps {
   setIsShowSignInModal: () => void
@@ -79,34 +80,39 @@ const Pricing: React.FC<PricingProps> = ({ setIsShowSignInModal }) => {
 
   const renderFreeItem = () => {
     return (
-      <div className="rounded-xl relative z-10 overflow-hidden border border-emerald-500 border-opacity-20 shadow-pricing py-10 px-8 sm:p-12 lg:py-10 lg:px-6 xl:p-12 mb-10">
-        <span className="text-emerald-500 font-semibold text-lg block mb-4">免费版</span>
-        <h2 className="font-bold text-dark mb-2 text-[42px] dark:text-white">¥0</h2>
-        <p className="text-base text-body-color pb-6 mb-6 border-b border-[#F2F2F2]">免费体验使用</p>
-        <div className="mb-7 min-h-[220px]">
-          {renderItem("每日 2 次 AI 对话")}
-          {renderItem("最大提问长度 100 字")}
-          {renderItem("导出个人会话", false)}
-          {renderItem("AI 绘画", false)}
+      <>
+        <Helmet>
+          <title>aii.chat - 升级套餐</title>
+        </Helmet>
+        <div className="rounded-xl relative z-10 overflow-hidden border border-emerald-500 border-opacity-20 shadow-pricing py-10 px-8 sm:p-12 lg:py-10 lg:px-6 xl:p-12 mb-10">
+          <span className="text-emerald-500 font-semibold text-lg block mb-4">免费版</span>
+          <h2 className="font-bold text-dark mb-2 text-[42px] dark:text-white">¥0</h2>
+          <p className="text-base text-body-color pb-6 mb-6 border-b border-[#F2F2F2]">免费体验使用</p>
+          <div className="mb-7 min-h-[220px]">
+            {renderItem("每日 2 次 AI 对话")}
+            {renderItem("最大提问长度 100 字")}
+            {renderItem("导出个人会话", false)}
+            {renderItem("AI 绘画", false)}
+          </div>
+          <a className="w-full block text-base font-semibold text-emerald-500 bg-transparent border border-emerald-500 rounded-md text-center p-3 transition">
+            {currentUser.membership() === "free" ? "当前版本" : "免费版"}
+          </a>
+          <div>
+            <span className="absolute right-0 top-7 z-[-1]">
+              <svg width="77" height="172" viewBox="0 0 77 172" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="86" cy="86" r="86" fill="url(#paint0_linear)" />
+                <defs>
+                  <linearGradient id="paint0_linear" x1="86" y1="0" x2="86" y2="172" gradientUnits="userSpaceOnUse">
+                    <stop stopColor="#3056D3" stopOpacity="0.09" />
+                    <stop offset="1" stopColor="#C4C4C4" stopOpacity="0" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </span>
+            <span className="absolute right-4 top-4 z-[-1]"></span>
+          </div>
         </div>
-        <a className="w-full block text-base font-semibold text-emerald-500 bg-transparent border border-emerald-500 rounded-md text-center p-3 transition">
-          {currentUser.membership() === "free" ? "当前版本" : "免费版"}
-        </a>
-        <div>
-          <span className="absolute right-0 top-7 z-[-1]">
-            <svg width="77" height="172" viewBox="0 0 77 172" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="86" cy="86" r="86" fill="url(#paint0_linear)" />
-              <defs>
-                <linearGradient id="paint0_linear" x1="86" y1="0" x2="86" y2="172" gradientUnits="userSpaceOnUse">
-                  <stop stopColor="#3056D3" stopOpacity="0.09" />
-                  <stop offset="1" stopColor="#C4C4C4" stopOpacity="0" />
-                </linearGradient>
-              </defs>
-            </svg>
-          </span>
-          <span className="absolute right-4 top-4 z-[-1]"></span>
-        </div>
-      </div>
+      </>
     )
   }
 

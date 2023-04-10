@@ -45,7 +45,7 @@ const Images: React.FC<ImagesProps> = ({ setIsShowSignInModal }) => {
               <div className="mt-6 md:mt-10 mb-2 md:mb-4">
                 {!images.length && (
                   <div className="flex flex-col items-center">
-                    <ul className="text-gray-600 text-sm">
+                    <ul className="text-gray-600 dark:text-gray-400 text-sm">
                       <li>图片基于 DALL·E 模型生成</li>
                       <li>精心调整输入文本可以帮助生成更准确和特定的图像</li>
                     </ul>

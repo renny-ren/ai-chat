@@ -42,12 +42,12 @@ const UpgradeModal: React.FC<UpgradeModalProps> = ({ isOpen, closeModal, title, 
                   {title}
                 </Dialog.Title>
 
-                <>
-                  <div className="text-center text-sm text-gray-600">{body}</div>
+                <div className="mt-2">
+                  <div className="text-center text-sm leading-8 text-gray-500">{body}</div>
                   <div className="text-center mt-4">
                     <UpgradeButton size={buttonSize} />
                   </div>
-                </>
+                </div>
               </Dialog.Panel>
             </Transition.Child>
           </div>

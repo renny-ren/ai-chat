@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react"
 import currentUser from "stores/current_user_store"
 import { message, Select } from "antd"
 import axios from "axios"
+import UpgradeModal from "components/common/UpgradeModal"
 
 interface FooterProps {
   isLoading: boolean
@@ -35,6 +36,7 @@ const Footer: React.FC<FooterProps> = ({
   const [usedMessageCount, setUsedMessageCount] = useState(0)
   const messageLimitPerDay = currentUser.plan()?.message_limit_per_day
   const [conversationId, setConversationId] = useState("")
+  const [isUpgradeOpen, setIsUpgradeOpen] = useState(false)
 
   useEffect(() => {
     if (currentUser.isSignedIn()) {
@@ -85,7 +87,8 @@ const Footer: React.FC<FooterProps> = ({
       return message.info(loadingMessage || "加载中，请稍等")
     }
     if (usedMessageCount >= messageLimitPerDay) {
-      return message.error("今日 AI 使用次数已到上限，请明日再来，或升级套餐")
+      setIsUpgradeOpen(true)
+      return
     }
     addMessage({ role: "user", content: prompt })
     addMessage({ role: "assistant", content: "" })
@@ -206,6 +209,19 @@ const Footer: React.FC<FooterProps> = ({
             </div>
           )}
         </form>
+        <UpgradeModal
+          isOpen={isUpgradeOpen}
+          closeModal={() => setIsUpgradeOpen(false)}
+          title="提示"
+          body={
+            <>
+              <p>本站素来免费，但有开发维护之成本</p>
+              <p>运营不易，费用不少</p>
+              <p>卿今日之 AI 次数也已耗尽</p>
+              <p>愿君升级套餐，或明朝再来</p>
+            </>
+          }
+        />
         <footer className="px-3 pt-2 pb-2 text-center text-xs text-black/50 dark:text-white/50 md:px-4 md:pt-3">
           <span className="mr-4">
             {currentUser.isSignedIn() && <span>今日剩余次数：{messageLimitPerDay - usedMessageCount}</span>}
