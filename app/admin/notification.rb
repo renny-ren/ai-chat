@@ -6,7 +6,7 @@ ActiveAdmin.register Notification do
     selectable_column
     id_column
     column :user_id
-    column :target_id
+    column :target
     column '是否已读' do |item|
       span item.read_at.present?
     end
@@ -15,6 +15,7 @@ ActiveAdmin.register Notification do
   end
 
   filter :user_id
+  filter :target_id
   filter :read_at
 
   form do |f|

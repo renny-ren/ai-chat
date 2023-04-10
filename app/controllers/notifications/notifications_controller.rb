@@ -5,11 +5,10 @@ module Notifications
     before_action :authenticate_user!
 
     def index
-      @notifications = notifications.includes(:target)
       if params[:q] == "important"
-        @notifications = @notifications.important.where(created_at: 5.days.ago..Time.now)
+        @notifications = notifications.important.where(created_at: 5.days.ago..Time.now)
       end
-      @notifications = @notifications.order(created_at: :desc).page(page).per(4)
+      @notifications = notifications.includes(:target).order(created_at: :desc).page(page).per(4)
     end
 
     def read

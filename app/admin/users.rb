@@ -14,6 +14,7 @@ ActiveAdmin.register User do
     actions
   end
 
+  filter :id
   filter :username
   filter :nickname
   filter :email

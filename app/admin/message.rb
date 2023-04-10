@@ -8,6 +8,7 @@ ActiveAdmin.register Message do
     column :user_id
     column :conversation_id
     column :content
+    column :created_at
     actions
   end
 
