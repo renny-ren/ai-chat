@@ -9,7 +9,7 @@ import { github, arduinoLight, atelierSeasideLight } from "react-syntax-highligh
 import Avatar from "./Avatar"
 import useInfiniteScroll from "react-infinite-scroll-hook"
 import { Spin } from "antd"
-import * as AliyunAPI from "shared/api/aliyun"
+import AudioButton from "./AudioButton"
 
 const MessageList = ({ messages, fetchMessages, isFetching, openModal, pagination, setPrompt, generatingMsgId }) => {
   const [currentPage, setCurrentPage] = useState(1)
@@ -87,7 +87,6 @@ const MessageList = ({ messages, fetchMessages, isFetching, openModal, paginatio
 
   useEffect(() => {
     // scrollToBottom()
-    tts()
   }, [messages])
 
   const rootRefSetter = useCallback(
@@ -108,12 +107,6 @@ const MessageList = ({ messages, fetchMessages, isFetching, openModal, paginatio
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
-  }
-
-  const tts = async () => {
-    const res = await AliyunAPI.fetchToken()
-    const data = await res.json
-    console.log(data)
   }
 
   return (
@@ -168,6 +161,7 @@ const MessageList = ({ messages, fetchMessages, isFetching, openModal, paginatio
                       {renderContent(message)}
                     </div>
                   </div>
+                  {isRobot(message) && <AudioButton message={message} />}
                 </div>
               </div>
             )

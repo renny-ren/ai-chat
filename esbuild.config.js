@@ -13,6 +13,7 @@ esbuild
     define: {
       "process.env.NLSAccessKeySecret": process.env.NLSAccessKeySecret,
       "process.env.NLSAccessKeyId": process.env.NLSAccessKeyId,
+      "process.env.TTSAppKey": process.env.TTSAppKey,
     },
     // custom plugins will be inserted is this array
     plugins: [],
