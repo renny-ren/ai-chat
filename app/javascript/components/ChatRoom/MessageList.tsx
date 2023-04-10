@@ -9,6 +9,7 @@ import { github, arduinoLight, atelierSeasideLight } from "react-syntax-highligh
 import Avatar from "./Avatar"
 import useInfiniteScroll from "react-infinite-scroll-hook"
 import { Spin } from "antd"
+import AudioButton from "./AudioButton"
 
 const MessageList = ({ messages, fetchMessages, isFetching, openModal, pagination, setPrompt, generatingMsgId }) => {
   const [currentPage, setCurrentPage] = useState(1)
@@ -160,6 +161,7 @@ const MessageList = ({ messages, fetchMessages, isFetching, openModal, paginatio
                       {renderContent(message)}
                     </div>
                   </div>
+                  {isRobot(message) && <AudioButton message={message} />}
                 </div>
               </div>
             )
