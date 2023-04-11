@@ -3,15 +3,23 @@ import currentUser from "stores/current_user_store"
 import Markdown from "marked-react"
 import SyntaxHighlighter from "react-syntax-highlighter"
 import { arduinoLight } from "react-syntax-highlighter/dist/esm/styles/hljs"
+import AudioButton from "./AudioButton"
 
 interface MessageListProps {
   messages: any
   isLoading: boolean
   gptName?: string
+  voice?: string
 }
 
-const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, gptName }) => {
+const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, gptName, voice }) => {
+  const [playingMessageId, setPlayingMessageId] = useState(0)
   const messagesEndRef = useRef(null)
+  const audioRef = useRef(null)
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages])
 
   const renderer = {
     code(snippet, language) {
@@ -39,9 +47,17 @@ const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, gptName 
     }
   }
 
-  useEffect(() => {
-    scrollToBottom()
-  }, [messages])
+  const playAudio = (src) => {
+    audioRef.current.src = src
+    audioRef.current.play()
+    audioRef.current.onended = () => setPlayingMessageId(0)
+  }
+
+  const pauseAudio = () => {
+    if (audioRef.current && !audioRef.current.paused) {
+      audioRef.current.pause()
+    }
+  }
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -49,6 +65,7 @@ const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, gptName 
 
   return (
     <>
+      <audio ref={audioRef}></audio>
       <div className="message-list-container overflow-auto" style={{ scrollbarGutter: "stable both-edges" }}>
         <div className="grid grid-cols-12 gap-y-2">
           {messages.map((message, i) => {
@@ -87,6 +104,15 @@ const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, gptName 
                       {message.content ? <Markdown value={message.content} renderer={renderer} /> : <p></p>}
                     </div>
                   </div>
+                  <AudioButton
+                    message={message}
+                    playAudio={playAudio}
+                    pauseAudio={pauseAudio}
+                    playingMessageId={playingMessageId}
+                    setPlayingMessageId={setPlayingMessageId}
+                    className="relative -left-2.5 -top-1 self-end"
+                    voice={voice}
+                  />
                 </div>
               </div>
             )

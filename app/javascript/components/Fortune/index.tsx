@@ -44,7 +44,7 @@ const Fortune: React.FC<FortuneProps> = ({ setIsShowSignInModal, setConversation
                       <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl h-full w-full md:max-w-3xl lg:max-w-4xl">
                         <div className="flex flex-col h-full md:pb-4">
                           <div className="flex flex-col h-full overflow-x-auto">
-                            <MessageList gptName="命理大师" messages={messages} isLoading={isLoading} />
+                            <MessageList gptName="命理大师" messages={messages} isLoading={isLoading} voice="stanley" />
                           </div>
                         </div>
                       </div>

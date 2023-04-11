@@ -25,8 +25,8 @@ export function fetchToken() {
   return get(`http://nls-meta.cn-shanghai.aliyuncs.com/?Signature=${encodeURIComponent(signatureBase64)}&${requestString}`)
 }
 
-export function fetchTtsStream(token, text) {
+export function fetchTtsStream(token, text, voice) {
   return `https://nls-gateway-cn-shanghai.aliyuncs.com/stream/v1/tts?appkey=${
     process.env.TTSAppKey
-  }&token=${token}&text=${encodeURIComponent(text)}&format=wav&volume=100`
+  }&token=${token}&text=${encodeURIComponent(text)}&format=wav&volume=100&voice=${voice}`
 }

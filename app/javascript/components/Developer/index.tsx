@@ -42,7 +42,7 @@ const Developer: React.FC<DeveloperProps> = ({ setIsShowSignInModal, setConversa
                       <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl h-full w-full md:max-w-3xl lg:max-w-4xl">
                         <div className="flex flex-col h-full md:pb-4">
                           <div className="flex flex-col h-full overflow-x-auto">
-                            <MessageList gptName="程序员助手" messages={messages} isLoading={isLoading} />
+                            <MessageList gptName="程序员助手" messages={messages} isLoading={isLoading} voice="kenny" />
                           </div>
                         </div>
                       </div>

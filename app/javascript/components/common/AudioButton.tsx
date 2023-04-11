@@ -9,6 +9,7 @@ interface AudioButtonProps {
   pauseAudio: () => void
   playingMessageId: number
   setPlayingMessageId: () => void
+  voice?: string
   className?: string
 }
 
@@ -18,6 +19,7 @@ const AudioButton: React.FC<AudioButtonProps> = ({
   pauseAudio,
   playingMessageId,
   setPlayingMessageId,
+  voice = "",
   className = "",
 }) => {
   const [loading, setLoading] = useState(false)
@@ -41,7 +43,7 @@ const AudioButton: React.FC<AudioButtonProps> = ({
   const handlePlay = async (message) => {
     setLoading(true)
     const token = await fetchToken()
-    const src = AliyunAPI.fetchTtsStream(token, message.content)
+    const src = AliyunAPI.fetchTtsStream(token, message.content, voice)
     playAudio(src)
     setLoading(false)
   }
