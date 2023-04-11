@@ -92,7 +92,7 @@ const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, gptName,
                     </div>
                   </div>
 
-                  <div className="flex flex-col gap-1 max-w-full">
+                  <div className="relative flex flex-col gap-1 max-w-[98%]">
                     <div className="flex items-baseline">
                       <div className="text-sm font-medium ml-3 dark:text-white">{gptName || "ChatGPT"}</div>
                     </div>
@@ -103,16 +103,16 @@ const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, gptName,
                     >
                       {message.content ? <Markdown value={message.content} renderer={renderer} /> : <p></p>}
                     </div>
+                    <AudioButton
+                      message={message}
+                      playAudio={playAudio}
+                      pauseAudio={pauseAudio}
+                      playingMessageId={playingMessageId}
+                      setPlayingMessageId={setPlayingMessageId}
+                      className="absolute bottom-1 -right-2"
+                      voice={voice}
+                    />
                   </div>
-                  <AudioButton
-                    message={message}
-                    playAudio={playAudio}
-                    pauseAudio={pauseAudio}
-                    playingMessageId={playingMessageId}
-                    setPlayingMessageId={setPlayingMessageId}
-                    className="relative -left-2.5 -top-1 self-end"
-                    voice={voice}
-                  />
                 </div>
               </div>
             )

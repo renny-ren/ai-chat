@@ -135,7 +135,7 @@ const MessageList = ({ messages, fetchMessages, isFetching, openModal, paginatio
         <div className="sentry text-center" ref={infiniteRef}>
           {isFetching && <Spin />}
         </div>
-        <div className="grid grid-cols-12 gap-y-2">
+        <div className="grid grid-cols-12 gap-y-2 overflow-hidden">
           {messages.map((message, i) => {
             return isSelf(message) ? (
               <div key={i} className="col-start-2 md:col-start-4 col-end-13 p-3 rounded-lg">
@@ -163,7 +163,7 @@ const MessageList = ({ messages, fetchMessages, isFetching, openModal, paginatio
                     isSelf={false}
                     openModal={openModal}
                   />
-                  <div className="flex flex-col gap-1 max-w-full">
+                  <div className="relative flex flex-col gap-1 max-w-[98%]">
                     <div className="flex items-baseline">
                       <div className="text-sm font-medium ml-3 dark:text-white">{message.user_nickname}</div>
                       <p className="text-xs text-gray-500 ml-2">{message.created_at}</p>
@@ -175,17 +175,17 @@ const MessageList = ({ messages, fetchMessages, isFetching, openModal, paginatio
                     >
                       {renderContent(message)}
                     </div>
+                    {isRobot(message) && (
+                      <AudioButton
+                        message={message}
+                        playAudio={playAudio}
+                        pauseAudio={pauseAudio}
+                        playingMessageId={playingMessageId}
+                        setPlayingMessageId={setPlayingMessageId}
+                        className="absolute bottom-1 -right-2"
+                      />
+                    )}
                   </div>
-                  {isRobot(message) && (
-                    <AudioButton
-                      message={message}
-                      playAudio={playAudio}
-                      pauseAudio={pauseAudio}
-                      playingMessageId={playingMessageId}
-                      setPlayingMessageId={setPlayingMessageId}
-                      className="relative -left-2.5 -top-1 self-end"
-                    />
-                  )}
                 </div>
               </div>
             )
