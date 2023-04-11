@@ -3,7 +3,6 @@ import currentUser from "stores/current_user_store"
 import { MentionsInput, Mention } from "react-mentions"
 import data from "@emoji-mart/data"
 import Picker from "@emoji-mart/react"
-import Spinner from "components/common/Spinner"
 
 interface FooterProps {
   cable: any

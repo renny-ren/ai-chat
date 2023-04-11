@@ -9,13 +9,15 @@ import { github, arduinoLight, atelierSeasideLight } from "react-syntax-highligh
 import Avatar from "./Avatar"
 import useInfiniteScroll from "react-infinite-scroll-hook"
 import { Spin } from "antd"
-import AudioButton from "./AudioButton"
+import AudioButton from "components/common/AudioButton"
 
 const MessageList = ({ messages, fetchMessages, isFetching, openModal, pagination, setPrompt, generatingMsgId }) => {
   const [currentPage, setCurrentPage] = useState(1)
+  const [playingMessageId, setPlayingMessageId] = useState(0)
   const scrollableRootRef = useRef<HTMLDivElement | null>(null)
   const lastScrollDistanceToBottomRef = useRef<number>()
   const messagesEndRef = useRef(null)
+  const audioRef = useRef(null)
 
   const includeCode = (text: string | null | undefined) => {
     const regexp = /^(?:\s{4}|\t).+/gm
@@ -48,6 +50,10 @@ const MessageList = ({ messages, fetchMessages, isFetching, openModal, paginatio
     }
   }
 
+  const isRobot = (message) => {
+    return message.role === "assistant"
+  }
+
   const renderContent = (message) => {
     return isRobot(message) ? (
       <>
@@ -57,10 +63,6 @@ const MessageList = ({ messages, fetchMessages, isFetching, openModal, paginatio
     ) : (
       <div className="whitespace-pre-line">{message.content}</div>
     )
-  }
-
-  const isRobot = (message) => {
-    return message.role === "assistant"
   }
 
   const fetchMoreData = () => {
@@ -109,8 +111,21 @@ const MessageList = ({ messages, fetchMessages, isFetching, openModal, paginatio
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }
 
+  const playAudio = (src) => {
+    audioRef.current.src = src
+    audioRef.current.play()
+    audioRef.current.onended = () => setPlayingMessageId(0)
+  }
+
+  const pauseAudio = () => {
+    if (audioRef.current && !audioRef.current.paused) {
+      audioRef.current.pause()
+    }
+  }
+
   return (
     <>
+      <audio ref={audioRef}></audio>
       <div
         className="message-list-container overflow-auto"
         style={{ scrollbarGutter: "stable both-edges" }}
@@ -161,7 +176,16 @@ const MessageList = ({ messages, fetchMessages, isFetching, openModal, paginatio
                       {renderContent(message)}
                     </div>
                   </div>
-                  {isRobot(message) && <AudioButton message={message} />}
+                  {isRobot(message) && (
+                    <AudioButton
+                      message={message}
+                      playAudio={playAudio}
+                      pauseAudio={pauseAudio}
+                      playingMessageId={playingMessageId}
+                      setPlayingMessageId={setPlayingMessageId}
+                      className="relative -left-2.5 -top-1 self-end"
+                    />
+                  )}
                 </div>
               </div>
             )

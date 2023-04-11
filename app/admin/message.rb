@@ -14,6 +14,7 @@ ActiveAdmin.register Message do
 
   filter :user_id
   filter :conversation_id
+  filter :created_at
 
   form do |f|
     f.inputs do
