@@ -17,6 +17,7 @@ zh-CN:
         too_long: 太长
         taken: 已经被使用
         invalid: 不合法
+        record_invalid: 记录不合法
       models:
         user:
           attributes:

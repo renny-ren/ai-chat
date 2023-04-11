@@ -8,19 +8,19 @@ const currentUser = {
   },
 
   id() {
-    return gon.user_meta.id
+    return gon.user_meta?.id
   },
 
   nickname() {
-    return gon.user_meta.nickname
+    return gon.user_meta?.nickname
   },
 
   email() {
-    return gon.user_meta.email
+    return gon.user_meta?.email
   },
 
   avatarUrl() {
-    return gon.user_meta.avatar_url
+    return gon.user_meta?.avatar_url
   },
 
   membership() {

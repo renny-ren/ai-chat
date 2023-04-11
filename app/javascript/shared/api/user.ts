@@ -15,3 +15,11 @@ export function readNotification(ids) {
 export function fetchConversation(id) {
   return get(`/v1/conversations/${id}`)
 }
+
+export function fetchUser(id) {
+  return get(`/v1/users/${id}`)
+}
+
+export function updateUser(id, data) {
+  return put(`/v1/users/${id}`, data)
+}
