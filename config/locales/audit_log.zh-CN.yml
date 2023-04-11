@@ -2,3 +2,4 @@ zh-CN:
   audit_log:
     action:
       generate_image: 生成图片
+      visit_admin_panel: 访问管理后台

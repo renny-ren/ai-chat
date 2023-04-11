@@ -19,6 +19,9 @@ class ApplicationController < ActionController::Base
 
   def authenticate_admin_user!
     raise "Unauthorized" unless current_user && current_user.admin?
+  rescue => e
+    audit! :visit_admin_panel, nil, payload: { user: current_user }
+    redirect_to root_path
   end
 
   protected
