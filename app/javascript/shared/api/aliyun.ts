@@ -22,7 +22,7 @@ export function fetchToken() {
   const signature = CryptoJS.HmacSHA1(signatureString, process.env.NLSAccessKeySecret + "&")
   const signatureBase64 = CryptoJS.enc.Base64.stringify(signature)
 
-  return get(`http://nls-meta.cn-shanghai.aliyuncs.com/?Signature=${encodeURIComponent(signatureBase64)}&${requestString}`)
+  return get(`https://nls-meta.cn-shanghai.aliyuncs.com/?Signature=${encodeURIComponent(signatureBase64)}&${requestString}`)
 }
 
 export function fetchTtsStream(token, text, voice) {
