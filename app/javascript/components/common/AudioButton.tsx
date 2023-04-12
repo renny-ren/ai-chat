@@ -26,8 +26,7 @@ const AudioButton: React.FC<AudioButtonProps> = ({
 
   const fetchToken = async () => {
     const res = await AliyunAPI.fetchToken()
-    const data = await res.json
-    return data.Token.Id
+    return res.data.Token.Id
   }
 
   const onClickAudio = (message) => {

@@ -22,7 +22,17 @@ export function fetchToken() {
   const signature = CryptoJS.HmacSHA1(signatureString, process.env.NLSAccessKeySecret + "&")
   const signatureBase64 = CryptoJS.enc.Base64.stringify(signature)
 
-  return get(`https://nls-meta.cn-shanghai.aliyuncs.com/?Signature=${encodeURIComponent(signatureBase64)}&${requestString}`)
+  return axios.get(
+    `https://nls-meta.cn-shanghai.aliyuncs.com/?Signature=${encodeURIComponent(signatureBase64)}&${requestString}`,
+    {
+      transformRequest: [
+        (data, headers) => {
+          delete headers["X-CSRF-Token"]
+          return data
+        },
+      ],
+    }
+  )
 }
 
 export function fetchTtsStream(token, text, voice) {
