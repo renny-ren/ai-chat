@@ -104,7 +104,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
                         <img className="mx-auto h-16 w-auto" src={`${CDN_HOST}/assets/logo2.png`} alt="aii.chat" />
                         <h2 className="mt-2 text-center text-3xl font-bold tracking-tight text-gray-900">登录账号</h2>
                         <p className="mt-2 text-center text-sm text-gray-600">
-                          或{" "}
+                          或
                           <span
                             onClick={toggleMode}
                             className="cursor-pointer font-medium text-emerald-500 hover:text-emerald-400"
@@ -277,7 +277,6 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
                               id="username"
                               name="username"
                               type="username"
-                              autoComplete="username"
                               required
                               onInvalid={(e) => e.target.setCustomValidity("请输入用户名")}
                               onInput={(e) => e.target.setCustomValidity("")}
@@ -293,7 +292,6 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
                               id="password"
                               name="password"
                               type="password"
-                              autoComplete="current-password"
                               required
                               onInvalid={(e) => e.target.setCustomValidity("请输入密码")}
                               onInput={(e) => e.target.setCustomValidity("")}
