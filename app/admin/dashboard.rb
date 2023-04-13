@@ -14,7 +14,7 @@ ActiveAdmin.register_page "Dashboard" do
       column do
         panel "Recent Users" do
           ul do
-            User.order(id: :desc).last(10).map do |user|
+            User.order(id: :desc).first(10).map do |user|
               li link_to(user.nickname, admin_user_path(user))
             end
           end
@@ -24,7 +24,7 @@ ActiveAdmin.register_page "Dashboard" do
       column do
         panel "Recent Messages" do
           ul do
-            Message.order(id: :desc).last(5).map do |msg|
+            Message.order(id: :desc).first(5).map do |msg|
               li link_to(msg.content, admin_message_path(msg))
             end
           end
