@@ -38,7 +38,15 @@ const MessageList = ({ messages, fetchMessages, isFetching, openModal, paginatio
       )
     },
     list(body, ordered) {
-      return ordered ? <ol className="c-ordered-list">{body}</ol> : <ul className="c-list">{body}</ul>
+      return ordered ? (
+        <ol key="key" className="c-ordered-list">
+          {body}
+        </ol>
+      ) : (
+        <ul key="key" className="c-list">
+          {body}
+        </ul>
+      )
     },
   }
 
