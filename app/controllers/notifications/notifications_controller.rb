@@ -7,8 +7,10 @@ module Notifications
     def index
       if params[:q] == "important"
         @notifications = notifications.important.where(created_at: 5.days.ago..Time.now)
+      else
+        @notifications = notifications.includes(:target)
       end
-      @notifications = notifications.includes(:target).order(created_at: :desc).page(page).per(4)
+      @notifications = @notifications.order(created_at: :desc).page(page).per(4)
     end
 
     def read
