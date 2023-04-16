@@ -11,15 +11,7 @@ interface NotificationPopupProps {
 const NotificationPopup: React.FC<NotificationPopupProps> = ({ notifications, isOpen, closePopup }) => {
   const renderer = {
     list(body, ordered) {
-      return ordered ? (
-        <ol key="key" className="c-ordered-list-small">
-          {body}
-        </ol>
-      ) : (
-        <ul key="key" className="c-list-small">
-          {body}
-        </ul>
-      )
+      return ordered ? <ol className="c-ordered-list-small">{body}</ol> : <ul className="c-list-small">{body}</ul>
     },
   }
 

@@ -11,15 +11,7 @@ interface NotificationModalProps {
 const NotificationModal: React.FC<NotificationModalProps> = ({ notification, isOpen, closeModal }) => {
   const renderer = {
     list(body, ordered) {
-      return ordered ? (
-        <ol key="key" className="c-ordered-list">
-          {body}
-        </ol>
-      ) : (
-        <ul key="key" className="c-list">
-          {body}
-        </ul>
-      )
+      return ordered ? <ol className="c-ordered-list">{body}</ol> : <ul className="c-list">{body}</ul>
     },
   }
 
