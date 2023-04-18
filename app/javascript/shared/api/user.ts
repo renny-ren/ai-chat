@@ -4,6 +4,10 @@ export function fetchNotifications(page, q = "") {
   return get(`/v1/notifications?page=${page}&q=${q}`)
 }
 
+export function fetchMessages(conversationId) {
+  return get(`/v1/messages?conversation_id=${conversationId}`)
+}
+
 export function fetchNotificationUnreadCount() {
   return get("/v1/notifications/unread_count")
 }

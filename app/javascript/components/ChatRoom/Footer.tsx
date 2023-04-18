@@ -170,7 +170,7 @@ const Footer: React.FC<FooterProps> = ({
                   className="mentions"
                   // className="max-h-52 m-0 w-full resize-none border-0 bg-transparent p-0 pl-8 pr-7 focus:ring-0 focus-visible:ring-0 dark:bg-transparent"
                   inputRef={inputRef}
-                  placeholder="← 点击图标可与 AI 交流，提问越精确，答案越合适"
+                  placeholder="← 点击图标与 AI 交流，提问越精确，答案越合适"
                   style={{
                     input: {
                       maxHeight: "13rem",
@@ -217,8 +217,6 @@ const Footer: React.FC<FooterProps> = ({
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     className="h-4 w-4 mr-1"
-                    height="1em"
-                    width="1em"
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <line x1="22" y1="2" x2="11" y2="13"></line>

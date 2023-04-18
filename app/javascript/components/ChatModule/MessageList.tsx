@@ -36,7 +36,15 @@ const MessageList: FC<MessageListProps> = ({ messages, messagesEndRef, isLoading
       )
     },
     list(body, ordered) {
-      return ordered ? <ol className="c-ordered-list">{body}</ol> : <ul className="c-list">{body}</ul>
+      return ordered ? (
+        <ol key={Math.random().toString(16)} className="c-ordered-list">
+          {body}
+        </ol>
+      ) : (
+        <ul key={Math.random().toString(16)} className="c-list">
+          {body}
+        </ul>
+      )
     },
   }
 

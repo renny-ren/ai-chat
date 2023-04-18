@@ -1,9 +1,8 @@
 import React, { useEffect, useState, useRef } from "react"
 import currentUser from "stores/current_user_store"
-import { message, Tooltip } from "antd"
+import { message } from "antd"
 import data from "@emoji-mart/data"
 import Picker from "@emoji-mart/react"
-import axios from "axios"
 import DownloadButton from "./DownloadButton"
 import UpgradeModal from "components/common/UpgradeModal"
 
@@ -238,8 +237,6 @@ const Footer: React.FC<FooterProps> = ({
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       className="h-4 w-4 mr-1"
-                      height="1em"
-                      width="1em"
                       xmlns="http://www.w3.org/2000/svg"
                     >
                       <line x1="22" y1="2" x2="11" y2="13"></line>

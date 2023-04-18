@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react"
 import { useParams } from "react-router-dom"
-import { Button, Space, Card, Spin, message } from "antd"
-import axios from "axios"
+import { Spin, message } from "antd"
+import * as UserApi from "shared/api/user"
 import type { MessageInterface } from "./types"
 import MessageList from "./MessageList"
 import Footer from "./Footer"
@@ -24,14 +24,6 @@ const ChatModule: FC<ChatModuleProps> = ({ setIsShowModal, setConversations }) =
   const [isFetchingMsgs, setIsFetchingMsgs] = useState(false)
   const [usedMessageCount, setUsedMessageCount] = useState(0)
 
-  const generateUniqueId = () => {
-    const timestamp = Date.now()
-    const randomNumber = Math.random()
-    const hexadecimalString = randomNumber.toString(16)
-
-    return `id-${timestamp}-${hexadecimalString}`
-  }
-
   const htmlToText = (html: string) => {
     const temp = document.createElement("div")
     temp.innerHTML = html
@@ -40,10 +32,6 @@ const ChatModule: FC<ChatModuleProps> = ({ setIsShowModal, setConversations }) =
 
   const delay = (ms: number) => {
     return new Promise((resolve) => setTimeout(resolve, ms))
-  }
-
-  const regenerateResponse = async () => {
-    await getGPTResult(promptToRetry, uniqueIdToRetry)
   }
 
   useEffect(() => {
@@ -56,89 +44,24 @@ const ChatModule: FC<ChatModuleProps> = ({ setIsShowModal, setConversations }) =
   }, [])
 
   const fetchUser = async () => {
-    const csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content")
-    const response = await axios.get(`/v1/users/${currentUser.id()}`, {
-      headers: {
-        "X-CSRF-Token": csrf,
-      },
-    })
-    setUsedMessageCount(response.data.user.used_message_count)
+    const res = await UserApi.fetchUser(currentUser.id())
+    if (res.ok) {
+      const data = await res.json
+      setUsedMessageCount(data.user.used_message_count)
+    }
   }
 
   const fetchMessages = async () => {
     setIsFetchingMsgs(true)
-    const csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content")
-    try {
-      const response = await axios.get(`/v1/messages?conversation_id=${conversationId}`, {
-        headers: {
-          "X-CSRF-Token": csrf,
-        },
-      })
-      setMessages(response.data.messages)
-      // setPagination(response.data.pagination_meta)
-    } catch (error) {
-      message.error(error.response.data.message)
-    } finally {
-      setIsFetchingMsgs(false)
-    }
-  }
-
-  const getGPTResult = async (_promptToRetry?: string | null, _uniqueIdToRetry?: string | null) => {
-    // Get the prompt input
-    const _prompt = _promptToRetry ?? htmlToText(prompt)
-
-    // If a response is already being generated or the prompt is empty, return
-    if (isLoading || !_prompt) {
-      return
-    }
-
-    setIsLoading(true)
-    setPrompt("")
-
-    let uniqueId: string
-    if (_uniqueIdToRetry) {
-      uniqueId = _uniqueIdToRetry
+    const res = await UserApi.fetchMessages(conversationId)
+    const data = await res.json
+    if (res.ok) {
+      setMessages(data.messages)
+      // setPagination(data.pagination_meta)
     } else {
-      // Add the self prompt to the response list
-      addResponse(true, _prompt)
-      uniqueId = addResponse(false)
-      await delay(50)
+      message.error(data.message)
     }
-
-    const evtSource = new EventSource(`/v1/completions/live_stream?prompt=${_prompt}`)
-    evtSource.onmessage = (event) => {
-      if (!event) {
-        console.log("closed")
-        evtSource.close()
-      } else {
-        const parsedData = JSON.parse(event.data)
-        console.log(event)
-        console.log("=data", parsedData)
-        updateResponse(uniqueId, {
-          response: response.data.message.trim(),
-        })
-        setPromptToRetry(null)
-        setUniqueIdToRetry(null)
-      }
-    }
-    evtSource.onerror = () => {
-      // setIsLoading(false)
-      evtSource.close()
-    }
-
-    // try {
-    //   // updateResponse(uniqueId, { response: "\n\n我正在升级中，暂不支持个人会话，请进入聊天室与我交流。" })
-    // } catch (err) {
-    //   setPromptToRetry(_prompt)
-    //   setUniqueIdToRetry(uniqueId)
-    //   updateResponse(uniqueId, {
-    //     // @ts-ignore
-    //     response: `Error: ${err.message}`,
-    //     error: true,
-    //   })
-    // } finally {
-    //   setIsLoading(false)
-    // }
+    setIsFetchingMsgs(false)
   }
 
   const defaultPrompts = [
