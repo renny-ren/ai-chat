@@ -224,7 +224,7 @@ const Footer: React.FC<FooterProps> = ({
         />
         <footer className="px-3 pt-2 pb-2 text-center text-xs text-black/50 dark:text-white/50 md:px-4 md:pt-3">
           <span className="mr-4">
-            {currentUser.isSignedIn() && <span>今日剩余次数：{messageLimitPerDay - usedMessageCount}</span>}
+            {currentUser.isSignedIn() && <span>今日剩余次数：{Math.max(0, messageLimitPerDay - usedMessageCount)}</span>}
           </span>
         </footer>
       </div>
