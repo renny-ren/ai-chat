@@ -34,12 +34,13 @@ class ImagesController < ApplicationController
 
   def attach_images
     @images.each do |image|
-      tempfile = Tempfile.open([Time.now.to_i.to_s, ".png"])
-      tempfile.binmode
-      URI.open(image.dig("url"), "rb") do |f|
-        tempfile.write(f.read)
+      Tempfile.open([Time.now.to_i.to_s, ".png"]) do |tempfile|
+        tempfile.binmode
+        URI.open(image.dig("url"), "rb") do |f|
+          tempfile.write(f.read)
+        end
+        current_user.images.attach(io: tempfile, filename: image_params[:prompt])
       end
-      current_user.images.attach(io: tempfile, filename: image_params[:prompt])
     end
   end
 end
