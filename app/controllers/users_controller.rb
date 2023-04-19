@@ -23,6 +23,10 @@ class UsersController < ApplicationController
     @image_count = current_user.image_count
   end
 
+  def images
+    @images = [{url: 'https://aii-chat-assets.oss-cn-chengdu.aliyuncs.com/images/group_qrcode.jpeg'}]
+  end
+
   private
 
   def check_password!

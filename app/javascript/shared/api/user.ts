@@ -8,6 +8,10 @@ export function fetchMessages(conversationId) {
   return get(`/v1/messages?conversation_id=${conversationId}`)
 }
 
+export function fetchImages(userId) {
+  return get(`/v1/users/${userId}/images`)
+}
+
 export function fetchNotificationUnreadCount() {
   return get("/v1/notifications/unread_count")
 }

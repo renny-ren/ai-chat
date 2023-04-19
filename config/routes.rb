@@ -23,7 +23,12 @@ Rails.application.routes.draw do
     end
     resources :messages, only: :index
     resources :users, only: [:update, :show] do
-      post :clear_conversations, on: :collection
+      collection do
+        post :clear_conversations
+      end
+      member do
+        get :images
+      end
     end
     resources :sponsorships, only: :index
     resources :conversations, only: [:index, :show, :update, :destroy]
