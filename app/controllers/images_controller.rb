@@ -1,3 +1,5 @@
+require "open-uri"
+
 class ImagesController < ApplicationController
   before_action :authenticate_user!
 
@@ -7,6 +9,7 @@ class ImagesController < ApplicationController
       raise "#{res.reason_phrase}: #{res.body}" if res.status != 200
 
       @images = JSON.parse(res.body).dig("data")
+      attach_images
       current_user.update_image_count(current_user.image_count - image_params[:n])
     end
     audit! :generate_image, nil, payload: { params: image_params, images: @images }
@@ -27,5 +30,16 @@ class ImagesController < ApplicationController
 
   def image_params
     params.permit(:prompt, :n)
+  end
+
+  def attach_images
+    @images.each do |image|
+      tempfile = Tempfile.open([Time.now.to_i.to_s, ".png"])
+      tempfile.binmode
+      URI.open(image.dig("url"), "rb") do |f|
+        tempfile.write(f.read)
+      end
+      current_user.images.attach(io: tempfile, filename: image_params[:prompt])
+    end
   end
 end

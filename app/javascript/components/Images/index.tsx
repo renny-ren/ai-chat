@@ -47,7 +47,7 @@ const Images: React.FC<ImagesProps> = ({ setIsShowSignInModal }) => {
                   </li>
                 </ul>
               </div>
-              {currentTab === "generation" && <Generation images={images} />}
+              {currentTab === "generation" && <Generation images={images} isLoading={isLoading} />}
               {currentTab === "library" && <Library />}
             </div>
           </div>

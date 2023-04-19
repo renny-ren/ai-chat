@@ -77,6 +77,7 @@ gem "gon"
 gem "dalli"
 gem "kaminari"
 gem "activestorage-aliyun"
+gem "aliyun-sdk"
 gem "alipay"
 gem "whenever", require: false
 gem "enumize"

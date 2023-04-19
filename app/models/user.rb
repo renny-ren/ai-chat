@@ -14,6 +14,7 @@ class User < ApplicationRecord
   has_one :openai_account
 
   has_one_attached :avatar, dependent: :purge
+  has_many_attached :images, dependent: :purge
 
   validates :username, presence: true, uniqueness: true, length: 3..16
   validates :nickname, presence: true, uniqueness: true, length: 1..16

@@ -24,7 +24,7 @@ class UsersController < ApplicationController
   end
 
   def images
-    @images = [{url: 'https://aii-chat-assets.oss-cn-chengdu.aliyuncs.com/images/group_qrcode.jpeg'}]
+    @image_blobs = current_user.images_blobs
   end
 
   private

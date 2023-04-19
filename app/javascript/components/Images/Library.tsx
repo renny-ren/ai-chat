@@ -22,15 +22,11 @@ const Library: React.FC<LibraryProps> = ({}) => {
   return (
     <>
       <div className="mt-6 md:mt-10 mb-2 md:mb-4">
-        {images.length ? (
-          <div className="flex flex-col items-center">
-            <ul className="text-gray-600 dark:text-gray-400 text-sm">
-              <li>图片将于生成后 1 小时删除，如有需要请及时保存到本地</li>
-            </ul>
-          </div>
-        ) : (
-          <div>暂无图片</div>
-        )}
+        <div className="flex flex-col items-center">
+          <ul className="text-gray-600 dark:text-gray-400 text-sm">
+            {images.length ? <li>图片将于生成后 24 小时自动删除，如有需要请及时保存到本地</li> : <li>这里空空如也...</li>}
+          </ul>
+        </div>
       </div>
       <div className="flex flex-wrap items-center justify-center">
         {images.map((image, i) => (
@@ -41,8 +37,8 @@ const Library: React.FC<LibraryProps> = ({}) => {
             <div>
               <img src={image.url} />
             </div>
-            <div className="text-center">
-              <p className="text-xs text-gray-400 font-normal">{image.prompt}</p>
+            <div className="text-center py-4 px-2">
+              <p className="text-xs text-gray-400 font-normal">{image.name}</p>
             </div>
           </div>
         ))}

@@ -3,9 +3,10 @@ import { Skeleton } from "antd"
 
 interface GenerationProps {
   images: any
+  isLoading: boolean
 }
 
-const Generation: React.FC<GenerationProps> = ({ images }) => {
+const Generation: React.FC<GenerationProps> = ({ images, isLoading }) => {
   const defaultImages = [
     {
       className: "py-4 px-2",
