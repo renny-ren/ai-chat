@@ -4,9 +4,10 @@ import { Skeleton } from "antd"
 interface GenerationProps {
   images: any
   isLoading: boolean
+  size: string
 }
 
-const Generation: React.FC<GenerationProps> = ({ images, isLoading }) => {
+const Generation: React.FC<GenerationProps> = ({ images, isLoading, size }) => {
   const defaultImages = [
     {
       className: "py-4 px-2",
@@ -43,12 +44,12 @@ const Generation: React.FC<GenerationProps> = ({ images, isLoading }) => {
             {images.map((image, i) => (
               <div
                 key={i}
-                className="flex-shrink-0 m-6 relative overflow-hidden max-w-[256px] my-8 rounded shadow-lg shadow-gray-200 dark:shadow-gray-900 bg-white dark:bg-gray-800 duration-300 hover:-translate-y-1"
+                className={`flex-shrink-0 m-6 relative overflow-hidden max-w-[${size}px] my-8 rounded shadow-lg shadow-gray-200 dark:shadow-gray-900 bg-white dark:bg-gray-800 duration-300 hover:-translate-y-1`}
               >
                 {isLoading ? (
-                  <Skeleton.Image key={i} active={true} style={{ width: "256px", height: "256px" }} />
+                  <Skeleton.Image key={i} active={true} style={{ width: `${size}px`, height: `${size}px` }} />
                 ) : (
-                  <img src={image.url} alt="" style={{ width: "256px", height: "256px" }} />
+                  <img src={image.url} alt="" style={{ width: `${size}px`, height: `${size}px` }} />
                 )}
               </div>
             ))}

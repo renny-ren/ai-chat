@@ -24,7 +24,7 @@ const Library: React.FC<LibraryProps> = ({}) => {
       <div className="mt-6 md:mt-10 mb-2 md:mb-4">
         <div className="flex flex-col items-center">
           <ul className="text-gray-600 dark:text-gray-400 text-sm">
-            {images.length ? <li>图片将于生成后 24 小时自动删除，如有需要请及时保存到本地</li> : <li>这里空空如也...</li>}
+            {images.length ? <li></li> : <li>这里空空如也...</li>}
           </ul>
         </div>
       </div>
