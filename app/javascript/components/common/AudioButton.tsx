@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react"
-import * as AliyunAPI from "shared/api/aliyun"
 import * as _ from "lodash"
 import Spinner from "components/common/Spinner"
+import { AliyunTTS } from "aliyun-nls-js"
+
+const tts = new AliyunTTS({
+  accessKeyId: process.env.NLSAccessKeyId,
+  accessKeySecret: process.env.NLSAccessKeySecret,
+  appKey: process.env.TTSAppKey,
+})
 
 interface AudioButtonProps {
   message: any
@@ -24,11 +30,6 @@ const AudioButton: React.FC<AudioButtonProps> = ({
 }) => {
   const [loading, setLoading] = useState(false)
 
-  const fetchToken = async () => {
-    const res = await AliyunAPI.fetchToken()
-    return res.data.Token.Id
-  }
-
   const onClickAudio = (message) => {
     if (message.id === playingMessageId) {
       pauseAudio()
@@ -41,8 +42,7 @@ const AudioButton: React.FC<AudioButtonProps> = ({
 
   const handlePlay = async (message) => {
     setLoading(true)
-    const token = await fetchToken()
-    const src = AliyunAPI.fetchTtsStream(token, message.content, voice)
+    const src = await tts.fetchStream(message.content, voice)
     playAudio(src)
     setLoading(false)
   }
