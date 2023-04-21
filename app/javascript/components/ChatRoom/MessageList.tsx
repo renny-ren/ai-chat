@@ -49,7 +49,7 @@ const MessageList = ({ messages, fetchMessages, isFetching, openModal, paginatio
       )
     },
     image(href, title, text) {
-      if (text) var size = text.split("x")
+      if (text) var size = text.split("x") || []
       return <img key={href} src={href} alt={title} width={size[0]} height={size[1]} />
     },
   }

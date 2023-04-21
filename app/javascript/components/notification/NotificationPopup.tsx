@@ -14,7 +14,7 @@ const NotificationPopup: React.FC<NotificationPopupProps> = ({ notifications, is
       return ordered ? <ol className="c-ordered-list-small">{body}</ol> : <ul className="c-list-small">{body}</ul>
     },
     image(href, title, text) {
-      if (text) var size = text.split("x")
+      if (text) var size = text.split("x") || []
       return <img className="m-auto" key={href} src={href} alt={title} width={size[0]} height={size[1]} />
     },
   }
