@@ -10,9 +10,20 @@ interface FooterProps {
   isLoading: boolean
   setIsLoading: () => void
   setIsShowSignInModal: () => void
+  size: string
+  setSize: () => void
+  setCurrentTab: () => void
 }
 
-const Footer: React.FC<FooterProps> = ({ setImages, isLoading, setIsLoading, setIsShowSignInModal }) => {
+const Footer: React.FC<FooterProps> = ({
+  setImages,
+  isLoading,
+  setIsLoading,
+  setIsShowSignInModal,
+  size,
+  setSize,
+  setCurrentTab,
+}) => {
   const inputRef = useRef(null)
   const [prompt, setPrompt] = useState("")
   const [imageCount, setImageCount] = useState(1)
@@ -67,6 +78,7 @@ const Footer: React.FC<FooterProps> = ({ setImages, isLoading, setIsLoading, set
       return
     }
     setIsLoading(true)
+    setCurrentTab("generation")
     // setPrompt("")
     setImages([...Array(imageCount)].map((el, i) => (el = { url: i })))
     inputRef.current.blur()
@@ -75,7 +87,7 @@ const Footer: React.FC<FooterProps> = ({ setImages, isLoading, setIsLoading, set
 
   const generateImage = async () => {
     try {
-      const response = await axios.post("/v1/images/generations", { prompt: prompt, n: imageCount })
+      const response = await axios.post("/v1/images/generations", { prompt: prompt, n: imageCount, size: `${size}x${size}` })
       setImages(response.data.images)
       setUserImageCredit(userImageCredit - imageCount)
     } catch (error) {
@@ -96,25 +108,44 @@ const Footer: React.FC<FooterProps> = ({ setImages, isLoading, setIsLoading, set
   return (
     <>
       <div className="absolute bottom-0 left-0 w-full dark:border-transparent bg-vert-light-gradient dark:bg-vert-dark-gradient input-area">
-        <form className="stretch mx-2 flex flex-row items-center gap-1 md:gap-2 last:mb-2 md:last:mb-6 lg:mx-auto lg:max-w-3xl">
+        <form className="stretch mx-2 flex flex-row items-center gap-1 last:mb-2 md:last:mb-6 lg:mx-auto lg:max-w-3xl">
           {currentUser.isSignedIn() ? (
             <>
-              <div className="flex flex-col">
-                <Select
-                  defaultValue="1"
-                  popupClassName="dark:text-gray-400 text-emerald-500"
-                  style={{ color: "red" }}
-                  bordered={false}
-                  onChange={(value) => setImageCount(value)}
-                  options={[
-                    { value: 1, label: "1" },
-                    { value: 2, label: "2" },
-                    { value: 3, label: "3" },
-                    { value: 4, label: "4" },
-                  ]}
-                />
-                <div className="text-xs text-gray-400 text-center">图片数</div>
+              <div className="hidden md:block flex flex-col">
+                <div className="flex flex-row items-center">
+                  <div className="text-xs text-gray-400 text-center">图片数</div>
+                  <Select
+                    size="small"
+                    defaultValue="1"
+                    popupClassName="dark:text-gray-400 text-emerald-500"
+                    bordered={false}
+                    onChange={(value) => setImageCount(value)}
+                    options={[
+                      { value: 1, label: "1" },
+                      { value: 2, label: "2" },
+                      { value: 3, label: "3" },
+                      { value: 4, label: "4" },
+                    ]}
+                  />
+                </div>
+                <div className="flex flex-row items-center">
+                  <div className="text-xs text-gray-400 text-center">分辨率</div>
+                  <Select
+                    size="small"
+                    defaultValue="256"
+                    popupClassName="dark:text-gray-400"
+                    bordered={false}
+                    onChange={(value) => setSize(value)}
+                    dropdownStyle={{ minWidth: "fit-content" }}
+                    options={[
+                      { value: "256", label: "256x256" },
+                      { value: "512", label: "512x512" },
+                      { value: "1024", label: "1024x1024" },
+                    ]}
+                  />
+                </div>
               </div>
+              <div className="flex flex-row"></div>
               <div className="relative flex h-full flex-1 flex-col">
                 <div className="flex flex-col w-full py-2 flex-grow md:py-3 pl-2 md:pl-4 relative border border-black/10 bg-white dark:border-gray-900/50 dark:text-white dark:bg-gray-700 rounded-md shadow-[0_0_10px_rgba(0,0,0,0.10)] dark:shadow-[0_0_15px_rgba(0,0,0,0.10)]">
                   <textarea
@@ -129,9 +160,7 @@ const Footer: React.FC<FooterProps> = ({ setImages, isLoading, setIsLoading, set
                   <button
                     onClick={handleSubmit}
                     type="button"
-                    className={`absolute ${
-                      isLoading ? "" : "p-1"
-                    } rounded-md text-gray-500 right-1 md:right-2 hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent`}
+                    className="absolute p-1 rounded-md text-gray-500 right-1 md:right-2 hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent"
                   >
                     {isLoading ? (
                       <Spinner />

@@ -23,6 +23,10 @@ class UsersController < ApplicationController
     @image_count = current_user.image_count
   end
 
+  def images
+    @image_blobs = current_user.images_blobs
+  end
+
   private
 
   def check_password!
