@@ -62,6 +62,10 @@ const AppMessageForm = ({ action }) => {
     paragraph(text) {
       return <p className="line-clamp-3">{text}</p>
     },
+    image(href, title, text) {
+      if (text) var size = text.split("x")
+      return <img className="m-auto" key={href} src={href} alt={title} width={size[0]} height={size[1]} />
+    },
   }
 
   return (

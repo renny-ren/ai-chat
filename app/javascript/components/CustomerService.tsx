@@ -62,24 +62,28 @@ const CustomerService: React.FC<CustomerServiceProps> = ({ className = "" }) => 
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-w-md md:max-w-lg transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                   <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
                     联系客服
                   </Dialog.Title>
-                  <div className="py-4 flex justify-around">
-                    <div>
+                  <div className="py-4 flex justify-around gap-4">
+                    <div className="flex flex-col justify-center">
                       <img
                         className="w-40"
-                        src="https://aii-chat-assets.oss-cn-chengdu.aliyuncs.com/images/customer_service_wechat.png"
+                        src="https://aii-chat-assets.oss-cn-chengdu.aliyuncs.com/images/cs_wechat_2.png"
                       />
-                      <div className="text-sm text-gray-500 text-center pt-1">微信</div>
+                      <div className="text-sm text-gray-500 text-center pt-2">微信</div>
                     </div>
-                    <div>
+                    <div className="flex flex-col justify-center">
+                      <img className="w-40" src="https://aii-chat-assets.oss-cn-chengdu.aliyuncs.com/images/cs_qq_2.png" />
+                      <div className="text-sm text-gray-500 text-center pt-2">QQ</div>
+                    </div>
+                    <div className="flex flex-col justify-center">
                       <img
                         className="w-40"
-                        src="https://aii-chat-assets.oss-cn-chengdu.aliyuncs.com/images/customer_service_qq.png"
+                        src="https://aii-chat-assets.oss-cn-chengdu.aliyuncs.com/images/group_qrcode_2.png"
                       />
-                      <div className="text-sm text-gray-500 text-center pt-1">QQ</div>
+                      <div className="text-sm text-gray-500 text-center pt-2">用户群</div>
                     </div>
                   </div>
                 </Dialog.Panel>

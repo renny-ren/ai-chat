@@ -13,6 +13,10 @@ const NotificationPopup: React.FC<NotificationPopupProps> = ({ notifications, is
     list(body, ordered) {
       return ordered ? <ol className="c-ordered-list-small">{body}</ol> : <ul className="c-list-small">{body}</ul>
     },
+    image(href, title, text) {
+      if (text) var size = text.split("x")
+      return <img className="m-auto" key={href} src={href} alt={title} width={size[0]} height={size[1]} />
+    },
   }
 
   return (
@@ -29,7 +33,7 @@ const NotificationPopup: React.FC<NotificationPopupProps> = ({ notifications, is
       <div className="absolute right-2 top-14">
         {notifications.map((notification) => (
           <div className="mt-2 space-y-5">
-            <div className="relative mx-auto max-w-[400px] rounded-md border border-gray-50 bg-white p-4 text-sm shadow-lg">
+            <div className="relative mx-auto max-w-[280px] md:max-w-[400px] rounded-md border border-gray-50 bg-white p-4 text-sm shadow-lg">
               <button
                 onClick={() => closePopup(notification)}
                 className="top-4 absolute right-4 ml-auto text-gray-500 hover:text-gray-900"
