@@ -9,6 +9,7 @@ ActiveAdmin.register AppMessage do
     column :msg_type
     column :status
     column :is_important
+    column :created_at
     actions
   end
 

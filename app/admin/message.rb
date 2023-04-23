@@ -20,6 +20,7 @@ ActiveAdmin.register Message do
     f.inputs do
       f.input :user_id
       f.input :conversation_id
+      f.input :content
     end
     f.actions
   end

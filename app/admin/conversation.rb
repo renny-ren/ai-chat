@@ -8,6 +8,7 @@ ActiveAdmin.register Conversation do
     column :user_id
     column :title
     column :type
+    column :created_at
     actions
   end
 

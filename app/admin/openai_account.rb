@@ -7,6 +7,7 @@ ActiveAdmin.register OpenaiAccount do
     column :credit
     column :used_amount
     column :total_available
+    column :created_at
     actions
   end
 
