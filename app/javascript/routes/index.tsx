@@ -9,6 +9,7 @@ import Faqs from "components/Faqs"
 import Images from "components/Images"
 import Fortune from "components/Fortune"
 import Developer from "components/Developer"
+import MJPrompt from "components/MJPrompt"
 import AppMessageList from "components/app_messages"
 import AppMessageForm from "components/app_messages/Form"
 
@@ -35,6 +36,10 @@ export default ({ setIsShowModal, setCustomContent, setConversations }) => {
         <Route
           path="/developer_assistant"
           element={<Developer setIsShowSignInModal={setIsShowModal} setConversations={setConversations} />}
+        />
+        <Route
+          path="/mj_prompt"
+          element={<MJPrompt setIsShowSignInModal={setIsShowModal} setConversations={setConversations} />}
         />
         <Route path="/app_messages" element={<AppMessageList />} />
         <Route exact path="/app_messages/new" element={<AppMessageForm action="new" />} />

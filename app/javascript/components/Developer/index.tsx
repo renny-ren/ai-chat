@@ -64,7 +64,6 @@ const Developer: React.FC<DeveloperProps> = ({ setIsShowSignInModal, setConversa
             loadingMessage="程序员助手正在思考中，请耐心等待"
             conversationType="developer"
             conversationTitle={`程序员助手 - ${new Date().toLocaleString("zh-CN", {
-              year: "2-digit",
               month: "numeric",
               day: "numeric",
               hour: "numeric",

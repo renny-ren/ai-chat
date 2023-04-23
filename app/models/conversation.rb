@@ -3,5 +3,5 @@ class Conversation < ApplicationRecord
   belongs_to :user
   has_many :messages, dependent: :destroy
 
-  enum type: { chatgpt: 0, fortune: 1, developer: 2 }
+  enum type: { chatgpt: 0, fortune: 1, developer: 2, mj_prompt: 3 }
 end
