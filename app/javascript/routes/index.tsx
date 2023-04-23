@@ -10,6 +10,7 @@ import Images from "components/Images"
 import Fortune from "components/Fortune"
 import Developer from "components/Developer"
 import MJPrompt from "components/MJPrompt"
+import Girlfriend from "components/Girlfriend"
 import AppMessageList from "components/app_messages"
 import AppMessageForm from "components/app_messages/Form"
 
@@ -32,6 +33,10 @@ export default ({ setIsShowModal, setCustomContent, setConversations }) => {
         <Route
           path="/fortune"
           element={<Fortune setIsShowSignInModal={setIsShowModal} setConversations={setConversations} />}
+        />
+        <Route
+          path="/girlfriend"
+          element={<Girlfriend setIsShowSignInModal={setIsShowModal} setConversations={setConversations} />}
         />
         <Route
           path="/developer_assistant"

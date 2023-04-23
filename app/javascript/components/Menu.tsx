@@ -110,6 +110,18 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, isMobile 
               </li>
               <li
                 className={`relative ${
+                  window.location.pathname === "/girlfriend" ? "border-l border-emerald-400 bg-zinc-800/[.025]" : ""
+                }`}
+              >
+                <a
+                  className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+                  href="/girlfriend"
+                >
+                  <span className="truncate">AI 女友</span>
+                </a>
+              </li>
+              <li
+                className={`relative ${
                   window.location.pathname === "/fortune" ? "border-l border-emerald-400 bg-zinc-800/[.025]" : ""
                 }`}
               >
@@ -132,6 +144,7 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, isMobile 
                   <span className="truncate">程序员助手</span>
                 </a>
               </li>
+
               <li
                 className={`relative ${
                   window.location.pathname === "/mj_prompt" ? "border-l border-emerald-400 bg-zinc-800/[.025]" : ""

@@ -17,6 +17,7 @@ zh-CN:
           fortune: 命理大师
           developer: 程序员助手
           mj_prompt: Midjourney 提示词生成器
+          girlfriend: AI 女友
       app_message:
         msg_type:
           product: 产品消息
