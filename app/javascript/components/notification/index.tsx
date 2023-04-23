@@ -31,8 +31,7 @@ const Notification: React.FC<NotificationProps> = ({ className = "" }) => {
       return <p className="line-clamp-3">{text}</p>
     },
     image(href, title, text) {
-      if (text) var size = text.split("x") || []
-      return <img className="m-auto" key={href} src={href} alt={title} width={size[0]} height={size[1]} />
+      return <div>[点击查看图片]</div>
     },
   }
 
