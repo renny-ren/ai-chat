@@ -157,6 +157,18 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, isMobile 
                   <span className="truncate">Midjourney 提示词生成器</span>
                 </a>
               </li>
+              <li
+                className={`relative ${
+                  window.location.pathname === "/models" ? "border-l border-emerald-400 bg-zinc-800/[.025]" : ""
+                }`}
+              >
+                <a
+                  className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+                  href="/models"
+                >
+                  <span className="truncate">自定义模型</span>
+                </a>
+              </li>
             </ul>
           </div>
         </li>

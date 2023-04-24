@@ -13,6 +13,7 @@ import MJPrompt from "components/MJPrompt"
 import Girlfriend from "components/Girlfriend"
 import AppMessageList from "components/app_messages"
 import AppMessageForm from "components/app_messages/Form"
+import Model from "components/Model"
 
 export default ({ setIsShowModal, setCustomContent, setConversations }) => {
   return (
@@ -49,6 +50,7 @@ export default ({ setIsShowModal, setCustomContent, setConversations }) => {
         <Route path="/app_messages" element={<AppMessageList />} />
         <Route exact path="/app_messages/new" element={<AppMessageForm action="new" />} />
         <Route exact path="/app_messages/:id/edit" element={<AppMessageForm action="edit" />} />
+        <Route path="/models" element={<Model />} />
       </Routes>
     </Router>
   )
