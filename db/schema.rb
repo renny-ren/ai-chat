@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_08_063441) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_25_055729) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -134,6 +134,20 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_08_063441) do
     t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
+  create_table "models", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "title"
+    t.string "description"
+    t.string "introduction"
+    t.string "permalink"
+    t.string "system_instruction"
+    t.boolean "is_public", default: true, null: false
+    t.json "openai_params", default: {}
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_models_on_user_id"
+  end
+
   create_table "notifications", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "actor_id"
@@ -217,6 +231,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_08_063441) do
   add_foreign_key "membership_subscriptions", "membership_plans"
   add_foreign_key "membership_subscriptions", "users"
   add_foreign_key "messages", "users"
+  add_foreign_key "models", "users"
   add_foreign_key "openai_accounts", "users"
   add_foreign_key "orders", "users"
   add_foreign_key "sponsorships", "users"

@@ -23,3 +23,7 @@ export function pushMessage(id) {
 export function fetchModels() {
   return get(`/v1/models`)
 }
+
+export function createModel(params) {
+  return post("/v1/models", params)
+}

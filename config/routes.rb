@@ -51,6 +51,7 @@ Rails.application.routes.draw do
         post :push
       end
     end
+    resources :models, only: [:index, :create]
   end
 
   namespace :admin do
