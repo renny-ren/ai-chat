@@ -10,8 +10,8 @@ interface ModelProps {
   setIsShowSignInModal: () => void
 }
 
-const Model: React.FC<ModelProps> = ({ setIsShowSignInModal }) => {
-  const [currentTab, setCurrentTab] = useState("list")
+const Model: React.FC<ModelProps> = ({ setIsShowSignInModal, tab }) => {
+  const [currentTab, setCurrentTab] = useState(tab || "list")
 
   return (
     <>

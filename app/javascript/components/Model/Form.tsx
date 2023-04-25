@@ -32,11 +32,27 @@ const ModelForm: React.FC<ModelFormProps> = ({}) => {
     })
   }
 
+  const handleAvatarChange = (avatarFile) => {
+    const blob = new Blob([avatarFile])
+    setFormData({
+      ...formData,
+      avatar: blob,
+    })
+  }
+
   const onSubmit = async (e) => {
     e.preventDefault()
-    console.log("==form data===", formData)
 
-    const res = await CommonApi.createModel(formData)
+    const fd = new FormData()
+    fd.append("avatar", formData.avatar)
+    for (const key in formData) {
+      if (formData.hasOwnProperty(key) && key !== "avatar") {
+        const value = formData[key]
+        fd.append(key, value)
+      }
+    }
+
+    const res = await CommonApi.createModel(fd)
     if (res.ok) {
       message.success("保存成功！")
     } else {
@@ -78,7 +94,7 @@ const ModelForm: React.FC<ModelFormProps> = ({}) => {
                       <input
                         type="text"
                         name="title"
-                        className="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        className="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-emerald-500 dark:focus:border-emerald-500"
                         required=""
                         onChange={handleInputChange}
                       />
@@ -92,7 +108,7 @@ const ModelForm: React.FC<ModelFormProps> = ({}) => {
                         <input
                           type="text"
                           name="permalink"
-                          className="rounded-none rounded-r-lg border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          className="rounded-none rounded-r-lg border border-gray-300 text-gray-900 focus:ring-emerald-500 focus:border-emerald-500 block flex-1 min-w-0 w-full text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-emerald-500 dark:focus:border-emerald-500"
                           onChange={handleInputChange}
                         />
                       </div>
@@ -103,7 +119,7 @@ const ModelForm: React.FC<ModelFormProps> = ({}) => {
                       <input
                         type="text"
                         name="description"
-                        className="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        className="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-emerald-500 dark:focus:border-emerald-500"
                         required=""
                         onChange={handleInputChange}
                       />
@@ -113,7 +129,7 @@ const ModelForm: React.FC<ModelFormProps> = ({}) => {
                       <textarea
                         rows="4"
                         name="system_instruction"
-                        className="block w-full text-sm text-gray-900 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        className="block w-full text-sm text-gray-900 rounded-lg border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-emerald-500 dark:focus:border-emerald-500"
                         onChange={handleInputChange}
                       ></textarea>
                     </div>
@@ -122,15 +138,15 @@ const ModelForm: React.FC<ModelFormProps> = ({}) => {
                       <textarea
                         rows="2"
                         name="introduction"
-                        className="block w-full text-sm text-gray-900 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        className="block w-full text-sm text-gray-900 rounded-lg border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-emerald-500 dark:focus:border-emerald-500"
                         onChange={handleInputChange}
                       ></textarea>
                     </div>
-                    <div>
+                    <div className="sm:col-span-2">
                       <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">模型头像</label>
-                      <Avatar />
+                      <Avatar handleAvatarChange={handleAvatarChange} />
                     </div>
-                    <div>
+                    <div className="sm:col-span-2">
                       <label className="relative inline-flex items-center cursor-pointer">
                         <input
                           type="checkbox"
@@ -139,7 +155,7 @@ const ModelForm: React.FC<ModelFormProps> = ({}) => {
                           className="sr-only peer"
                           onChange={handleSwitchChange}
                         />
-                        <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                        <div className="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-emerald-500"></div>
                         <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">是否公开</span>
                       </label>
                       <div className="text-gray-400 text-xs">
@@ -180,9 +196,9 @@ const ModelForm: React.FC<ModelFormProps> = ({}) => {
 
             <button
               type="submit"
-              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              className="float-right group relative flex justify-center rounded-md border border-transparent bg-emerald-500 py-2 px-4 text-sm font-medium text-white hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
             >
-              Submit
+              提交
             </button>
           </form>
         </div>

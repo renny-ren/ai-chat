@@ -51,6 +51,7 @@ export default ({ setIsShowModal, setCustomContent, setConversations }) => {
         <Route exact path="/app_messages/new" element={<AppMessageForm action="new" />} />
         <Route exact path="/app_messages/:id/edit" element={<AppMessageForm action="edit" />} />
         <Route path="/models" element={<Model />} />
+        <Route path="/models/new" element={<Model tab="new" />} />
       </Routes>
     </Router>
   )
