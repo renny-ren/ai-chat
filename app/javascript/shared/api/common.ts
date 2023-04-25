@@ -19,3 +19,7 @@ export function updateAppMessage(id, params) {
 export function pushMessage(id) {
   return post(`/v1/app_messages/${id}/push`)
 }
+
+export function fetchModels() {
+  return get(`/v1/models`)
+}
