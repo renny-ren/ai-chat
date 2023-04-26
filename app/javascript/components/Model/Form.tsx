@@ -3,6 +3,8 @@ import currentUser from "stores/current_user_store"
 import * as CommonApi from "shared/api/common"
 import { message } from "antd"
 import Avatar from "./Avatar"
+import VoiceSelection from "./VoiceSelection"
+import AudioButton from "./AudioButton"
 
 interface ModelFormProps {}
 
@@ -11,10 +13,6 @@ const ModelForm: React.FC<ModelFormProps> = ({}) => {
     title: "",
     is_public: true,
   })
-
-  useEffect(() => {
-    // fetchUser()
-  }, [])
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -40,16 +38,25 @@ const ModelForm: React.FC<ModelFormProps> = ({}) => {
     })
   }
 
+  const handleVoiceChange = (voice) => {
+    setFormData({
+      ...formData,
+      voice: voice,
+    })
+  }
+
   const onSubmit = async (e) => {
     e.preventDefault()
 
     const fd = new FormData()
-    fd.append("avatar", formData.avatar)
     for (const key in formData) {
       if (formData.hasOwnProperty(key) && key !== "avatar") {
         const value = formData[key]
         fd.append(key, value)
       }
+    }
+    if (formData.avatar) {
+      fd.append("avatar", formData.avatar)
     }
 
     const res = await CommonApi.createModel(fd)
@@ -147,6 +154,14 @@ const ModelForm: React.FC<ModelFormProps> = ({}) => {
                       <Avatar handleAvatarChange={handleAvatarChange} />
                     </div>
                     <div className="sm:col-span-2">
+                      <label className="flex items-center block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        模型声音
+                        <AudioButton content={formData.introduction} voice={formData.voice} />
+                      </label>
+
+                      <VoiceSelection handleVoiceChange={handleVoiceChange} />
+                    </div>
+                    <div>
                       <label className="relative inline-flex items-center cursor-pointer">
                         <input
                           type="checkbox"

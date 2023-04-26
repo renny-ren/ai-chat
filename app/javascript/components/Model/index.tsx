@@ -24,7 +24,7 @@ const Model: React.FC<ModelProps> = ({ setIsShowSignInModal, tab }) => {
         <main className="h-full">
           <Background />
 
-          <div className="relative h-full w-full transition-width flex flex-col overflow-y-auto items-stretch justify-center flex-1 pb-[5.5rem]">
+          <div className="relative h-full w-full transition-width flex flex-col overflow-y-auto items-stretch justify-center flex-1">
             <div className="flex-1 overflow-y-auto relative">
               <div className="container mx-auto max-w-4xl mt-8">
                 <ul className="flex border-b border-gray-300 text-sm font-medium text-gray-600 mt-3 px-6 md:px-0">

@@ -3,6 +3,7 @@ import currentUser from "stores/current_user_store"
 import { message, Select } from "antd"
 import axios from "axios"
 import UpgradeModal from "components/common/UpgradeModal"
+import queryString from "query-string"
 
 interface FooterProps {
   isLoading: boolean
@@ -98,10 +99,16 @@ const Footer: React.FC<FooterProps> = ({
     inputRef.current.blur()
   }
 
+  const queryParams = {
+    conversation_type: conversationType,
+    prompt: prompt,
+    conversation_id: conversationId,
+    conversation_title: conversationTitle,
+    model_id: modelId,
+  }
+
   const fetchResponse = () => {
-    const evtSource = new EventSource(
-      `/v1/completions/live_stream?conversation_type=${conversationType}&prompt=${prompt}&conversation_id=${conversationId}&conversation_title=${conversationTitle}&model_id={modelId}`
-    )
+    const evtSource = new EventSource(`/v1/completions/live_stream?${queryString.stringify(queryParams)}`)
     evtSource.onmessage = (event) => {
       if (event) {
         const response = JSON.parse(event.data)

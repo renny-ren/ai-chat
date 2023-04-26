@@ -28,7 +28,7 @@ class ModelsController < ApplicationController
   end
 
   def model_params
-    params.permit(:title, :description, :introduction, :permalink, :system_instruction, :is_public, :avatar)
+    params.permit(:title, :description, :introduction, :permalink, :system_instruction, :is_public, :avatar, :voice)
   end
 
   def set_model
