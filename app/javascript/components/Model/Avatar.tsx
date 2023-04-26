@@ -11,12 +11,10 @@ const getBase64 = (img: RcFile, callback: (url: string) => void) => {
   reader.readAsDataURL(img)
 }
 
-const Avatar: React.FC = ({ handleAvatarChange }) => {
-  const [imageUrl, setImageUrl] = useState<string>()
-
+const Avatar: React.FC = ({ avatarUrl, setAvatarUrl, handleAvatarChange }) => {
   const handleChange: UploadProps["onChange"] = (info: UploadChangeParam<UploadFile>) => {
     getBase64(info.file as RcFile, (url) => {
-      setImageUrl(url)
+      setAvatarUrl(url)
     })
   }
 
@@ -41,14 +39,14 @@ const Avatar: React.FC = ({ handleAvatarChange }) => {
       <Upload name="avatar" showUploadList={false} beforeUpload={beforeUpload} onChange={handleChange}>
         <div className="flex items-center group/avatar relative">
           <img
-            className="rounded-full w-12 h-12 float-left group-hover/avatar:brightness-75 shadow-md"
-            src={imageUrl || gon.gpt_user.avatar_url}
+            className="rounded-full w-10 h-10 float-left group-hover/avatar:brightness-75 shadow-md"
+            src={avatarUrl || gon.gpt_user.avatar_url}
           />
           <button
             type="button"
-            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover/avatar:opacity-100 bg-white rounded-full px-2 py-1"
+            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover/avatar:opacity-100 rounded-full px-2 py-1"
           >
-            <EditOutlined />
+            <EditOutlined className="text-white" />
           </button>
         </div>
       </Upload>

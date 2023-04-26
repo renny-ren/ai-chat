@@ -96,8 +96,11 @@ const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, gptName,
               <div key={i} className="col-start-1 col-end-12 md:col-end-10 p-3 rounded-lg">
                 <div className="flex flex-row items-start">
                   <div className="relative mt-1">
-                    <div className="inline-block h-10 w-10">
-                      <img className="rounded-full aspect-square mt-1" src={avatarUrl || gon.gpt_user.avatar_url} />
+                    <div className="inline-block">
+                      <img
+                        className="rounded-full aspect-square mt-1 h-10 w-10"
+                        src={avatarUrl || gon.gpt_user.avatar_url}
+                      />
                     </div>
                   </div>
 
