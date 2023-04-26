@@ -16,6 +16,7 @@ interface FooterProps {
   loadingMessage?: string
   conversationType?: string
   conversationTitle?: string
+  modelId?: number
 }
 
 const Footer: React.FC<FooterProps> = ({
@@ -30,6 +31,7 @@ const Footer: React.FC<FooterProps> = ({
   loadingMessage,
   conversationType,
   conversationTitle,
+  modelId,
 }) => {
   const inputRef = useRef(null)
   const [prompt, setPrompt] = useState("")
@@ -98,7 +100,7 @@ const Footer: React.FC<FooterProps> = ({
 
   const fetchResponse = () => {
     const evtSource = new EventSource(
-      `/v1/completions/live_stream?conversation_type=${conversationType}&prompt=${prompt}&conversation_id=${conversationId}&conversation_title=${conversationTitle}`
+      `/v1/completions/live_stream?conversation_type=${conversationType}&prompt=${prompt}&conversation_id=${conversationId}&conversation_title=${conversationTitle}&model_id={modelId}`
     )
     evtSource.onmessage = (event) => {
       if (event) {

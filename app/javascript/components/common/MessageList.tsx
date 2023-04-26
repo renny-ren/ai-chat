@@ -10,9 +10,10 @@ interface MessageListProps {
   isLoading: boolean
   gptName?: string
   voice?: string
+  avatarUrl?: string
 }
 
-const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, gptName, voice }) => {
+const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, gptName, voice, avatarUrl }) => {
   const [playingMessageId, setPlayingMessageId] = useState(0)
   const messagesEndRef = useRef(null)
   const audioRef = useRef(null)
@@ -96,7 +97,7 @@ const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, gptName,
                 <div className="flex flex-row items-start">
                   <div className="relative mt-1">
                     <div className="inline-block h-10 w-10">
-                      <img className="rounded-full aspect-square mt-1" src={gon.gpt_user.avatar_url} />
+                      <img className="rounded-full aspect-square mt-1" src={avatarUrl || gon.gpt_user.avatar_url} />
                     </div>
                   </div>
 

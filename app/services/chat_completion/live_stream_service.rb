@@ -108,7 +108,25 @@ module ChatCompletion
     end
 
     def initial_messages
-      YAML.load_file(Rails.root.join("config", "prompts.yml")).dig(params[:conversation_type] || conversation.type) || [
+      if conversation.type == "custom"
+        custom_instruction
+      else
+        built_in_instruction || chatgpt_instruction
+      end
+    end
+
+    def built_in_instruction
+      YAML.load_file(Rails.root.join("config", "prompts.yml")).dig(params[:conversation_type] || conversation.type)
+    end
+
+    def custom_instruction
+      [
+        { role: "system", content: conversation.model.system_instruction },
+      ]
+    end
+
+    def chatgpt_instruction
+      [
         { role: "system", content: "You are ChatGPT, a large language model trained by OpenAI. Answer as concisely as possible. Current date: #{Date.today.to_s}" },
       ]
     end
@@ -117,6 +135,7 @@ module ChatCompletion
       @conversation ||= current_user.conversations.find_or_create_by(id: params[:conversation_id]) do |conversation|
         conversation.title = params[:conversation_title] || params[:prompt][0..30]
         conversation.type = params[:conversation_type] if params[:conversation_type].present?
+        conversation.model_id = params[:model_id] if params[:model_id].present?
       end
     end
 

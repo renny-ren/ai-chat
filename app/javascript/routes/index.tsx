@@ -14,6 +14,7 @@ import Girlfriend from "components/Girlfriend"
 import AppMessageList from "components/app_messages"
 import AppMessageForm from "components/app_messages/Form"
 import Model from "components/Model"
+import CustomModel from "components/CustomModel"
 
 export default ({ setIsShowModal, setCustomContent, setConversations }) => {
   return (
@@ -52,6 +53,7 @@ export default ({ setIsShowModal, setCustomContent, setConversations }) => {
         <Route exact path="/app_messages/:id/edit" element={<AppMessageForm action="edit" />} />
         <Route path="/models" element={<Model />} />
         <Route path="/models/new" element={<Model tab="new" />} />
+        <Route path="/:modelPermalink" element={<CustomModel />} />
       </Routes>
     </Router>
   )

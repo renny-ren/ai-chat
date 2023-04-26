@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_25_055729) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_26_040256) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -89,6 +89,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_25_055729) do
     t.integer "type", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "model_id"
+    t.index ["model_id"], name: "index_conversations_on_model_id"
     t.index ["user_id"], name: "index_conversations_on_user_id"
   end
 
@@ -141,6 +143,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_25_055729) do
     t.string "introduction"
     t.string "permalink"
     t.string "system_instruction"
+    t.string "voice"
     t.boolean "is_public", default: true, null: false
     t.json "openai_params", default: {}
     t.datetime "created_at", null: false

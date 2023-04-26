@@ -13,6 +13,11 @@ interface ModelProps {
 const Model: React.FC<ModelProps> = ({ setIsShowSignInModal, tab }) => {
   const [currentTab, setCurrentTab] = useState(tab || "list")
 
+  const changeTab = (tab) => {
+    window.history.pushState({ tab: tab }, tab, tab === "list" ? "/models" : `/models/${tab}`)
+    setCurrentTab(tab)
+  }
+
   return (
     <>
       <div className="h-full relative pt-12 md:pt-14">
@@ -28,7 +33,7 @@ const Model: React.FC<ModelProps> = ({ setIsShowSignInModal, tab }) => {
                       currentTab === "list" ? "text-gray-900 border-b-2" : ""
                     } border-gray-800`}
                   >
-                    <a onClick={() => setCurrentTab("list")} className="py-4 inline-block">
+                    <a onClick={() => changeTab("list")} className="py-4 inline-block">
                       全部模型
                     </a>
                   </li>
@@ -37,7 +42,7 @@ const Model: React.FC<ModelProps> = ({ setIsShowSignInModal, tab }) => {
                       currentTab === "new" ? "text-gray-900 border-b-2" : ""
                     } border-gray-800`}
                   >
-                    <a onClick={() => setCurrentTab("new")} className="py-4 inline-block">
+                    <a onClick={() => changeTab("new")} className="py-4 inline-block">
                       创建模型
                     </a>
                   </li>

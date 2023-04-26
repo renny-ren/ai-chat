@@ -27,3 +27,7 @@ export function fetchModels() {
 export function createModel(params) {
   return post("/v1/models", params)
 }
+
+export function fetchModel(permalink) {
+  return get(`/v1/models/${permalink}`)
+}

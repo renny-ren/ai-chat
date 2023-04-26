@@ -45,8 +45,8 @@ const List: React.FC<ListProps> = ({}) => {
                       <dd className="text-xs text-slate-500">{model.created_at_in_words}</dd>
                     </div>
                   </dl>
-                  <button
-                    type="submit"
+                  <a
+                    href={model.permalink}
                     className="float-right group relative flex justify-center rounded-md border border-transparent bg-emerald-500 py-2 px-4 text-sm font-medium text-white hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
                   >
                     <span className="absolute inset-y-0 left-0 flex items-center pl-3"></span>
@@ -63,7 +63,7 @@ const List: React.FC<ListProps> = ({}) => {
                         d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
                       ></path>
                     </svg>
-                  </button>
+                  </a>
                 </div>
               </div>
             </div>
