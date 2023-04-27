@@ -1,4 +1,5 @@
 import { get, post, put, patch, destroy } from "../utils/request"
+import queryString from "query-string"
 
 export function fetchAppMessages(params) {
   return get("/v1/app_messages")
@@ -20,8 +21,8 @@ export function pushMessage(id) {
   return post(`/v1/app_messages/${id}/push`)
 }
 
-export function fetchModels() {
-  return get(`/v1/models`)
+export function fetchModels(queryParams) {
+  return get(`/v1/models?${queryString.stringify(queryParams)}`)
 }
 
 export function createModel(params) {

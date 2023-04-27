@@ -39,6 +39,15 @@ const Model: React.FC<ModelProps> = ({ setIsShowSignInModal, tab }) => {
                   </li>
                   <li
                     className={`cursor-pointer mr-8 hover:text-gray-900 ${
+                      currentTab === "self" ? "text-gray-900 border-b-2" : ""
+                    } border-gray-800`}
+                  >
+                    <a onClick={() => changeTab("self")} className="py-4 inline-block">
+                      我的模型
+                    </a>
+                  </li>
+                  <li
+                    className={`cursor-pointer mr-8 hover:text-gray-900 ${
                       currentTab === "new" ? "text-gray-900 border-b-2" : ""
                     } border-gray-800`}
                   >
@@ -48,6 +57,7 @@ const Model: React.FC<ModelProps> = ({ setIsShowSignInModal, tab }) => {
                   </li>
                 </ul>
                 {currentTab === "list" && <List />}
+                {currentTab === "self" && <List scope="self" />}
                 {currentTab === "new" && <Form />}
               </div>
             </div>

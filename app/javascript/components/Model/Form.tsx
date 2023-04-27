@@ -13,11 +13,13 @@ interface ModelFormProps {}
 const ModelForm: React.FC<ModelFormProps> = ({}) => {
   const [previewStep, setPreviewStep] = useState<string>("list")
   const [avatarUrl, setAvatarUrl] = useState<string>()
+  const [permalinkChanged, setPermalinkChanged] = useState<boolean>(false)
   const [formData, setFormData] = useState({
     title: "",
     is_public: true,
     permalink: "",
   })
+  const [formErrors, setFormErrors] = useState([])
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -25,16 +27,13 @@ const ModelForm: React.FC<ModelFormProps> = ({}) => {
       ...formData,
       [name]: value,
     })
-    if (formData.introduction) {
-      setPreviewStep("show")
-    } else {
-      setPreviewStep("list")
-    }
+    setPreviewStep(name === "introduction" ? "show" : "list")
+    if (name === "permalink") setPermalinkChanged(true)
   }
 
   const handleTitleChange = (e) => {
     const { value } = e.target
-    permalink = pinyin.convertToPinyin(value, "", true)
+    permalink = permalinkChanged ? formData.permalink : pinyin.convertToPinyin(value, "", true)
     setFormData({
       ...formData,
       title: value,
@@ -83,11 +82,11 @@ const ModelForm: React.FC<ModelFormProps> = ({}) => {
     if (res.ok) {
       message.success("模型创建成功！")
       setTimeout(() => {
-        window.location.href = model.permalink
+        window.location.href = `/${formData.permalink}`
       }, 1000)
     } else {
       const data = await res.json
-      message.error(data.message)
+      setFormErrors(data.message)
     }
   }
 
@@ -96,7 +95,7 @@ const ModelForm: React.FC<ModelFormProps> = ({}) => {
       <section className="dark:bg-gray-900">
         <div className="py-8 lg:py-4 grid grid-cols-12 gap-6">
           <form className="col-span-8 border-r border-dashed pr-6 divide-y divide-dashed" onSubmit={onSubmit}>
-            <details className="group py-4" open>
+            <details className="group pb-4" open>
               <summary className="flex justify-between items-center font-medium cursor-pointer list-none">
                 <span>基础设置</span>
                 <span className="transition group-open:rotate-180">
@@ -183,25 +182,20 @@ const ModelForm: React.FC<ModelFormProps> = ({}) => {
                       ></textarea>
                     </div>
                     <div className="sm:col-span-4">
-                      <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        自我介绍<span className="ml-px text-red text-red-400">*</span>
-                      </label>
+                      <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">自我介绍</label>
                       <textarea
-                        required
                         rows="2"
                         name="introduction"
                         className="block w-full text-sm text-gray-900 rounded-lg border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-emerald-500 dark:focus:border-emerald-500"
                         onChange={handleInputChange}
-                        onInvalid={(e) => e.target.setCustomValidity("请填写模型自我介绍")}
-                        onInput={(e) => e.target.setCustomValidity("")}
                         placeholder="仅用于展示，将会在聊天中作为第一条消息展示给用户"
                       ></textarea>
                     </div>
                     <div className="sm:col-span-2">
-                      <label className="flex items-center block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        模型声音
+                      <div className="flex items-center block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        <label>模型声音</label>
                         <AudioButton content={formData.introduction} voice={formData.voice} />
-                      </label>
+                      </div>
                       <VoiceSelection handleVoiceChange={handleVoiceChange} />
                     </div>
 
@@ -253,7 +247,13 @@ const ModelForm: React.FC<ModelFormProps> = ({}) => {
                   </svg>
                 </span>
               </summary>
-              <p className="text-neutral-600 mt-3 group-open:animate-fadeIn"></p>
+              <div className="text-neutral-600 mt-3 group-open:animate-fadeIn">
+                <div className="grid gap-4 sm:grid-cols-4 sm:gap-6">
+                  <div className="sm:col-span-2">
+                    <label className="block mb-2 text-sm text-gray-400 dark:text-white">暂无高级设置</label>
+                  </div>
+                </div>
+              </div>
             </details>
 
             <button
@@ -262,6 +262,11 @@ const ModelForm: React.FC<ModelFormProps> = ({}) => {
             >
               提交
             </button>
+            {!!formErrors.length && (
+              <span className="float-right mr-4 border-transparent text-red-500 rounded relative" role="alert">
+                {formErrors.join(" & ")}
+              </span>
+            )}
           </form>
 
           <Preview

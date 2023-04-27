@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react"
 import * as CommonApi from "shared/api/common"
 import currentUser from "stores/current_user_store"
 
-interface ListProps {}
+interface ListProps {
+  scope?: string
+}
 
-const List: React.FC<ListProps> = ({}) => {
+const List: React.FC<ListProps> = ({ scope }) => {
   const [models, setModels] = useState([])
 
   useEffect(() => {
@@ -12,7 +14,7 @@ const List: React.FC<ListProps> = ({}) => {
   }, [])
 
   const fetchModels = async () => {
-    const res = await CommonApi.fetchModels()
+    const res = await CommonApi.fetchModels({ scope })
     if (res.ok) {
       const data = await res.json
       setModels(data.models)
@@ -39,11 +41,11 @@ const List: React.FC<ListProps> = ({}) => {
                   </div>
                   <div className="block h-3 w-px mx-2 bg-zinc-900/10 dark:bg-white/15"></div>
                   <div className="flex flex-col-reverse">
-                    <dd className="text-xs text-slate-500">{model.created_at_in_words}</dd>
+                    <dd className="text-xs text-slate-500">创建于{model.created_at_in_words}</dd>
                   </div>
                 </dl>
                 <a
-                  href={model.permalink}
+                  href={`/${model.permalink}`}
                   className="float-right items-center group relative flex justify-center rounded-md border border-transparent bg-emerald-500 py-2 px-4 text-sm font-medium text-white hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
                 >
                   <span className="absolute inset-y-0 left-0 flex items-center pl-3"></span>

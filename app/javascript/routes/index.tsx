@@ -53,6 +53,7 @@ export default ({ setIsShowModal, setCustomContent, setConversations }) => {
         <Route exact path="/app_messages/:id/edit" element={<AppMessageForm action="edit" />} />
         <Route path="/models" element={<Model />} />
         <Route path="/models/new" element={<Model tab="new" />} />
+        <Route path="/models/self" element={<Model tab="self" />} />
         <Route
           path="/:modelPermalink"
           element={<CustomModel setIsShowSignInModal={setIsShowModal} setConversations={setConversations} />}
