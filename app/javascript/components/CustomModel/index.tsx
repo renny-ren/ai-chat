@@ -99,6 +99,7 @@ const CustomModel: React.FC<CustomModelProps> = ({ setIsShowSignInModal, setConv
               setMessages={setMessages}
               conversationType="custom"
               modelId={model.id}
+              placeholder={model.placeholder}
             />
           </main>
         )}

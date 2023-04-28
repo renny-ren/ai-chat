@@ -41,7 +41,7 @@ const List: React.FC<ListProps> = ({ scope }) => {
                   </div>
                   <div className="block h-3 w-px mx-2 bg-zinc-900/10 dark:bg-white/15"></div>
                   <div className="flex flex-col-reverse">
-                    <dd className="text-xs text-slate-500">创建于{model.created_at_in_words}</dd>
+                    <dd className="text-xs text-slate-500">创建于 {model.created_at_in_words}</dd>
                   </div>
                 </dl>
                 <a

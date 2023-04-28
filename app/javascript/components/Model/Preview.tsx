@@ -27,8 +27,6 @@ const Preview: React.FC = ({ className, formData, previewStep, setPreviewStep, a
                     {new Date().toLocaleString("zh-CN", {
                       month: "numeric",
                       day: "numeric",
-                      hour: "numeric",
-                      minute: "numeric",
                     })}
                   </dd>
                 </div>
