@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import * as CommonApi from "shared/api/common"
 import currentUser from "stores/current_user_store"
+import { LikeOutlined, LikeFilled, StarOutlined, StarFilled } from "@ant-design/icons"
 
 interface ListProps {
   scope?: string
@@ -21,6 +22,59 @@ const List: React.FC<ListProps> = ({ scope }) => {
     }
   }
 
+  const onToggleLike = (model) => {
+    isLiked(model) ? unlike(model) : like(model)
+  }
+  const onToggleStar = (model) => {
+    isStarred(model) ? unstar(model) : star(model)
+  }
+  const isLiked = (model) => {
+    return model.like_by_user_ids.includes(currentUser.id())
+  }
+  const isStarred = (model) => {
+    return model.star_by_user_ids.includes(currentUser.id())
+  }
+  const like = (model) => {
+    models.map((m) => {
+      if (m.permalink === model.permalink) {
+        m.likes_count += 1
+        m.like_by_user_ids = [...m.like_by_user_ids, currentUser.id()]
+      }
+    })
+    setModels([...models])
+    CommonApi.likeModel(model.permalink)
+  }
+  const unlike = (model) => {
+    models.map((m) => {
+      if (m.permalink === model.permalink) {
+        m.likes_count -= 1
+        m.like_by_user_ids = m.like_by_user_ids.filter((id) => id != currentUser.id())
+      }
+    })
+    setModels([...models])
+    CommonApi.unlikeModel(model.permalink)
+  }
+  const star = (model) => {
+    models.map((m) => {
+      if (m.permalink === model.permalink) {
+        m.stars_count += 1
+        m.star_by_user_ids = [...m.star_by_user_ids, currentUser.id()]
+      }
+    })
+    setModels([...models])
+    CommonApi.starModel(model.permalink)
+  }
+  const unstar = (model) => {
+    models.map((m) => {
+      if (m.permalink === model.permalink) {
+        m.stars_count -= 1
+        m.star_by_user_ids = m.star_by_user_ids.filter((id) => id != currentUser.id())
+      }
+    })
+    setModels([...models])
+    CommonApi.unstarModel(model.permalink)
+  }
+
   return (
     <section className="mt-6 pb-12 lg:pb-[90px] relative z-20">
       <div className="grid grid-cols-12 gap-4">
@@ -30,9 +84,32 @@ const List: React.FC<ListProps> = ({ scope }) => {
             className="w-full col-span-6 lg:col-span-4 rounded shadow-md shadow-gray-200 dark:shadow-gray-900 bg-white dark:bg-gray-800"
           >
             <div className="p-5">
-              <a target="_blank">
-                <h5 className="truncate text-slate-900 font-medium text-lg tracking-tight dark:text-white">{model.title}</h5>
-              </a>
+              <div className="flex justify-between">
+                <a target="_blank">
+                  <h5 className="truncate text-slate-900 font-medium text-lg tracking-tight dark:text-white">
+                    {model.title}
+                  </h5>
+                </a>
+                <div className="actions text-xs text-slate-500">
+                  <button
+                    type="button"
+                    onClick={() => onToggleLike(model)}
+                    className="font-bold inline-flex items-center text-xs px-2 py-2 gap-x-1 rounded-full hover:bg-gray-100 outline-none"
+                  >
+                    {isLiked(model) ? <LikeFilled /> : <LikeOutlined />}
+                    <span>{model.likes_count}</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => onToggleStar(model)}
+                    className="font-bold inline-flex items-center text-xs px-2 py-2 gap-x-1 rounded-full hover:bg-gray-100 outline-none"
+                  >
+                    {isStarred(model) ? <StarFilled /> : <StarOutlined />}
+                    <span>{model.stars_count}</span>
+                  </button>
+                </div>
+              </div>
               <p className="truncate mt-1 text-base text-slate-500 dark:text-slate-400">{model.description}</p>
               <div className="flex mt-2 justify-between items-start">
                 <dl className="flex items-center">
@@ -43,6 +120,7 @@ const List: React.FC<ListProps> = ({ scope }) => {
                   <div className="flex flex-col-reverse">
                     <dd className="text-xs text-slate-500">创建于 {model.created_at_in_words}</dd>
                   </div>
+                  <div className="block h-3 w-px mx-2 bg-zinc-900/10 dark:bg-white/15"></div>
                 </dl>
                 <a
                   href={`/${model.permalink}`}

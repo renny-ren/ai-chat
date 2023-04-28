@@ -8,6 +8,7 @@ class CreateModels < ActiveRecord::Migration[7.0]
       t.string :permalink
       t.string :system_instruction
       t.string :voice
+      t.string :input_placeholder
       t.boolean :is_public, null: false, default: true
       t.json :openai_params, default: {}
 

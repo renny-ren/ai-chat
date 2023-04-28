@@ -2,7 +2,7 @@ class ModelsController < ApplicationController
   include PaginationParams
 
   before_action :set_models, only: :index
-  before_action :set_model, only: :show
+  before_action :set_model, only: [:show, :like, :unlike, :star, :unstar]
   before_action :validate_model, only: :show
 
   def index
@@ -23,6 +23,22 @@ class ModelsController < ApplicationController
     render_json_response :error, message: e.message
   end
 
+  def like
+    current_user.like_model(@model)
+  end
+
+  def unlike
+    current_user.unlike_model(@model)
+  end
+
+  def star
+    current_user.star_model(@model)
+  end
+
+  def unstar
+    current_user.unstar_model(@model)
+  end
+
   private
 
   def authenticate_user!
@@ -35,7 +51,7 @@ class ModelsController < ApplicationController
     else
       @models = Model.visible.includes(:user)
     end
-    @models = @models.page(page).per(per)
+    @models = @models.order("likes_count desc, created_at asc").page(page).per(per)
   end
 
   def model_params

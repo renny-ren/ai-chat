@@ -51,7 +51,14 @@ Rails.application.routes.draw do
         post :push
       end
     end
-    resources :models, only: [:index, :show, :create], param: :permalink
+    resources :models, only: [:index, :show, :create], param: :permalink do
+      member do
+        post :like
+        post :star
+        post :unlike
+        post :unstar
+      end
+    end
   end
 
   namespace :admin do

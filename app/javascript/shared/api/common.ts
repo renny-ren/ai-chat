@@ -29,6 +29,22 @@ export function createModel(params) {
   return post("/v1/models", params)
 }
 
+export function likeModel(permalink) {
+  return post(`/v1/models/${permalink}/like`)
+}
+
+export function unlikeModel(permalink) {
+  return post(`/v1/models/${permalink}/unlike`)
+}
+
+export function starModel(permalink) {
+  return post(`/v1/models/${permalink}/star`)
+}
+
+export function unstarModel(permalink) {
+  return post(`/v1/models/${permalink}/unstar`)
+}
+
 export function fetchModel(permalink) {
   return get(`/v1/models/${permalink}`)
 }

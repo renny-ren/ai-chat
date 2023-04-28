@@ -33,7 +33,7 @@ const ModelForm: React.FC<ModelFormProps> = ({}) => {
 
   const handleTitleChange = (e) => {
     const { value } = e.target
-    permalink = permalinkChanged ? formData.permalink : pinyin.convertToPinyin(value, "", true)
+    permalink = permalinkChanged ? formData.permalink : pinyin.convertToPinyin(value, "", true).replaceAll(" ", "_")
     setFormData({
       ...formData,
       title: value,

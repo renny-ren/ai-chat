@@ -26,6 +26,9 @@ class User < ApplicationRecord
 
   after_create :send_welcome_notification
 
+  action_store :like, :model, counter_cache: true
+  action_store :star, :model, counter_cache: true
+
   def avatar_url(size = 80)
     # ActiveStorage::Current.url_options = { host: "localhost", port: 3000 }
     Rails.cache.fetch("user_#{id}_avatar_url", expires_in: 5.minutes) do

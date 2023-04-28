@@ -10,9 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_26_040256) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_28_021231) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "actions", force: :cascade do |t|
+    t.string "action_type", limit: 64, null: false
+    t.string "action_option", limit: 64
+    t.string "target_type", limit: 64
+    t.bigint "target_id"
+    t.string "user_type", limit: 64
+    t.bigint "user_id"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.index ["action_type", "target_type", "target_id", "user_type", "user_id"], name: "uk_action_target_user", unique: true
+    t.index ["target_type", "target_id", "action_type"], name: "index_actions_on_target_type_and_target_id_and_action_type"
+    t.index ["user_type", "user_id", "action_type"], name: "index_actions_on_user_type_and_user_id_and_action_type"
+  end
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
@@ -144,10 +158,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_26_040256) do
     t.string "permalink"
     t.string "system_instruction"
     t.string "voice"
+    t.string "input_placeholder"
     t.boolean "is_public", default: true, null: false
     t.json "openai_params", default: {}
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "likes_count", default: 0
+    t.integer "stars_count", default: 0
     t.index ["user_id"], name: "index_models_on_user_id"
   end
 
