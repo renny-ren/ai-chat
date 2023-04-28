@@ -14,8 +14,18 @@ const Model: React.FC<ModelProps> = ({ setIsShowSignInModal, tab }) => {
   const [currentTab, setCurrentTab] = useState(tab || "list")
 
   const changeTab = (tab) => {
+    if (tab !== "list" && !validateLogin()) return
     window.history.pushState({ tab: tab }, tab, tab === "list" ? "/models" : `/models/${tab}`)
     setCurrentTab(tab)
+  }
+
+  const validateLogin = () => {
+    if (!currentUser.isSignedIn()) {
+      message.info("请先登录后再操作")
+      setIsShowSignInModal(true)
+    } else {
+      return true
+    }
   }
 
   return (
@@ -39,6 +49,15 @@ const Model: React.FC<ModelProps> = ({ setIsShowSignInModal, tab }) => {
                   </li>
                   <li
                     className={`cursor-pointer mr-8 hover:text-gray-900 ${
+                      currentTab === "starred" ? "text-gray-900 border-b-2" : ""
+                    } border-gray-800`}
+                  >
+                    <a onClick={() => changeTab("starred")} className="py-4 inline-block">
+                      我收藏的
+                    </a>
+                  </li>
+                  <li
+                    className={`cursor-pointer mr-8 hover:text-gray-900 ${
                       currentTab === "self" ? "text-gray-900 border-b-2" : ""
                     } border-gray-800`}
                   >
@@ -56,9 +75,10 @@ const Model: React.FC<ModelProps> = ({ setIsShowSignInModal, tab }) => {
                     </a>
                   </li>
                 </ul>
-                {currentTab === "list" && <List />}
-                {currentTab === "self" && <List scope="self" />}
-                {currentTab === "new" && <Form />}
+                {currentTab === "list" && <List validateLogin={validateLogin} />}
+                {currentTab === "self" && <List scope="self" validateLogin={validateLogin} />}
+                {currentTab === "starred" && <List scope="starred" validateLogin={validateLogin} />}
+                {currentTab === "new" && <Form validateLogin={validateLogin} />}
               </div>
             </div>
           </div>

@@ -48,6 +48,8 @@ class ModelsController < ApplicationController
   def set_models
     if params[:scope] == "self"
       @models = current_user.models
+    elsif params[:scope] == "starred"
+      @models = current_user.star_models
     else
       @models = Model.visible.includes(:user)
     end

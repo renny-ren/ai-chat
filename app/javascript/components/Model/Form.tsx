@@ -8,9 +8,11 @@ import AudioButton from "./AudioButton"
 import Preview from "./Preview"
 import pinyin from "tiny-pinyin"
 
-interface ModelFormProps {}
+interface ModelFormProps {
+  validateLogin: () => boolean
+}
 
-const ModelForm: React.FC<ModelFormProps> = ({}) => {
+const ModelForm: React.FC<ModelFormProps> = ({ validateLogin }) => {
   const [previewStep, setPreviewStep] = useState<string>("list")
   const [avatarUrl, setAvatarUrl] = useState<string>()
   const [permalinkChanged, setPermalinkChanged] = useState<boolean>(false)
@@ -20,6 +22,10 @@ const ModelForm: React.FC<ModelFormProps> = ({}) => {
     permalink: "",
   })
   const [formErrors, setFormErrors] = useState([])
+
+  useEffect(() => {
+    if (!validateLogin()) return
+  }, [])
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -66,6 +72,7 @@ const ModelForm: React.FC<ModelFormProps> = ({}) => {
 
   const onSubmit = async (e) => {
     e.preventDefault()
+    if (!validateLogin()) return
 
     const fd = new FormData()
     for (const key in formData) {
