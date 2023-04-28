@@ -103,7 +103,7 @@ const ModelForm: React.FC<ModelFormProps> = ({ validateLogin }) => {
         <div className="py-8 lg:py-4 grid grid-cols-12 gap-6">
           <form className="col-span-8 border-r border-dashed pr-6 divide-y divide-dashed" onSubmit={onSubmit}>
             <details className="group pb-4" open>
-              <summary className="flex justify-between items-center font-medium cursor-pointer list-none">
+              <summary className="flex justify-between items-center font-medium cursor-pointer list-none text-gray-900 dark:text-white">
                 <span>基础设置</span>
                 <span className="transition group-open:rotate-180">
                   <svg
@@ -236,7 +236,7 @@ const ModelForm: React.FC<ModelFormProps> = ({ validateLogin }) => {
               </div>
             </details>
             <details className="group py-4">
-              <summary className="flex justify-between items-center font-medium cursor-pointer list-none">
+              <summary className="flex justify-between items-center font-medium cursor-pointer list-none text-gray-900 dark:text-white">
                 <span>高级设置</span>
                 <span className="transition group-open:rotate-180">
                   <svg

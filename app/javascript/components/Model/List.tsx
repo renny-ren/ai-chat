@@ -105,7 +105,7 @@ const List: React.FC<ListProps> = ({ validateLogin, scope }) => {
                 {models.map((model, i) => (
                   <div
                     key={i}
-                    className="w-full col-span-6 lg:col-span-4 rounded shadow-md shadow-gray-200 dark:shadow-gray-900 bg-white dark:bg-gray-800"
+                    className="w-full col-span-12 md:col-span-6 lg:col-span-4 rounded shadow-md shadow-gray-200 dark:shadow-gray-900 bg-white dark:bg-gray-800"
                   >
                     <div className="p-5">
                       <div className="flex justify-between items-center">
@@ -118,7 +118,7 @@ const List: React.FC<ListProps> = ({ validateLogin, scope }) => {
                           <button
                             type="button"
                             onClick={() => onToggleLike(model)}
-                            className="font-medium inline-flex items-center text-sm mr-3 gap-x-1 rounded-full hover:text-slate-600 outline-none"
+                            className="font-medium inline-flex items-center text-sm mr-3 gap-x-1 rounded-full hover:text-slate-700 outline-none"
                           >
                             {isLiked(model) ? <LikeFilled className="text-emerald-500" /> : <LikeOutlined />}
                             <span>{model.likes_count}</span>
@@ -127,7 +127,7 @@ const List: React.FC<ListProps> = ({ validateLogin, scope }) => {
                           <button
                             type="button"
                             onClick={() => onToggleStar(model)}
-                            className="font-medium inline-flex items-center text-sm gap-x-1 rounded-full hover:text-slate-600 outline-none"
+                            className="font-medium inline-flex items-center text-sm gap-x-1 rounded-full hover:text-slate-700 outline-none"
                           >
                             {isStarred(model) ? <StarFilled className="text-emerald-500" /> : <StarOutlined />}
                             <span>{model.stars_count}</span>
@@ -140,19 +140,19 @@ const List: React.FC<ListProps> = ({ validateLogin, scope }) => {
                           <div className="flex flex-col-reverse">
                             <dd className="text-xs text-slate-500">{model.user_nickname}</dd>
                           </div>
-                          <div className="block h-3 w-px mx-2 bg-zinc-900/10 dark:bg-white/15"></div>
+                          <div className="block h-3 w-px mx-2 bg-zinc-900/10 dark:bg-white/35"></div>
                           <div className="flex flex-col-reverse">
                             <dd className="text-xs text-slate-500">创建于 {model.created_at_in_words}</dd>
                           </div>
                         </dl>
                         <a
                           href={`/${model.permalink}`}
-                          className="float-right items-center group relative flex justify-center rounded-md border border-transparent bg-emerald-500 py-2 px-4 text-sm font-medium text-white hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+                          className="float-right items-center group relative flex justify-center rounded-md border border-transparent bg-emerald-500 py-1 md:py-2 px-2 md:px-4 text-sm font-medium text-white hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
                         >
                           <span className="absolute inset-y-0 left-0 flex items-center pl-3"></span>
                           进入
                           <svg
-                            className="-mr-1 ml-1 h-4 w-4"
+                            className="-mr-1 ml-1 h-3 md:h-4 w-3 md:w-4"
                             fill="currentColor"
                             viewBox="0 0 20 20"
                             xmlns="http://www.w3.org/2000/svg"

@@ -4,7 +4,9 @@ import currentUser from "stores/current_user_store"
 const Preview: React.FC = ({ className, formData, previewStep, setPreviewStep, avatarUrl }) => {
   return (
     <div className={className}>
-      <div className="flex justify-between items-center font-medium cursor-pointer list-none">预览</div>
+      <div className="flex justify-between items-center font-medium cursor-pointer list-none text-gray-900 dark:text-white">
+        预览
+      </div>
       {previewStep === "list" && (
         <div className="mt-3 rounded shadow-md shadow-gray-200 dark:shadow-gray-900 bg-white dark:bg-gray-800">
           <div className="p-5">
@@ -21,7 +23,7 @@ const Preview: React.FC = ({ className, formData, previewStep, setPreviewStep, a
                 <div className="flex flex-col-reverse">
                   <dd className="text-xs text-slate-500">{currentUser.nickname()}</dd>
                 </div>
-                <div className="block h-3 w-px mx-2 bg-zinc-900/10 dark:bg-white/15"></div>
+                <div className="block h-3 w-px mx-2 bg-zinc-900/10 dark:bg-white/25"></div>
                 <div className="flex flex-col-reverse">
                   <dd className="text-xs text-slate-500">
                     {new Date().toLocaleString("zh-CN", {

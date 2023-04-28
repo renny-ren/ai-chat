@@ -36,11 +36,11 @@ const Model: React.FC<ModelProps> = ({ setIsShowSignInModal, tab }) => {
 
           <div className="relative h-full w-full transition-width flex flex-col overflow-y-auto items-stretch justify-center flex-1">
             <div className="flex-1 overflow-y-auto relative">
-              <div className="px-8 container mx-auto max-w-7xl mt-8">
-                <ul className="flex border-b border-gray-300 text-sm font-medium text-gray-600 mt-3 px-6 md:px-0">
+              <div className="px-4 md:px-8 container mx-auto max-w-7xl mt-2">
+                <ul className="flex border-b border-gray-300 text-sm font-medium text-gray-600 dark:text-gray-500">
                   <li
-                    className={`cursor-pointer mr-8 hover:text-gray-900 ${
-                      currentTab === "list" ? "text-gray-900 border-b-2" : ""
+                    className={`cursor-pointer mr-4 md:mr-8 hover:text-gray-900 ${
+                      currentTab === "list" ? "text-gray-900 dark:text-gray-300 border-b-2" : ""
                     } border-gray-800`}
                   >
                     <a onClick={() => changeTab("list")} className="py-4 inline-block">
@@ -48,8 +48,8 @@ const Model: React.FC<ModelProps> = ({ setIsShowSignInModal, tab }) => {
                     </a>
                   </li>
                   <li
-                    className={`cursor-pointer mr-8 hover:text-gray-900 ${
-                      currentTab === "starred" ? "text-gray-900 border-b-2" : ""
+                    className={`cursor-pointer mr-4 md:mr-8 hover:text-gray-900 ${
+                      currentTab === "starred" ? "text-gray-900 dark:text-gray-300 border-b-2" : ""
                     } border-gray-800`}
                   >
                     <a onClick={() => changeTab("starred")} className="py-4 inline-block">
@@ -57,8 +57,8 @@ const Model: React.FC<ModelProps> = ({ setIsShowSignInModal, tab }) => {
                     </a>
                   </li>
                   <li
-                    className={`cursor-pointer mr-8 hover:text-gray-900 ${
-                      currentTab === "self" ? "text-gray-900 border-b-2" : ""
+                    className={`cursor-pointer mr-4 md:mr-8 hover:text-gray-900 ${
+                      currentTab === "self" ? "text-gray-900 dark:text-gray-300 border-b-2" : ""
                     } border-gray-800`}
                   >
                     <a onClick={() => changeTab("self")} className="py-4 inline-block">
@@ -66,8 +66,8 @@ const Model: React.FC<ModelProps> = ({ setIsShowSignInModal, tab }) => {
                     </a>
                   </li>
                   <li
-                    className={`cursor-pointer mr-8 hover:text-gray-900 ${
-                      currentTab === "new" ? "text-gray-900 border-b-2" : ""
+                    className={`cursor-pointer mr-4 md:mr-8 hover:text-gray-900 ${
+                      currentTab === "new" ? "text-gray-900 dark:text-gray-300 border-b-2" : ""
                     } border-gray-800`}
                   >
                     <a onClick={() => changeTab("new")} className="py-4 inline-block">
