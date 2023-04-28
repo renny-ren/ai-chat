@@ -25,13 +25,25 @@ const Notification: React.FC<NotificationProps> = ({ className = "" }) => {
 
   const renderer = {
     list(body, ordered) {
-      return ordered ? <ol className="c-ordered-list-small">{body}</ol> : <ul className="c-list-small">{body}</ul>
+      return ordered ? (
+        <ol key={Math.random().toString(16)} className="c-ordered-list-small">
+          {body}
+        </ol>
+      ) : (
+        <ul key={Math.random().toString(16)} className="c-list-small">
+          {body}
+        </ul>
+      )
     },
     paragraph(text) {
-      return <p className="line-clamp-3">{text}</p>
+      return (
+        <p key={Math.random().toString(16)} className="line-clamp-3">
+          {text}
+        </p>
+      )
     },
     image(href, title, text) {
-      return <div>[点击查看图片]</div>
+      return <span key={Math.random().toString(16)}>[点击查看图片]</span>
     },
   }
 
