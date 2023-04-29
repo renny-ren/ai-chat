@@ -6,6 +6,8 @@ import MessageList from "components/common/MessageList"
 import Footer from "components/common/Footer"
 import * as CommonApi from "shared/api/common"
 import { Empty } from "antd"
+import { LikeOutlined, LikeFilled, StarOutlined, StarFilled } from "@ant-design/icons"
+import ModelActions from "./ModelActions"
 
 interface CustomModelProps {
   setIsShowSignInModal: () => void
@@ -52,7 +54,7 @@ const CustomModel: React.FC<CustomModelProps> = ({ setIsShowSignInModal, setConv
   return (
     <>
       <Helmet>
-        <title>{model.title}</title>
+        <title>{`${model.title} - aii.chat`}</title>
       </Helmet>
       <div className="h-full relative pt-12 md:pt-14">
         {isPrivate && (
@@ -73,6 +75,23 @@ const CustomModel: React.FC<CustomModelProps> = ({ setIsShowSignInModal, setConv
                         <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl h-full w-full md:max-w-3xl lg:max-w-4xl">
                           <div className="flex flex-col h-full md:pb-4">
                             <div className="flex flex-col h-full overflow-x-auto">
+                              <div className="py-3 border-b border-gray-300 border-dashed">
+                                <div className="px-4 sm:px-0">
+                                  <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-600">{model.description}</p>
+                                  <div className="flex justify-between items-end">
+                                    <div className="mt-1 max-w-2xl text-xs text-gray-600 flex items-center">
+                                      <span>创建者：</span>
+                                      <img className="inline-block rounded-full mx-1 h-5 w-5" src={model.user_avatar_url} />
+                                      <span>{model.user_nickname}</span>
+                                    </div>
+                                    <ModelActions
+                                      model={model}
+                                      setModel={setModel}
+                                      setIsShowSignInModal={setIsShowSignInModal}
+                                    />
+                                  </div>
+                                </div>
+                              </div>
                               <MessageList
                                 gptName={model.title}
                                 messages={messages}
