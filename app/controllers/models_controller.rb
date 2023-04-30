@@ -2,8 +2,9 @@ class ModelsController < ApplicationController
   include PaginationParams
 
   before_action :set_models, only: :index
-  before_action :set_model, only: [:show, :like, :unlike, :star, :unstar]
+  before_action :set_model, only: [:show, :like, :unlike, :star, :unstar, :update]
   before_action :validate_model, only: :show
+  before_action :authenticate_user!, only: [:update]
 
   def index
   end
@@ -19,6 +20,13 @@ class ModelsController < ApplicationController
     else
       render_json_response :error, message: model.errors.full_messages
     end
+  rescue => e
+    render_json_response :error, message: e.message
+  end
+
+  def update
+    @model.update!(model_params)
+    render_json_response :ok
   rescue => e
     render_json_response :error, message: e.message
   end
@@ -43,6 +51,9 @@ class ModelsController < ApplicationController
 
   def authenticate_user!
     warden.authenticate!
+    if @model.user != current_user
+      render status: 401, json: { message: "Unauthorized" }
+    end
   end
 
   def set_models

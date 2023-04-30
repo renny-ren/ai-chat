@@ -29,6 +29,10 @@ export function createModel(params) {
   return post("/v1/models", params)
 }
 
+export function updateModel(permalink, params) {
+  return put(`/v1/models/${permalink}`, params)
+}
+
 export function likeModel(permalink) {
   return post(`/v1/models/${permalink}/like`)
 }

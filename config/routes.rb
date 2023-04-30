@@ -51,7 +51,7 @@ Rails.application.routes.draw do
         post :push
       end
     end
-    resources :models, only: [:index, :show, :create], param: :permalink do
+    resources :models, except: [:new, :edit], param: :permalink do
       member do
         post :like
         post :star

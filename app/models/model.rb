@@ -18,9 +18,20 @@ class Model < ApplicationRecord
 
   scope :visible, -> { where(is_public: true) }
 
+  after_update :purge_avatar_cache
+
   def avatar_url
     Rails.cache.fetch("model_#{id}_avatar_url", expires_in: 2.hours) do
       avatar.url
     end
+  end
+
+  def avatar=(new_avatar)
+    avatar.purge_later if new_avatar.present?
+    super
+  end
+
+  def purge_avatar_cache
+    Rails.cache.delete("model_#{id}_avatar_url")
   end
 end

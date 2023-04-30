@@ -78,7 +78,7 @@ const Model: React.FC<ModelProps> = ({ setIsShowSignInModal, tab }) => {
                 {currentTab === "list" && <List validateLogin={validateLogin} />}
                 {currentTab === "self" && <List scope="self" validateLogin={validateLogin} />}
                 {currentTab === "starred" && <List scope="starred" validateLogin={validateLogin} />}
-                {currentTab === "new" && <Form validateLogin={validateLogin} />}
+                {currentTab === "new" && <Form setIsShowSignInModal={setIsShowSignInModal} />}
               </div>
             </div>
           </div>

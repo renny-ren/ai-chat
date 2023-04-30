@@ -25,13 +25,14 @@ class User < ApplicationRecord
   enum membership: { free: 0, basic: 1, standard: 2, advanced: 3 }
 
   after_create :send_welcome_notification
+  after_update :purge_avatar_cache
 
   action_store :like, :model, counter_cache: true
   action_store :star, :model, counter_cache: true
 
   def avatar_url(size = 80)
     # ActiveStorage::Current.url_options = { host: "localhost", port: 3000 }
-    Rails.cache.fetch("user_#{id}_avatar_url", expires_in: 5.minutes) do
+    Rails.cache.fetch("user_#{id}_avatar_url", expires_in: 2.hours) do
       avatar.url || "https://ui-avatars.com/api/?name=#{nickname}&size=#{size}"
     end
   end
@@ -39,6 +40,10 @@ class User < ApplicationRecord
   def avatar=(new_avatar)
     avatar.purge_later if new_avatar.present?
     super
+  end
+
+  def purge_avatar_cache
+    Rails.cache.delete("user_#{id}_avatar_url")
   end
 
   # def find_for_database_authentication(warden_conditions)

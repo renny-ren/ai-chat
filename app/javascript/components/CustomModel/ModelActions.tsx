@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react"
 import * as CommonApi from "shared/api/common"
-import { LikeOutlined, LikeFilled, StarOutlined, StarFilled } from "@ant-design/icons"
+import { LikeOutlined, LikeFilled, StarOutlined, StarFilled, EditOutlined } from "@ant-design/icons"
 import { message } from "antd"
 import currentUser from "stores/current_user_store"
 
@@ -20,23 +20,23 @@ const ModelActions: React.FC<ModelActionsProps> = ({ model, setModel, setIsShowS
     }
   }
 
-  const onToggleLike = (model) => {
+  const onToggleLike = () => {
     if (validateLogin()) {
-      isLiked(model) ? unlike(model) : like(model)
+      isLiked() ? unlike() : like()
     }
   }
-  const onToggleStar = (model) => {
+  const onToggleStar = () => {
     if (validateLogin()) {
-      isStarred(model) ? unstar(model) : star(model)
+      isStarred() ? unstar() : star()
     }
   }
-  const isLiked = (model) => {
+  const isLiked = () => {
     return model.like_by_user_ids.includes(currentUser.id())
   }
-  const isStarred = (model) => {
+  const isStarred = () => {
     return model.star_by_user_ids.includes(currentUser.id())
   }
-  const like = (model) => {
+  const like = () => {
     setModel({
       ...model,
       likes_count: (model.likes_count += 1),
@@ -44,7 +44,7 @@ const ModelActions: React.FC<ModelActionsProps> = ({ model, setModel, setIsShowS
     })
     CommonApi.likeModel(model.permalink)
   }
-  const unlike = (model) => {
+  const unlike = () => {
     setModel({
       ...model,
       likes_count: (model.likes_count -= 1),
@@ -52,7 +52,7 @@ const ModelActions: React.FC<ModelActionsProps> = ({ model, setModel, setIsShowS
     })
     CommonApi.unlikeModel(model.permalink)
   }
-  const star = (model) => {
+  const star = () => {
     setModel({
       ...model,
       stars_count: (model.stars_count += 1),
@@ -61,7 +61,7 @@ const ModelActions: React.FC<ModelActionsProps> = ({ model, setModel, setIsShowS
     CommonApi.starModel(model.permalink)
     message.success("收藏成功")
   }
-  const unstar = (model) => {
+  const unstar = () => {
     setModel({
       ...model,
       stars_count: (model.stars_count -= 1),
@@ -71,24 +71,42 @@ const ModelActions: React.FC<ModelActionsProps> = ({ model, setModel, setIsShowS
     message.success("取消收藏成功")
   }
 
+  const canEdit = () => {
+    return model.user_id === currentUser.id()
+  }
+
+  const onEdit = () => {
+    window.location.href = window.location.href + "/edit"
+  }
+
   return (
     <>
       <div className="actions text-xs text-slate-500">
+        {canEdit() && (
+          <button
+            type="button"
+            onClick={() => onEdit()}
+            className="font-medium inline-flex items-center text-sm mr-3 gap-x-1 rounded-full hover:text-slate-700 outline-none"
+          >
+            <EditOutlined />
+          </button>
+        )}
+
         <button
           type="button"
-          onClick={() => onToggleLike(model)}
+          onClick={() => onToggleLike()}
           className="font-medium inline-flex items-center text-sm mr-3 gap-x-1 rounded-full hover:text-slate-700 outline-none"
         >
-          {isLiked(model) ? <LikeFilled className="text-emerald-500" /> : <LikeOutlined />}
+          {isLiked() ? <LikeFilled className="text-emerald-500" /> : <LikeOutlined />}
           <span>{model.likes_count}</span>
         </button>
 
         <button
           type="button"
-          onClick={() => onToggleStar(model)}
+          onClick={() => onToggleStar()}
           className="font-medium inline-flex items-center text-sm gap-x-1 rounded-full hover:text-slate-700 outline-none"
         >
-          {isStarred(model) ? <StarFilled className="text-emerald-500" /> : <StarOutlined />}
+          {isStarred() ? <StarFilled className="text-emerald-500" /> : <StarOutlined />}
           <span>{model.stars_count}</span>
         </button>
       </div>

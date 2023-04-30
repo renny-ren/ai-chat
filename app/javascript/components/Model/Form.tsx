@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react"
+import { useParams } from "react-router-dom"
 import currentUser from "stores/current_user_store"
 import * as CommonApi from "shared/api/common"
-import { message } from "antd"
+import { message, Tooltip } from "antd"
+import { InfoCircleOutlined } from "@ant-design/icons"
 import Avatar from "./Avatar"
 import VoiceSelection from "./VoiceSelection"
 import AudioButton from "./AudioButton"
@@ -9,23 +11,53 @@ import Preview from "./Preview"
 import pinyin from "tiny-pinyin"
 
 interface ModelFormProps {
-  validateLogin: () => boolean
+  setIsShowSignInModal: () => void
+  action: string
 }
 
-const ModelForm: React.FC<ModelFormProps> = ({ validateLogin }) => {
+const ModelForm: React.FC<ModelFormProps> = ({ setIsShowSignInModal, action }) => {
   const [previewStep, setPreviewStep] = useState<string>("list")
   const [avatarUrl, setAvatarUrl] = useState<string>()
   const [permalinkChanged, setPermalinkChanged] = useState<boolean>(false)
   const [formData, setFormData] = useState({
     title: "",
-    is_public: true,
     permalink: "",
+    description: "",
+    introducton: "",
+    system_instruction: "",
+    is_public: true,
   })
+  const modelPermalink = useParams().modelPermalink
   const [formErrors, setFormErrors] = useState([])
 
   useEffect(() => {
     if (!validateLogin()) return
+    if (action === "edit") {
+      fetchModel()
+    }
   }, [])
+
+  const validateLogin = () => {
+    if (!currentUser.isSignedIn()) {
+      message.info("请先登录后再操作")
+      setIsShowSignInModal(true)
+    } else {
+      return true
+    }
+  }
+
+  const fetchModel = async () => {
+    const resp = await CommonApi.fetchModel(modelPermalink)
+    if (resp.ok) {
+      const body = await resp.json
+      if (body.model.user_id !== currentUser.id()) {
+        window.location.href = "/"
+      } else {
+        setFormData(body.model)
+        setAvatarUrl(body.model.avatar_url)
+      }
+    }
+  }
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -70,7 +102,7 @@ const ModelForm: React.FC<ModelFormProps> = ({ validateLogin }) => {
     })
   }
 
-  const onSubmit = async (e) => {
+  const onSubmit = (e) => {
     e.preventDefault()
     if (!validateLogin()) return
 
@@ -85,11 +117,32 @@ const ModelForm: React.FC<ModelFormProps> = ({ validateLogin }) => {
       fd.append("avatar", formData.avatar)
     }
 
+    if (action === "edit") {
+      updateModel(fd)
+    } else {
+      createModel(fd)
+    }
+  }
+
+  const createModel = async (fd) => {
     const res = await CommonApi.createModel(fd)
     if (res.ok) {
       message.success("模型创建成功！")
       setTimeout(() => {
         window.location.href = `/${formData.permalink}`
+      }, 1000)
+    } else {
+      const data = await res.json
+      setFormErrors(data.message)
+    }
+  }
+
+  const updateModel = async (fd) => {
+    const res = await CommonApi.updateModel(modelPermalink, fd)
+    if (res.ok) {
+      message.success("模型更新成功！")
+      setTimeout(() => {
+        window.location.href = `/${modelPermalink}`
       }, 1000)
     } else {
       const data = await res.json
@@ -133,26 +186,33 @@ const ModelForm: React.FC<ModelFormProps> = ({ validateLogin }) => {
                         type="text"
                         name="title"
                         className="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-emerald-500 dark:focus:border-emerald-500"
+                        value={formData.title}
                         onChange={handleTitleChange}
                         onInvalid={(e) => e.target.setCustomValidity("请填写模型名称")}
                         onInput={(e) => e.target.setCustomValidity("")}
                       />
                     </div>
                     <div className="sm:col-span-2">
-                      <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                        模型地址<span className="ml-px text-red text-red-400">*</span>
-                      </label>
+                      <div className="flex items-center block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        <label>
+                          模型地址<span className="ml-px text-red text-red-400">*</span>
+                        </label>
+                        <Tooltip title="创建成功后地址不可修改">
+                          <InfoCircleOutlined className="ml-1 text-gray-500" />
+                        </Tooltip>
+                      </div>
                       <div className="flex">
                         <span className="inline-flex items-center px-3 text-sm text-gray-500 bg-gray-50 border border-r-0 border-gray-300 rounded-l-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
                           aii.chat/
                         </span>
                         <input
                           required
+                          disabled={action === "edit"}
                           type="text"
                           name="permalink"
-                          className="rounded-none rounded-r-lg border border-gray-300 text-gray-900 focus:ring-emerald-500 focus:border-emerald-500 block flex-1 min-w-0 w-full text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-emerald-500 dark:focus:border-emerald-500"
-                          onChange={handleInputChange}
+                          className="rounded-none rounded-r-lg border border-gray-300 text-gray-900 focus:ring-emerald-500 focus:border-emerald-500 block flex-1 min-w-0 w-full text-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-emerald-500 dark:focus:border-emerald-500 disabled:bg-gray-50"
                           value={formData.permalink}
+                          onChange={handleInputChange}
                           onInvalid={(e) => e.target.setCustomValidity("请填写模型地址")}
                           onInput={(e) => e.target.setCustomValidity("")}
                         />
@@ -168,6 +228,7 @@ const ModelForm: React.FC<ModelFormProps> = ({ validateLogin }) => {
                         type="text"
                         name="description"
                         className="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-emerald-500 dark:focus:border-emerald-500"
+                        value={formData.description}
                         onChange={handleInputChange}
                         onInvalid={(e) => e.target.setCustomValidity("请填写模型描述")}
                         onInput={(e) => e.target.setCustomValidity("")}
@@ -182,6 +243,7 @@ const ModelForm: React.FC<ModelFormProps> = ({ validateLogin }) => {
                         rows="4"
                         name="system_instruction"
                         className="block w-full text-sm text-gray-900 rounded-lg border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-emerald-500 dark:focus:border-emerald-500"
+                        value={formData.system_instruction}
                         onChange={handleInputChange}
                         onInvalid={(e) => e.target.setCustomValidity("请填写模型设定")}
                         onInput={(e) => e.target.setCustomValidity("")}
@@ -194,6 +256,7 @@ const ModelForm: React.FC<ModelFormProps> = ({ validateLogin }) => {
                         rows="2"
                         name="introduction"
                         className="block w-full text-sm text-gray-900 rounded-lg border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-emerald-500 dark:focus:border-emerald-500"
+                        value={formData.introduction}
                         onChange={handleInputChange}
                         placeholder="仅用于展示，将会在聊天中作为第一条消息展示给用户"
                       ></textarea>
@@ -203,7 +266,7 @@ const ModelForm: React.FC<ModelFormProps> = ({ validateLogin }) => {
                         <label>模型声音</label>
                         <AudioButton content={formData.introduction} voice={formData.voice} />
                       </div>
-                      <VoiceSelection handleVoiceChange={handleVoiceChange} />
+                      <VoiceSelection voice={formData.voice} handleVoiceChange={handleVoiceChange} />
                     </div>
 
                     <div className="sm:col-span-1">

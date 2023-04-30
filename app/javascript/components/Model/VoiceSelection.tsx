@@ -1,10 +1,16 @@
-import React, { Fragment, useState } from "react"
+import React, { Fragment, useState, useEffect } from "react"
 import { Listbox, Transition } from "@headlessui/react"
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid"
 import { people } from "./constants"
 
-const VoiceSelection: React.FC = ({ handleVoiceChange }) => {
+const VoiceSelection: React.FC = ({ voice, handleVoiceChange }) => {
   const [selected, setSelected] = useState(people[0])
+
+  useEffect(() => {
+    if (voice) {
+      setSelected(people.find((person) => person.voice === voice))
+    }
+  }, [voice])
 
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ")
