@@ -13,6 +13,9 @@ import MJPrompt from "components/MJPrompt"
 import Girlfriend from "components/Girlfriend"
 import AppMessageList from "components/app_messages"
 import AppMessageForm from "components/app_messages/Form"
+import Model from "components/Model"
+import EditModel from "components/Model/Edit"
+import CustomModel from "components/CustomModel"
 
 export default ({ setIsShowModal, setCustomContent, setConversations }) => {
   return (
@@ -49,6 +52,15 @@ export default ({ setIsShowModal, setCustomContent, setConversations }) => {
         <Route path="/app_messages" element={<AppMessageList />} />
         <Route exact path="/app_messages/new" element={<AppMessageForm action="new" />} />
         <Route exact path="/app_messages/:id/edit" element={<AppMessageForm action="edit" />} />
+        <Route path="/models" element={<Model setIsShowSignInModal={setIsShowModal} />} />
+        <Route path="/models/new" element={<Model tab="new" setIsShowSignInModal={setIsShowModal} />} />
+        <Route path="/models/self" element={<Model tab="self" setIsShowSignInModal={setIsShowModal} />} />
+        <Route path="/models/starred" element={<Model tab="starred" setIsShowSignInModal={setIsShowModal} />} />
+        <Route path="/:modelPermalink/edit" element={<EditModel setIsShowSignInModal={setIsShowModal} />} />
+        <Route
+          path="/:modelPermalink"
+          element={<CustomModel setIsShowSignInModal={setIsShowModal} setConversations={setConversations} />}
+        />
       </Routes>
     </Router>
   )

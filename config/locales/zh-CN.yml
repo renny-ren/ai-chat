@@ -11,6 +11,15 @@ zh-CN:
         current_sign_in_at: 登录时间
         sign_in_count: 登录次数
         created_at: 创建时间
+      model:
+        title: 模型名称
+        permalink: 模型地址
+        description: 模型描述
+        system_instruction: 系统设定
+        introduction: 自我介绍
+        voice: 模型声音
+        avatar: 模型头像
+        is_public: 模型是否公开
     errors:
       messages:
         too_short: 太短

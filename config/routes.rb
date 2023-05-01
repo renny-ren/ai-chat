@@ -51,6 +51,14 @@ Rails.application.routes.draw do
         post :push
       end
     end
+    resources :models, except: [:new, :edit], param: :permalink do
+      member do
+        post :like
+        post :star
+        post :unlike
+        post :unstar
+      end
+    end
   end
 
   namespace :admin do
