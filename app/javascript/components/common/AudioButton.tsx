@@ -42,7 +42,7 @@ const AudioButton: React.FC<AudioButtonProps> = ({
 
   const handlePlay = async (message) => {
     setLoading(true)
-    const src = await tts.fetchStream(message.content, voice)
+    const src = await tts.fetchStream(message.content, voice || "")
     playAudio(src)
     setLoading(false)
   }

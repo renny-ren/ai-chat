@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react"
 import * as CommonApi from "shared/api/common"
-import { LikeOutlined, LikeFilled, StarOutlined, StarFilled, EditOutlined } from "@ant-design/icons"
-import { message } from "antd"
+import { LikeOutlined, LikeFilled, StarOutlined, StarFilled, EditOutlined, DeleteOutlined } from "@ant-design/icons"
+import { message, Popconfirm } from "antd"
 import currentUser from "stores/current_user_store"
 
 interface ModelActionsProps {
@@ -79,6 +79,16 @@ const ModelActions: React.FC<ModelActionsProps> = ({ model, setModel, setIsShowS
     window.location.href = window.location.href + "/edit"
   }
 
+  const onDelete = async () => {
+    const resp = await CommonApi.deleteModel(model.permalink)
+    if (resp.ok) {
+      message.success("删除成功")
+      setTimeout(() => {
+        window.location.href = "/models/self"
+      }, 300)
+    }
+  }
+
   return (
     <>
       <div className="actions text-xs text-slate-500">
@@ -90,6 +100,21 @@ const ModelActions: React.FC<ModelActionsProps> = ({ model, setModel, setIsShowS
           >
             <EditOutlined />
           </button>
+        )}
+        {canEdit() && (
+          <Popconfirm
+            title={`确认要删除 ${model.title} 吗`}
+            onConfirm={onDelete}
+            placement="bottom"
+            okButtonProps={{ type: "default" }}
+          >
+            <button
+              type="button"
+              className="font-medium inline-flex items-center text-sm mr-3 gap-x-1 rounded-full hover:text-slate-700 outline-none"
+            >
+              <DeleteOutlined />
+            </button>
+          </Popconfirm>
         )}
 
         <button

@@ -52,3 +52,7 @@ export function unstarModel(permalink) {
 export function fetchModel(permalink) {
   return get(`/v1/models/${permalink}`)
 }
+
+export function deleteModel(permalink) {
+  return destroy(`/v1/models/${permalink}`)
+}

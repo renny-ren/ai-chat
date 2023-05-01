@@ -130,7 +130,7 @@ const ModelForm: React.FC<ModelFormProps> = ({ setIsShowSignInModal, action }) =
       message.success("模型创建成功！")
       setTimeout(() => {
         window.location.href = `/${formData.permalink}`
-      }, 1000)
+      }, 500)
     } else {
       const data = await res.json
       setFormErrors(data.message)
@@ -143,7 +143,7 @@ const ModelForm: React.FC<ModelFormProps> = ({ setIsShowSignInModal, action }) =
       message.success("模型更新成功！")
       setTimeout(() => {
         window.location.href = `/${modelPermalink}`
-      }, 1000)
+      }, 500)
     } else {
       const data = await res.json
       setFormErrors(data.message)

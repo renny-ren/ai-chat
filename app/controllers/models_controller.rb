@@ -2,9 +2,9 @@ class ModelsController < ApplicationController
   include PaginationParams
 
   before_action :set_models, only: :index
-  before_action :set_model, only: [:show, :like, :unlike, :star, :unstar, :update]
+  before_action :set_model, only: [:show, :like, :unlike, :star, :unstar, :update, :destroy]
   before_action :validate_model, only: :show
-  before_action :authenticate_user!, only: [:update]
+  before_action :authenticate_user!, only: [:update, :destroy]
 
   def index
   end
@@ -13,6 +13,7 @@ class ModelsController < ApplicationController
   end
 
   def create
+    warden.authenticate!
     model = current_user.models.new(model_params)
     if model.valid?
       model.save!
@@ -26,6 +27,13 @@ class ModelsController < ApplicationController
 
   def update
     @model.update!(model_params)
+    render_json_response :ok
+  rescue => e
+    render_json_response :error, message: e.message
+  end
+
+  def destroy
+    @model.destroy!
     render_json_response :ok
   rescue => e
     render_json_response :error, message: e.message
