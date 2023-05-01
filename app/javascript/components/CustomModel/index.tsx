@@ -6,7 +6,6 @@ import MessageList from "components/common/MessageList"
 import Footer from "components/common/Footer"
 import * as CommonApi from "shared/api/common"
 import { Empty } from "antd"
-import { LikeOutlined, LikeFilled, StarOutlined, StarFilled } from "@ant-design/icons"
 import ModelActions from "./ModelActions"
 
 interface CustomModelProps {

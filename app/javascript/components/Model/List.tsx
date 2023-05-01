@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react"
 import * as CommonApi from "shared/api/common"
-import currentUser from "stores/current_user_store"
 import { message, Empty } from "antd"
 import Spinner from "components/common/Spinner"
 import ModelActions from "./ModelActions"
@@ -55,7 +54,7 @@ const List: React.FC<ListProps> = ({ validateLogin, scope }) => {
                             {model.title}
                           </h5>
                         </a>
-                        <ModelActions model={model} setModels={setModels} validateLogin={validateLogin} />
+                        <ModelActions model={model} models={models} setModels={setModels} validateLogin={validateLogin} />
                       </div>
                       <p className="truncate mt-1 text-base text-slate-500 dark:text-slate-400">{model.description}</p>
                       <div className="flex mt-2 justify-between items-start">

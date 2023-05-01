@@ -154,7 +154,10 @@ const ModelForm: React.FC<ModelFormProps> = ({ setIsShowSignInModal, action }) =
     <>
       <section className="dark:bg-gray-900">
         <div className="py-8 lg:py-4 grid grid-cols-12 gap-6">
-          <form className="col-span-8 border-r border-dashed pr-6 divide-y divide-dashed" onSubmit={onSubmit}>
+          <form
+            className="col-span-full md:col-span-8 md:border-r border-dashed md:pr-6 divide-y divide-dashed"
+            onSubmit={onSubmit}
+          >
             <details className="group pb-4" open>
               <summary className="flex justify-between items-center font-medium cursor-pointer list-none text-gray-900 dark:text-white">
                 <span>基础设置</span>
@@ -340,7 +343,7 @@ const ModelForm: React.FC<ModelFormProps> = ({ setIsShowSignInModal, action }) =
           </form>
 
           <Preview
-            className="col-span-4 self-start"
+            className="col-span-4 self-start hidden md:block"
             formData={formData}
             previewStep={previewStep}
             setPreviewStep={setPreviewStep}

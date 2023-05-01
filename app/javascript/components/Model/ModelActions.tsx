@@ -6,28 +6,29 @@ import currentUser from "stores/current_user_store"
 
 interface ModelActionsProps {
   model: any
+  models: any
   setModels: () => void
   validateLogin: () => boolean
 }
 
-const ModelActions: React.FC<ModelActionsProps> = ({ model, setModels, validateLogin }) => {
-  const onToggleLike = (model) => {
+const ModelActions: React.FC<ModelActionsProps> = ({ model, models, setModels, validateLogin }) => {
+  const onToggleLike = () => {
     if (validateLogin()) {
-      isLiked(model) ? unlike(model) : like(model)
+      isLiked() ? unlike() : like()
     }
   }
-  const onToggleStar = (model) => {
+  const onToggleStar = () => {
     if (validateLogin()) {
-      isStarred(model) ? unstar(model) : star(model)
+      isStarred() ? unstar() : star()
     }
   }
-  const isLiked = (model) => {
+  const isLiked = () => {
     return model.like_by_user_ids.includes(currentUser.id())
   }
-  const isStarred = (model) => {
+  const isStarred = () => {
     return model.star_by_user_ids.includes(currentUser.id())
   }
-  const like = (model) => {
+  const like = () => {
     models.map((m) => {
       if (m.permalink === model.permalink) {
         m.likes_count += 1
@@ -37,7 +38,7 @@ const ModelActions: React.FC<ModelActionsProps> = ({ model, setModels, validateL
     setModels([...models])
     CommonApi.likeModel(model.permalink)
   }
-  const unlike = (model) => {
+  const unlike = () => {
     models.map((m) => {
       if (m.permalink === model.permalink) {
         m.likes_count -= 1
@@ -47,7 +48,7 @@ const ModelActions: React.FC<ModelActionsProps> = ({ model, setModels, validateL
     setModels([...models])
     CommonApi.unlikeModel(model.permalink)
   }
-  const star = (model) => {
+  const star = () => {
     models.map((m) => {
       if (m.permalink === model.permalink) {
         m.stars_count += 1
@@ -58,7 +59,7 @@ const ModelActions: React.FC<ModelActionsProps> = ({ model, setModels, validateL
     CommonApi.starModel(model.permalink)
     message.success("收藏成功")
   }
-  const unstar = (model) => {
+  const unstar = () => {
     models.map((m) => {
       if (m.permalink === model.permalink) {
         m.stars_count -= 1
@@ -75,19 +76,19 @@ const ModelActions: React.FC<ModelActionsProps> = ({ model, setModels, validateL
       <div className="actions text-xs text-slate-500">
         <button
           type="button"
-          onClick={() => onToggleLike(model)}
+          onClick={onToggleLike}
           className="font-medium inline-flex items-center text-sm mr-3 gap-x-1 rounded-full hover:text-slate-700 outline-none"
         >
-          {isLiked(model) ? <LikeFilled className="text-emerald-500" /> : <LikeOutlined />}
+          {isLiked() ? <LikeFilled className="text-emerald-500" /> : <LikeOutlined />}
           <span>{model.likes_count}</span>
         </button>
 
         <button
           type="button"
-          onClick={() => onToggleStar(model)}
+          onClick={onToggleStar}
           className="font-medium inline-flex items-center text-sm gap-x-1 rounded-full hover:text-slate-700 outline-none"
         >
-          {isStarred(model) ? <StarFilled className="text-emerald-500" /> : <StarOutlined />}
+          {isStarred() ? <StarFilled className="text-emerald-500" /> : <StarOutlined />}
           <span>{model.stars_count}</span>
         </button>
       </div>

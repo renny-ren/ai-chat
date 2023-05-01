@@ -58,11 +58,14 @@ const Preview: React.FC = ({ className, formData, previewStep, setPreviewStep, a
 
       {previewStep === "show" && (
         <>
-          <div className="mt-3 fixed flex flex-row items-start">
+          <div className="mt-10 fixed flex flex-row items-start">
             <div className="flex mt-1 items-center relative">
-              <img className="rounded-full w-10 h-10 float-left shadow-md" src={avatarUrl || gon.gpt_user.avatar_url} />
+              <img
+                className="rounded-full aspect-square w-10 h-10 float-left shadow-md"
+                src={avatarUrl || gon.gpt_user.avatar_url}
+              />
             </div>
-            <div className="relative flex flex-col gap-1 max-w-[98%]">
+            <div className="relative flex flex-col gap-1 max-w-[70%]">
               <div className="flex items-baseline">
                 <div className="text-sm font-medium ml-3 dark:text-white">{formData.title}</div>
               </div>

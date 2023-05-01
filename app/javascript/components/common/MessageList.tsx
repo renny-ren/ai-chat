@@ -122,7 +122,7 @@ const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, gptName,
                       playingMessageId={playingMessageId}
                       setPlayingMessageId={setPlayingMessageId}
                       className="absolute bottom-1 -right-2"
-                      voice={voice}
+                      voice={voice || ""}
                     />
                   </div>
                 </div>

@@ -12,6 +12,9 @@ interface EditModelProps {
 const EditModel: React.FC<EditModelProps> = ({ setIsShowSignInModal }) => {
   return (
     <>
+      <Helmet>
+        <title>修改模型 - aii.chat</title>
+      </Helmet>
       <div className="h-full relative pt-12 md:pt-14">
         <main className="h-full">
           <Background />
