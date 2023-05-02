@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react"
+import { useParams } from "react-router-dom"
 import currentUser from "stores/current_user_store"
 import { message, Select } from "antd"
 import axios from "axios"
@@ -38,7 +39,7 @@ const Footer: React.FC<FooterProps> = ({
   const [prompt, setPrompt] = useState("")
   const [usedMessageCount, setUsedMessageCount] = useState(0)
   const messageLimitPerDay = currentUser.plan()?.message_limit_per_day
-  const [conversationId, setConversationId] = useState("")
+  const [conversationId, setConversationId] = useState(useParams().conversationId)
   const [isUpgradeOpen, setIsUpgradeOpen] = useState(false)
 
   useEffect(() => {

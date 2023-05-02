@@ -1,19 +1,21 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useCallback } from "react"
 import { useParams } from "react-router-dom"
 import { Helmet } from "react-helmet"
 import Background from "components/common/Background"
 import MessageList from "components/common/MessageList"
 import Footer from "components/common/Footer"
 import * as CommonApi from "shared/api/common"
+import * as UserApi from "shared/api/user"
 import { Empty } from "antd"
-import ModelActions from "./ModelActions"
+import Header from "./Header"
 
 interface CustomModelProps {
   setIsShowSignInModal: () => void
   setConversations: () => void
+  modelPermalink?: string
 }
 
-const CustomModel: React.FC<CustomModelProps> = ({ setIsShowSignInModal, setConversations }) => {
+const CustomModel: React.FC<CustomModelProps> = ({ setIsShowSignInModal, setConversations, modelPermalink }) => {
   const [model, setModel] = useState({})
   const initMessages = [
     {
@@ -24,14 +26,27 @@ const CustomModel: React.FC<CustomModelProps> = ({ setIsShowSignInModal, setConv
   const [isLoading, setIsLoading] = useState(false)
   const [isPrivate, setIsPrivate] = useState(false)
   const [messages, setMessages] = useState(initMessages)
-  const permalink = useParams().modelPermalink
+  const [permalink, setPermalink] = useState(useParams().modelPermalink)
+  const conversationId = useParams().conversationId
 
   useEffect(() => {
-    fetchModel()
+    if (conversationId) {
+      fetchMessages()
+    }
   }, [])
 
   useEffect(() => {
-    setMessages(initMessages)
+    setPermalink(modelPermalink)
+  }, [modelPermalink])
+
+  useEffect(() => {
+    if (permalink) {
+      fetchModel()
+    }
+  }, [permalink])
+
+  useEffect(() => {
+    setMessages([...initMessages, ...messages].filter((m) => !!m.content))
   }, [model])
 
   const fetchModel = async () => {
@@ -49,6 +64,12 @@ const CustomModel: React.FC<CustomModelProps> = ({ setIsShowSignInModal, setConv
       }
     }
   }
+
+  const fetchMessages = useCallback(async () => {
+    const res = await UserApi.fetchMessages(conversationId)
+    const data = await res.json
+    setMessages(data.messages)
+  }, [conversationId])
 
   return (
     <>
@@ -74,23 +95,9 @@ const CustomModel: React.FC<CustomModelProps> = ({ setIsShowSignInModal, setConv
                         <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl h-full w-full md:max-w-3xl lg:max-w-4xl">
                           <div className="flex flex-col h-full md:pb-4">
                             <div className="flex flex-col h-full overflow-x-auto">
-                              <div className="py-3 border-b border-gray-300 border-dashed">
-                                <div className="px-4 sm:px-0">
-                                  <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-600">{model.description}</p>
-                                  <div className="flex justify-between items-end">
-                                    <div className="mt-1 max-w-2xl text-xs text-gray-600 flex items-center">
-                                      <span>创建者：</span>
-                                      <img className="inline-block rounded-full mx-1 h-5 w-5" src={model.user_avatar_url} />
-                                      <span>{model.user_nickname}</span>
-                                    </div>
-                                    <ModelActions
-                                      model={model}
-                                      setModel={setModel}
-                                      setIsShowSignInModal={setIsShowSignInModal}
-                                    />
-                                  </div>
-                                </div>
-                              </div>
+                              {!modelPermalink && (
+                                <Header model={model} setModel={setModel} setIsShowSignInModal={setIsShowSignInModal} />
+                              )}
                               <MessageList
                                 gptName={model.title}
                                 messages={messages}
@@ -117,7 +124,7 @@ const CustomModel: React.FC<CustomModelProps> = ({ setIsShowSignInModal, setConv
               setMessages={setMessages}
               conversationType="custom"
               modelId={model.id}
-              placeholder={model.placeholder}
+              placeholder={model.input_placeholder}
             />
           </main>
         )}

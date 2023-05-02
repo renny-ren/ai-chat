@@ -1,13 +1,15 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import currentUser from "stores/current_user_store"
 import { Helmet } from "react-helmet"
 import Background from "components/common/Background"
 import MessageList from "components/common/MessageList"
 import Footer from "components/common/Footer"
+import * as UserApi from "shared/api/user"
 
 interface DeveloperProps {
   setIsShowSignInModal: () => void
   setConversations: () => void
+  conversationId?: number
 }
 
 const initMessages = [
@@ -20,9 +22,21 @@ const initMessages = [
   },
 ]
 
-const Developer: React.FC<DeveloperProps> = ({ setIsShowSignInModal, setConversations }) => {
+const Developer: React.FC<DeveloperProps> = ({ setIsShowSignInModal, setConversations, conversationId }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [messages, setMessages] = useState(initMessages)
+
+  useEffect(() => {
+    if (conversationId) {
+      fetchMessages()
+    }
+  }, [])
+
+  const fetchMessages = async () => {
+    const res = await UserApi.fetchMessages(conversationId)
+    const data = await res.json
+    setMessages([...initMessages, ...data.messages])
+  }
 
   return (
     <>
@@ -60,6 +74,7 @@ const Developer: React.FC<DeveloperProps> = ({ setIsShowSignInModal, setConversa
             setConversations={setConversations}
             messages={messages}
             setMessages={setMessages}
+            conversationId={conversationId}
             signInPrompt="登录即可开始使用程序员助手"
             loadingMessage="程序员助手正在思考中，请耐心等待"
             conversationType="developer"
