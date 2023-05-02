@@ -9,7 +9,7 @@ class Model < ApplicationRecord
 
   validates :title, presence: true, uniqueness: true, length: 1..20
   validates :permalink, presence: true, uniqueness: true, length: 1..50, exclusion: {
-                          in: ["app_messages", "pricing", "settings", "faqs", "disclaimer", "admin", "images", "girlfriend", "fortune", "developer_assistant", "mj_prompt", "models"],
+                          in: ["app_messages", "pricing", "settings", "faqs", "disclaimer", "admin", "images", "girlfriend", "fortune", "developer_assistant", "models"],
                           message: "不能为%{value}",
                         }, format: { with: /\A[a-zA-Z0-9_-]+\z/, message: "只能为字母、数字、下划线或中横线" }
   validates :description, presence: true, length: { maximum: 60 }
