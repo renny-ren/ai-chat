@@ -13,7 +13,7 @@ const Chat = ({ setConversations, setIsShowModal }) => {
   const conversationId = useParams().conversationId
 
   useEffect(() => {
-    fetchConversation()
+    if (conversationId) fetchConversation()
   }, [])
 
   const fetchConversation = async () => {
@@ -22,42 +22,53 @@ const Chat = ({ setConversations, setIsShowModal }) => {
     setConversation(data.conversation || {})
   }
 
-  return (
-    <>
-      {conversation.type === "girlfriend" && (
-        <Girlfriend
-          conversationId={conversationId}
-          setConversations={setConversations}
-          setIsShowSignInModal={setIsShowModal}
-        />
-      )}
-      {conversation.type === "fortune" && (
-        <Fortune conversationId={conversationId} setConversations={setConversations} setIsShowSignInModal={setIsShowModal} />
-      )}
-      {conversation.type === "developer" && (
-        <Developer
-          conversationId={conversationId}
-          setConversations={setConversations}
-          setIsShowSignInModal={setIsShowModal}
-        />
-      )}
-      {conversation.type === "chatgpt" && (
-        <div className="h-full relative pt-12 md:pt-14">
-          <main className="h-full">
-            <Background />
-            <ChatModule setConversations={setConversations} setIsShowModal={setIsShowModal} />
-          </main>
-        </div>
-      )}
-      {conversation.type === "custom" && (
-        <CustomModel
-          modelPermalink={conversation.model_permalink}
-          setConversations={setConversations}
-          setIsShowSignInModal={setIsShowModal}
-        />
-      )}
-    </>
-  )
+  const renderContent = () => {
+    switch (conversation.type) {
+      case "girlfriend":
+        return (
+          <Girlfriend
+            conversationId={conversationId}
+            setConversations={setConversations}
+            setIsShowSignInModal={setIsShowModal}
+          />
+        )
+      case "fortune":
+        return (
+          <Fortune
+            conversationId={conversationId}
+            setConversations={setConversations}
+            setIsShowSignInModal={setIsShowModal}
+          />
+        )
+      case "developer":
+        return (
+          <Developer
+            conversationId={conversationId}
+            setConversations={setConversations}
+            setIsShowSignInModal={setIsShowModal}
+          />
+        )
+      case "custom":
+        return (
+          <CustomModel
+            modelPermalink={conversation.model_permalink}
+            setConversations={setConversations}
+            setIsShowSignInModal={setIsShowModal}
+          />
+        )
+      default:
+        return (
+          <div className="h-full relative pt-12 md:pt-14">
+            <main className="h-full">
+              <Background />
+              <ChatModule setConversations={setConversations} setIsShowModal={setIsShowModal} />
+            </main>
+          </div>
+        )
+    }
+  }
+
+  return <>{renderContent()}</>
 }
 
 export default Chat

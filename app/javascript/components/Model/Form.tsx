@@ -25,6 +25,7 @@ const ModelForm: React.FC<ModelFormProps> = ({ setIsShowSignInModal, action }) =
     description: "",
     introducton: "",
     system_instruction: "",
+    input_placeholder: "",
     is_public: true,
   })
   const modelPermalink = useParams().modelPermalink
@@ -65,7 +66,7 @@ const ModelForm: React.FC<ModelFormProps> = ({ setIsShowSignInModal, action }) =
       ...formData,
       [name]: value,
     })
-    setPreviewStep(name === "introduction" ? "show" : "list")
+    setPreviewStep(name === "introduction" || name === "input_placeholder" ? "show" : "list")
     if (name === "permalink") setPermalinkChanged(true)
   }
 
@@ -261,9 +262,22 @@ const ModelForm: React.FC<ModelFormProps> = ({ setIsShowSignInModal, action }) =
                         className="block w-full text-sm text-gray-900 rounded-lg border border-gray-300 focus:ring-emerald-500 focus:border-emerald-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-emerald-500 dark:focus:border-emerald-500"
                         value={formData.introduction}
                         onChange={handleInputChange}
-                        placeholder="仅用于展示，将会在聊天中作为第一条消息展示给用户"
+                        placeholder="(选填) 将会在聊天中作为第一条消息展示给用户"
                       ></textarea>
                     </div>
+                    <div className="sm:col-span-4">
+                      <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">输入占位符</label>
+                      <input
+                        required
+                        type="text"
+                        name="input_placeholder"
+                        className="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-emerald-500 dark:focus:border-emerald-500"
+                        value={formData.input_placeholder}
+                        onChange={handleInputChange}
+                        placeholder="(选填) 用于提示用户应该输入什么内容"
+                      />
+                    </div>
+
                     <div className="sm:col-span-2">
                       <div className="flex items-center block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                         <label>模型声音</label>

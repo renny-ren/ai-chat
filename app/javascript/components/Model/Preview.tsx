@@ -58,22 +58,6 @@ const Preview: React.FC = ({ className, formData, previewStep, setPreviewStep, a
 
       {previewStep === "show" && (
         <>
-          <div className="mt-10 fixed flex flex-row items-start">
-            <div className="flex mt-1 items-center relative">
-              <img
-                className="rounded-full aspect-square w-10 h-10 float-left shadow-md"
-                src={avatarUrl || gon.gpt_user.avatar_url}
-              />
-            </div>
-            <div className="relative flex flex-col gap-1 max-w-[70%]">
-              <div className="flex items-baseline">
-                <div className="text-sm font-medium ml-3 dark:text-white">{formData.title}</div>
-              </div>
-              <div className="markdown ai-response relative ml-2 mr-4 text-sm bg-white py-2 px-4 shadow rounded-xl break-words whitespace-pre-line max-w-max">
-                <div>{formData.introduction || `你好，我是${formData.title}`}</div>
-              </div>
-            </div>
-          </div>
           <a
             onClick={() => setPreviewStep("list")}
             className="cursor-pointer items-center float-right group relative flex justify-center rounded-md border border-transparent bg-emerald-500 py-2 px-4 text-sm font-medium text-white hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
@@ -89,6 +73,53 @@ const Preview: React.FC = ({ className, formData, previewStep, setPreviewStep, a
             </svg>
             返回
           </a>
+          <div className="mt-10 fixed">
+            <div className="flex flex-row items-start">
+              <div className="flex mt-1 items-center relative">
+                <img
+                  className="rounded-full aspect-square w-10 h-10 float-left shadow-md"
+                  src={avatarUrl || gon.gpt_user.avatar_url}
+                />
+              </div>
+              <div className="relative flex flex-col gap-1 max-w-[70%]">
+                <div className="flex items-baseline">
+                  <div className="text-sm font-medium ml-3 dark:text-white">{formData.title}</div>
+                </div>
+                <div className="markdown ai-response relative ml-2 mr-4 text-sm bg-white py-2 px-4 shadow rounded-xl break-words whitespace-pre-line max-w-max">
+                  <div>{formData.introduction || `你好，我是${formData.title}`}</div>
+                </div>
+              </div>
+            </div>
+            <div className="fixed bottom-4">
+              <div className="flex flex-col py-2 flex-grow md:py-3 pl-2 md:pl-4 relative border border-black/10 bg-white dark:border-gray-900/50 dark:text-white dark:bg-gray-700 rounded-md shadow-[0_0_10px_rgba(0,0,0,0.10)] dark:shadow-[0_0_15px_rgba(0,0,0,0.10)]">
+                <textarea
+                  className="user-input overflow-hidden max-h-52 m-0 w-full resize-none border-0 bg-transparent p-0 pr-7 focus:ring-0 focus-visible:ring-0 dark:bg-transparent"
+                  style={{ height: "24px" }}
+                  placeholder={formData.input_placeholder || "请输入您想问的问题"}
+                ></textarea>
+                <button
+                  type="button"
+                  className="absolute p-1 rounded-md text-gray-500 right-1 md:right-2 hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900 disabled:hover:bg-transparent dark:disabled:hover:bg-transparent"
+                >
+                  <svg
+                    stroke="currentColor"
+                    fill="none"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="h-4 w-4 mr-1"
+                    height="1em"
+                    width="1em"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
         </>
       )}
     </div>

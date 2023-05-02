@@ -15,6 +15,7 @@ class Model < ApplicationRecord
   validates :description, presence: true, length: { maximum: 60 }
   validates :system_instruction, presence: true, length: { maximum: 600 }
   validates :introduction, length: { maximum: 600 }
+  validates :input_placeholder, length: { maximum: 100 }
 
   scope :visible, -> { where(is_public: true) }
 
