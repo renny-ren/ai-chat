@@ -8,6 +8,7 @@ ActiveAdmin.register Conversation do
     column :user_id
     column :title
     column :type
+    column :model_id
     column :created_at
     actions
   end
@@ -15,6 +16,7 @@ ActiveAdmin.register Conversation do
   filter :user_id
   filter :title
   filter :type
+  filter :model_id
 
   form do |f|
     f.inputs do
