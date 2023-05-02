@@ -17,6 +17,7 @@ interface ChatModuleProps {
 const ChatModule: FC<ChatModuleProps> = ({ setIsShowModal, setConversations }) => {
   const [messages, setMessages] = useState<MessageInterface[]>([])
   const [prompt, setPrompt] = useState<string>("")
+  const [modelAvatar, setModelAvatar] = useState<string>("")
   const [promptToRetry, setPromptToRetry] = useState<string | null>(null)
   const [uniqueIdToRetry, setUniqueIdToRetry] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
@@ -57,6 +58,7 @@ const ChatModule: FC<ChatModuleProps> = ({ setIsShowModal, setConversations }) =
     const data = await res.json
     if (res.ok) {
       setMessages(data.messages)
+      setModelAvatar(data.model_avatar_url)
       // setPagination(data.pagination_meta)
     } else {
       message.error(data.message)
@@ -180,7 +182,12 @@ const ChatModule: FC<ChatModuleProps> = ({ setIsShowModal, setConversations }) =
                 )}
               </>
             ) : (
-              <MessageList messagesEndRef={messagesEndRef} messages={messages} isLoading={isLoading} />
+              <MessageList
+                messagesEndRef={messagesEndRef}
+                messages={messages}
+                isLoading={isLoading}
+                modelAvatar={modelAvatar}
+              />
             )}
           </div>
         </div>
