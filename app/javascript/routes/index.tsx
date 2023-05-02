@@ -45,10 +45,6 @@ export default ({ setIsShowModal, setCustomContent, setConversations }) => {
           path="/developer_assistant"
           element={<Developer setIsShowSignInModal={setIsShowModal} setConversations={setConversations} />}
         />
-        <Route
-          path="/mj_prompt"
-          element={<MJPrompt setIsShowSignInModal={setIsShowModal} setConversations={setConversations} />}
-        />
         <Route path="/app_messages" element={<AppMessageList />} />
         <Route exact path="/app_messages/new" element={<AppMessageForm action="new" />} />
         <Route exact path="/app_messages/:id/edit" element={<AppMessageForm action="edit" />} />

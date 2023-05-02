@@ -11,9 +11,10 @@ interface MessageListProps {
   messages: MessageInterface[]
   messagesEndRef: any
   isLoading: boolean
+  model?: any
 }
 
-const MessageList: FC<MessageListProps> = ({ messages, messagesEndRef, isLoading }) => {
+const MessageList: FC<MessageListProps> = ({ messages, messagesEndRef, isLoading, model }) => {
   const [playingMessageId, setPlayingMessageId] = useState(0)
   const responseListRef = useRef<HTMLDivElement>(null)
   const audioRef = useRef(null)
@@ -76,7 +77,7 @@ const MessageList: FC<MessageListProps> = ({ messages, messagesEndRef, isLoading
               <div className="w-[30px] h-[30px] flex flex-col relative items-end">
                 <img
                   className="h-10 w-10 rounded-sm aspect-square"
-                  src={isSelf(msg) ? currentUser.avatarUrl() : `${CDN_HOST}/assets/chatgpt_logo.png`}
+                  src={isSelf(msg) ? currentUser.avatarUrl() : model.avatar_url || `${CDN_HOST}/assets/chatgpt_logo.png`}
                 />
                 {!isSelf(msg) && (
                   <AudioButton
@@ -86,6 +87,7 @@ const MessageList: FC<MessageListProps> = ({ messages, messagesEndRef, isLoading
                     pauseAudio={pauseAudio}
                     playingMessageId={playingMessageId}
                     setPlayingMessageId={setPlayingMessageId}
+                    voice={model.voice || ""}
                   />
                 )}
               </div>
