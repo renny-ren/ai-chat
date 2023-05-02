@@ -17,13 +17,13 @@ interface ChatModuleProps {
 const ChatModule: FC<ChatModuleProps> = ({ setIsShowModal, setConversations }) => {
   const [messages, setMessages] = useState<MessageInterface[]>([])
   const [prompt, setPrompt] = useState<string>("")
-  const [modelAvatar, setModelAvatar] = useState<string>("")
   const [promptToRetry, setPromptToRetry] = useState<string | null>(null)
   const [uniqueIdToRetry, setUniqueIdToRetry] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [conversationId, setConversationId] = useState(useParams().conversationId || "")
   const [isFetchingMsgs, setIsFetchingMsgs] = useState(false)
   const [usedMessageCount, setUsedMessageCount] = useState(0)
+  const [model, setModel] = useState({})
 
   const htmlToText = (html: string) => {
     const temp = document.createElement("div")
@@ -58,7 +58,9 @@ const ChatModule: FC<ChatModuleProps> = ({ setIsShowModal, setConversations }) =
     const data = await res.json
     if (res.ok) {
       setMessages(data.messages)
-      setModelAvatar(data.model_avatar_url)
+      if (data.model) {
+        setModel(data.model)
+      }
       // setPagination(data.pagination_meta)
     } else {
       message.error(data.message)
@@ -182,12 +184,7 @@ const ChatModule: FC<ChatModuleProps> = ({ setIsShowModal, setConversations }) =
                 )}
               </>
             ) : (
-              <MessageList
-                messagesEndRef={messagesEndRef}
-                messages={messages}
-                isLoading={isLoading}
-                modelAvatar={modelAvatar}
-              />
+              <MessageList messagesEndRef={messagesEndRef} messages={messages} isLoading={isLoading} model={model} />
             )}
           </div>
         </div>
