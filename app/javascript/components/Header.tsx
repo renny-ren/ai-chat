@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useContext } from "react"
 import currentUser from "stores/current_user_store"
 import Sidebar from "./Sidebar"
 import MobileMenu from "./MobileMenu"
@@ -8,19 +8,21 @@ import UserBar from "./user/UserBar"
 import { Transition } from "@headlessui/react"
 import { CDN_HOST } from "shared/constants"
 import { Tag } from "antd"
+import { AppContext } from "./AppContext"
 
 interface HeaderProps {
-  setIsShowModal: () => void
   customContent?: any
   conversations: any
 }
 
-const Header: React.FC<HeaderProps> = ({ setIsShowModal, customContent, conversations }) => {
+const Header: React.FC<HeaderProps> = ({ customContent, conversations }) => {
   const [isShowMobileMenu, setIsShowMobileMenu] = useState(false)
+
+  const { showSignInModal, setShowSigninModal } = useContext(AppContext)
 
   const onShowSignInModal = () => {
     setIsShowMobileMenu(false)
-    setIsShowModal(true)
+    setShowSigninModal(true)
   }
 
   const toggleDarkMode = () => {

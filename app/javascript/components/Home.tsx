@@ -40,6 +40,8 @@ const Home = ({ setIsShowModal, setCustomContent }) => {
           </div>
           <ChatRoom showSignInModal={() => setIsShowModal(true)} setCustomContent={setCustomContent} />
           {/*<ChatModule />*/}
+          <Link to="/girlfriend">About</Link>
+          <Link to="/fortune">About2</Link>
         </main>
       </div>
     </>

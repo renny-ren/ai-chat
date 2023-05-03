@@ -4,9 +4,10 @@ import SignInModal from "./user/SignInModal"
 import Header from "./Header"
 import axios from "axios"
 import currentUser from "stores/current_user_store"
+import { AppContext } from "./AppContext"
 
 const App = (props) => {
-  const [isShowModal, setIsShowModal] = useState(false)
+  const [showSigninModal, setShowSigninModal] = useState(false)
   const [customContent, setCustomContent] = useState()
   const [conversations, setConversations] = useState([])
 
@@ -27,13 +28,12 @@ const App = (props) => {
   }
 
   return (
-    <>
+    <AppContext.Provider value={{ showSigninModal, setShowSigninModal, setConversations }}>
       <div className="h-full lg:ml-64 xl:ml-72">
-        <Header setIsShowModal={setIsShowModal} customContent={customContent} conversations={conversations} />
-        <Routes setIsShowModal={setIsShowModal} setCustomContent={setCustomContent} setConversations={setConversations} />
-        <SignInModal isShow={isShowModal} setOpen={setIsShowModal} />
+        <Routes customContent={customContent} setCustomContent={setCustomContent} conversations={conversations} />
       </div>
-    </>
+      <SignInModal />
+    </AppContext.Provider>
   )
 }
 export default App

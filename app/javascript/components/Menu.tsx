@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { message } from "antd"
 import ConversationList from "./ConversationList"
+import { Link } from "react-router-dom"
 
 interface MenuProps {
   isMobile?: boolean
@@ -120,6 +121,8 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, isMobile 
                   <span className="truncate">AI 女友</span>
                 </a>
               </li>
+              <Link to="/girlfriend">About</Link>
+              <Link to="/fortune">About2</Link>
               <li
                 className={`relative ${
                   window.location.pathname === "/fortune" ? "border-l border-emerald-400 bg-zinc-800/[.025]" : ""

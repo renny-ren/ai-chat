@@ -1,5 +1,6 @@
-import React from "react"
+import React, { Fragment } from "react"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import Layout from "components/Layout"
 import Home from "components/Home"
 import Disclaimer from "components/Disclaimer"
 import Chat from "components/Chat"
@@ -16,47 +17,49 @@ import Model from "components/Model"
 import EditModel from "components/Model/Edit"
 import CustomModel from "components/CustomModel"
 
-export default ({ setIsShowModal, setCustomContent, setConversations }) => {
+export default ({ setIsShowModal, customContent, setCustomContent, conversations, setConversations }) => {
   return (
     <Router>
-      <Routes>
-        <Route exact path="/" element={<Home setIsShowModal={setIsShowModal} setCustomContent={setCustomContent} />} />
-        <Route path="/disclaimer" element={<Disclaimer />} />
-        <Route
-          exact
-          path="/chats/new"
-          element={<Chat setConversations={setConversations} setIsShowModal={setIsShowModal} />}
-        />
-        <Route path="/chats/:conversationId" element={<Chat setIsShowModal={setIsShowModal} />} />
-        <Route path="/settings" element={<Settings />} />
-        <Route path="/pricing" element={<Pricing setIsShowSignInModal={setIsShowModal} />} />
-        <Route path="/faqs" element={<Faqs />} />
-        <Route path="/images" element={<Images setIsShowSignInModal={setIsShowModal} />} />
-        <Route
-          path="/fortune"
-          element={<Fortune setIsShowSignInModal={setIsShowModal} setConversations={setConversations} />}
-        />
-        <Route
-          path="/girlfriend"
-          element={<Girlfriend setIsShowSignInModal={setIsShowModal} setConversations={setConversations} />}
-        />
-        <Route
-          path="/developer_assistant"
-          element={<Developer setIsShowSignInModal={setIsShowModal} setConversations={setConversations} />}
-        />
-        <Route path="/app_messages" element={<AppMessageList />} />
-        <Route exact path="/app_messages/new" element={<AppMessageForm action="new" />} />
-        <Route exact path="/app_messages/:id/edit" element={<AppMessageForm action="edit" />} />
-        <Route path="/models" element={<Model setIsShowSignInModal={setIsShowModal} />} />
-        <Route path="/models/new" element={<Model tab="new" setIsShowSignInModal={setIsShowModal} />} />
-        <Route path="/models/self" element={<Model tab="self" setIsShowSignInModal={setIsShowModal} />} />
-        <Route path="/models/starred" element={<Model tab="starred" setIsShowSignInModal={setIsShowModal} />} />
-        <Route path="/:modelPermalink/edit" element={<EditModel setIsShowSignInModal={setIsShowModal} />} />
-        <Route
-          path="/:modelPermalink"
-          element={<CustomModel setIsShowSignInModal={setIsShowModal} setConversations={setConversations} />}
-        />
-      </Routes>
+      <Layout setIsShowModal={setIsShowModal} customContent={customContent} conversations={conversations}>
+        <Routes>
+          <Route exact path="/" element={<Home setIsShowModal={setIsShowModal} setCustomContent={setCustomContent} />} />
+          <Route path="/disclaimer" element={<Disclaimer />} />
+          <Route
+            exact
+            path="/chats/new"
+            element={<Chat setConversations={setConversations} setIsShowModal={setIsShowModal} />}
+          />
+          <Route path="/chats/:conversationId" element={<Chat setIsShowModal={setIsShowModal} />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/pricing" element={<Pricing setIsShowSignInModal={setIsShowModal} />} />
+          <Route path="/faqs" element={<Faqs />} />
+          <Route path="/images" element={<Images setIsShowSignInModal={setIsShowModal} />} />
+          <Route
+            path="/fortune"
+            element={<Fortune setIsShowSignInModal={setIsShowModal} setConversations={setConversations} />}
+          />
+          <Route
+            path="/girlfriend"
+            element={<Girlfriend setIsShowSignInModal={setIsShowModal} setConversations={setConversations} />}
+          />
+          <Route
+            path="/developer_assistant"
+            element={<Developer setIsShowSignInModal={setIsShowModal} setConversations={setConversations} />}
+          />
+          <Route path="/app_messages" element={<AppMessageList />} />
+          <Route exact path="/app_messages/new" element={<AppMessageForm action="new" />} />
+          <Route exact path="/app_messages/:id/edit" element={<AppMessageForm action="edit" />} />
+          <Route path="/models" element={<Model setIsShowSignInModal={setIsShowModal} />} />
+          <Route path="/models/new" element={<Model tab="new" setIsShowSignInModal={setIsShowModal} />} />
+          <Route path="/models/self" element={<Model tab="self" setIsShowSignInModal={setIsShowModal} />} />
+          <Route path="/models/starred" element={<Model tab="starred" setIsShowSignInModal={setIsShowModal} />} />
+          <Route path="/:modelPermalink/edit" element={<EditModel setIsShowSignInModal={setIsShowModal} />} />
+          <Route
+            path="/:modelPermalink"
+            element={<CustomModel setIsShowSignInModal={setIsShowModal} setConversations={setConversations} />}
+          />
+        </Routes>
+      </Layout>
     </Router>
   )
 }
