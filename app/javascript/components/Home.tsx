@@ -1,9 +1,9 @@
-import React, { Fragment, useState, useEffect } from "react"
+import React, { Fragment, useState, useEffect, useContext } from "react"
 import { Link } from "react-router-dom"
 import ChatModule from "./ChatModule"
 import ChatRoom from "./ChatRoom"
 
-const Home = ({ setIsShowModal, setCustomContent }) => {
+const Home = ({ setCustomContent }) => {
   return (
     <>
       {/*  <div style={{ height: "100%" }}>
@@ -38,7 +38,7 @@ const Home = ({ setIsShowModal, setCustomContent }) => {
               </div>
             </div>
           </div>
-          <ChatRoom showSignInModal={() => setIsShowModal(true)} setCustomContent={setCustomContent} />
+          <ChatRoom setCustomContent={setCustomContent} />
           {/*<ChatModule />*/}
           <Link to="/girlfriend">About</Link>
           <Link to="/fortune">About2</Link>

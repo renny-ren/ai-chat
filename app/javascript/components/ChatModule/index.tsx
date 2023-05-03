@@ -9,12 +9,9 @@ import Typed from "typed.js"
 import { CDN_HOST } from "shared/constants"
 import currentUser from "stores/current_user_store"
 
-interface ChatModuleProps {
-  setIsShowModal: () => void
-  setConversations?: () => void
-}
+interface ChatModuleProps {}
 
-const ChatModule: FC<ChatModuleProps> = ({ setIsShowModal, setConversations }) => {
+const ChatModule: FC<ChatModuleProps> = ({}) => {
   const [messages, setMessages] = useState<MessageInterface[]>([])
   const [prompt, setPrompt] = useState<string>("")
   const [promptToRetry, setPromptToRetry] = useState<string | null>(null)
@@ -190,7 +187,6 @@ const ChatModule: FC<ChatModuleProps> = ({ setIsShowModal, setConversations }) =
         </div>
       </div>
       <Footer
-        setIsShowModal={setIsShowModal}
         prompt={prompt}
         setPrompt={setPrompt}
         isLoading={isLoading}
@@ -201,7 +197,6 @@ const ChatModule: FC<ChatModuleProps> = ({ setIsShowModal, setConversations }) =
         setConversationId={setConversationId}
         messages={messages}
         setMessages={setMessages}
-        setConversations={setConversations}
       />
     </main>
   )

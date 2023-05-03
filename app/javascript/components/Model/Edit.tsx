@@ -5,11 +5,9 @@ import { Helmet } from "react-helmet"
 import Background from "components/common/Background"
 import Form from "./Form"
 
-interface EditModelProps {
-  setIsShowSignInModal: () => void
-}
+interface EditModelProps {}
 
-const EditModel: React.FC<EditModelProps> = ({ setIsShowSignInModal }) => {
+const EditModel: React.FC<EditModelProps> = ({}) => {
   return (
     <>
       <Helmet>
@@ -25,7 +23,7 @@ const EditModel: React.FC<EditModelProps> = ({ setIsShowSignInModal }) => {
                 <div className="flex pb-2 border-b border-gray-300 text-lg font-medium text-gray-900 dark:text-white">
                   修改模型
                 </div>
-                <Form action="edit" setIsShowSignInModal={setIsShowSignInModal} />
+                <Form action="edit" />
               </div>
             </div>
           </div>

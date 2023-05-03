@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from "react"
+import { AppContext } from "./AppContext"
 import PricingModal from "./PricingModal"
 import currentUser from "stores/current_user_store"
 import axios from "axios"
 import { Badge, message } from "antd"
 import { Helmet } from "react-helmet"
 
-interface PricingProps {
-  setIsShowSignInModal: () => void
-}
+interface PricingProps {}
 
-const Pricing: React.FC<PricingProps> = ({ setIsShowSignInModal }) => {
+const Pricing: React.FC<PricingProps> = ({}) => {
   const [isOpenModal, setIsOpenModal] = useState(false)
   const [planName, setPlanName] = useState("")
   const [subscriptions, setSubscriptions] = useState([])
+  const { setShowSigninModal } = useContext(AppContext)
 
   useEffect(() => {
     if (currentUser.isSignedIn()) {
@@ -25,7 +25,7 @@ const Pricing: React.FC<PricingProps> = ({ setIsShowSignInModal }) => {
       openModal(plan)
     } else {
       message.error("请先登录或注册账号")
-      setIsShowSignInModal(true)
+      setShowSigninModal(true)
     }
   }
 

@@ -2,11 +2,11 @@ import React, { useState, Fragment } from "react"
 import Header from "./Header"
 
 function Layout(props) {
-  const { setIsShowModal, customContent, conversations } = props
+  const { customContent, conversations } = props
 
   return (
     <Fragment>
-      <Header setIsShowModal={setIsShowModal} customContent={customContent} conversations={conversations} />
+      <Header customContent={customContent} conversations={conversations} />
       {props.children}
     </Fragment>
   )

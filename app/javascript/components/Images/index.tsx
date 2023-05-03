@@ -5,11 +5,9 @@ import Library from "./Library"
 import Background from "components/common/Background"
 import { Helmet } from "react-helmet"
 
-interface ImagesProps {
-  setIsShowSignInModal: () => void
-}
+interface ImagesProps {}
 
-const Images: React.FC<ImagesProps> = ({ setIsShowSignInModal }) => {
+const Images: React.FC<ImagesProps> = ({}) => {
   const [images, setImages] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [currentTab, setCurrentTab] = useState("generation")
@@ -57,7 +55,6 @@ const Images: React.FC<ImagesProps> = ({ setIsShowSignInModal }) => {
             setImages={setImages}
             isLoading={isLoading}
             setIsLoading={setIsLoading}
-            setIsShowSignInModal={setIsShowSignInModal}
             size={size}
             setSize={setSize}
             setCurrentTab={setCurrentTab}

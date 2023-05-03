@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from "react"
+import { AppContext } from "components/AppContext"
 import { useParams } from "react-router-dom"
 import currentUser from "stores/current_user_store"
 import * as CommonApi from "shared/api/common"
@@ -11,11 +12,10 @@ import Preview from "./Preview"
 import pinyin from "tiny-pinyin"
 
 interface ModelFormProps {
-  setIsShowSignInModal: () => void
   action: string
 }
 
-const ModelForm: React.FC<ModelFormProps> = ({ setIsShowSignInModal, action }) => {
+const ModelForm: React.FC<ModelFormProps> = ({ action }) => {
   const [previewStep, setPreviewStep] = useState<string>("list")
   const [avatarUrl, setAvatarUrl] = useState<string>()
   const [permalinkChanged, setPermalinkChanged] = useState<boolean>(false)
@@ -30,6 +30,7 @@ const ModelForm: React.FC<ModelFormProps> = ({ setIsShowSignInModal, action }) =
   })
   const modelPermalink = useParams().modelPermalink
   const [formErrors, setFormErrors] = useState([])
+  const { showSignInModal, setShowSigninModal } = useContext(AppContext)
 
   useEffect(() => {
     if (!validateLogin()) return
@@ -41,7 +42,7 @@ const ModelForm: React.FC<ModelFormProps> = ({ setIsShowSignInModal, action }) =
   const validateLogin = () => {
     if (!currentUser.isSignedIn()) {
       message.info("请先登录后再操作")
-      setIsShowSignInModal(true)
+      setShowSigninModal(true)
     } else {
       return true
     }

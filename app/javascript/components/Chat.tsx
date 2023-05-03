@@ -8,7 +8,7 @@ import Girlfriend from "components/Girlfriend"
 import Fortune from "components/Fortune"
 import Developer from "components/Developer"
 
-const Chat = ({ setConversations, setIsShowModal }) => {
+const Chat = ({}) => {
   const [conversation, setConversation] = useState({})
   const conversationId = useParams().conversationId
 
@@ -25,43 +25,19 @@ const Chat = ({ setConversations, setIsShowModal }) => {
   const renderContent = () => {
     switch (conversation.type) {
       case "girlfriend":
-        return (
-          <Girlfriend
-            conversationId={conversationId}
-            setConversations={setConversations}
-            setIsShowSignInModal={setIsShowModal}
-          />
-        )
+        return <Girlfriend conversationId={conversationId} />
       case "fortune":
-        return (
-          <Fortune
-            conversationId={conversationId}
-            setConversations={setConversations}
-            setIsShowSignInModal={setIsShowModal}
-          />
-        )
+        return <Fortune conversationId={conversationId} />
       case "developer":
-        return (
-          <Developer
-            conversationId={conversationId}
-            setConversations={setConversations}
-            setIsShowSignInModal={setIsShowModal}
-          />
-        )
+        return <Developer conversationId={conversationId} />
       case "custom":
-        return (
-          <CustomModel
-            modelPermalink={conversation.model_permalink}
-            setConversations={setConversations}
-            setIsShowSignInModal={setIsShowModal}
-          />
-        )
+        return <CustomModel modelPermalink={conversation.model_permalink} />
       default:
         return (
           <div className="h-full relative pt-12 md:pt-14">
             <main className="h-full">
               <Background />
-              <ChatModule setConversations={setConversations} setIsShowModal={setIsShowModal} />
+              <ChatModule />
             </main>
           </div>
         )

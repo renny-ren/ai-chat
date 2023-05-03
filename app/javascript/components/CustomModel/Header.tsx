@@ -4,10 +4,9 @@ import ModelActions from "./ModelActions"
 interface HeaderProps {
   model: any
   setModel: () => void
-  setIsShowSignInModal: () => void
 }
 
-const Header: React.FC<HeaderProps> = ({ model, setModel, setIsShowSignInModal }) => {
+const Header: React.FC<HeaderProps> = ({ model, setModel }) => {
   return (
     <>
       <div className="py-3 border-b border-gray-300 border-dashed">
@@ -19,7 +18,7 @@ const Header: React.FC<HeaderProps> = ({ model, setModel, setIsShowSignInModal }
               <img className="inline-block rounded-full mx-1 h-5 w-5" src={model.user_avatar_url} />
               <span>{model.user_nickname}</span>
             </div>
-            <ModelActions model={model} setModel={setModel} setIsShowSignInModal={setIsShowSignInModal} />
+            <ModelActions model={model} setModel={setModel} />
           </div>
         </div>
       </div>

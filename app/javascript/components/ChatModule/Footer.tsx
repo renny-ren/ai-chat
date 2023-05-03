@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useRef } from "react"
+import React, { useEffect, useState, useRef, useContext } from "react"
+import { AppContext } from "components/AppContext"
 import currentUser from "stores/current_user_store"
 import { message } from "antd"
 import data from "@emoji-mart/data"
@@ -11,14 +12,12 @@ message.config({
 })
 
 interface FooterProps {
-  setIsShowModal: () => void
   prompt: string
   setPrompt: () => void
   isLoading: boolean
   setIsLoading: () => void
   messages: any
   setMessages: () => void
-  setConversations: () => void
   setUsedMessageCount: () => void
   usedMessageCount: number
   conversationId: number
@@ -26,7 +25,6 @@ interface FooterProps {
 }
 
 const Footer: React.FC<FooterProps> = ({
-  setIsShowModal,
   uniqueIdToRetry,
   regenerateResponse,
   prompt,
@@ -37,7 +35,6 @@ const Footer: React.FC<FooterProps> = ({
   conversationId,
   messages,
   setMessages,
-  setConversations,
   setUsedMessageCount,
   setConversationId,
 }) => {
@@ -45,6 +42,7 @@ const Footer: React.FC<FooterProps> = ({
   const [showEmojiPicker, setShowEmojiPicker] = useState(false)
   const messageLimitPerDay = currentUser.plan()?.message_limit_per_day
   const [isUpgradeOpen, setIsUpgradeOpen] = useState(false)
+  const { setShowSigninModal, setConversations } = useContext(AppContext)
 
   useEffect(() => {
     if (isLoading) {
@@ -248,7 +246,7 @@ const Footer: React.FC<FooterProps> = ({
             </div>
           ) : (
             <div
-              onClick={() => setIsShowModal(true)}
+              onClick={() => setShowSigninModal(true)}
               className="cursor-pointer flex flex-col w-full py-2 flex-grow md:py-3 md:pl-2 relative border border-black/10 bg-white dark:border-gray-900/50 dark:text-white dark:bg-gray-700 rounded-md shadow-[0_0_10px_rgba(0,0,0,0.10)] dark:shadow-[0_0_15px_rgba(0,0,0,0.10)]"
             >
               <div className="flex h-6 w-full items-center pl-2 pr-3 text-sm text-zinc-500 transition dark:bg-white/5 dark:text-zinc-400 focus:[&amp;:not(:focus-visible)]:outline-none">

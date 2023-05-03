@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useRef } from "react"
+import React, { useEffect, useState, useRef, useContext } from "react"
+import { AppContext } from "components/AppContext"
 import currentUser from "stores/current_user_store"
 import { message, Select } from "antd"
 import axios from "axios"
@@ -9,26 +10,18 @@ interface FooterProps {
   setImages: () => void
   isLoading: boolean
   setIsLoading: () => void
-  setIsShowSignInModal: () => void
   size: string
   setSize: () => void
   setCurrentTab: () => void
 }
 
-const Footer: React.FC<FooterProps> = ({
-  setImages,
-  isLoading,
-  setIsLoading,
-  setIsShowSignInModal,
-  size,
-  setSize,
-  setCurrentTab,
-}) => {
+const Footer: React.FC<FooterProps> = ({ setImages, isLoading, setIsLoading, size, setSize, setCurrentTab }) => {
   const inputRef = useRef(null)
   const [prompt, setPrompt] = useState("")
   const [imageCount, setImageCount] = useState(1)
   const [userImageCredit, setUserImageCredit] = useState(0)
   const [isUpgradeOpen, setIsUpgradeOpen] = useState(false)
+  const { setShowSigninModal } = useContext(AppContext)
 
   useEffect(() => {
     if (currentUser.isSignedIn()) {
@@ -187,7 +180,7 @@ const Footer: React.FC<FooterProps> = ({
             </>
           ) : (
             <div
-              onClick={() => setIsShowSignInModal(true)}
+              onClick={() => setShowSigninModal(true)}
               className="cursor-pointer flex flex-col w-full py-2 flex-grow md:py-3 md:pl-2 relative border border-black/10 bg-white dark:border-gray-900/50 dark:text-white dark:bg-gray-700 rounded-md shadow-[0_0_10px_rgba(0,0,0,0.10)] dark:shadow-[0_0_15px_rgba(0,0,0,0.10)]"
             >
               <div className="flex h-6 w-full items-center pl-2 pr-3 text-sm text-zinc-500 transition dark:bg-white/5 dark:text-zinc-400 focus:[&amp;:not(:focus-visible)]:outline-none">

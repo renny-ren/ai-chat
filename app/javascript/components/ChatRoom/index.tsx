@@ -11,11 +11,10 @@ import type { ChatMessage } from "./types"
 import { Avatar as AntdAvatar, Tooltip } from "antd"
 
 interface ChatRoomProps {
-  showSignInModal: () => void
   setCustomContent: any
 }
 
-const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal, setCustomContent }) => {
+const ChatRoom: React.FC<ChatRoomProps> = ({ setCustomContent }) => {
   const messagesRef = useRef()
   const [messages, setMessages] = useState([])
   const [isGenerating, setIsGenerating] = useState(false)
@@ -209,7 +208,6 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ showSignInModal, setCustomContent }
         <Notification noticeContent={noticeContent} isShowNotice={isShowNotice} setIsShowNotice={setIsShowNotice} />
         <Footer
           cable={consumer}
-          showSignInModal={showSignInModal}
           isGenerating={isGenerating}
           setIsGenerating={setIsGenerating}
           showNotice={showNotice}

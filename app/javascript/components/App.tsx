@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react"
+import { AppContext } from "./AppContext"
 import Routes from "../routes"
 import SignInModal from "./user/SignInModal"
 import Header from "./Header"
 import axios from "axios"
 import currentUser from "stores/current_user_store"
-import { AppContext } from "./AppContext"
 
 const App = (props) => {
   const [showSigninModal, setShowSigninModal] = useState(false)
@@ -32,7 +32,7 @@ const App = (props) => {
       <div className="h-full lg:ml-64 xl:ml-72">
         <Routes customContent={customContent} setCustomContent={setCustomContent} conversations={conversations} />
       </div>
-      <SignInModal />
+      <SignInModal isShow={showSigninModal} />
     </AppContext.Provider>
   )
 }

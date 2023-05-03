@@ -7,8 +7,6 @@ import Footer from "components/common/Footer"
 import * as UserApi from "shared/api/user"
 
 interface GirlfriendProps {
-  setIsShowSignInModal: () => void
-  setConversations: () => void
   conversationId?: number
 }
 
@@ -20,7 +18,7 @@ const initMessages = [
   },
 ]
 
-const Girlfriend: React.FC<GirlfriendProps> = ({ setIsShowSignInModal, setConversations, conversationId }) => {
+const Girlfriend: React.FC<GirlfriendProps> = ({ conversationId }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [messages, setMessages] = useState(initMessages)
 
@@ -68,8 +66,6 @@ const Girlfriend: React.FC<GirlfriendProps> = ({ setIsShowSignInModal, setConver
           <Footer
             isLoading={isLoading}
             setIsLoading={setIsLoading}
-            setIsShowSignInModal={setIsShowSignInModal}
-            setConversations={setConversations}
             messages={messages}
             setMessages={setMessages}
             conversationId={conversationId}

@@ -10,12 +10,10 @@ import { Empty } from "antd"
 import Header from "./Header"
 
 interface CustomModelProps {
-  setIsShowSignInModal: () => void
-  setConversations: () => void
   modelPermalink?: string
 }
 
-const CustomModel: React.FC<CustomModelProps> = ({ setIsShowSignInModal, setConversations, modelPermalink }) => {
+const CustomModel: React.FC<CustomModelProps> = ({ modelPermalink }) => {
   const [model, setModel] = useState({})
   const initMessages = [
     {
@@ -95,9 +93,7 @@ const CustomModel: React.FC<CustomModelProps> = ({ setIsShowSignInModal, setConv
                         <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl h-full w-full md:max-w-3xl lg:max-w-4xl">
                           <div className="flex flex-col h-full md:pb-4">
                             <div className="flex flex-col h-full overflow-x-auto">
-                              {!modelPermalink && (
-                                <Header model={model} setModel={setModel} setIsShowSignInModal={setIsShowSignInModal} />
-                              )}
+                              {!modelPermalink && <Header model={model} setModel={setModel} />}
                               <MessageList
                                 gptName={model.title}
                                 messages={messages}
@@ -118,8 +114,6 @@ const CustomModel: React.FC<CustomModelProps> = ({ setIsShowSignInModal, setConv
             <Footer
               isLoading={isLoading}
               setIsLoading={setIsLoading}
-              setIsShowSignInModal={setIsShowSignInModal}
-              setConversations={setConversations}
               messages={messages}
               setMessages={setMessages}
               conversationType="custom"

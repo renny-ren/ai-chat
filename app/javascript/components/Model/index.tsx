@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from "react"
+import { AppContext } from "components/AppContext"
 import currentUser from "stores/current_user_store"
 import { Badge, message } from "antd"
 import { Helmet } from "react-helmet"
@@ -6,12 +7,11 @@ import Background from "components/common/Background"
 import List from "./List"
 import Form from "./Form"
 
-interface ModelProps {
-  setIsShowSignInModal: () => void
-}
+interface ModelProps {}
 
-const Model: React.FC<ModelProps> = ({ setIsShowSignInModal, tab }) => {
+const Model: React.FC<ModelProps> = ({ tab }) => {
   const [currentTab, setCurrentTab] = useState(tab || "list")
+  const { setShowSigninModal } = useContext(AppContext)
 
   const changeTab = (tab) => {
     if (tab !== "list" && !validateLogin()) return
@@ -22,7 +22,7 @@ const Model: React.FC<ModelProps> = ({ setIsShowSignInModal, tab }) => {
   const validateLogin = () => {
     if (!currentUser.isSignedIn()) {
       message.info("请先登录后再操作")
-      setIsShowSignInModal(true)
+      setShowSigninModal(true)
     } else {
       return true
     }
@@ -82,7 +82,7 @@ const Model: React.FC<ModelProps> = ({ setIsShowSignInModal, tab }) => {
                 {currentTab === "list" && <List validateLogin={validateLogin} />}
                 {currentTab === "self" && <List scope="self" validateLogin={validateLogin} />}
                 {currentTab === "starred" && <List scope="starred" validateLogin={validateLogin} />}
-                {currentTab === "new" && <Form setIsShowSignInModal={setIsShowSignInModal} />}
+                {currentTab === "new" && <Form />}
               </div>
             </div>
           </div>

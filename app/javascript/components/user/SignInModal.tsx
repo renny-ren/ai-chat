@@ -1,4 +1,5 @@
-import React, { Fragment, useRef, useState, useEffect } from "react"
+import React, { Fragment, useRef, useState, useContext } from "react"
+import { AppContext } from "components/AppContext"
 import { Dialog, Transition } from "@headlessui/react"
 import { LockClosedIcon } from "@heroicons/react/20/solid"
 import { message } from "antd"
@@ -15,15 +16,15 @@ axios.interceptors.request.use((config) => {
 
 interface SignInModalProps {
   isShow: boolean
-  setOpen: () => void
 }
 
-const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
+const SignInModal: React.FC<SignInModalProps> = ({ isShow }) => {
   const nameRef = useRef(null)
   const [mode, setMode] = useState("sign_in")
   const [formErrors, setFormErrors] = useState([])
   const [rememberMe, setRememberMe] = useState(true)
   const [showPassword, setShowPassword] = useState(false)
+  const { setShowSigninModal } = useContext(AppContext)
 
   const onSignIn = async (e) => {
     e.preventDefault()
@@ -33,7 +34,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
         password: e.target.elements.password.value,
       })
       message.success("登录成功！")
-      setOpen(false)
+      setShowSigninModal(false)
       gon.user_meta = response.data.user_meta
       if (rememberMe) {
         localStorage.setItem("username", e.target.elements.username.value)
@@ -55,7 +56,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
         password_confirmation: e.target.elements.password_confirmation.value,
       })
       message.success("注册成功！")
-      setOpen(false)
+      setShowSigninModal(false)
       gon.user_meta = response.data.user_meta
       localStorage.setItem("username", e.target.elements.username.value)
     } catch (error) {
@@ -72,7 +73,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow, setOpen }) => {
 
   return (
     <Transition.Root show={isShow} as={Fragment}>
-      <Dialog as="div" className="relative z-50" initialFocus={nameRef} onClose={() => setOpen(false)}>
+      <Dialog as="div" className="relative z-50" initialFocus={nameRef} onClose={() => setShowSigninModal(false)}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"

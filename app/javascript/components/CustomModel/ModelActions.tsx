@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from "react"
+import React, { useState, useEffect, useRef, useContext } from "react"
+import { AppContext } from "components/AppContext"
 import * as CommonApi from "shared/api/common"
 import { LikeOutlined, LikeFilled, StarOutlined, StarFilled, EditOutlined, DeleteOutlined } from "@ant-design/icons"
 import { message, Popconfirm } from "antd"
@@ -7,14 +8,15 @@ import currentUser from "stores/current_user_store"
 interface ModelActionsProps {
   model: any
   setModel: () => void
-  setIsShowSignInModal: () => void
 }
 
-const ModelActions: React.FC<ModelActionsProps> = ({ model, setModel, setIsShowSignInModal }) => {
+const ModelActions: React.FC<ModelActionsProps> = ({ model, setModel }) => {
+  const { setShowSigninModal } = useContext(AppContext)
+
   const validateLogin = () => {
     if (!currentUser.isSignedIn()) {
       message.info("请先登录后再操作")
-      setIsShowSignInModal(true)
+      setShowSigninModal(true)
     } else {
       return true
     }
