@@ -26,7 +26,7 @@ const Girlfriend: React.FC<GirlfriendProps> = ({ conversationId }) => {
     if (conversationId) {
       fetchMessages()
     }
-  }, [])
+  }, [conversationId])
 
   const fetchMessages = async () => {
     const res = await UserApi.fetchMessages(conversationId)

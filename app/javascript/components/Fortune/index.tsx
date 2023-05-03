@@ -30,7 +30,7 @@ const Fortune: React.FC<FortuneProps> = ({ conversationId }) => {
     if (conversationId) {
       fetchMessages()
     }
-  }, [])
+  }, [conversationId])
 
   const fetchMessages = async () => {
     const res = await UserApi.fetchMessages(conversationId)

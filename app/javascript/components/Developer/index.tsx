@@ -28,7 +28,7 @@ const Developer: React.FC<DeveloperProps> = ({ conversationId }) => {
     if (conversationId) {
       fetchMessages()
     }
-  }, [])
+  }, [conversationId])
 
   const fetchMessages = async () => {
     const res = await UserApi.fetchMessages(conversationId)

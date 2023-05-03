@@ -17,10 +17,10 @@ const ChatModule: FC<ChatModuleProps> = ({}) => {
   const [promptToRetry, setPromptToRetry] = useState<string | null>(null)
   const [uniqueIdToRetry, setUniqueIdToRetry] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
-  const [conversationId, setConversationId] = useState(useParams().conversationId || "")
   const [isFetchingMsgs, setIsFetchingMsgs] = useState(false)
   const [usedMessageCount, setUsedMessageCount] = useState(0)
   const [model, setModel] = useState({})
+  let conversationId = useParams().conversationId
 
   const htmlToText = (html: string) => {
     const temp = document.createElement("div")
@@ -35,11 +35,14 @@ const ChatModule: FC<ChatModuleProps> = ({}) => {
   useEffect(() => {
     if (currentUser.isSignedIn()) {
       fetchUser()
-      if (conversationId) {
-        fetchMessages()
-      }
     }
   }, [])
+
+  useEffect(() => {
+    if (conversationId) {
+      fetchMessages()
+    }
+  }, [conversationId])
 
   const fetchUser = async () => {
     const res = await UserApi.fetchUser(currentUser.id())
@@ -193,8 +196,6 @@ const ChatModule: FC<ChatModuleProps> = ({}) => {
         setIsLoading={setIsLoading}
         usedMessageCount={usedMessageCount}
         setUsedMessageCount={setUsedMessageCount}
-        conversationId={conversationId}
-        setConversationId={setConversationId}
         messages={messages}
         setMessages={setMessages}
       />

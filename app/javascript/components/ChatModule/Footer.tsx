@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef, useContext } from "react"
+import { useParams } from "react-router-dom"
 import { AppContext } from "components/AppContext"
 import currentUser from "stores/current_user_store"
 import { message } from "antd"
@@ -20,8 +21,6 @@ interface FooterProps {
   setMessages: () => void
   setUsedMessageCount: () => void
   usedMessageCount: number
-  conversationId: number
-  setConversationId: () => void
 }
 
 const Footer: React.FC<FooterProps> = ({
@@ -32,17 +31,16 @@ const Footer: React.FC<FooterProps> = ({
   isLoading,
   setIsLoading,
   usedMessageCount,
-  conversationId,
   messages,
   setMessages,
   setUsedMessageCount,
-  setConversationId,
 }) => {
   const inputRef = useRef(null)
   const [showEmojiPicker, setShowEmojiPicker] = useState(false)
   const messageLimitPerDay = currentUser.plan()?.message_limit_per_day
   const [isUpgradeOpen, setIsUpgradeOpen] = useState(false)
   const { setShowSigninModal, setConversations } = useContext(AppContext)
+  const [conversationId, setConversationId] = useState(useParams().conversationId || "")
 
   useEffect(() => {
     if (isLoading) {
