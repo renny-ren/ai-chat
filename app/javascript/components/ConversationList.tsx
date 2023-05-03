@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react"
+import { Link } from "react-router-dom"
 import axios from "axios"
 
 interface ConversationListProps {
@@ -145,12 +146,13 @@ const ConversationList: React.FC<ConversationListProps> = ({ conversations }) =>
           </li>
         ) : (
           <li key={i} className="relative">
-            <a
+            <Link
+              state={{ conversationId: conversation.id }}
               className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-              href={`/chats/${conversation.id}`}
+              to={`/chats/${conversation.id}`}
             >
               <span className="truncate">{conversation.title}</span>
-            </a>
+            </Link>
           </li>
         )
       )}

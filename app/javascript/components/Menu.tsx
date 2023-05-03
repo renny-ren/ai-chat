@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
+import { Link, useLocation } from "react-router-dom"
 import { message } from "antd"
 import ConversationList from "./ConversationList"
-import { Link } from "react-router-dom"
 
 interface MenuProps {
   isMobile?: boolean
@@ -10,6 +10,13 @@ interface MenuProps {
 }
 
 const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, isMobile = false }) => {
+  // const [selectedPath, setSelectedPath] = useState("")
+  const location = useLocation()
+
+  // useEffect(() => {
+  //   setSelectedPath(location.pathname)
+  // }, [location])
+
   const newConversation = () => {
     if (conversations.length >= 50) {
       return message.error("目前最多能创建 50 个会话，请删除现有会话后再试")
@@ -38,17 +45,15 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, isMobile 
             {/*<div className="absolute left-2 h-6 w-px bg-emerald-500" style={{ top: "4px", opacity: 1 }}></div>*/}
             <ul role="list" className="border-l border-transparent">
               <li
-                className={`relative ${
-                  window.location.pathname === "/" ? "border-l border-emerald-400 bg-zinc-800/[.025]" : ""
-                }`}
+                className={`relative ${location.pathname === "/" ? "border-l border-emerald-400 bg-zinc-800/[.025]" : ""}`}
               >
-                <a
+                <Link
                   aria-current="page"
                   className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-900 dark:text-white"
-                  href="/"
+                  to="/"
                 >
                   <span className="truncate">ChatGPT 在线聊天室</span>
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -99,66 +104,64 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, isMobile 
             <ul role="list" className="border-l border-transparent">
               <li
                 className={`relative ${
-                  window.location.pathname === "/images" ? "border-l border-emerald-400 bg-zinc-800/[.025]" : ""
+                  location.pathname === "/images" ? "border-l border-emerald-400 bg-zinc-800/[.025]" : ""
                 }`}
               >
-                <a
+                <Link
                   className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-                  href="/images"
+                  to="/images"
                 >
                   <span className="truncate">AI 绘画</span>
-                </a>
+                </Link>
               </li>
               <li
                 className={`relative ${
-                  window.location.pathname === "/girlfriend" ? "border-l border-emerald-400 bg-zinc-800/[.025]" : ""
+                  location.pathname === "/girlfriend" ? "border-l border-emerald-400 bg-zinc-800/[.025]" : ""
                 }`}
               >
-                <a
+                <Link
                   className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-                  href="/girlfriend"
+                  to="/girlfriend"
                 >
                   <span className="truncate">AI 女友</span>
-                </a>
+                </Link>
               </li>
-              <Link to="/girlfriend">About</Link>
-              <Link to="/fortune">About2</Link>
               <li
                 className={`relative ${
-                  window.location.pathname === "/fortune" ? "border-l border-emerald-400 bg-zinc-800/[.025]" : ""
+                  location.pathname === "/fortune" ? "border-l border-emerald-400 bg-zinc-800/[.025]" : ""
                 }`}
               >
-                <a
+                <Link
                   className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-                  href="/fortune"
+                  to="/fortune"
                 >
                   <span className="truncate">命理大师</span>
-                </a>
+                </Link>
               </li>
               <li
                 className={`relative ${
-                  window.location.pathname === "/developer_assistant" ? "border-l border-emerald-400 bg-zinc-800/[.025]" : ""
+                  location.pathname === "/developer_assistant" ? "border-l border-emerald-400 bg-zinc-800/[.025]" : ""
                 }`}
               >
-                <a
+                <Link
                   className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-                  href="/developer_assistant"
+                  to="/developer_assistant"
                 >
                   <span className="truncate">程序员助手</span>
-                </a>
+                </Link>
               </li>
 
               <li
                 className={`relative ${
-                  window.location.pathname === "/models" ? "border-l border-emerald-400 bg-zinc-800/[.025]" : ""
+                  location.pathname === "/models" ? "border-l border-emerald-400 bg-zinc-800/[.025]" : ""
                 }`}
               >
-                <a
+                <Link
                   className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-                  href="/models"
+                  to="/models"
                 >
                   <span className="truncate">自定义模型</span>
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -170,39 +173,39 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, isMobile 
             <ul role="list" className="border-l border-transparent">
               <li
                 className={`relative ${
-                  window.location.pathname === "/faqs" ? "border-l border-emerald-400 bg-zinc-800/[.025]" : ""
+                  location.pathname === "/faqs" ? "border-l border-emerald-400 bg-zinc-800/[.025]" : ""
                 }`}
               >
-                <a
+                <Link
                   className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-                  href="/faqs"
+                  to="/faqs"
                 >
                   <span className="truncate">常见问题</span>
-                </a>
+                </Link>
               </li>
               <li
                 className={`relative ${
-                  window.location.pathname === "/pricing" ? "border-l border-emerald-400 bg-zinc-800/[.025]" : ""
+                  location.pathname === "/pricing" ? "border-l border-emerald-400 bg-zinc-800/[.025]" : ""
                 }`}
               >
-                <a
+                <Link
                   className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-                  href="/pricing"
+                  to="/pricing"
                 >
                   <span className="truncate">升级套餐</span>
-                </a>
+                </Link>
               </li>
               <li
                 className={`relative ${
-                  window.location.pathname === "/disclaimer" ? "border-l border-emerald-400 bg-zinc-800/[.025]" : ""
+                  location.pathname === "/disclaimer" ? "border-l border-emerald-400 bg-zinc-800/[.025]" : ""
                 }`}
               >
-                <a
+                <Link
                   className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-                  href="/disclaimer"
+                  to="/disclaimer"
                 >
                   <span className="truncate">免责声明</span>
-                </a>
+                </Link>
               </li>
               {isMobile && (
                 <li className="sticky bottom-0 z-10 mt-6 min-[416px]:hidden">

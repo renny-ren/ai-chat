@@ -1,5 +1,4 @@
 import React, { Fragment, useState, useEffect, useContext } from "react"
-import { Link } from "react-router-dom"
 import ChatModule from "./ChatModule"
 import ChatRoom from "./ChatRoom"
 
@@ -40,8 +39,6 @@ const Home = ({ setCustomContent }) => {
           </div>
           <ChatRoom setCustomContent={setCustomContent} />
           {/*<ChatModule />*/}
-          <Link to="/girlfriend">About</Link>
-          <Link to="/fortune">About2</Link>
         </main>
       </div>
     </>

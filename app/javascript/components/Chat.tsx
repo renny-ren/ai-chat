@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { useParams } from "react-router-dom"
+import { useParams, useLocation } from "react-router-dom"
 import ChatModule from "./ChatModule"
 import CustomModel from "./CustomModel"
 import Background from "components/common/Background"
@@ -9,12 +9,13 @@ import Fortune from "components/Fortune"
 import Developer from "components/Developer"
 
 const Chat = ({}) => {
+  let { state } = useLocation()
   const [conversation, setConversation] = useState({})
   const conversationId = useParams().conversationId
 
   useEffect(() => {
     if (conversationId) fetchConversation()
-  }, [])
+  }, [state])
 
   const fetchConversation = async () => {
     const res = await UserApi.fetchConversation(conversationId)
