@@ -85,6 +85,7 @@ const Footer: React.FC<FooterProps> = ({
     setIsLoading(true)
     setShowEmojiPicker(false)
     inputRef.current.blur()
+    inputRef.current.style.height = "24px"
   }
 
   const fetchResponse = () => {

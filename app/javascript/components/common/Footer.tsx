@@ -97,6 +97,7 @@ const Footer: React.FC<FooterProps> = ({
     addMessage({ role: "assistant", content: "" })
     setIsLoading(true)
     inputRef.current.blur()
+    inputRef.current.style.height = "24px"
   }
 
   const queryParams = {

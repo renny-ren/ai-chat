@@ -75,6 +75,7 @@ const Footer: React.FC<FooterProps> = ({ setImages, isLoading, setIsLoading, siz
     // setPrompt("")
     setImages([...Array(imageCount)].map((el, i) => (el = { url: i })))
     inputRef.current.blur()
+    inputRef.current.style.height = "24px"
     generateImage()
   }
 
