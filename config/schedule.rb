@@ -23,6 +23,10 @@ every 12.hours do
   runner "ExpireMembershipJob.perform_now"
 end
 
+every 2.hours do
+  runnder "BatchClosePendingOrdersJob.perform_now"
+end
+
 # 接口被封，暂停使用
 # every 1.day do
 #   runner "SyncOpenaiAccountCreditJob.perform_now"
