@@ -18,7 +18,7 @@ standard:
   image_count: 10
 advanced:
   message_limit_per_day: 999
-  max_question_length: 3000
+  max_question_length: 4000
   export_conversation: true
   image_model: true
   image_count: 60

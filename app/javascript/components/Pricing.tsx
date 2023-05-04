@@ -323,7 +323,7 @@ const Pricing: React.FC<PricingProps> = ({}) => {
                     <div className="mb-7 min-h-[220px]">
                       {renderItem("无限对话次数")}
                       {renderItem("有效期 45 天")}
-                      {renderItem("最大提问长度 1000 字")}
+                      {renderItem("最大提问长度 4000 字")}
                       {renderItem("导出个人会话")}
                       {renderItem("AI 绘画 60 张")}
                       {renderItem("新功能免费体验")}
