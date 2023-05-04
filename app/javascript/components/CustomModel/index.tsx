@@ -31,7 +31,7 @@ const CustomModel: React.FC<CustomModelProps> = ({ modelPermalink }) => {
     if (conversationId) {
       fetchMessages()
     }
-  }, [])
+  }, [conversationId])
 
   useEffect(() => {
     setPermalink(modelPermalink)
@@ -66,7 +66,7 @@ const CustomModel: React.FC<CustomModelProps> = ({ modelPermalink }) => {
   const fetchMessages = useCallback(async () => {
     const res = await UserApi.fetchMessages(conversationId)
     const data = await res.json
-    setMessages(data.messages)
+    setMessages([...initMessages, ...data.messages])
   }, [conversationId])
 
   return (

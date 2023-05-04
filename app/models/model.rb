@@ -7,7 +7,7 @@ class Model < ApplicationRecord
 
   has_one_attached :avatar, dependent: :purge
 
-  validates :title, presence: true, uniqueness: true, length: 1..20
+  validates :title, presence: true, uniqueness: true, length: 1..50
   validates :permalink, presence: true, uniqueness: true, length: 1..50, exclusion: {
                           in: ["app_messages", "pricing", "settings", "faqs", "disclaimer", "admin", "images", "girlfriend", "fortune", "developer_assistant", "models"],
                           message: "不能为%{value}",
