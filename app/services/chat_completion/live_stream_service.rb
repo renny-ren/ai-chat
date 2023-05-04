@@ -88,15 +88,19 @@ module ChatCompletion
     end
 
     def request_body
-      {
-        model: MODEL,
-        messages: build_messages,
-        max_tokens: 500,
-        temperature: 1,
-        frequency_penalty: 0,
-        presence_penalty: 0,
-        stream: true,
-      }
+      if model.present?
+        JSON.parse(model.openai_params).merge(model: MODEL, stream: true, messages: build_messages)
+      else
+        {
+          model: MODEL,
+          messages: build_messages,
+          max_tokens: 500,
+          temperature: 1,
+          frequency_penalty: 0,
+          presence_penalty: 0,
+          stream: true,
+        }
+      end
     end
 
     def build_messages
@@ -121,7 +125,7 @@ module ChatCompletion
 
     def custom_instruction
       [
-        { role: "system", content: conversation.model.system_instruction },
+        { role: "system", content: model.system_instruction },
       ]
     end
 
@@ -137,6 +141,10 @@ module ChatCompletion
         conversation.type = params[:conversation_type] if params[:conversation_type].present?
         conversation.model_id = params[:model_id] if params[:model_id].present?
       end
+    end
+
+    def model
+      @model ||= conversation.model
     end
 
     def valid_json?(json)

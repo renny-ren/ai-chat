@@ -23,3 +23,5 @@ export const people = [
 //   voice: "xiaogang",
 //   avatar: "https://img.alicdn.com/tfs/TB1Ek54DPTpK1RjSZKPXXa3UpXa-517-517.png",
 // },
+
+export const modelOptions = [{ label: "gpt-3.5-turbo", value: "gpt-3.5-turbo" }]
