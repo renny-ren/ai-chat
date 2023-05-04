@@ -81,7 +81,7 @@ const MessageList: FC<MessageListProps> = ({ messages, messagesEndRef, isLoading
                 />
                 {!isSelf(msg) && (
                   <AudioButton
-                    className="relative top-1.5"
+                    className="relative top-1"
                     message={msg}
                     playAudio={playAudio}
                     pauseAudio={pauseAudio}
