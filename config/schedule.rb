@@ -24,7 +24,7 @@ every 12.hours do
 end
 
 every 2.hours do
-  runnder "BatchClosePendingOrdersJob.perform_now"
+  runner "BatchClosePendingOrdersJob.perform_now"
 end
 
 # 接口被封，暂停使用
