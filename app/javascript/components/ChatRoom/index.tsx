@@ -135,6 +135,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ setCustomContent }) => {
       disconnected() {
         // Called when the subscription has been terminated by the server
         console.log("==disconnected==")
+        setCustomContent()
       },
     })
     return channel
