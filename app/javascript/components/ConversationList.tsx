@@ -4,9 +4,10 @@ import axios from "axios"
 
 interface ConversationListProps {
   conversations: any
+  onClickLink: () => void
 }
 
-const ConversationList: React.FC<ConversationListProps> = ({ conversations }) => {
+const ConversationList: React.FC<ConversationListProps> = ({ conversations, onClickLink }) => {
   const [status, setStatus] = useState("initial")
   const [title, setTitle] = useState("")
 
@@ -150,6 +151,7 @@ const ConversationList: React.FC<ConversationListProps> = ({ conversations }) =>
               state={{ conversationId: conversation.id }}
               className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
               to={`/chats/${conversation.id}`}
+              onClick={onClickLink}
             >
               <span className="truncate">{conversation.title}</span>
             </Link>

@@ -14,6 +14,10 @@ interface MobileMenuProps {
 }
 
 const MobileMenu: React.FC<MobileMenuProps> = ({ setIsShow, onShowSignInModal, conversations, toggleDarkMode }) => {
+  const closeMobileMenu = () => {
+    setIsShow(false)
+  }
+
   return (
     <div>
       <div>
@@ -32,7 +36,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ setIsShow, onShowSignInModal, c
                     className="flex h-6 w-6 items-center justify-center rounded-md transition hover:bg-zinc-900/5 dark:hover:bg-white/5"
                     aria-label="Toggle navigation"
                     tabIndex="0"
-                    onClick={() => setIsShow(false)}
+                    onClick={closeMobileMenu}
                   >
                     <svg
                       viewBox="0 0 10 9"
@@ -78,7 +82,12 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ setIsShow, onShowSignInModal, c
                 </div>
               </div>
               <div className="fixed left-0 top-14 bottom-0 w-full overflow-y-auto bg-white px-4 pt-6 pb-4 shadow-lg shadow-zinc-900/10 ring-1 ring-zinc-900/7.5 dark:bg-zinc-900 dark:ring-zinc-800 min-[416px]:max-w-sm sm:px-6 sm:pb-10 translate-x-0">
-                <Menu isMobile={true} onShowSignInModal={onShowSignInModal} conversations={conversations} />
+                <Menu
+                  isMobile={true}
+                  onShowSignInModal={onShowSignInModal}
+                  conversations={conversations}
+                  closeMobileMenu={closeMobileMenu}
+                />
               </div>
             </div>
           </div>

@@ -4,12 +4,13 @@ import { message } from "antd"
 import ConversationList from "./ConversationList"
 
 interface MenuProps {
+  conversations: any
   isMobile?: boolean
   onShowSignInModal?: () => void
-  conversations: any
+  closeMobileMenu?: () => void
 }
 
-const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, isMobile = false }) => {
+const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobileMenu, isMobile = false }) => {
   // const [selectedPath, setSelectedPath] = useState("")
   const location = useLocation()
 
@@ -22,6 +23,10 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, isMobile 
       return message.error("目前最多能创建 50 个会话，请删除现有会话后再试")
     }
     window.location.href = "/chats/new"
+  }
+
+  const onClickLink = () => {
+    if (closeMobileMenu) closeMobileMenu()
   }
 
   return (
@@ -51,6 +56,7 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, isMobile 
                   aria-current="page"
                   className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-900 dark:text-white"
                   to="/"
+                  onClick={onClickLink}
                 >
                   <span className="truncate">ChatGPT 在线聊天室</span>
                 </Link>
@@ -93,7 +99,7 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, isMobile 
               }}
             ></div>
             <ul role="list" className="border-l">
-              <ConversationList conversations={conversations} />
+              <ConversationList conversations={conversations} onClickLink={onClickLink} />
             </ul>
           </div>
         </li>
@@ -110,6 +116,7 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, isMobile 
                 <Link
                   className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
                   to="/images"
+                  onClick={onClickLink}
                 >
                   <span className="truncate">AI 绘画</span>
                 </Link>
@@ -122,6 +129,7 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, isMobile 
                 <Link
                   className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
                   to="/girlfriend"
+                  onClick={onClickLink}
                 >
                   <span className="truncate">AI 女友</span>
                 </Link>
@@ -134,6 +142,7 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, isMobile 
                 <Link
                   className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
                   to="/fortune"
+                  onClick={onClickLink}
                 >
                   <span className="truncate">命理大师</span>
                 </Link>
@@ -146,6 +155,7 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, isMobile 
                 <Link
                   className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
                   to="/developer_assistant"
+                  onClick={onClickLink}
                 >
                   <span className="truncate">程序员助手</span>
                 </Link>
@@ -159,6 +169,7 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, isMobile 
                 <Link
                   className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
                   to="/models"
+                  onClick={onClickLink}
                 >
                   <span className="truncate">自定义模型</span>
                 </Link>
@@ -179,6 +190,7 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, isMobile 
                 <Link
                   className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
                   to="/faqs"
+                  onClick={onClickLink}
                 >
                   <span className="truncate">常见问题</span>
                 </Link>
@@ -191,6 +203,7 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, isMobile 
                 <Link
                   className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
                   to="/pricing"
+                  onClick={onClickLink}
                 >
                   <span className="truncate">升级套餐</span>
                 </Link>
@@ -203,6 +216,7 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, isMobile 
                 <Link
                   className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
                   to="/disclaimer"
+                  onClick={onClickLink}
                 >
                   <span className="truncate">免责声明</span>
                 </Link>
