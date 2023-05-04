@@ -43,7 +43,7 @@ const Model: React.FC<ModelProps> = ({ tab }) => {
               <div className="px-4 md:px-8 container mx-auto max-w-7xl mt-2">
                 <ul className="flex border-b border-gray-300 text-sm font-medium text-gray-600 dark:text-gray-500">
                   <li
-                    className={`cursor-pointer mr-4 md:mr-8 hover:text-gray-900 ${
+                    className={`cursor-pointer mr-4 md:mr-8 hover:text-gray-900 dark:hover:text-gray-300 ${
                       currentTab === "list" ? "text-gray-900 dark:text-gray-300 border-b-2" : ""
                     } border-gray-800`}
                   >
@@ -52,7 +52,7 @@ const Model: React.FC<ModelProps> = ({ tab }) => {
                     </a>
                   </li>
                   <li
-                    className={`cursor-pointer mr-4 md:mr-8 hover:text-gray-900 ${
+                    className={`cursor-pointer mr-4 md:mr-8 hover:text-gray-900 dark:hover:text-gray-300 ${
                       currentTab === "starred" ? "text-gray-900 dark:text-gray-300 border-b-2" : ""
                     } border-gray-800`}
                   >
@@ -61,7 +61,7 @@ const Model: React.FC<ModelProps> = ({ tab }) => {
                     </a>
                   </li>
                   <li
-                    className={`cursor-pointer mr-4 md:mr-8 hover:text-gray-900 ${
+                    className={`cursor-pointer mr-4 md:mr-8 hover:text-gray-900 dark:hover:text-gray-300 ${
                       currentTab === "self" ? "text-gray-900 dark:text-gray-300 border-b-2" : ""
                     } border-gray-800`}
                   >
@@ -70,7 +70,7 @@ const Model: React.FC<ModelProps> = ({ tab }) => {
                     </a>
                   </li>
                   <li
-                    className={`cursor-pointer mr-4 md:mr-8 hover:text-gray-900 ${
+                    className={`cursor-pointer mr-4 md:mr-8 hover:text-gray-900 dark:hover:text-gray-300 ${
                       currentTab === "new" ? "text-gray-900 dark:text-gray-300 border-b-2" : ""
                     } border-gray-800`}
                   >
