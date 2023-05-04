@@ -89,7 +89,7 @@ module ChatCompletion
 
     def request_body
       if model.present?
-        JSON.parse(model.openai_params).merge(model: MODEL, stream: true, messages: build_messages)
+        JSON.parse(model.openai_params).merge(messages: build_messages)
       else
         {
           model: MODEL,
@@ -106,7 +106,7 @@ module ChatCompletion
     def build_messages
       messages = [initial_messages << conversation.messages.order(:created_at).last(16).map { |i| { role: i.role, content: i.content } }].flatten
       until messages.to_s.size < 2000
-        messages.slice!(1, 2) # Removes 2 elements starting from index 1 (the second and third elements)
+        messages.slice!(1, 2) # Removes 2 elements starting from index 1 (the second and third elements), because the first message is system instruction
       end
       messages
     end

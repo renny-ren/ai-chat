@@ -9,6 +9,7 @@ ActiveAdmin.register User do
     column :email
     column :membership
     column :current_sign_in_at
+    column :current_sign_in_ip
     column :sign_in_count
     column :created_at
     actions
@@ -20,6 +21,7 @@ ActiveAdmin.register User do
   filter :email
   filter :membership
   filter :current_sign_in_at
+  filter :current_sign_in_ip
   filter :created_at
 
   form do |f|

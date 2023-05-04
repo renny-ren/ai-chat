@@ -28,14 +28,17 @@ const ModelForm: React.FC<ModelFormProps> = ({ action }) => {
     introducton: "",
     system_instruction: "",
     input_placeholder: "",
+    voice: "siqi",
     is_public: true,
   })
   const [openaiParams, setOpenaiParams] = useState({
+    model: "gpt-3.5-turbo",
     max_tokens: 500,
     temperature: 1,
     top_p: 1,
     presence_penalty: 0,
     frequency_penalty: 0,
+    stream: true,
   })
   const modelPermalink = useParams().modelPermalink
   const [formErrors, setFormErrors] = useState([])
@@ -66,6 +69,7 @@ const ModelForm: React.FC<ModelFormProps> = ({ action }) => {
       } else {
         setFormData(body.model)
         setAvatarUrl(body.model.avatar_url)
+        setOpenaiParams(JSON.parse(body.model.openai_params))
       }
     }
   }
@@ -80,11 +84,11 @@ const ModelForm: React.FC<ModelFormProps> = ({ action }) => {
     if (name === "permalink") setPermalinkChanged(true)
   }
 
-  const handleOpenaiParamsChange = (e) => {
+  const handleOpenaiParamsChange = (e, type) => {
     const { name, value } = e.target
     setOpenaiParams({
       ...openaiParams,
-      [name]: value,
+      [name]: type === "number" && !isNaN(parseFloat(value)) ? parseFloat(value) : value,
     })
   }
 
@@ -135,7 +139,6 @@ const ModelForm: React.FC<ModelFormProps> = ({ action }) => {
     if (formData.avatar) {
       fd.append("avatar", formData.avatar)
     }
-
     fd.append("openai_params", JSON.stringify(openaiParams))
     if (action === "edit") {
       updateModel(fd)
@@ -378,7 +381,7 @@ const ModelForm: React.FC<ModelFormProps> = ({ action }) => {
                       min="1"
                       max="2000"
                       value={openaiParams.max_tokens}
-                      onChange={handleOpenaiParamsChange}
+                      onChange={(e) => handleOpenaiParamsChange(e, "number")}
                       onInvalid={(e) => e.target.setCustomValidity("max_tokens 范围为 1-2000 的整数")}
                       onInput={(e) => e.target.setCustomValidity("")}
                       className="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-emerald-500 dark:focus:border-emerald-500"
@@ -413,7 +416,7 @@ const ModelForm: React.FC<ModelFormProps> = ({ action }) => {
                       max="2"
                       step="0.1"
                       value={openaiParams.temperature}
-                      onChange={handleOpenaiParamsChange}
+                      onChange={(e) => handleOpenaiParamsChange(e, "number")}
                       onInvalid={(e) => e.target.setCustomValidity("temperature 范围为 0 - 2")}
                       onInput={(e) => e.target.setCustomValidity("")}
                       className="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-emerald-500 dark:focus:border-emerald-500"
@@ -446,7 +449,7 @@ const ModelForm: React.FC<ModelFormProps> = ({ action }) => {
                       max="1"
                       step="0.1"
                       value={openaiParams.top_p}
-                      onChange={handleOpenaiParamsChange}
+                      onChange={(e) => handleOpenaiParamsChange(e, "number")}
                       onInvalid={(e) => e.target.setCustomValidity("top_p 范围为 0 - 1")}
                       onInput={(e) => e.target.setCustomValidity("")}
                       className="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-emerald-500 dark:focus:border-emerald-500"
@@ -477,11 +480,10 @@ const ModelForm: React.FC<ModelFormProps> = ({ action }) => {
                     <input
                       type="number"
                       name="presence_penalty"
-                      min="-2"
                       max="2"
                       step="0.1"
                       value={openaiParams.presence_penalty}
-                      onChange={handleOpenaiParamsChange}
+                      onChange={(e) => handleOpenaiParamsChange(e, "number")}
                       onInvalid={(e) => e.target.setCustomValidity("presence_penalty 范围为 -2.0 ~ 2.0")}
                       onInput={(e) => e.target.setCustomValidity("")}
                       className="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-emerald-500 dark:focus:border-emerald-500"
@@ -513,7 +515,7 @@ const ModelForm: React.FC<ModelFormProps> = ({ action }) => {
                       max="2"
                       step="0.1"
                       value={openaiParams.frequency_penalty}
-                      onChange={handleOpenaiParamsChange}
+                      onChange={(e) => handleOpenaiParamsChange(e, "number")}
                       onInvalid={(e) => e.target.setCustomValidity("frequency_penalty 范围为 -2.0 ~ 2.0")}
                       onInput={(e) => e.target.setCustomValidity("")}
                       className="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-emerald-500 focus:border-emerald-500 focus:outline-none block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-emerald-500 dark:focus:border-emerald-500"
