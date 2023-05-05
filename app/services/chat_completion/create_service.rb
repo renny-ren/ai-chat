@@ -24,6 +24,8 @@ module ChatCompletion
         end
         raise @resp.reason_phrase if @resp.status != 200
       end
+    rescue => e
+      App::Error.track(e)
     end
 
     def handle_message_done
@@ -34,8 +36,8 @@ module ChatCompletion
           user_id: GPT_USER_ID,
           mentions: [user_message.user_nickname],
         )
-        user.update_history(role: "user", content: user_message.content.sub("@#{User.gpt_user[:nickname]} ", ""))
-        user.update_history(role: "assistant", content: result)
+        update_conversation(role: "user", content: user_message.content.sub("@#{User.gpt_user[:nickname]} ", ""))
+        update_conversation(role: "assistant", content: result)
       end
     end
 
@@ -59,8 +61,8 @@ module ChatCompletion
 
       error_code = JSON.parse(chunk).dig("error", "code")
       if error_code == "context_length_exceeded"
-        user.cut_ai_conversation_history
-        params[:messages] = user.ai_conversation_history
+        cut_conversation_messages while limit_exceeded?
+        params[:messages] = conversation_messages
       end
     end
 
@@ -154,6 +156,33 @@ module ChatCompletion
       true
     rescue JSON::ParserError, TypeError => e
       false
+    end
+
+    def limit_exceeded?
+      conversation_messages.size > 3 && tokens_of(conversation_messages).length > 3000
+    end
+
+    def tokens_of(messages)
+      enc = Tiktoken.encoding_for_model("gpt-3.5-turbo")
+      enc.encode(messages.to_s)
+    end
+
+    def conversation_messages
+      user.ai_conversation_history
+    end
+
+    def cut_conversation_messages
+      updated_messages = conversation_messages
+      updated_messages.slice!(1, 2) # Removes 2 elements starting from index 1 (the second and third elements), because the first message is system instruction
+      Rails.cache.write(user.conversation_cache_key, updated_messages, expires_in: 1.day)
+    end
+
+    def update_conversation(role:, content:)
+      updated_messages = conversation_messages << { role: role, content: content }
+      if updated_messages.size > 16
+        updated_messages.slice!(1, 2)
+      end
+      Rails.cache.write(user.conversation_cache_key, updated_messages, expires_in: 1.day)
     end
   end
 end

@@ -10,7 +10,7 @@ import UpgradeModal from "components/common/UpgradeModal"
 import queryString from "query-string"
 
 message.config({
-  maxCount: 1,
+  maxCount: 2,
 })
 
 interface FooterProps {
@@ -60,10 +60,7 @@ const Footer: React.FC<FooterProps> = ({
   }
 
   const handlePromptChange = (e) => {
-    value = e.target.value
-    if (value.length > currentUser.plan().max_question_length) {
-      return message.error("消息已达最大长度限制")
-    }
+    const { value } = e.target
     setPrompt(value)
     e.target.style.height = "24px"
     e.target.style.height = e.target.scrollHeight + "px"
@@ -73,6 +70,9 @@ const Footer: React.FC<FooterProps> = ({
     e.preventDefault()
     if (!prompt) {
       return
+    }
+    if (prompt.length > currentUser.plan().max_question_length) {
+      return message.error("消息超过最大长度限制，请精简提问或分条发送")
     }
     if (isLoading) {
       return message.error("机器人回答不过来了，请稍后再问")

@@ -35,6 +35,8 @@ module ChatCompletion
         end
         raise @resp.reason_phrase if @resp.status != 200
       end
+    rescue => e
+      App::Error.track(e)
     end
 
     def notify_failure
@@ -105,10 +107,22 @@ module ChatCompletion
 
     def build_messages
       messages = [initial_messages << conversation.messages.order(:created_at).last(16).map { |i| { role: i.role, content: i.content } }].flatten
-      until messages.to_s.size < 3000 || messages.size <= 3
-        messages.slice!(1, 2) # Removes 2 elements starting from index 1 (the second and third elements), because the first message is system instruction
-      end
+      cut(messages) while limit_exceeded?(messages)
       messages
+    end
+
+    def limit_exceeded?(messages)
+      messages.size > 3 && tokens_of(messages).length > 3000
+    end
+
+    def tokens_of(messages)
+      enc = Tiktoken.encoding_for_model("gpt-3.5-turbo")
+      enc.encode(messages.to_s)
+    end
+
+    def cut(messages)
+      # Removes 2 elements starting from index 1 (the second and third elements), because the first message is system instruction
+      messages.slice!(1, 2)
     end
 
     def initial_messages

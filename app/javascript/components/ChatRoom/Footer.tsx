@@ -41,6 +41,9 @@ const Footer: React.FC<FooterProps> = ({
     if (!content) {
       return
     }
+    if (content.length > currentUser.plan().max_question_length) {
+      return showNotice("消息超过最大长度限制，请精简提问或分条发送")
+    }
     if (isToAI) {
       if (isGenerating) {
         return showNotice("机器人忙不过来了，请稍等")
@@ -71,9 +74,6 @@ const Footer: React.FC<FooterProps> = ({
   }
 
   const handleContentChange = (e, newValue, newPlainTextValue, mentions) => {
-    if (newPlainTextValue.length > 500) {
-      return showNotice("消息已达最大长度限制")
-    }
     setContent(newPlainTextValue)
     // inputRef.current.style.height = "24px"
     // inputRef.current.style.height = inputRef.current.scrollHeight + "px"

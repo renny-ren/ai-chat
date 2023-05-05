@@ -75,9 +75,6 @@ const Footer: React.FC<FooterProps> = ({
 
   const handlePromptChange = (e) => {
     value = e.target.value
-    if (value.length > currentUser.plan().max_question_length) {
-      return message.error("描述已达最大长度限制")
-    }
     setPrompt(value)
     e.target.style.height = "24px"
     e.target.style.height = e.target.scrollHeight + "px"
@@ -86,6 +83,9 @@ const Footer: React.FC<FooterProps> = ({
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (!prompt) return
+    if (prompt.length > currentUser.plan().max_question_length) {
+      return message.error("消息超过最大长度限制，请精简提问或分条发送")
+    }
     if (isLoading) {
       return message.info(loadingMessage || "加载中，请稍等")
     }
