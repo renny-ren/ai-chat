@@ -7,6 +7,7 @@ import data from "@emoji-mart/data"
 import Picker from "@emoji-mart/react"
 import DownloadButton from "./DownloadButton"
 import UpgradeModal from "components/common/UpgradeModal"
+import queryString from "query-string"
 
 message.config({
   maxCount: 1,
@@ -88,8 +89,13 @@ const Footer: React.FC<FooterProps> = ({
     inputRef.current.style.height = "24px"
   }
 
+  const queryParams = {
+    prompt: prompt,
+    conversation_id: conversationId,
+  }
+
   const fetchResponse = () => {
-    const evtSource = new EventSource(`/v1/completions/live_stream?prompt=${prompt}&conversation_id=${conversationId}`)
+    const evtSource = new EventSource(`/v1/completions/live_stream?${queryString.stringify(queryParams)}`)
     evtSource.onmessage = (event) => {
       if (event) {
         const response = JSON.parse(event.data)

@@ -74,7 +74,7 @@ class User < ApplicationRecord
   def cut_ai_conversation_history
     updated_history = ai_conversation_history
     until updated_history.to_s.size < 1800
-      updated_history.slice!(1, 2) # Removes 2 elements starting from index 1 (the second and third elements)
+      updated_history.slice!(1, 2) # Removes 2 elements starting from index 1 (the second and third elements), because the first message is system instruction
     end
     Rails.cache.write(conversation_cache_key, updated_history, expires_in: 1.day)
   end
