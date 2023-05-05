@@ -8,8 +8,9 @@ import SyntaxHighlighter from "react-syntax-highlighter"
 import { github, arduinoLight, atelierSeasideLight } from "react-syntax-highlighter/dist/esm/styles/hljs"
 import Avatar from "./Avatar"
 import useInfiniteScroll from "react-infinite-scroll-hook"
-import { Spin } from "antd"
+import { Spin, Tooltip } from "antd"
 import AudioButton from "components/common/AudioButton"
+import { ExclamationCircleOutlined } from "@ant-design/icons"
 
 const MessageList = ({ messages, fetchMessages, isFetching, openModal, pagination, setPrompt, generatingMsgId }) => {
   const [currentPage, setCurrentPage] = useState(1)
@@ -157,7 +158,7 @@ const MessageList = ({ messages, fetchMessages, isFetching, openModal, paginatio
               <div key={i} className="col-start-2 md:col-start-4 col-end-13 p-3 rounded-lg">
                 <div className="flex items-start justify-start flex-row-reverse">
                   <Avatar src={currentUser.avatarUrl()} />
-                  <div className="flex flex-col gap-1 items-end max-w-[82%] md:max-w-full">
+                  <div className="relative flex flex-col gap-1 items-end max-w-[82%] md:max-w-full">
                     <div className="flex items-baseline mr-3">
                       <div className="text-sm font-medium dark:text-white">{message.user_nickname}</div>
                       <p className="text-xs text-gray-500 ml-2">{message.created_at}</p>
@@ -165,6 +166,20 @@ const MessageList = ({ messages, fetchMessages, isFetching, openModal, paginatio
                     <div className="relative mr-2 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl max-w-full break-words">
                       {renderContent(message)}
                     </div>
+                    {message.content.length > 2200 && (
+                      <div className="absolute bottom-1 -left-8">
+                        <Tooltip
+                          title={
+                            <div>
+                              <div>由于此消息过长，可能会在后续对话中被 AI 遗忘，缺乏语境连续性</div>
+                              <div>建议精简提问以获得更好的回复内容</div>
+                            </div>
+                          }
+                        >
+                          <ExclamationCircleOutlined className="text-gray-500" />
+                        </Tooltip>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

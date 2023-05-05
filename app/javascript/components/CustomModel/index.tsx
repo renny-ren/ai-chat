@@ -66,7 +66,7 @@ const CustomModel: React.FC<CustomModelProps> = ({ modelPermalink }) => {
   const fetchMessages = useCallback(async () => {
     const res = await UserApi.fetchMessages(conversationId)
     const data = await res.json
-    setMessages([...initMessages, ...data.messages])
+    setMessages(data.messages)
   }, [conversationId])
 
   return (

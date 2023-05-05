@@ -4,6 +4,8 @@ import Markdown from "marked-react"
 import SyntaxHighlighter from "react-syntax-highlighter"
 import { arduinoLight } from "react-syntax-highlighter/dist/esm/styles/hljs"
 import AudioButton from "./AudioButton"
+import { Tooltip } from "antd"
+import { ExclamationCircleOutlined } from "@ant-design/icons"
 
 interface MessageListProps {
   messages: any
@@ -82,13 +84,27 @@ const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, gptName,
               <div key={i} className="col-start-2 md:col-start-4 col-end-13 p-3 rounded-lg">
                 <div className="flex items-start justify-start flex-row-reverse">
                   <img className="h-10 w-10 cursor-pointer rounded-full aspect-square mt-1" src={currentUser.avatarUrl()} />
-                  <div className="flex flex-col gap-1 items-end max-w-[82%] md:max-w-full">
+                  <div className="relative flex flex-col gap-1 items-end max-w-[82%] md:max-w-full">
                     <div className="flex items-baseline mr-3">
                       <div className="text-sm font-medium dark:text-white">{currentUser.nickname()}</div>
                     </div>
                     <div className="relative mr-2 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl max-w-full break-words">
                       <div className="whitespace-pre-line">{message.content}</div>
                     </div>
+                    {message.content.length > 2200 && (
+                      <div className="absolute bottom-1 -left-8">
+                        <Tooltip
+                          title={
+                            <div>
+                              <div>由于此消息过长，可能会在后续对话中被 AI 遗忘，缺乏语境连续性</div>
+                              <div>建议精简提问以获得更好的回复内容</div>
+                            </div>
+                          }
+                        >
+                          <ExclamationCircleOutlined className="text-gray-500" />
+                        </Tooltip>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
