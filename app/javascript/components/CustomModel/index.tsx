@@ -8,6 +8,7 @@ import * as CommonApi from "shared/api/common"
 import * as UserApi from "shared/api/user"
 import { Empty } from "antd"
 import Header from "./Header"
+import Spinner from "components/common/Spinner"
 
 interface CustomModelProps {
   modelPermalink?: string
@@ -85,32 +86,34 @@ const CustomModel: React.FC<CustomModelProps> = ({ modelPermalink }) => {
             <Empty description="该模型为私有模型，仅作者可访问" />
           </div>
         )}
-        {!!Object.keys(model).length && (
-          <main className="h-full">
-            <Background />
 
-            <div className="relative h-full w-full transition-width flex flex-col overflow-y-auto items-stretch flex-1 pb-20">
-              <div className="flex-1 overflow-hidden relative">
-                <div className="h-full overflow-hidden">
-                  <div className="flex h-full antialiased text-gray-800">
-                    <div className="flex flex-row h-full w-full overflow-x-hidden">
-                      <div className="flex flex-col flex-auto h-full items-center">
-                        <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl h-full w-full md:max-w-3xl lg:max-w-4xl">
-                          <div className="flex flex-col h-full md:pb-4">
-                            <div className="flex flex-col h-full overflow-x-auto">
-                              <Header
-                                model={model}
-                                setModel={setModel}
-                                isAddContext={isAddContext}
-                                handleContextChange={handleContextChange}
-                              />
-                              <MessageList
-                                gptName={model.title}
-                                messages={messages}
-                                isLoading={isLoading}
-                                avatarUrl={model.avatar_url}
-                                voice={model.voice}
-                              />
+        <main className="h-full">
+          <Background />
+          {!!Object.keys(model).length ? (
+            <>
+              <div className="relative h-full w-full transition-width flex flex-col overflow-y-auto items-stretch flex-1 pb-20">
+                <div className="flex-1 overflow-hidden relative">
+                  <div className="h-full overflow-hidden">
+                    <div className="flex h-full antialiased text-gray-800">
+                      <div className="flex flex-row h-full w-full overflow-x-hidden">
+                        <div className="flex flex-col flex-auto h-full items-center">
+                          <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl h-full w-full md:max-w-3xl lg:max-w-4xl">
+                            <div className="flex flex-col h-full md:pb-4">
+                              <div className="flex flex-col h-full overflow-x-auto">
+                                <Header
+                                  model={model}
+                                  setModel={setModel}
+                                  isAddContext={isAddContext}
+                                  handleContextChange={handleContextChange}
+                                />
+                                <MessageList
+                                  gptName={model.title}
+                                  messages={messages}
+                                  isLoading={isLoading}
+                                  avatarUrl={model.avatar_url}
+                                  voice={model.voice}
+                                />
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -119,20 +122,24 @@ const CustomModel: React.FC<CustomModelProps> = ({ modelPermalink }) => {
                   </div>
                 </div>
               </div>
-            </div>
 
-            <Footer
-              isLoading={isLoading}
-              setIsLoading={setIsLoading}
-              messages={messages}
-              setMessages={setMessages}
-              conversationType="custom"
-              modelId={model.id}
-              placeholder={model.input_placeholder}
-              isAddContext={isAddContext}
-            />
-          </main>
-        )}
+              <Footer
+                isLoading={isLoading}
+                setIsLoading={setIsLoading}
+                messages={messages}
+                setMessages={setMessages}
+                conversationType="custom"
+                modelId={model.id}
+                placeholder={model.input_placeholder}
+                isAddContext={isAddContext}
+              />
+            </>
+          ) : (
+            <div className="col-span-12 h-full flex items-center justify-center">
+              <Spinner className="w-10 h-10 text-gray-200 animate-spin dark:text-gray-600 fill-green-500" />
+            </div>
+          )}
+        </main>
       </div>
     </>
   )
