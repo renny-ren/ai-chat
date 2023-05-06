@@ -73,11 +73,11 @@ const ModelActions: React.FC<ModelActionsProps> = ({ model, models, setModels, v
 
   return (
     <>
-      <div className="actions text-xs text-slate-500">
+      <div className="actions text-xs text-slate-500 flex items-center justify-end space-x-3 flex-1">
         <button
           type="button"
           onClick={onToggleLike}
-          className="font-medium inline-flex items-center text-sm mr-3 gap-x-1 rounded-full hover:text-slate-700 outline-none"
+          className="font-medium inline-flex items-center text-sm gap-x-1 rounded-full hover:text-slate-700 outline-none"
         >
           {isLiked() ? <LikeFilled className="text-emerald-500" /> : <LikeOutlined />}
           <span>{model.likes_count}</span>

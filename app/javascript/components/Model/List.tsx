@@ -48,12 +48,16 @@ const List: React.FC<ListProps> = ({ validateLogin, scope }) => {
                     className="w-full col-span-12 md:col-span-6 lg:col-span-4 rounded shadow-md shadow-gray-200 dark:shadow-gray-900 bg-white dark:bg-gray-800"
                   >
                     <div className="p-5">
-                      <div className="flex justify-between items-center">
-                        <a target="_blank">
+                      <div className="flex items-center">
+                        <div className="flex items-center truncate">
+                          <img
+                            className="rounded-full w-6 h-6 mr-2 shadow-md"
+                            src={model.avatar_url || gon.gpt_user.avatar_url}
+                          />
                           <h5 className="truncate text-slate-900 font-medium text-lg tracking-tight dark:text-white">
-                            {model.title}
+                            <a target="_blank">{model.title}</a>
                           </h5>
-                        </a>
+                        </div>
                         <ModelActions model={model} models={models} setModels={setModels} validateLogin={validateLogin} />
                       </div>
                       <p className="truncate mt-1 text-base text-slate-500 dark:text-slate-400">{model.description}</p>
