@@ -25,6 +25,7 @@ const CustomModel: React.FC<CustomModelProps> = ({ modelPermalink }) => {
   const [isPrivate, setIsPrivate] = useState(false)
   const [messages, setMessages] = useState(initMessages)
   const [permalink, setPermalink] = useState(useParams().modelPermalink)
+  const [isAddContext, setIsAddContext] = useState(true)
   const conversationId = useParams().conversationId
 
   useEffect(() => {
@@ -69,6 +70,10 @@ const CustomModel: React.FC<CustomModelProps> = ({ modelPermalink }) => {
     setMessages(data.messages)
   }, [conversationId])
 
+  const handleContextChange = (checked) => {
+    setIsAddContext(checked)
+  }
+
   return (
     <>
       <Helmet>
@@ -93,7 +98,12 @@ const CustomModel: React.FC<CustomModelProps> = ({ modelPermalink }) => {
                         <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl h-full w-full md:max-w-3xl lg:max-w-4xl">
                           <div className="flex flex-col h-full md:pb-4">
                             <div className="flex flex-col h-full overflow-x-auto">
-                              {!modelPermalink && <Header model={model} setModel={setModel} />}
+                              <Header
+                                model={model}
+                                setModel={setModel}
+                                isAddContext={isAddContext}
+                                handleContextChange={handleContextChange}
+                              />
                               <MessageList
                                 gptName={model.title}
                                 messages={messages}
@@ -119,6 +129,7 @@ const CustomModel: React.FC<CustomModelProps> = ({ modelPermalink }) => {
               conversationType="custom"
               modelId={model.id}
               placeholder={model.input_placeholder}
+              isAddContext={isAddContext}
             />
           </main>
         )}

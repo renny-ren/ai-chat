@@ -48,6 +48,6 @@ class CompletionsController < ApplicationController
   end
 
   def live_stream_params
-    params.permit(:prompt, :conversation_id, :conversation_title, :conversation_type, :model_id)
+    params.permit(:prompt, :conversation_id, :conversation_title, :conversation_type, :model_id, :is_add_context)
   end
 end

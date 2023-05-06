@@ -4,9 +4,11 @@ import ModelActions from "./ModelActions"
 interface HeaderProps {
   model: any
   setModel: () => void
+  isAddContext: boolean
+  handleContextChange: () => void
 }
 
-const Header: React.FC<HeaderProps> = ({ model, setModel }) => {
+const Header: React.FC<HeaderProps> = ({ model, setModel, isAddContext, handleContextChange }) => {
   return (
     <>
       <div className="py-3 border-b border-gray-300 border-dashed">
@@ -18,7 +20,13 @@ const Header: React.FC<HeaderProps> = ({ model, setModel }) => {
               <img className="inline-block rounded-full mx-1 h-5 w-5" src={model.user_avatar_url} />
               <span>{model.user_nickname}</span>
             </div>
-            <ModelActions model={model} setModel={setModel} />
+
+            <ModelActions
+              model={model}
+              setModel={setModel}
+              isAddContext={isAddContext}
+              handleContextChange={handleContextChange}
+            />
           </div>
         </div>
       </div>

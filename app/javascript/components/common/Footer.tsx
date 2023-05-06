@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, useContext } from "react"
 import { AppContext } from "components/AppContext"
-import { useParams } from "react-router-dom"
+import { useParams, useLocation } from "react-router-dom"
 import currentUser from "stores/current_user_store"
 import { message, Select } from "antd"
 import axios from "axios"
@@ -10,7 +10,6 @@ import queryString from "query-string"
 interface FooterProps {
   isLoading: boolean
   setIsLoading: () => void
-
   messages: any
   setMessages: () => void
   signInPrompt?: string
@@ -19,6 +18,7 @@ interface FooterProps {
   conversationType?: string
   conversationTitle?: string
   modelId?: number
+  isAddContext?: boolean
 }
 
 const Footer: React.FC<FooterProps> = ({
@@ -32,6 +32,7 @@ const Footer: React.FC<FooterProps> = ({
   conversationType,
   conversationTitle,
   modelId,
+  isAddContext = true,
 }) => {
   const inputRef = useRef(null)
   const [prompt, setPrompt] = useState("")
@@ -40,6 +41,13 @@ const Footer: React.FC<FooterProps> = ({
   const [conversationId, setConversationId] = useState(useParams().conversationId)
   const [isUpgradeOpen, setIsUpgradeOpen] = useState(false)
   const { setConversations, setShowSigninModal } = useContext(AppContext)
+  let { state } = useLocation()
+
+  useEffect(() => {
+    if (state?.conversationId) {
+      setConversationId(state.conversationId)
+    }
+  }, [state])
 
   useEffect(() => {
     if (currentUser.isSignedIn()) {
@@ -106,6 +114,7 @@ const Footer: React.FC<FooterProps> = ({
     conversation_id: conversationId,
     conversation_title: conversationTitle,
     model_id: modelId,
+    is_add_context: isAddContext,
   }
 
   const fetchResponse = () => {

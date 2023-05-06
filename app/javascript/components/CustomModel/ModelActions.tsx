@@ -2,15 +2,17 @@ import React, { useState, useEffect, useRef, useContext } from "react"
 import { AppContext } from "components/AppContext"
 import * as CommonApi from "shared/api/common"
 import { LikeOutlined, LikeFilled, StarOutlined, StarFilled, EditOutlined, DeleteOutlined } from "@ant-design/icons"
-import { message, Popconfirm } from "antd"
+import { message, Popconfirm, ConfigProvider, Switch, Tooltip } from "antd"
 import currentUser from "stores/current_user_store"
 
 interface ModelActionsProps {
   model: any
   setModel: () => void
+  isAddContext: boolean
+  handleContextChange: () => void
 }
 
-const ModelActions: React.FC<ModelActionsProps> = ({ model, setModel }) => {
+const ModelActions: React.FC<ModelActionsProps> = ({ model, setModel, isAddContext, handleContextChange }) => {
   const { setShowSigninModal } = useContext(AppContext)
 
   const validateLogin = () => {
@@ -93,7 +95,21 @@ const ModelActions: React.FC<ModelActionsProps> = ({ model, setModel }) => {
 
   return (
     <>
-      <div className="actions text-xs text-slate-500">
+      <div className="actions text-xs text-slate-500 flex items-center">
+        <ConfigProvider
+          theme={{
+            token: {
+              colorPrimary: "#10B981",
+            },
+          }}
+        >
+          <div className="hidden md:block mr-4">
+            <Tooltip title={isAddContext ? "已开启 - 生成的内容会结合会话语境" : "已关闭 - 获得更精确的一问一答效果"}>
+              <label className="mr-1">关联上下文</label>
+              <Switch size="small" className="bg-gray-400" checked={isAddContext} onChange={handleContextChange} />
+            </Tooltip>
+          </div>
+        </ConfigProvider>
         {canEdit() && (
           <button
             type="button"

@@ -106,9 +106,17 @@ module ChatCompletion
     end
 
     def build_messages
-      messages = [initial_messages << conversation.messages.order(:created_at).last(16).map { |i| { role: i.role, content: i.content } }].flatten
-      cut(messages) while limit_exceeded?(messages)
+      if ignore_context?
+        messages = initial_messages << { role: "user", content: conversation.messages.order(:created_at).last.content }
+      else
+        messages = [initial_messages << conversation.messages.order(:created_at).last(16).map { |i| { role: i.role, content: i.content } }].flatten
+        cut(messages) while limit_exceeded?(messages)
+      end
       messages
+    end
+
+    def ignore_context?
+      ActiveRecord::Type::Boolean.new.deserialize(params[:is_add_context]) == false
     end
 
     def limit_exceeded?(messages)
