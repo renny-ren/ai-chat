@@ -21,6 +21,7 @@
     "crypto-js": "^4.1.1",
     "emoji-mart": "^5.5.2",
     "esbuild": "^0.16.17",
+    "gpt3-tokenizer": "^1.1.5",
     "highlight.js": "^11.7.0",
     "lodash": "^4.17.21",
     "marked": "^4.2.12",

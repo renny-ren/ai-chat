@@ -4,6 +4,7 @@ import currentUser from "stores/current_user_store"
 import { MentionsInput, Mention } from "react-mentions"
 import data from "@emoji-mart/data"
 import Picker from "@emoji-mart/react"
+import GPT3Tokenizer from "gpt3-tokenizer"
 
 interface FooterProps {
   cable: any
@@ -29,6 +30,7 @@ const Footer: React.FC<FooterProps> = ({
   const inputRef = useRef(null)
   const gptUserNickname = gon.global_config.robot_name
   const { setShowSigninModal } = useContext(AppContext)
+  const tokenizer = new GPT3Tokenizer({ type: "gpt3" })
 
   useEffect(() => {
     setIsToAI(content.startsWith(`@${gptUserNickname}`))
@@ -41,14 +43,15 @@ const Footer: React.FC<FooterProps> = ({
     if (!content) {
       return
     }
-    if (content.length > currentUser.plan().max_question_length) {
-      return showNotice("消息超过最大长度限制，请精简提问或分条发送")
-    }
     if (isToAI) {
       if (isGenerating) {
         return showNotice("机器人忙不过来了，请稍等")
       }
       setIsGenerating(true)
+    }
+    const encoded: { bpe: number[]; text: string[] } = tokenizer.encode(content)
+    if ((encoded.bpe?.length || content.length) > currentUser.plan().max_question_length) {
+      return showNotice(`消息超过最大长度限制(${currentUser.plan().max_question_length})，请精简提问或分条发送`)
     }
 
     cable.subscriptions.subscriptions[0].send({

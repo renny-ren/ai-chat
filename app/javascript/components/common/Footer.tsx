@@ -6,6 +6,7 @@ import { message, Select } from "antd"
 import axios from "axios"
 import UpgradeModal from "components/common/UpgradeModal"
 import queryString from "query-string"
+import GPT3Tokenizer from "gpt3-tokenizer"
 
 interface FooterProps {
   isLoading: boolean
@@ -41,6 +42,7 @@ const Footer: React.FC<FooterProps> = ({
   const [conversationId, setConversationId] = useState(useParams().conversationId)
   const [isUpgradeOpen, setIsUpgradeOpen] = useState(false)
   const { setConversations, setShowSigninModal } = useContext(AppContext)
+  const tokenizer = new GPT3Tokenizer({ type: "gpt3" })
   let { state } = useLocation()
 
   useEffect(() => {
@@ -91,15 +93,16 @@ const Footer: React.FC<FooterProps> = ({
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (!prompt) return
-    if (prompt.length > currentUser.plan().max_question_length) {
-      return message.error("消息超过最大长度限制，请精简提问或分条发送")
-    }
     if (isLoading) {
       return message.info(loadingMessage || "加载中，请稍等")
     }
     if (usedMessageCount >= messageLimitPerDay) {
       setIsUpgradeOpen(true)
       return
+    }
+    const encoded: { bpe: number[]; text: string[] } = tokenizer.encode(prompt)
+    if ((encoded.bpe?.length || prompt.length) > currentUser.plan().max_question_length) {
+      return message.error(`消息超过最大长度限制(${currentUser.plan().max_question_length})，请精简提问或分条发送`)
     }
     addMessage({ role: "user", content: prompt })
     addMessage({ role: "assistant", content: "" })
