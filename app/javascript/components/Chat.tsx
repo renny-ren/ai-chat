@@ -32,7 +32,7 @@ const Chat = ({}) => {
       case "developer":
         return <Developer conversationId={conversationId} />
       case "custom":
-        return <CustomModel modelPermalink={conversation.model_permalink} />
+        return <CustomModel conversation={conversation} />
       default:
         return (
           <div className="h-full relative pt-12 md:pt-14">

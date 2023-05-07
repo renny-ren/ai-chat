@@ -82,7 +82,7 @@ const Pricing: React.FC<PricingProps> = ({}) => {
     return (
       <>
         <Helmet>
-          <title>aii.chat - 升级套餐</title>
+          <title>升级套餐 - aii.chat</title>
         </Helmet>
         <div className="rounded-xl relative z-10 overflow-hidden border border-emerald-500 border-opacity-20 shadow-pricing py-10 px-8 sm:p-12 lg:py-10 lg:px-6 xl:p-12 mb-10">
           <span className="text-emerald-500 font-semibold text-lg block mb-4">免费版</span>

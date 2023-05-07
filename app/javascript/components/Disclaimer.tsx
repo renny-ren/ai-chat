@@ -1,9 +1,13 @@
 import React, { useState } from "react"
 import Background from "components/common/Background"
+import { Helmet } from "react-helmet"
 
 const Disclaimer = () => {
   return (
     <>
+      <Helmet>
+        <title>免责声明 - aii.chat</title>
+      </Helmet>
       <div className="h-full relative pt-12 md:pt-14">
         <main className="h-full p-8">
           <Background />

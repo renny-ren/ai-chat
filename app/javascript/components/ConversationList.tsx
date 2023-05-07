@@ -148,7 +148,7 @@ const ConversationList: React.FC<ConversationListProps> = ({ conversations, onCl
         ) : (
           <li key={i} className="relative">
             <Link
-              state={{ conversationId: conversation.id }}
+              state={{ conversationId: conversation.id, conversationTitle: conversation.title }}
               className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
               to={`/chats/${conversation.id}`}
               onClick={onClickLink}

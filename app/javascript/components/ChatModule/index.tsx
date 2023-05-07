@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react"
-import { useParams } from "react-router-dom"
+import { useParams, useLocation } from "react-router-dom"
 import { Spin, message } from "antd"
 import * as UserApi from "shared/api/user"
 import type { MessageInterface } from "./types"
@@ -8,6 +8,7 @@ import Footer from "./Footer"
 import Typed from "typed.js"
 import { CDN_HOST } from "shared/constants"
 import currentUser from "stores/current_user_store"
+import { Helmet } from "react-helmet"
 
 interface ChatModuleProps {}
 
@@ -21,6 +22,7 @@ const ChatModule: FC<ChatModuleProps> = ({}) => {
   const [usedMessageCount, setUsedMessageCount] = useState(0)
   const [model, setModel] = useState({})
   let conversationId = useParams().conversationId
+  let { state } = useLocation()
 
   const htmlToText = (html: string) => {
     const temp = document.createElement("div")
@@ -135,71 +137,76 @@ const ChatModule: FC<ChatModuleProps> = ({}) => {
   }, [])
 
   return (
-    <main className="relative h-full w-full transition-width flex flex-col overflow-hidden items-stretch flex-1 pb-20">
-      <div className="flex-1 overflow-hidden relative">
-        <div className="prompt-response-list h-full dark:bg-gray-800">
-          <div className="h-full w-full overflow-y-auto">
-            {!messages.length ? (
-              <>
-                {isFetchingMsgs ? (
-                  <div className="flex h-full justify-center items-center">
-                    <Spin size="large" />
-                  </div>
-                ) : (
-                  <>
-                    <div className="flex flex-col items-center text-sm dark:bg-gray-800">
-                      <div className="pt-4 sm:pt-2 text-gray-800 w-full md:max-w-2xl lg:max-w-3xl md:h-full md:flex md:flex-col px-4 md:px-6 dark:text-gray-100">
-                        <div className="hidden md:block type-wrap text-lg md:text-xl lg:text-2xl leading-6 lg:leading-8 h-56 py-6 px-6 w-full md:max-w-2xl lg:max-w-3xl">
-                          <span style={{ whiteSpace: "pre" }} ref={el} />
-                        </div>
-                        <div>
-                          <div className="flex items-start text-center gap-3.5">
-                            {defaultPrompts.map((item, idx) => (
-                              <div key={idx} className="flex flex-col gap-3.5 flex-1">
-                                <div className="m:auto">
-                                  <div className="inline-block w-6 h-6">
-                                    <img src={item.img_src} width="24" height="24" />
+    <>
+      <Helmet>
+        <title>{state?.conversationTitle || "aii.chat - 人工智能对话平台"}</title>
+      </Helmet>
+      <main className="relative h-full w-full transition-width flex flex-col overflow-hidden items-stretch flex-1 pb-20">
+        <div className="flex-1 overflow-hidden relative">
+          <div className="prompt-response-list h-full dark:bg-gray-800">
+            <div className="h-full w-full overflow-y-auto">
+              {!messages.length ? (
+                <>
+                  {isFetchingMsgs ? (
+                    <div className="flex h-full justify-center items-center">
+                      <Spin size="large" />
+                    </div>
+                  ) : (
+                    <>
+                      <div className="flex flex-col items-center text-sm dark:bg-gray-800">
+                        <div className="pt-4 sm:pt-2 text-gray-800 w-full md:max-w-2xl lg:max-w-3xl md:h-full md:flex md:flex-col px-4 md:px-6 dark:text-gray-100">
+                          <div className="hidden md:block type-wrap text-lg md:text-xl lg:text-2xl leading-6 lg:leading-8 h-56 py-6 px-6 w-full md:max-w-2xl lg:max-w-3xl">
+                            <span style={{ whiteSpace: "pre" }} ref={el} />
+                          </div>
+                          <div>
+                            <div className="flex items-start text-center gap-3.5">
+                              {defaultPrompts.map((item, idx) => (
+                                <div key={idx} className="flex flex-col gap-3.5 flex-1">
+                                  <div className="m:auto">
+                                    <div className="inline-block w-6 h-6">
+                                      <img src={item.img_src} width="24" height="24" />
+                                    </div>
                                   </div>
+                                  <h2 className="text-lg font-sans font-normal">{item.title}</h2>
+                                  <ul className="flex flex-col gap-3.5">
+                                    {item.prompts.map((text, i) => (
+                                      <li
+                                        key={i}
+                                        onClick={() => setPrompt(text)}
+                                        className="w-full bg-gray-50 dark:bg-white/5 p-3 rounded-md hover:bg-gray-200 dark:hover:bg-gray-900 cursor-pointer"
+                                      >
+                                        <div>{text}</div>
+                                      </li>
+                                    ))}
+                                  </ul>
                                 </div>
-                                <h2 className="text-lg font-sans font-normal">{item.title}</h2>
-                                <ul className="flex flex-col gap-3.5">
-                                  {item.prompts.map((text, i) => (
-                                    <li
-                                      key={i}
-                                      onClick={() => setPrompt(text)}
-                                      className="w-full bg-gray-50 dark:bg-white/5 p-3 rounded-md hover:bg-gray-200 dark:hover:bg-gray-900 cursor-pointer"
-                                    >
-                                      <div>{text}</div>
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-                            ))}
+                              ))}
+                            </div>
                           </div>
                         </div>
+                        <div className="w-full h-24 flex-shrink-0"></div>
                       </div>
-                      <div className="w-full h-24 flex-shrink-0"></div>
-                    </div>
-                  </>
-                )}
-              </>
-            ) : (
-              <MessageList messagesEndRef={messagesEndRef} messages={messages} isLoading={isLoading} model={model} />
-            )}
+                    </>
+                  )}
+                </>
+              ) : (
+                <MessageList messagesEndRef={messagesEndRef} messages={messages} isLoading={isLoading} model={model} />
+              )}
+            </div>
           </div>
         </div>
-      </div>
-      <Footer
-        prompt={prompt}
-        setPrompt={setPrompt}
-        isLoading={isLoading}
-        setIsLoading={setIsLoading}
-        usedMessageCount={usedMessageCount}
-        setUsedMessageCount={setUsedMessageCount}
-        messages={messages}
-        setMessages={setMessages}
-      />
-    </main>
+        <Footer
+          prompt={prompt}
+          setPrompt={setPrompt}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
+          usedMessageCount={usedMessageCount}
+          setUsedMessageCount={setUsedMessageCount}
+          messages={messages}
+          setMessages={setMessages}
+        />
+      </main>
+    </>
   )
 }
 

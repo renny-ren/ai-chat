@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react"
-import { useParams } from "react-router-dom"
+import { useParams, useLocation } from "react-router-dom"
 import { Helmet } from "react-helmet"
 import Background from "components/common/Background"
 import MessageList from "components/common/MessageList"
@@ -11,10 +11,10 @@ import Header from "./Header"
 import Spinner from "components/common/Spinner"
 
 interface CustomModelProps {
-  modelPermalink?: string
+  conversation?: Object
 }
 
-const CustomModel: React.FC<CustomModelProps> = ({ modelPermalink }) => {
+const CustomModel: React.FC<CustomModelProps> = ({ conversation }) => {
   const [model, setModel] = useState({})
   const initMessages = [
     {
@@ -28,6 +28,7 @@ const CustomModel: React.FC<CustomModelProps> = ({ modelPermalink }) => {
   const [permalink, setPermalink] = useState(useParams().modelPermalink)
   const [isAddContext, setIsAddContext] = useState(true)
   const conversationId = useParams().conversationId
+  let { state } = useLocation()
 
   useEffect(() => {
     if (conversationId) {
@@ -36,8 +37,8 @@ const CustomModel: React.FC<CustomModelProps> = ({ modelPermalink }) => {
   }, [conversationId])
 
   useEffect(() => {
-    setPermalink(modelPermalink)
-  }, [modelPermalink])
+    setPermalink(conversation.model_permalink)
+  }, [conversation])
 
   useEffect(() => {
     if (permalink) {
@@ -78,7 +79,7 @@ const CustomModel: React.FC<CustomModelProps> = ({ modelPermalink }) => {
   return (
     <>
       <Helmet>
-        <title>{`${model.title} - aii.chat`}</title>
+        <title>{conversation.title || state?.conversationTitle || `${model.title} - aii.chat`}</title>
       </Helmet>
       <div className="h-full relative pt-12 md:pt-14">
         {isPrivate && (

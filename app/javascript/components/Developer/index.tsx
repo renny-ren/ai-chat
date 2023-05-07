@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import currentUser from "stores/current_user_store"
+import { useLocation } from "react-router-dom"
 import { Helmet } from "react-helmet"
 import Background from "components/common/Background"
 import MessageList from "components/common/MessageList"
@@ -23,6 +23,7 @@ const initMessages = [
 const Developer: React.FC<DeveloperProps> = ({ conversationId }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [messages, setMessages] = useState(initMessages)
+  let { state } = useLocation()
 
   useEffect(() => {
     if (conversationId) {
@@ -39,7 +40,7 @@ const Developer: React.FC<DeveloperProps> = ({ conversationId }) => {
   return (
     <>
       <Helmet>
-        <title>程序员助手</title>
+        <title>{state?.conversationTitle || "程序员助手"}</title>
       </Helmet>
       <div className="h-full relative pt-12 md:pt-14">
         <main className="h-full">

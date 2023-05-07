@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import currentUser from "stores/current_user_store"
 import { QqOutlined, WechatOutlined, MailFilled } from "@ant-design/icons"
 import Background from "components/common/Background"
+import { Helmet } from "react-helmet"
 
 interface FaqsProps {}
 
@@ -275,6 +276,9 @@ const faqs = [
 const Faqs: React.FC<FaqsProps> = ({}) => {
   return (
     <>
+      <Helmet>
+        <title>常见问题 - aii.chat</title>
+      </Helmet>
       <div className="h-full relative pt-12 md:pt-14">
         <main className="h-full pt-8">
           <Background />
