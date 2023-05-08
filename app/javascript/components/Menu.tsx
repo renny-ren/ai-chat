@@ -50,7 +50,9 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
             {/*<div className="absolute left-2 h-6 w-px bg-emerald-500" style={{ top: "4px", opacity: 1 }}></div>*/}
             <ul role="list" className="border-l border-transparent">
               <li
-                className={`relative ${location.pathname === "/" ? "border-l border-emerald-400 bg-zinc-800/[.025]" : ""}`}
+                className={`relative hover:bg-gray-50 dark:hover:bg-white/5 ${
+                  location.pathname === "/" ? "border-l border-emerald-400 bg-zinc-800/[.025]" : ""
+                }`}
               >
                 <Link
                   aria-current="page"
@@ -109,7 +111,7 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
             <div className="absolute inset-y-0 left-2 w-px bg-zinc-900/10 dark:bg-white/5"></div>
             <ul role="list" className="border-l border-transparent">
               <li
-                className={`relative ${
+                className={`relative hover:bg-gray-50 dark:hover:bg-white/5 ${
                   location.pathname === "/images" ? "border-l border-emerald-400 bg-zinc-800/[.025]" : ""
                 }`}
               >
@@ -122,7 +124,7 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
                 </Link>
               </li>
               <li
-                className={`relative ${
+                className={`relative hover:bg-gray-50 dark:hover:bg-white/5 ${
                   location.pathname === "/girlfriend" ? "border-l border-emerald-400 bg-zinc-800/[.025]" : ""
                 }`}
               >
@@ -135,7 +137,7 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
                 </Link>
               </li>
               <li
-                className={`relative ${
+                className={`relative hover:bg-gray-50 dark:hover:bg-white/5 ${
                   location.pathname === "/fortune" ? "border-l border-emerald-400 bg-zinc-800/[.025]" : ""
                 }`}
               >
@@ -148,7 +150,7 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
                 </Link>
               </li>
               <li
-                className={`relative ${
+                className={`relative hover:bg-gray-50 dark:hover:bg-white/5 ${
                   location.pathname === "/developer_assistant" ? "border-l border-emerald-400 bg-zinc-800/[.025]" : ""
                 }`}
               >
@@ -162,7 +164,7 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
               </li>
 
               <li
-                className={`relative ${
+                className={`relative hover:bg-gray-50 dark:hover:bg-white/5 ${
                   location.pathname === "/models" ? "border-l border-emerald-400 bg-zinc-800/[.025]" : ""
                 }`}
               >
@@ -183,7 +185,7 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
             <div className="absolute inset-y-0 left-2 w-px bg-zinc-900/10 dark:bg-white/5"></div>
             <ul role="list" className="border-l border-transparent">
               <li
-                className={`relative ${
+                className={`relative hover:bg-gray-50 dark:hover:bg-white/5 ${
                   location.pathname === "/faqs" ? "border-l border-emerald-400 bg-zinc-800/[.025]" : ""
                 }`}
               >
@@ -196,7 +198,7 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
                 </Link>
               </li>
               <li
-                className={`relative ${
+                className={`relative hover:bg-gray-50 dark:hover:bg-white/5 ${
                   location.pathname === "/pricing" ? "border-l border-emerald-400 bg-zinc-800/[.025]" : ""
                 }`}
               >
@@ -209,7 +211,7 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
                 </Link>
               </li>
               <li
-                className={`relative ${
+                className={`relative hover:bg-gray-50 dark:hover:bg-white/5 ${
                   location.pathname === "/disclaimer" ? "border-l border-emerald-400 bg-zinc-800/[.025]" : ""
                 }`}
               >

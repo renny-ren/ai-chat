@@ -149,7 +149,7 @@ const ConversationList: React.FC<ConversationListProps> = ({ conversations, hand
             </a>
           </li>
         ) : (
-          <li key={i} className="relative">
+          <li key={i} className="relative hover:bg-gray-50 dark:hover:bg-white/5 ">
             <Link
               state={{ conversationId: conversation.id, conversationTitle: conversation.title }}
               className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
