@@ -1,6 +1,11 @@
 ActiveAdmin.register User do
   permit_params :nickname, :email, :password, :password_confirmation
 
+   member_action :login do
+    sign_in resource
+    redirect_to root_path
+  end
+
   index do
     selectable_column
     id_column
@@ -12,7 +17,9 @@ ActiveAdmin.register User do
     column :current_sign_in_ip
     column :sign_in_count
     column :created_at
-    actions
+    actions defaults: true do |user|
+      link_to t('登录'), login_admin_user_path(user)
+    end
   end
 
   filter :id
