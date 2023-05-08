@@ -3,7 +3,7 @@ import type { MessageInterface } from "./types"
 import { CDN_HOST } from "shared/constants"
 import Markdown from "marked-react"
 import SyntaxHighlighter from "react-syntax-highlighter"
-// import { tomorrowNight, ocean, atomOneDark, nord, hybrid } from "react-syntax-highlighter/dist/esm/styles/hljs"
+// import { tomorrowNight, ocean, atomOneDark, hybrid, railscasts } from "react-syntax-highlighter/dist/esm/styles/hljs"
 import { hybrid } from "react-syntax-highlighter/dist/esm/styles/hljs"
 import currentUser from "stores/current_user_store"
 import AudioButton from "components/common/AudioButton"
@@ -28,14 +28,21 @@ const MessageList: FC<MessageListProps> = ({ messages, messagesEndRef, isLoading
   const renderer = {
     code(snippet, language) {
       return (
-        <SyntaxHighlighter
-          children={snippet}
-          key={this.elementId}
-          language={language}
-          style={hybrid}
-          className="my-2"
-          codeTagProps={{ className: "my-2" }}
-        />
+        <div className="mt-3 shadow-md">
+          <div className="flex items-center relative text-gray-200 bg-gray-600 px-4 py-2 text-xs font-sans justify-between rounded-t-md">
+            <span>{language}</span>
+            <CopyButton color="#bfbfbf" className="flex ml-auto gap-2 rounded-md" label="Copy code" content={snippet} />
+          </div>
+          <SyntaxHighlighter
+            children={snippet}
+            key={this.elementId}
+            language={language}
+            style={hybrid}
+            customStyle={{ padding: "1rem" }}
+            className="mb-3 rounded-b-md"
+            codeTagProps={{ className: "my-2" }}
+          />
+        </div>
       )
     },
     list(body, ordered) {

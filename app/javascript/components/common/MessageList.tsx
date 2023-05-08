@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react"
 import currentUser from "stores/current_user_store"
 import Markdown from "marked-react"
 import SyntaxHighlighter from "react-syntax-highlighter"
-import { arduinoLight } from "react-syntax-highlighter/dist/esm/styles/hljs"
+import { github, arduinoLight } from "react-syntax-highlighter/dist/esm/styles/hljs"
 import AudioButton from "./AudioButton"
 import { Tooltip } from "antd"
 import { ExclamationCircleOutlined } from "@ant-design/icons"
@@ -28,14 +28,21 @@ const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, gptName,
   const renderer = {
     code(snippet, language) {
       return (
-        <SyntaxHighlighter
-          children={snippet}
-          key={this.elementId}
-          language={language}
-          style={arduinoLight}
-          className="my-2"
-          codeTagProps={{ className: "my-2" }}
-        />
+        <div className="mt-3 shadow-sm">
+          <div className="flex items-center relative text-gray-600 bg-gray-200 px-4 py-2 text-xs font-sans justify-between rounded-t-md">
+            <span>{language}</span>
+            <CopyButton className="flex ml-auto gap-2 rounded-md hover:text-gray-700" label="Copy code" content={snippet} />
+          </div>
+          <SyntaxHighlighter
+            children={snippet}
+            key={this.elementId}
+            language={language}
+            style={github}
+            customStyle={{ padding: "1rem" }}
+            className="mb-3 rounded-b-md"
+            codeTagProps={{ className: "my-2" }}
+          />
+        </div>
       )
     },
     list(body, ordered) {

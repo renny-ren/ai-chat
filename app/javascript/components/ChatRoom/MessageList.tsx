@@ -5,7 +5,7 @@ import hljs from "highlight.js"
 // import { marked } from "marked"
 import Markdown from "marked-react"
 import SyntaxHighlighter from "react-syntax-highlighter"
-import { github, arduinoLight, atelierSeasideLight } from "react-syntax-highlighter/dist/esm/styles/hljs"
+import { github, routeros, arduinoLight, atelierSeasideLight } from "react-syntax-highlighter/dist/esm/styles/hljs"
 import Avatar from "./Avatar"
 import useInfiniteScroll from "react-infinite-scroll-hook"
 import { Spin, Tooltip } from "antd"
@@ -29,14 +29,21 @@ const MessageList = ({ messages, fetchMessages, isFetching, openModal, paginatio
   const renderer = {
     code(snippet, language) {
       return (
-        <SyntaxHighlighter
-          children={snippet}
-          key={this.elementId}
-          language={language}
-          style={github}
-          className="my-2"
-          codeTagProps={{ className: "my-2" }}
-        />
+        <div className="mt-3 shadow-sm">
+          <div className="flex items-center relative text-gray-600 bg-gray-200 px-4 py-2 text-xs font-sans justify-between rounded-t-md">
+            <span>{language}</span>
+            <CopyButton className="flex ml-auto gap-2 rounded-md hover:text-gray-700" label="Copy code" content={snippet} />
+          </div>
+          <SyntaxHighlighter
+            children={snippet}
+            key={this.elementId}
+            language={language}
+            style={github}
+            customStyle={{ padding: "1rem" }}
+            className="mb-3 rounded-b-md"
+            codeTagProps={{ className: "my-2" }}
+          />
+        </div>
       )
     },
     list(body, ordered) {
