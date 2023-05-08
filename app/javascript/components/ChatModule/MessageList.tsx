@@ -7,6 +7,7 @@ import SyntaxHighlighter from "react-syntax-highlighter"
 import { hybrid } from "react-syntax-highlighter/dist/esm/styles/hljs"
 import currentUser from "stores/current_user_store"
 import AudioButton from "components/common/AudioButton"
+import CopyButton from "components/common/CopyButton"
 
 interface MessageListProps {
   messages: MessageInterface[]
@@ -66,46 +67,67 @@ const MessageList: FC<MessageListProps> = ({ messages, messagesEndRef, isLoading
     <>
       <audio ref={audioRef}></audio>
       <div className="flex flex-col items-center text-sm h-full dark:bg-gray-800 overflow-y-auto">
-        {messages.map((msg, i) => (
-          <div
-            className={
-              "w-full border-b border-gray/10 dark:border-gray-900/50 text-gray-800 dark:text-gray-100 group  " +
-              (isSelf(msg) ? "dark:bg-gray-800" : "bg-gray-50/75 dark:bg-[#444654]")
-            }
-            key={i}
-          >
-            <div className="text-base gap-4 md:gap-6 m-auto md:max-w-2xl lg:max-w-2xl xl:max-w-3xl p-4 md:py-6 flex lg:px-0">
-              <div className="w-[30px] h-[30px] flex flex-col relative items-end">
-                <img
-                  className="h-10 w-10 rounded-sm aspect-square"
-                  src={isSelf(msg) ? currentUser.avatarUrl() : model.avatar_url || `${CDN_HOST}/assets/chatgpt_logo.png`}
-                />
-                {!isSelf(msg) && (
-                  <AudioButton
-                    className="relative top-1"
-                    message={msg}
-                    playAudio={playAudio}
-                    pauseAudio={pauseAudio}
-                    playingMessageId={playingMessageId}
-                    setPlayingMessageId={setPlayingMessageId}
-                    voice={model.voice || ""}
-                  />
-                )}
-              </div>
-              <div className="relative flex w-[calc(100%-50px)] flex-col gap-1 md:gap-3 lg:w-[calc(100%-115px)]">
-                <div className="min-h-[20px] flex flex-col items-start gap-4 whitespace-pre-wrap">
-                  <div
-                    className={`markdown prompt-content max-w-full overflow-auto ${
-                      !isSelf(msg) && isLoading && i === messages.length - 1 ? "ai-response-loading" : ""
-                    } ${msg.error ? "error-response" : ""}`}
-                  >
-                    {msg.content ? <Markdown value={msg.content} renderer={renderer} /> : <p></p>}
+        {messages.map((msg, i) => {
+          return isSelf(msg) ? (
+            <div
+              className="w-full border-b border-gray/10 dark:border-gray-900/50 text-gray-800 dark:text-gray-100 group dark:bg-gray-800"
+              key={i}
+            >
+              <div className="text-base gap-4 md:gap-6 m-auto md:max-w-2xl lg:max-w-2xl xl:max-w-3xl p-4 md:py-6 flex lg:px-0">
+                <div className="w-[30px] h-[30px] flex flex-col relative items-end">
+                  <img className="h-10 w-10 rounded-sm aspect-square" src={currentUser.avatarUrl()} />
+                </div>
+                <div className="relative flex w-[calc(100%-50px)] flex-col gap-1 md:gap-3 lg:w-[calc(100%-115px)]">
+                  <div className="min-h-[20px] flex flex-col items-start gap-4 whitespace-pre-wrap">
+                    <div className="prompt-content max-w-full overflow-auto">{msg.content}</div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
+          ) : (
+            <div
+              className="w-full border-b border-gray/10 dark:border-gray-900/50 text-gray-800 dark:text-gray-100 group bg-gray-50/75 dark:bg-[#444654]"
+              key={i}
+            >
+              <div className="text-base gap-4 md:gap-6 m-auto md:max-w-2xl lg:max-w-2xl xl:max-w-3xl p-4 md:py-6 flex lg:px-0">
+                <div className="w-[30px] h-[30px] flex-shrink-0 flex flex-col relative items-end">
+                  <img
+                    className="h-10 w-10 rounded-sm aspect-square"
+                    src={model.avatar_url || `${CDN_HOST}/assets/chatgpt_logo.png`}
+                  />
+                </div>
+                <div className="relative flex w-[calc(100%-50px)] flex-col gap-1 md:gap-3 lg:w-[calc(100%-115px)]">
+                  <div className="min-h-[20px] flex flex-col items-start gap-4 whitespace-pre-wrap">
+                    <div
+                      className={`markdown max-w-full overflow-auto ${
+                        isLoading && i === messages.length - 1 ? "ai-response-loading" : ""
+                      } ${msg.error ? "error-response" : ""}`}
+                    >
+                      {msg.content ? <Markdown value={msg.content} renderer={renderer} /> : <p></p>}
+                    </div>
+                  </div>
+                </div>
+                <div className="hidden md:block flex justify-between">
+                  <div className="flex">
+                    <CopyButton
+                      className="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200"
+                      content={msg.content}
+                    />
+                    <AudioButton
+                      className="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200"
+                      message={msg}
+                      playAudio={playAudio}
+                      pauseAudio={pauseAudio}
+                      playingMessageId={playingMessageId}
+                      setPlayingMessageId={setPlayingMessageId}
+                      voice={model.voice || ""}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          )
+        })}
         <div ref={messagesEndRef}></div>
         <div className="w-full h-16 flex-shrink-0"></div>
       </div>

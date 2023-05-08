@@ -10,7 +10,8 @@ import Avatar from "./Avatar"
 import useInfiniteScroll from "react-infinite-scroll-hook"
 import { Spin, Tooltip } from "antd"
 import AudioButton from "components/common/AudioButton"
-import { ExclamationCircleOutlined } from "@ant-design/icons"
+import CopyButton from "components/common/CopyButton"
+import { ExclamationCircleOutlined, CopyOutlined } from "@ant-design/icons"
 
 const MessageList = ({ messages, fetchMessages, isFetching, openModal, pagination, setPrompt, generatingMsgId }) => {
   const [currentPage, setCurrentPage] = useState(1)
@@ -167,7 +168,7 @@ const MessageList = ({ messages, fetchMessages, isFetching, openModal, paginatio
                       {renderContent(message)}
                     </div>
                     {message.content.length > 2200 && (
-                      <div className="absolute bottom-1 -left-8">
+                      <div className="absolute bottom-0 -left-8">
                         <Tooltip
                           title={
                             <div>
@@ -176,7 +177,17 @@ const MessageList = ({ messages, fetchMessages, isFetching, openModal, paginatio
                             </div>
                           }
                         >
-                          <ExclamationCircleOutlined className="text-gray-500" />
+                          <svg className="h-4 w-4" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                              d="M849.12 928.704 174.88 928.704c-45.216 0-81.536-17.728-99.68-48.64-18.144-30.912-15.936-71.296 6.08-110.752L421.472 159.648c22.144-39.744 55.072-62.528 90.304-62.528s68.128 22.752 90.336 62.464l340.544 609.792c22.016 39.456 24.288 79.808 6.112 110.72C930.656 911.008 894.304 928.704 849.12 928.704zM511.808 161.12c-11.2 0-24.032 11.104-34.432 29.696L137.184 800.544c-10.656 19.136-13.152 36.32-6.784 47.168 6.368 10.816 22.592 17.024 44.48 17.024l674.24 0c21.92 0 38.112-6.176 44.48-17.024 6.336-10.816 3.872-28-6.816-47.136L546.24 190.816C535.872 172.224 522.976 161.12 511.808 161.12z"
+                              fill="#9a9a9a"
+                            ></path>
+                            <path
+                              d="M512 640c-17.664 0-32-14.304-32-32l0-288c0-17.664 14.336-32 32-32s32 14.336 32 32l0 288C544 625.696 529.664 640 512 640z"
+                              fill="#9a9a9a"
+                            ></path>
+                            <path d="M512 752.128m-48 0a1.5 1.5 0 1 0 96 0 1.5 1.5 0 1 0-96 0Z" fill="#9a9a9a"></path>
+                          </svg>
                         </Tooltip>
                       </div>
                     )}
@@ -207,14 +218,20 @@ const MessageList = ({ messages, fetchMessages, isFetching, openModal, paginatio
                       {renderContent(message)}
                     </div>
                     {isRobot(message) && (
-                      <AudioButton
-                        message={message}
-                        playAudio={playAudio}
-                        pauseAudio={pauseAudio}
-                        playingMessageId={playingMessageId}
-                        setPlayingMessageId={setPlayingMessageId}
-                        className="absolute bottom-1 -right-2"
-                      />
+                      <div className="absolute flex flex-col md:flex-row bottom-0 -right-2 md:-right-9">
+                        <CopyButton
+                          className="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400"
+                          content={message.content}
+                        />
+                        <AudioButton
+                          className="p-1 rounded-md hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400"
+                          message={message}
+                          playAudio={playAudio}
+                          pauseAudio={pauseAudio}
+                          playingMessageId={playingMessageId}
+                          setPlayingMessageId={setPlayingMessageId}
+                        />
+                      </div>
                     )}
                   </div>
                 </div>
