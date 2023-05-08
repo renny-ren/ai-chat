@@ -99,7 +99,7 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
               }}
             ></div>
             <ul role="list" className="border-l">
-              <ConversationList conversations={conversations} onClickLink={onClickLink} />
+              <ConversationList conversations={conversations} handleClick={onClickLink} />
             </ul>
           </div>
         </li>

@@ -4,10 +4,10 @@ import axios from "axios"
 
 interface ConversationListProps {
   conversations: any
-  onClickLink: () => void
+  handleClick: () => void
 }
 
-const ConversationList: React.FC<ConversationListProps> = ({ conversations, onClickLink }) => {
+const ConversationList: React.FC<ConversationListProps> = ({ conversations, handleClick }) => {
   const [status, setStatus] = useState("initial")
   const [title, setTitle] = useState("")
 
@@ -24,7 +24,7 @@ const ConversationList: React.FC<ConversationListProps> = ({ conversations, onCl
   const renderTitle = (conversation, i) => {
     switch (status) {
       case "initial":
-        return title || conversation.title
+        return conversation.title
       case "pendingDelete":
         return `删除「${conversation.title}」？`
       case "pendingEdit":
@@ -55,9 +55,12 @@ const ConversationList: React.FC<ConversationListProps> = ({ conversations, onCl
 
   const onClickEdit = (conversation) => {
     setStatus("pendingEdit")
-    if (!title) {
-      setTitle(conversation.title)
-    }
+    setTitle(conversation.title)
+  }
+
+  const onClickLink = () => {
+    setStatus("initial")
+    handleClick()
   }
 
   return (

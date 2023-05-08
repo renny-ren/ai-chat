@@ -11,7 +11,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ model, setModel, isAddContext, handleContextChange }) => {
   return (
     <>
-      <div className="py-3 border-b border-gray-300 border-dashed">
+      <div className="py-1 md:py-3 border-b border-gray-300 border-dashed">
         <div className="px-4 sm:px-0">
           <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-600">{model.description}</p>
           <div className="flex justify-between items-end">
