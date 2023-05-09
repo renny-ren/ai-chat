@@ -121,7 +121,7 @@ const ModelActions: React.FC<ModelActionsProps> = ({ model, setModel, isAddConte
         )}
         {canEdit() && (
           <Popconfirm
-            title={`确认要删除 ${model.title} 吗`}
+            title={`确认要删除 ${model.title} 吗？删除后无法恢复`}
             onConfirm={onDelete}
             placement="bottom"
             okButtonProps={{ type: "default" }}
