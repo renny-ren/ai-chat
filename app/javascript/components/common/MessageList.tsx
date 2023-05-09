@@ -28,7 +28,7 @@ const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, gptName,
   const renderer = {
     code(snippet, language) {
       return (
-        <div className="mt-3 shadow-sm">
+        <div key={Math.random().toString(16)} className="mt-3 shadow-sm">
           <div className="flex items-center relative text-gray-600 bg-gray-200 px-4 py-2 text-xs font-sans justify-between rounded-t-md">
             <span>{language}</span>
             <CopyButton className="flex ml-auto gap-2 rounded-md hover:text-gray-700" label="Copy code" content={snippet} />
