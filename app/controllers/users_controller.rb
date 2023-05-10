@@ -24,7 +24,7 @@ class UsersController < ApplicationController
   end
 
   def images
-    @image_blobs = current_user.images_blobs
+    @image_blobs = current_user.images_blobs.order(created_at: :desc)
   end
 
   private
