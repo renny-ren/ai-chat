@@ -28,7 +28,7 @@ const Library: React.FC<LibraryProps> = ({}) => {
           </ul>
         </div>
       </div>
-      <div className="flex flex-wrap items-center justify-center">
+      <div className="flex flex-wrap items-center justify-center max-w-5xl m-auto">
         {images.map((image, i) => (
           <div
             key={i}
