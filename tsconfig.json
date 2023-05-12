@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": "app/javascript",
+    "jsx": "react-jsx",
     "paths": {
       "components/*": ["./components/*"],
       "shared/*": ["./shared/*"]
