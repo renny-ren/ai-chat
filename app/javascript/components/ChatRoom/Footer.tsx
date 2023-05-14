@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useContext } from "react"
+import { message } from "antd"
 import { AppContext } from "components/AppContext"
 import currentUser from "stores/current_user_store"
 import { MentionsInput, Mention } from "react-mentions"
@@ -40,7 +41,8 @@ const Footer: React.FC<FooterProps> = ({
   const handleSubmit = (event) => {
     event.preventDefault()
     // console.log("subs", cable.subscriptions)
-    if (!content) {
+    if (!content || content.trim() === "@ChatGPT") {
+      message.info("请输入内容")
       return
     }
     if (isToAI) {
