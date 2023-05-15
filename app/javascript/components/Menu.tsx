@@ -60,7 +60,7 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
                   to="/"
                   onClick={onClickLink}
                 >
-                  <span className="truncate">ChatGPT 在线聊天室</span>
+                  <span className="truncate">AI 在线聊天室</span>
                 </Link>
               </li>
             </ul>
