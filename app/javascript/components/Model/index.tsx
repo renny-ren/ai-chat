@@ -36,7 +36,7 @@ const Model: React.FC<ModelProps> = ({ tab }) => {
           <Background />
 
           <Helmet>
-            <title>自定义模型 - aiia.chat</title>
+            <title>自定义应用 - aiia.chat</title>
           </Helmet>
 
           <div className="relative h-full w-full transition-width flex flex-col overflow-y-auto items-stretch justify-center flex-1">
