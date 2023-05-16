@@ -1,6 +1,6 @@
 class Model < ApplicationRecord
   belongs_to :user
-  has_many :conversations, dependent: :destroy
+  has_many :conversations, dependent: :nullify
 
   delegate :nickname, to: :user, prefix: true
   delegate :avatar_url, to: :user, prefix: true

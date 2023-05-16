@@ -49,11 +49,11 @@ const Header: React.FC<HeaderProps> = ({ customContent, conversations }) => {
             <div className="flex items-center">
               <div className="hidden lg:block lg:max-w-md lg:flex-auto">
                 <a aria-label="Home" href="/">
-                  <img src={`${CDN_HOST}/assets/logo.png`} width="60px" />
+                  <img src={`${CDN_HOST}/assets/logo.png`} width="80px" />
                 </a>
               </div>
 
-              <div className="flex items-center gap-4 lg:hidden">
+              <div className="flex items-center gap-2 lg:hidden">
                 <button
                   type="button"
                   className="flex h-6 w-6 items-center justify-center rounded-md transition hover:bg-zinc-900/5 dark:hover:bg-white/5"
@@ -71,16 +71,16 @@ const Header: React.FC<HeaderProps> = ({ customContent, conversations }) => {
                   </svg>
                 </button>
                 <a aria-label="Home" href="/">
-                  <img src={`${CDN_HOST}/assets/logo.png`} width="60px" />
+                  <img src={`${CDN_HOST}/assets/logo.png`} width="70px" />
                 </a>
               </div>
               {currentUser.isSignedIn() && (
-                <div className="ml-4">
-                  <a href="/pricing">
+                <div className="ml-3 md:ml-4">
+                  <a href="/pricing" className="inline-block w-4">
                     {currentUser.membership() === "free" ? (
-                      <Tag className="text-gray-500 dark:text-white">{currentUser.membershipName()}</Tag>
+                      <Tag className="text-gray-500 dark:text-white m-0">{currentUser.membershipName()}</Tag>
                     ) : (
-                      <Tag color="green" className="bg-transparent dark:text-gray-400 dark:border-gray-400">
+                      <Tag color="green" className="bg-transparent dark:text-gray-400 dark:border-gray-400 m-0">
                         {currentUser.membershipName()}
                       </Tag>
                     )}

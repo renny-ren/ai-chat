@@ -1,9 +1,18 @@
 import React, { useState, useEffect, useRef, useContext } from "react"
 import { AppContext } from "components/AppContext"
 import * as CommonApi from "shared/api/common"
-import { LikeOutlined, LikeFilled, StarOutlined, StarFilled, EditOutlined, DeleteOutlined } from "@ant-design/icons"
+import {
+  LikeOutlined,
+  LikeFilled,
+  StarOutlined,
+  StarFilled,
+  EditOutlined,
+  DeleteOutlined,
+  ShareAltOutlined,
+} from "@ant-design/icons"
 import { message, Popconfirm, ConfigProvider, Switch, Tooltip } from "antd"
 import currentUser from "stores/current_user_store"
+import { copy } from "shared/utils/copy_text"
 
 interface ModelActionsProps {
   model: any
@@ -93,6 +102,11 @@ const ModelActions: React.FC<ModelActionsProps> = ({ model, setModel, isAddConte
     }
   }
 
+  const onShare = async () => {
+    copy(window.location.href)
+    message.success("应用链接已复制成功，快去分享吧")
+  }
+
   return (
     <>
       <div className="actions text-xs text-slate-500 flex items-center">
@@ -111,29 +125,43 @@ const ModelActions: React.FC<ModelActionsProps> = ({ model, setModel, isAddConte
           </div>
         </ConfigProvider>
         {canEdit() && (
-          <button
-            type="button"
-            onClick={() => onEdit()}
-            className="font-medium inline-flex items-center text-sm mr-3 gap-x-1 rounded-full hover:text-slate-700 outline-none"
-          >
-            <EditOutlined />
-          </button>
+          <Tooltip title="编辑模型">
+            <button
+              type="button"
+              onClick={() => onEdit()}
+              className="font-medium inline-flex items-center text-sm mr-3 gap-x-1 rounded-full hover:text-slate-700 outline-none"
+            >
+              <EditOutlined />
+            </button>
+          </Tooltip>
         )}
         {canEdit() && (
           <Popconfirm
-            title={`确认要删除 ${model.title} 吗`}
+            title={`确认要删除 ${model.title} 吗？删除后无法恢复`}
             onConfirm={onDelete}
             placement="bottom"
             okButtonProps={{ type: "default" }}
           >
-            <button
-              type="button"
-              className="font-medium inline-flex items-center text-sm mr-3 gap-x-1 rounded-full hover:text-slate-700 outline-none"
-            >
-              <DeleteOutlined />
-            </button>
+            <Tooltip title="删除模型">
+              <button
+                type="button"
+                className="font-medium inline-flex items-center text-sm mr-3 gap-x-1 rounded-full hover:text-slate-700 outline-none"
+              >
+                <DeleteOutlined />
+              </button>
+            </Tooltip>
           </Popconfirm>
         )}
+
+        <Tooltip title="分享">
+          <button
+            type="button"
+            onClick={() => onShare()}
+            className="font-medium inline-flex items-center text-sm mr-3 gap-x-1 rounded-full hover:text-slate-700 outline-none"
+          >
+            <ShareAltOutlined />
+          </button>
+        </Tooltip>
 
         <button
           type="button"

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { message } from "antd"
-import { copy } from "components/common/utils/CopyText"
+import { copy } from "shared/utils/copy_text"
 
 interface CopyButtonProps {
   content: string

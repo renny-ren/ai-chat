@@ -220,7 +220,7 @@ const faqs = [
                 <MailFilled className="mr-1" />
                 客服邮箱
               </td>
-              <td className="border px-4 py-2">support@aii.chat</td>
+              <td className="border px-4 py-2">support@aiia.chat</td>
             </tr>
           </tbody>
         </table>
@@ -277,7 +277,7 @@ const Faqs: React.FC<FaqsProps> = ({}) => {
   return (
     <>
       <Helmet>
-        <title>常见问题 - aii.chat</title>
+        <title>常见问题 - aiia.chat</title>
       </Helmet>
       <div className="h-full relative pt-12 md:pt-14">
         <main className="h-full pt-8">

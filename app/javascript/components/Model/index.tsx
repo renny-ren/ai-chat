@@ -6,6 +6,7 @@ import { Helmet } from "react-helmet"
 import Background from "components/common/Background"
 import List from "./List"
 import Form from "./Form"
+import { PlusCircleOutlined } from "@ant-design/icons"
 
 interface ModelProps {}
 
@@ -35,7 +36,7 @@ const Model: React.FC<ModelProps> = ({ tab }) => {
           <Background />
 
           <Helmet>
-            <title>自定义模型 - aii.chat</title>
+            <title>自定义应用 - aiia.chat</title>
           </Helmet>
 
           <div className="relative h-full w-full transition-width flex flex-col overflow-y-auto items-stretch justify-center flex-1">
@@ -43,7 +44,7 @@ const Model: React.FC<ModelProps> = ({ tab }) => {
               <div className="px-4 md:px-8 container mx-auto max-w-7xl mt-2">
                 <ul className="flex border-b border-gray-300 text-sm font-medium text-gray-600 dark:text-gray-500">
                   <li
-                    className={`cursor-pointer mr-4 md:mr-8 hover:text-gray-900 dark:hover:text-gray-300 ${
+                    className={`cursor-pointer mr-4 md:mr-6 hover:text-gray-900 dark:hover:text-gray-300 ${
                       currentTab === "list" ? "text-gray-900 dark:text-gray-300 border-b-2" : ""
                     } border-gray-800`}
                   >
@@ -52,7 +53,7 @@ const Model: React.FC<ModelProps> = ({ tab }) => {
                     </a>
                   </li>
                   <li
-                    className={`cursor-pointer mr-4 md:mr-8 hover:text-gray-900 dark:hover:text-gray-300 ${
+                    className={`cursor-pointer mr-4 md:mr-6 hover:text-gray-900 dark:hover:text-gray-300 ${
                       currentTab === "starred" ? "text-gray-900 dark:text-gray-300 border-b-2" : ""
                     } border-gray-800`}
                   >
@@ -61,7 +62,7 @@ const Model: React.FC<ModelProps> = ({ tab }) => {
                     </a>
                   </li>
                   <li
-                    className={`cursor-pointer mr-4 md:mr-8 hover:text-gray-900 dark:hover:text-gray-300 ${
+                    className={`cursor-pointer mr-4 md:mr-6 hover:text-gray-900 dark:hover:text-gray-300 ${
                       currentTab === "self" ? "text-gray-900 dark:text-gray-300 border-b-2" : ""
                     } border-gray-800`}
                   >
@@ -70,12 +71,15 @@ const Model: React.FC<ModelProps> = ({ tab }) => {
                     </a>
                   </li>
                   <li
-                    className={`cursor-pointer mr-4 md:mr-8 hover:text-gray-900 dark:hover:text-gray-300 ${
+                    className={`cursor-pointer mr-4 md:mr-6 hover:text-gray-900 dark:hover:text-gray-300 ${
                       currentTab === "new" ? "text-gray-900 dark:text-gray-300 border-b-2" : ""
                     } border-gray-800`}
                   >
                     <a onClick={() => changeTab("new")} className="py-4 inline-block">
-                      创建模型
+                      <div className="flex items-center">
+                        <PlusCircleOutlined className="mr-1" />
+                        创建模型
+                      </div>
                     </a>
                   </li>
                 </ul>

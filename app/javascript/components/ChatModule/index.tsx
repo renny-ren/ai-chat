@@ -139,7 +139,7 @@ const ChatModule: FC<ChatModuleProps> = ({}) => {
   return (
     <>
       <Helmet>
-        <title>{state?.conversationTitle || "aii.chat - 人工智能对话平台"}</title>
+        <title>{state?.conversationTitle || "aiia.chat - 人工智能对话平台"}</title>
       </Helmet>
       <main className="relative h-full w-full transition-width flex flex-col overflow-hidden items-stretch flex-1 pb-20">
         <div className="flex-1 overflow-hidden relative">
