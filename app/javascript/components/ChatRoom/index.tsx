@@ -9,6 +9,9 @@ import Sponsorship from "./Sponsorship"
 import ClearConversationModal from "./ClearConversationModal"
 import type { ChatMessage } from "./types"
 import { Avatar as AntdAvatar, Tooltip } from "antd"
+import Header from "./Header"
+import * as UserApi from "shared/api/user"
+import currentUser from "stores/current_user_store"
 
 interface ChatRoomProps {
   setCustomContent: any
@@ -27,6 +30,21 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ setCustomContent }) => {
   const [noticeContent, setNoticeContent] = useState("")
   const [subscribers, setSubscribers] = useState([{ id: 0, nickname: gon.global_config.robot_name }])
   const [prompt, setPrompt] = useState("")
+  const [usedMessageCount, setUsedMessageCount] = useState(0)
+
+  useEffect(() => {
+    if (currentUser.isSignedIn()) {
+      fetchUser()
+    }
+  }, [])
+
+  const fetchUser = async () => {
+    const res = await UserApi.fetchUser(currentUser.id())
+    if (res.ok) {
+      const data = await res.json
+      setUsedMessageCount(data.user.used_message_count)
+    }
+  }
 
   const showNotice = (content) => {
     setNoticeContent(content)
@@ -53,6 +71,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ setCustomContent }) => {
         {subscribersForDispaly.length > 1 && (
           <AntdAvatar.Group
             size="small"
+            className="block md:hidden"
             maxCount={2}
             maxStyle={{ color: "#fff", backgroundColor: "rgba(0, 0, 0, 0.5)", fontSize: "12px", borderRadius: "4px" }}
           >
@@ -120,6 +139,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ setCustomContent }) => {
               if (data.status !== 200) {
                 return notifyFailure(data)
               }
+              setUsedMessageCount((prevCount) => prevCount + 1)
             }
             setGeneratingMsgId(data.done ? 0 : data.id)
             newMessageIndex = messagesRef.current.findIndex((msg) => msg.id === data.id)
@@ -189,6 +209,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ setCustomContent }) => {
                   <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl h-full w-full md:max-w-3xl lg:max-w-4xl">
                     <div className="flex flex-col h-full md:pb-4">
                       <div className="flex flex-col h-full overflow-x-auto">
+                        <Header subscribers={subscribers} />
                         <MessageList
                           messages={messages}
                           fetchMessages={fetchMessages}
@@ -215,6 +236,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ setCustomContent }) => {
           subscribers={subscribers}
           content={prompt}
           setContent={setPrompt}
+          usedMessageCount={usedMessageCount}
         />
       </div>
       <ClearConversationModal isOpen={isOpenClearModal} closeModal={closeModal} />

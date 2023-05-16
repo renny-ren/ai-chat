@@ -29,6 +29,8 @@ class MessagesChannel < ApplicationCable::Channel
       end
       if data["is_to_ai"]
         GenerateAiResponseJob.perform_now(@message.id)
+        remote_ip = ActionDispatch::Request.new(connection.env).remote_ip
+        current_user.update_used_count(remote_ip)
       end
     end
   end
