@@ -23,6 +23,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow }) => {
   const [mode, setMode] = useState("sign_in")
   const [formErrors, setFormErrors] = useState([])
   const [rememberMe, setRememberMe] = useState(true)
+  const [readAggrement, setReadAggrement] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const { setShowSigninModal } = useContext(AppContext)
 
@@ -102,7 +103,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow }) => {
                   <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
                     <div className="w-full max-w-md space-y-8">
                       <div>
-                        <img className="mx-auto h-16 w-auto" src={`${CDN_HOST}/assets/logo2.png`} alt="aii.chat" />
+                        <img className="mx-auto h-16 w-auto" src={`${CDN_HOST}/assets/logo2.png`} alt="aiia.chat" />
                         <h2 className="mt-2 text-center text-3xl font-bold tracking-tight text-gray-900">登录账号</h2>
                         <p className="mt-2 text-center text-sm text-gray-600">
                           或
@@ -239,7 +240,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow }) => {
                   <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
                     <div className="w-full max-w-md space-y-8">
                       <div>
-                        <img className="mx-auto h-16 w-auto" src={`${CDN_HOST}/assets/logo2.png`} alt="aii.chat" />
+                        <img className="mx-auto h-16 w-auto" src={`${CDN_HOST}/assets/logo2.png`} alt="aiia.chat" />
                         <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">注册账号</h2>
                         <p className="mt-2 text-center text-sm text-gray-600">
                           或{" "}
@@ -315,6 +316,26 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow }) => {
                               placeholder="确认密码"
                             />
                           </div>
+                        </div>
+
+                        <div className="flex items-center">
+                          <input
+                            id="readAggrement"
+                            name="readAggrement"
+                            type="checkbox"
+                            required
+                            checked={readAggrement}
+                            onChange={(e) => setReadAggrement(e.target.checked)}
+                            onInvalid={(e) => e.target.setCustomValidity("请阅读并勾选同意协议")}
+                            onInput={(e) => e.target.setCustomValidity("")}
+                            className="h-4 w-4 rounded border-gray-300 text-emerald-500 focus:ring-emerald-500"
+                          />
+                          <label htmlFor="readAggrement" className="ml-2 block text-sm text-gray-900">
+                            已仔细阅读并同意
+                            <a className="text-emerald-500 hover:text-emerald-600" target="_blank" href="/disclaimer">
+                              《用户协议及免责声明》
+                            </a>
+                          </label>
                         </div>
 
                         {!!formErrors.length && (
