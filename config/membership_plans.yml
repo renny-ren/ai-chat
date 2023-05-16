@@ -1,17 +1,17 @@
 free:
-  message_limit_per_day: 2
+  message_limit_per_day: 5
   max_question_length: 100
   export_conversation: false
   image_model: false
   image_count: 0
 basic:
-  message_limit_per_day: 10
+  message_limit_per_day: 15
   max_question_length: 300
   export_conversation: false
   image_model: false
   image_count: 0
 standard:
-  message_limit_per_day: 15
+  message_limit_per_day: 30
   max_question_length: 300
   export_conversation: true
   image_model: true
@@ -21,4 +21,4 @@ advanced:
   max_question_length: 4000
   export_conversation: true
   image_model: true
-  image_count: 60
+  image_count: 50

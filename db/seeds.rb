@@ -17,19 +17,19 @@ MembershipPlan.create(
   name: "basic",
   description: "基础版会员",
   amount: 9,
-  duration: 15,
+  duration: 7,
 )
 
 MembershipPlan.create(
   name: "standard",
   description: "标准版会员",
   amount: 19,
-  duration: 30,
+  duration: 15,
 )
 
 MembershipPlan.create(
   name: "advanced",
   description: "高级版会员",
-  amount: 28,
-  duration: 45,
+  amount: 36,
+  duration: 30,
 )

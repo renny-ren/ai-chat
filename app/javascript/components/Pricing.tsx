@@ -84,15 +84,15 @@ const Pricing: React.FC<PricingProps> = ({}) => {
         <Helmet>
           <title>升级套餐 - aii.chat</title>
         </Helmet>
-        <div className="rounded-xl relative z-10 overflow-hidden border border-emerald-500 border-opacity-20 shadow-pricing py-10 px-8 sm:p-12 lg:py-10 lg:px-6 xl:p-12 mb-10">
+        <div className="rounded-xl relative z-10 overflow-hidden border border-emerald-500 border-opacity-20 shadow-pricing py-10 px-8 sm:p-12 lg:py-10 lg:px-6 xl:px-8 2xl:px-6 3xl:p-12 mb-10">
           <span className="text-emerald-500 font-semibold text-lg block mb-4">免费版</span>
           <h2 className="font-bold text-dark mb-2 text-[42px] dark:text-white">¥0</h2>
           <p className="text-base text-body-color pb-6 mb-6 border-b border-[#F2F2F2]">免费体验使用</p>
-          <div className="mb-7 min-h-[220px]">
-            {renderItem("每日 2 次 AI 对话")}
+          <div className="mb-7 min-h-[250px]">
+            {renderItem("每日 5 次 AI 对话")}
             {renderItem("最大提问长度 100 字")}
-            {renderItem("导出个人会话", false)}
             {renderItem("AI 绘画", false)}
+            {renderItem("导出个人会话", false)}
           </div>
           <a className="w-full block text-base font-semibold text-emerald-500 bg-transparent border border-emerald-500 rounded-md text-center p-3 transition">
             {currentUser.membership() === "free" ? "当前版本" : "免费版"}
@@ -222,19 +222,20 @@ const Pricing: React.FC<PricingProps> = ({}) => {
               <div className="flex flex-wrap justify-center -mx-4 lg:mx-8">
                 <div className="w-full sm:w-1/2 md:hidden 2xl:block 2xl:w-1/4 px-6">{renderFreeItem()}</div>
                 <div className="w-full sm:w-1/2 md:w-1/3 2xl:w-1/4 px-6">
-                  <div className="rounded-xl relative z-10 overflow-hidden border border-emerald-500 border-opacity-20 shadow-pricing py-10 px-8 sm:p-12 lg:py-10 lg:px-6 xl:p-12 mb-10">
+                  <div className="rounded-xl relative z-10 overflow-hidden border border-emerald-500 border-opacity-20 shadow-pricing py-10 px-8 sm:p-12 lg:py-10 lg:px-6 xl:px-8 2xl:px-6 3xl:p-12 mb-10">
                     <span className="text-emerald-500 font-semibold text-lg block mb-4">基础版</span>
                     <h2 className="font-bold text-dark mb-2 text-[42px] dark:text-white">
                       ¥9
                       <span className="ml-2 text-base text-gray-400 font-medium line-through">¥18</span>
                     </h2>
                     <p className="text-base text-body-color pb-6 mb-6 border-b border-[#F2F2F2]">个人基础使用</p>
-                    <div className="mb-7 min-h-[220px]">
-                      {renderItem("每日 10 次 AI 对话")}
-                      {renderItem("有效期 15 天")}
+                    <div className="mb-7 min-h-[250px]">
+                      {renderItem("每日 15 次 AI 对话")}
+                      {renderItem("有效期 7 天")}
                       {renderItem("最大提问长度 300 字")}
-                      {renderItem("导出个人会话", false)}
+                      {renderItem("自定义 AI 应用")}
                       {renderItem("AI 绘画", false)}
+                      {renderItem("导出个人会话", false)}
                     </div>
                     <button
                       onClick={() => onClickUpgrade("basic")}
@@ -267,19 +268,20 @@ const Pricing: React.FC<PricingProps> = ({}) => {
                   </div>
                 </div>
                 <div className="w-full sm:w-1/2 md:w-1/3 2xl:w-1/4 px-6">
-                  <div className="rounded-xl relative z-10 overflow-hidden border border-emerald-500 border-opacity-20 shadow-pricing py-10 px-8 sm:p-12 lg:py-10 lg:px-6 xl:p-12 mb-10">
+                  <div className="rounded-xl relative z-10 overflow-hidden border border-emerald-500 border-opacity-20 shadow-pricing py-10 px-8 sm:p-12 lg:py-10 lg:px-6 xl:px-8 2xl:px-6 3xl:p-12 mb-10">
                     <span className="text-emerald-500 font-semibold text-lg block mb-4">标准版</span>
                     <h2 className="font-bold text-dark mb-2 text-[42px] dark:text-white">
                       ¥19
                       <span className="ml-2 text-base text-gray-400 font-medium line-through">¥36</span>
                     </h2>
                     <p className="text-base text-body-color pb-6 mb-6 border-b border-[#F2F2F2]">个人日常使用</p>
-                    <div className="mb-7 min-h-[220px]">
-                      {renderItem("每日 15 次 AI 对话")}
-                      {renderItem("有效期 30 天")}
+                    <div className="mb-7 min-h-[250px]">
+                      {renderItem("每日 30 次 AI 对话")}
+                      {renderItem("有效期 15 天")}
                       {renderItem("最大提问长度 300 字")}
-                      {renderItem("导出个人会话", true)}
+                      {renderItem("自定义 AI 应用")}
                       {renderItem("AI 绘画 10 张", true)}
+                      {renderItem("导出个人会话", true)}
                     </div>
                     <button
                       onClick={() => onClickUpgrade("standard")}
@@ -313,19 +315,20 @@ const Pricing: React.FC<PricingProps> = ({}) => {
                 </div>
 
                 <div className="w-full sm:w-1/2 md:w-1/3 2xl:w-1/4 px-6">
-                  <div className="rounded-xl relative z-10 overflow-hidden border border-emerald-500 border-opacity-20 shadow-pricing py-10 px-8 sm:p-12 lg:py-10 lg:px-6 xl:p-12 mb-10">
+                  <div className="rounded-xl relative z-10 overflow-hidden border border-emerald-500 border-opacity-20 shadow-pricing py-10 px-8 sm:p-12 lg:py-10 lg:px-6 xl:px-8 2xl:px-6 3xl:p-12 mb-10">
                     <span className="text-emerald-500 font-semibold text-lg block mb-4">高级版（限时特惠）</span>
                     <h2 className="font-bold text-dark mb-2 text-[42px] dark:text-white">
-                      ¥28
+                      ¥36
                       <span className="ml-2 text-base text-gray-400 font-medium line-through">¥69</span>
                     </h2>
                     <p className="text-base text-body-color pb-6 mb-6 border-b border-[#F2F2F2]">个人畅享使用</p>
-                    <div className="mb-7 min-h-[220px]">
+                    <div className="mb-7 min-h-[250px]">
                       {renderItem("无限对话次数")}
-                      {renderItem("有效期 45 天")}
+                      {renderItem("有效期 30 天")}
                       {renderItem("最大提问长度 4000 字")}
+                      {renderItem("自定义 AI 应用")}
+                      {renderItem("AI 绘画 50 张")}
                       {renderItem("导出个人会话")}
-                      {renderItem("AI 绘画 60 张")}
                       {renderItem("新功能免费体验")}
                     </div>
                     <button
