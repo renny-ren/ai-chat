@@ -126,6 +126,7 @@ GEM
       faraday-net_http (>= 2.0, < 3.1)
       ruby2_keywords (>= 0.0.4)
     faraday-net_http (3.0.2)
+    ffaker (2.21.0)
     ffi (1.15.5)
     formtastic (4.0.0)
       actionpack (>= 5.2.0)
@@ -338,6 +339,7 @@ DEPENDENCIES
   enumize
   exception-track
   faraday
+  ffaker
   gon
   jbuilder
   jsbundling-rails

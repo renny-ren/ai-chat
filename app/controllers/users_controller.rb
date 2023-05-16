@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:fake_name]
   before_action :set_user, only: :show
 
   def update
@@ -25,6 +25,10 @@ class UsersController < ApplicationController
 
   def images
     @image_blobs = current_user.images_blobs.order(created_at: :desc)
+  end
+
+  def fake_name
+    render status: 200, json: { name: FFaker::Name.name }
   end
 
   private

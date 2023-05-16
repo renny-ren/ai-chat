@@ -31,3 +31,7 @@ export function fetchUser(id) {
 export function updateUser(id, data) {
   return put(`/v1/users/${id}`, data)
 }
+
+export function fetchFakeName() {
+  return get("/v1/users/fake_name")
+}

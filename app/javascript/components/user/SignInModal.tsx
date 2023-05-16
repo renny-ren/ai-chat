@@ -2,10 +2,11 @@ import React, { Fragment, useRef, useState, useContext } from "react"
 import { AppContext } from "components/AppContext"
 import { Dialog, Transition } from "@headlessui/react"
 import { LockClosedIcon } from "@heroicons/react/20/solid"
-import { message } from "antd"
+import { message, Tooltip } from "antd"
 import axios from "axios"
 import { CDN_HOST } from "shared/constants"
-import { EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons"
+import { EyeOutlined, EyeInvisibleOutlined, ReloadOutlined } from "@ant-design/icons"
+import * as UserApi from "shared/api/user"
 
 axios.interceptors.request.use((config) => {
   config.headers["Content-Type"] = "application/json"
@@ -26,6 +27,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow }) => {
   const [readAggrement, setReadAggrement] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const { setShowSigninModal } = useContext(AppContext)
+  const [nickname, setNickname] = useState("")
 
   const onSignIn = async (e) => {
     e.preventDefault()
@@ -51,7 +53,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow }) => {
     e.preventDefault()
     try {
       const response = await axios.post("/users", {
-        nickname: e.target.elements.nickname.value,
+        nickname: nickname,
         username: e.target.elements.username.value,
         password: e.target.elements.password.value,
         password_confirmation: e.target.elements.password_confirmation.value,
@@ -70,6 +72,12 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow }) => {
   const toggleMode = () => {
     setMode(mode === "sign_in" ? "sign_up" : "sign_in")
     setFormErrors([])
+  }
+
+  const onFetchFakeName = async () => {
+    const res = await UserApi.fetchFakeName()
+    const data = await res.json
+    setNickname(data.name)
   }
 
   return (
@@ -136,7 +144,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow }) => {
                               placeholder="用户名"
                             />
                           </div>
-                          <div className="relative flex flex-row  items-center justify-between">
+                          <div className="relative flex flex-row items-center justify-between">
                             <label htmlFor="password" className="sr-only">
                               密码
                             </label>
@@ -159,12 +167,12 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow }) => {
                               <EyeOutlined
                                 className={`${
                                   showPassword ? "hidden" : "block"
-                                } h-5 w-5 absolute right-2 z-10 text-gray-500`}
+                                } h-5 w-5 absolute right-2 top-3 z-10 text-gray-500`}
                               />
                               <EyeInvisibleOutlined
                                 className={`${
                                   showPassword ? "block" : "hidden"
-                                } h-5 w-5 absolute right-2 z-10 text-gray-500`}
+                                } h-5 w-5 absolute right-2 top-3 z-10 text-gray-500`}
                               />
                             </button>
                           </div>
@@ -254,22 +262,27 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow }) => {
                       </div>
                       <form className="mt-8 space-y-6" onSubmit={onSignUp}>
                         <div className="-space-y-px rounded-md shadow-sm">
-                          <div>
+                          <div className="relative flex flex-row items-center justify-between">
                             <label htmlFor="nickname" className="sr-only">
                               昵称
                             </label>
                             <input
-                              id="nickname"
-                              name="nickname"
-                              type="nickname"
+                              type="text"
                               autoComplete="nickname"
                               ref={nameRef}
                               required
+                              value={nickname}
+                              onChange={(e) => setNickname(e.target.value)}
                               onInvalid={(e) => e.target.setCustomValidity("请输入昵称")}
                               onInput={(e) => e.target.setCustomValidity("")}
                               className="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-emerald-500 focus:outline-none focus:ring-emerald-500 sm:text-sm"
                               placeholder="昵称（用于展示）"
                             />
+                            <Tooltip placement="topRight" title="随机一个昵称">
+                              <button type="button" onClick={onFetchFakeName} className="inline-flex items-center">
+                                <ReloadOutlined className="h-5 w-5 absolute right-2 top-3 z-10 text-gray-500" />
+                              </button>
+                            </Tooltip>
                           </div>
                           <div>
                             <label htmlFor="username" className="sr-only">

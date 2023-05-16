@@ -27,6 +27,7 @@ Rails.application.routes.draw do
     resources :users, only: [:update, :show] do
       collection do
         post :clear_conversations
+        get :fake_name
       end
       member do
         get :images
