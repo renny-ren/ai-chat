@@ -56,3 +56,7 @@ export function fetchModel(permalink) {
 export function deleteModel(permalink) {
   return destroy(`/v1/models/${permalink}`)
 }
+
+export function checkWords(text) {
+  return post(`/v1/messages/check_words`, { text: text })
+}

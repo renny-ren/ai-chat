@@ -21,7 +21,9 @@ Rails.application.routes.draw do
     resources :completions, only: :create do
       get "live_stream", on: :collection
     end
-    resources :messages, only: :index
+    resources :messages, only: :index do
+      post "check_words", on: :collection
+    end
     resources :users, only: [:update, :show] do
       collection do
         post :clear_conversations

@@ -2,6 +2,7 @@
   "compilerOptions": {
     "baseUrl": "app/javascript",
     "jsx": "react-jsx",
+    "lib": ["es2015"],
     "paths": {
       "components/*": ["./components/*"],
       "shared/*": ["./shared/*"]

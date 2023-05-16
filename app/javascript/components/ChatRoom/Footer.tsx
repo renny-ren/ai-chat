@@ -6,6 +6,7 @@ import { MentionsInput, Mention } from "react-mentions"
 import data from "@emoji-mart/data"
 import Picker from "@emoji-mart/react"
 import GPT3Tokenizer from "gpt3-tokenizer"
+import * as CommonApi from "shared/api/common"
 
 interface FooterProps {
   cable: any
@@ -38,7 +39,7 @@ const Footer: React.FC<FooterProps> = ({
     if (content) inputRef.current.focus()
   }, [content])
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
     // console.log("subs", cable.subscriptions)
     if (!content || content.trim() === "@ChatGPT") {
@@ -51,9 +52,18 @@ const Footer: React.FC<FooterProps> = ({
       }
       setIsGenerating(true)
     }
+
+    // Check message limit
     const encoded: { bpe: number[]; text: string[] } = tokenizer.encode(content)
     if ((encoded.bpe?.length || content.length) > currentUser.plan().max_question_length) {
       return showNotice(`消息超过最大长度限制(${currentUser.plan().max_question_length})，请精简提问或分条发送`)
+    }
+
+    // Check sensitive words
+    const res = await CommonApi.checkWords(content)
+    const data = await res.json
+    if (!res.ok && data.error_code === 1001) {
+      return message.error("消息包含违禁词，请注意您的言论")
     }
 
     cable.subscriptions.subscriptions[0].send({
