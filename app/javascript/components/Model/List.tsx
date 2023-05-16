@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import * as CommonApi from "shared/api/common"
 import { message, Empty } from "antd"
+import { LockOutlined } from "@ant-design/icons"
 import Spinner from "components/common/Spinner"
 import ModelActions from "./ModelActions"
 
@@ -63,6 +64,17 @@ const List: React.FC<ListProps> = ({ validateLogin, scope }) => {
                       <p className="truncate mt-1 text-base text-slate-500 dark:text-slate-400">{model.description}</p>
                       <div className="flex mt-2 justify-between items-start">
                         <dl className="flex items-center">
+                          {!model.is_public && (
+                            <>
+                              <div className="flex flex-col-reverse">
+                                <dd className="text-xs text-slate-500 flex items-center space-x-1">
+                                  <LockOutlined />
+                                  <span>私密</span>
+                                </dd>
+                              </div>
+                              <div className="block h-3 w-px mx-2 bg-slate-900/10 dark:bg-slate-600"></div>
+                            </>
+                          )}
                           <div className="flex flex-col-reverse">
                             <dd className="text-xs text-slate-500">{model.user_nickname}</dd>
                           </div>
