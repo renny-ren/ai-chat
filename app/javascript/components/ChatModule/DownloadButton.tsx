@@ -30,7 +30,7 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({ messages, conversationI
         .join("\n")
       const file = new Blob([content], { type: type === "md" ? "text/markdown" : "text/plain" })
       const downloadLink = document.createElement("a")
-      downloadLink.download = `${data.conversation.title} - aii.chat 对话记录.${type}`
+      downloadLink.download = `${data.conversation.title} - aiia.chat 对话记录.${type}`
       downloadLink.href = URL.createObjectURL(file)
 
       document.body.appendChild(downloadLink)

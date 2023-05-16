@@ -11,7 +11,7 @@ const EditModel: React.FC<EditModelProps> = ({}) => {
   return (
     <>
       <Helmet>
-        <title>修改模型 - aii.chat</title>
+        <title>修改模型 - aiia.chat</title>
       </Helmet>
       <div className="h-full relative pt-12 md:pt-14">
         <main className="h-full">
