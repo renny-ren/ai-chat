@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react"
 import { Link, useLocation } from "react-router-dom"
-import { message, Tooltip } from "antd"
+import { message, Tooltip, Popconfirm } from "antd"
 import { PlusCircleOutlined, DeleteOutlined, SearchOutlined, CloseOutlined } from "@ant-design/icons"
 import ConversationList from "./ConversationList"
 import * as _ from "lodash"
 import Fuse from "fuse.js"
 import pinyin from "tiny-pinyin"
+import * as UserApi from "shared/api/user"
 
 interface MenuProps {
   conversations: any
@@ -60,6 +61,14 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
     setSearchMode(false)
   }
 
+  const onClearConversations = async () => {
+    const res = await UserApi.clearConversations()
+    if (res.ok) {
+      message.success("会话历史已清空")
+      setFilteredConversations([])
+    }
+  }
+
   return (
     <>
       <ul role="list">
@@ -98,18 +107,39 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
           </div>
         </li>
         <li className="relative mt-6">
-          <div className="flex items-start justify-between">
-            <div className="flex items-end space-x-2">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
               <span className="relative text-xs font-semibold text-gray-900 dark:text-white">个人会话</span>
               <button className="text-gray-500 hover:text-gray-600" onClick={() => setSearchMode(true)}>
-                <SearchOutlined />
+                <SearchOutlined className="flex" />
               </button>
+              {!searchMode && (
+                <Popconfirm
+                  title={
+                    <>
+                      <div>
+                        确认要清空<b>所有的</b>个人会话吗？
+                      </div>
+                      <div>清空后无法恢复</div>
+                    </>
+                  }
+                  onConfirm={onClearConversations}
+                  placement="bottom"
+                  okButtonProps={{ danger: true }}
+                  okText="确认"
+                  cancelText="取消"
+                >
+                  <button className="text-gray-500 hover:text-gray-600">
+                    <DeleteOutlined className="flex" />
+                  </button>
+                </Popconfirm>
+              )}
             </div>
 
             <div className="relative text-xs bg-transparent text-gray-800 flex-1 mx-1">
               <div
                 className={`transition-all duration-300 ${
-                  searchMode ? "w-full" : "w-0"
+                  searchMode ? "w-full visible" : "w-0 invisible"
                 } flex items-center border-b border-gray-200 py-2`}
               >
                 <input

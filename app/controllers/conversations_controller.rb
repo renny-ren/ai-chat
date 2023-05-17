@@ -17,6 +17,10 @@ class ConversationsController < ApplicationController
     @conversation.destroy!
   end
 
+  def clear
+    current_user.conversations.destroy_all
+  end
+
   private
 
   def authenticate_user!
