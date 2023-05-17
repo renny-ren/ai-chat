@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react"
 import { Link, useLocation } from "react-router-dom"
 import { message, Tooltip } from "antd"
-import { PlusCircleOutlined, DeleteOutlined } from "@ant-design/icons"
+import { PlusCircleOutlined, DeleteOutlined, SearchOutlined, CloseOutlined } from "@ant-design/icons"
 import ConversationList from "./ConversationList"
 import * as _ from "lodash"
 import Fuse from "fuse.js"
+import pinyin from "tiny-pinyin"
 
 interface MenuProps {
   conversations: any
@@ -16,10 +17,15 @@ interface MenuProps {
 const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobileMenu, isMobile = false }) => {
   // const [selectedPath, setSelectedPath] = useState("")
   const [filteredConversations, setFilteredConversations] = useState(conversations)
+  const [searchMode, setSearchMode] = useState(false)
   const location = useLocation()
+  const conversationsWithPinyin = conversations.map((item) => ({
+    ...item,
+    title_pinyin: pinyin.convertToPinyin(item.title, "", true),
+  }))
 
   useEffect(() => {
-    setFilteredConversations(conversations)
+    setFilteredConversations(conversationsWithPinyin)
   }, [conversations])
 
   // useEffect(() => {
@@ -38,16 +44,21 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
   }
 
   const onSearch = (value) => {
-    if (!value) return setFilteredConversations(conversations)
-    const fuse = new Fuse(conversations, {
-      keys: ["title", "item_keys"],
-      threshold: 0.2,
+    if (!value) return setFilteredConversations(conversationsWithPinyin)
+    const fuse = new Fuse(conversationsWithPinyin, {
+      keys: ["title", "title_pinyin"],
+      threshold: 0.4,
     })
     const result = fuse.search(value).map((r) => r.item)
     setFilteredConversations(result)
   }
 
   const debouncedSearch = _.debounce(onSearch, 600)
+
+  const closeSearch = () => {
+    setFilteredConversations(conversationsWithPinyin)
+    setSearchMode(false)
+  }
 
   return (
     <>
@@ -87,24 +98,55 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
           </div>
         </li>
         <li className="relative mt-6">
-          <div className="flex items-center space-x-2">
-            <span className="relative text-xs font-semibold text-zinc-900 dark:text-white">个人会话</span>
-            <Tooltip title="新的会话" placement="bottom">
-              <button
-                onClick={newConversation}
-                className="outline-none inline-flex rounded-md text-zinc-500 hover:text-zinc-600 dark:text-zinc-300 dark:hover:text-zinc-200"
-                <PlusCircleOutlined />
+          <div className="flex items-start justify-between">
+            <div className="flex items-end space-x-2">
+              <span className="relative text-xs font-semibold text-gray-900 dark:text-white">个人会话</span>
+              <button className="text-gray-500 hover:text-gray-600" onClick={() => setSearchMode(true)}>
+                <SearchOutlined />
               </button>
-            </Tooltip>
-            <div className="relative text-xs bg-transparent text-gray-800 flex-1">
-              <div className="flex items-center border-b border-gray-200 py-2">
+            </div>
+
+            <div className="relative text-xs bg-transparent text-gray-800 flex-1 mx-1">
+              <div
+                className={`transition-all duration-300 ${
+                  searchMode ? "w-full" : "w-0"
+                } flex items-center border-b border-gray-200 py-2`}
+              >
                 <input
-                  placeholder="搜索"
-                  className="boder-b leading-tight outline-none bg-transparent"
+                  placeholder="搜索会话"
+                  className="w-full pr-8 leading-tight outline-none bg-transparent"
                   onChange={(e) => debouncedSearch(e.target.value)}
                 />
+                {searchMode && (
+                  <button
+                    type="button"
+                    onClick={closeSearch}
+                    className="z-10 h-full absolute text-gray-500 hover:text-gray-600 w-6 right-0"
+                  >
+                    <CloseOutlined />
+                  </button>
+                )}
               </div>
             </div>
+            {!searchMode && (
+              <button
+                title="新的会话"
+                onClick={newConversation}
+                className="outline-none inline-flex ml-2 px-2 py-1 text-xs text-gray-600 transition-colors duration-300 transform border rounded-md dark:text-gray-200 dark:border-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="inline-block w-4 h-4"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+                <span>新的会话</span>
+              </button>
+            )}
           </div>
 
           <div className="relative mt-3 pl-2 max-h-64 overflow-y-auto">
