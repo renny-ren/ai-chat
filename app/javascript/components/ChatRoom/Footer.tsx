@@ -67,7 +67,7 @@ const Footer: React.FC<FooterProps> = ({
     const res = await CommonApi.checkWords(content)
     const data = await res.json
     if (!res.ok && data.error_code === 1001) {
-      return message.error("消息包含违禁词，请注意您的言论")
+      return message.error("消息包含违禁词，请检查")
     }
 
     if (isToAI) {
