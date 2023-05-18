@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react"
 import { Link, useLocation } from "react-router-dom"
-import { message } from "antd"
+import { message, Tooltip, Popconfirm } from "antd"
+import { PlusCircleOutlined, DeleteOutlined, SearchOutlined, CloseOutlined } from "@ant-design/icons"
 import ConversationList from "./ConversationList"
+import * as _ from "lodash"
+import Fuse from "fuse.js"
+import pinyin from "tiny-pinyin"
+import * as UserApi from "shared/api/user"
 
 interface MenuProps {
   conversations: any
@@ -12,7 +17,17 @@ interface MenuProps {
 
 const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobileMenu, isMobile = false }) => {
   // const [selectedPath, setSelectedPath] = useState("")
+  const [filteredConversations, setFilteredConversations] = useState(conversations)
+  const [searchMode, setSearchMode] = useState(false)
   const location = useLocation()
+  const conversationsWithPinyin = conversations.map((item) => ({
+    ...item,
+    title_pinyin: pinyin.convertToPinyin(item.title, "", true),
+  }))
+
+  useEffect(() => {
+    setFilteredConversations(conversationsWithPinyin)
+  }, [conversations])
 
   // useEffect(() => {
   //   setSelectedPath(location.pathname)
@@ -27,6 +42,31 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
 
   const onClickLink = () => {
     if (closeMobileMenu) closeMobileMenu()
+  }
+
+  const onSearch = (value) => {
+    if (!value) return setFilteredConversations(conversationsWithPinyin)
+    const fuse = new Fuse(conversationsWithPinyin, {
+      keys: ["title", "title_pinyin"],
+      threshold: 0.4,
+    })
+    const result = fuse.search(value).map((r) => r.item)
+    setFilteredConversations(result)
+  }
+
+  const debouncedSearch = _.debounce(onSearch, 600)
+
+  const closeSearch = () => {
+    setFilteredConversations(conversationsWithPinyin)
+    setSearchMode(false)
+  }
+
+  const onClearConversations = async () => {
+    const res = await UserApi.clearConversations()
+    if (res.ok) {
+      message.success("会话历史已清空")
+      setFilteredConversations([])
+    }
   }
 
   return (
@@ -68,24 +108,75 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
         </li>
         <li className="relative mt-6">
           <div className="flex items-center justify-between">
-            <span className="relative text-xs font-semibold text-gray-900 dark:text-white">个人会话</span>
-            <button
-              title="新的会话"
-              onClick={newConversation}
-              className="outline-none inline-flex ml-2 px-2 py-1 text-xs text-gray-600 transition-colors duration-300 transform border rounded-md dark:text-gray-200 dark:border-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="inline-block w-4 h-4"
+            <div className="flex items-center space-x-2">
+              <span className="relative text-xs font-semibold text-gray-900 dark:text-white">个人会话</span>
+              <button className="text-gray-500 hover:text-gray-600" onClick={() => setSearchMode(true)}>
+                <SearchOutlined className="flex" />
+              </button>
+              {!searchMode && (
+                <Popconfirm
+                  title={
+                    <>
+                      <div>
+                        确认要清空<b>所有的</b>个人会话吗？
+                      </div>
+                      <div>清空后无法恢复</div>
+                    </>
+                  }
+                  onConfirm={onClearConversations}
+                  placement="bottom"
+                  okButtonProps={{ danger: true }}
+                  okText="确认"
+                  cancelText="取消"
+                >
+                  <button className="text-gray-500 hover:text-gray-600">
+                    <DeleteOutlined className="flex" />
+                  </button>
+                </Popconfirm>
+              )}
+            </div>
+
+            <div className="relative text-xs bg-transparent text-gray-800 flex-1 mx-1">
+              <div
+                className={`transition-all duration-300 ${
+                  searchMode ? "w-full visible" : "w-0 invisible"
+                } flex items-center border-b border-gray-200 py-2`}
               >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-              </svg>
-              <span>新的会话</span>
-            </button>
+                <input
+                  placeholder="搜索会话"
+                  className="w-full pr-8 leading-tight outline-none bg-transparent"
+                  onChange={(e) => debouncedSearch(e.target.value)}
+                />
+                {searchMode && (
+                  <button
+                    type="button"
+                    onClick={closeSearch}
+                    className="z-10 h-full absolute text-gray-500 hover:text-gray-600 w-6 right-0"
+                  >
+                    <CloseOutlined />
+                  </button>
+                )}
+              </div>
+            </div>
+            {!searchMode && (
+              <button
+                title="新的会话"
+                onClick={newConversation}
+                className="outline-none inline-flex ml-2 px-2 py-1 text-xs text-gray-600 transition-colors duration-300 transform border rounded-md dark:text-gray-200 dark:border-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="inline-block w-4 h-4"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+                <span>新的会话</span>
+              </button>
+            )}
           </div>
 
           <div className="relative mt-3 pl-2 max-h-64 overflow-y-auto">
@@ -101,7 +192,7 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
               }}
             ></div>
             <ul role="list" className="border-l">
-              <ConversationList conversations={conversations} handleClick={onClickLink} />
+              <ConversationList conversations={filteredConversations} handleClick={onClickLink} />
             </ul>
           </div>
         </li>

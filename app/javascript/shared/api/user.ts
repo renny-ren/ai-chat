@@ -24,6 +24,10 @@ export function fetchConversation(id) {
   return get(`/v1/conversations/${id}`)
 }
 
+export function clearConversations() {
+  return destroy(`/v1/conversations/clear`)
+}
+
 export function fetchUser(id) {
   return get(`/v1/users/${id}`)
 }
