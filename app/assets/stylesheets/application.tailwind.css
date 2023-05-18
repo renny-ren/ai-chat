@@ -87,3 +87,7 @@ ol.c-ordered-list-small {
 .markdown a {
   text-decoration: underline;
 }
+
+.aspect-square {
+  aspect-ratio: 1 / 1;
+}
