@@ -25,6 +25,7 @@ const CustomModel: React.FC<CustomModelProps> = ({ conversation }) => {
     },
   ]
   const [isLoading, setIsLoading] = useState(false)
+  const [isLoadingModel, setIsLoadingModel] = useState(false)
   const [isPrivate, setIsPrivate] = useState(false)
   const [messages, setMessages] = useState(initMessages)
   const [permalink, setPermalink] = useState(useParams().modelPermalink)
@@ -55,7 +56,7 @@ const CustomModel: React.FC<CustomModelProps> = ({ conversation }) => {
   }, [model])
 
   const fetchModel = async () => {
-    setIsLoading(true)
+    setIsLoadingModel(true)
     const resp = await CommonApi.fetchModel(permalink)
     if (resp.ok) {
       const body = await resp.json
@@ -69,7 +70,7 @@ const CustomModel: React.FC<CustomModelProps> = ({ conversation }) => {
         setIsPrivate(true)
       }
     }
-    setIsLoading(false)
+    setIsLoadingModel(false)
   }
 
   const fetchMessages = useCallback(async () => {
@@ -90,7 +91,7 @@ const CustomModel: React.FC<CustomModelProps> = ({ conversation }) => {
       <div className="h-full relative pt-12 md:pt-14">
         <main className="h-full">
           <Background />
-          {isLoading ? (
+          {isLoadingModel ? (
             <div className="col-span-12 h-full flex items-center justify-center">
               <Spinner className="w-10 h-10 text-gray-200 animate-spin dark:text-gray-600 fill-green-500" />
             </div>

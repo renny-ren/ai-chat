@@ -30,7 +30,7 @@ const List: React.FC<ListProps> = ({ validateLogin, scope }) => {
 
   return (
     <section className="mt-6 pb-12 lg:pb-[90px] relative z-20">
-      <div className="grid grid-cols-12 gap-4">
+      <div className="grid grid-cols-12 gap-6">
         {isLoading ? (
           <div className="col-span-12 flex items-center justify-center">
             <Spinner className="w-10 h-10 text-gray-200 animate-spin dark:text-gray-600 fill-green-500" />
