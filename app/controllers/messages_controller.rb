@@ -9,6 +9,7 @@ class MessagesController < ApplicationController
   def check_words
     is_sensitive = CheckSensitiveWordsService.new(params[:text]).call
     if is_sensitive
+      audit! :send_sensitive_message, nil, payload: { user: current_user, text: params[:text] }
       render_json_response :error, error_code: 1001, message: "Containing sensitive words"
     else
       render_json_response :ok

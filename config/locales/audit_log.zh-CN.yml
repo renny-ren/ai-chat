@@ -3,3 +3,4 @@ zh-CN:
     action:
       generate_image: 生成图片
       visit_admin_panel: 访问管理后台
+      send_sensitive_message: 发送敏感信息
