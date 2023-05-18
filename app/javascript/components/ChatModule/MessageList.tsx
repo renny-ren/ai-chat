@@ -28,7 +28,7 @@ const MessageList: FC<MessageListProps> = ({ messages, messagesEndRef, isLoading
   const renderer = {
     code(snippet, language) {
       return (
-        <div className="mt-3 shadow-md">
+        <div key={Math.random().toString(16)} className="mt-3 shadow-md">
           <div className="flex items-center relative text-gray-200 bg-gray-600 px-4 py-2 text-xs font-sans justify-between rounded-t-md">
             <span>{language}</span>
             <CopyButton color="#bfbfbf" className="flex ml-auto gap-2 rounded-md" label="Copy code" content={snippet} />

@@ -34,7 +34,9 @@ Rails.application.routes.draw do
       end
     end
     resources :sponsorships, only: :index
-    resources :conversations, only: [:index, :show, :update, :destroy]
+    resources :conversations, only: [:index, :show, :update, :destroy] do
+      delete :clear, on: :collection
+    end
     resources :orders, only: [:show, :create]
     resources :membership_subscriptions, only: [:index]
     scope "images" do
