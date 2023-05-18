@@ -1,6 +1,6 @@
 class RegistrationsController < Devise::RegistrationsController
   def create
-    build_resource(sign_up_params)
+    build_resource(sign_up_params.merge(user_agent: request.user_agent))
     resource.save!
     sign_in(resource_name, resource)
     render status: 200, json: { user_meta: resource.frontend_attributes }

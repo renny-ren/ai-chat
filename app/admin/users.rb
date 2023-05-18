@@ -17,6 +17,7 @@ ActiveAdmin.register User do
     column :current_sign_in_ip
     column :sign_in_count
     column :created_at
+    column :user_agent
     actions defaults: true do |user|
       link_to t('登录'), login_admin_user_path(user)
     end

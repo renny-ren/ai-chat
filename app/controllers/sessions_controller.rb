@@ -2,6 +2,7 @@ class SessionsController < Devise::SessionsController
   def create
     user = User.find_by(username: params[:username])
     if user && user.valid_password?(params[:password])
+      user.update(user_agent: request.user_agent)
       sign_in user
       render status: :ok, json: { user_meta: user.frontend_attributes }
     else
