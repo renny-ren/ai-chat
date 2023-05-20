@@ -232,7 +232,7 @@ const faqs = [
     a: (
       <>
         保存下方二维码可将本站分享给好友
-        <img className="mt-2 w-36" src="/assets/aii_chat_qrcode.png" />
+        <img className="mt-2 w-36" src="https://aii-chat-assets.oss-cn-chengdu.aliyuncs.com/images/url_qrcode.png" />
       </>
     ),
   },
