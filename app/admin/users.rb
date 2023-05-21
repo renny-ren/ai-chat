@@ -17,7 +17,10 @@ ActiveAdmin.register User do
     column :current_sign_in_ip
     column :sign_in_count
     column :created_at
-    column :user_agent
+    column :user_agent do |user|
+      client = DeviceDetector.new(user.user_agent)
+      [client.device_type, client.name, client.os_name].join(' | ')
+    end
     actions defaults: true do |user|
       link_to t('登录'), login_admin_user_path(user)
     end
