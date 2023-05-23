@@ -268,7 +268,7 @@ const Footer: React.FC<FooterProps> = ({
                     ></path>
                     <path fill="none" strokeLinecap="round" strokeLinejoin="round" d="M7.5 8.5h5M8.5 11.5h3"></path>
                   </svg>
-                  <span className="pl-1">登录以开始聊天</span>
+                  <span className="pl-1">登录即可免费畅聊</span>
                 </div>
               </div>
             )}

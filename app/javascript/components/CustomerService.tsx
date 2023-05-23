@@ -81,7 +81,7 @@ const CustomerService: React.FC<CustomerServiceProps> = ({ className = "" }) => 
                     <div className="flex flex-col justify-center">
                       <img
                         className="w-40"
-                        src="https://aii-chat-assets.oss-cn-chengdu.aliyuncs.com/images/group_qrcode_2.png"
+                        src="https://aii-chat-assets.oss-cn-chengdu.aliyuncs.com/images/group_qrcode.png"
                       />
                       <div className="text-sm text-gray-500 text-center pt-2">用户群</div>
                     </div>

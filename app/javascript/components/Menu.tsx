@@ -343,7 +343,7 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
         </li>
         <li className="relative mt-6">
           <div className="flex flex-col justify-center items-center">
-            <img className="w-28" src="https://aii-chat-assets.oss-cn-chengdu.aliyuncs.com/images/group_qrcode_2.png" />
+            <img className="w-28" src="https://aii-chat-assets.oss-cn-chengdu.aliyuncs.com/images/group_qrcode.png" />
             <div className="text-xs text-gray-500 text-center pt-2">扫码加入用户交流群，防止走丢</div>
             <div className="text-xs text-gray-500 text-center pt-2">或关注微信公众号「智言智语AI」</div>
           </div>
