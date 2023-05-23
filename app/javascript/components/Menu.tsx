@@ -34,8 +34,8 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
   // }, [location])
 
   const newConversation = () => {
-    if (conversations.length >= 50) {
-      return message.error("目前最多能创建 50 个会话，请删除现有会话后再试")
+    if (conversations.length >= 100) {
+      return message.error("目前最多能创建 100 个会话，请删除现有会话后再试")
     }
     window.location.href = "/chats/new"
   }
