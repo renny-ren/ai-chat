@@ -1,3 +1,3 @@
 const { env } = gon.global_config
 
-export const CDN_HOST = `${env === "production" ? "https://assets.aiichat.cn" : ""}`
+export const CDN_HOST = `${env === "production" ? "https://aii-assets.renny.ren" : ""}`
