@@ -19,6 +19,7 @@ class MessagesChannel < ApplicationCable::Channel
     if data["type"] == "appearance"
       appear_user
     else
+      return if rate_limit_reached?
       Message.transaction do
         @message = Message.create!(
           mentions: data["mentions"],
@@ -47,5 +48,12 @@ class MessagesChannel < ApplicationCable::Channel
   def disappear_user
     @@subscribed_users.delete_if { |user| user[:id] == current_user.id }
     ActionCable.server.broadcast("MessagesChannel", { type: "appearance", subscribers: @@subscribed_users.uniq })
+  end
+
+  private
+
+  def rate_limit_reached?
+    last_message = current_user.messages.order(:id).last
+    Time.now - last_message.created_at < 3.seconds
   end
 end
