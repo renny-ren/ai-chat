@@ -19,7 +19,7 @@
 
 # Learn more: http://github.com/javan/whenever
 
-every 12.hours do
+every 6.hours do
   runner "ExpireMembershipJob.perform_now"
 end
 
