@@ -4,6 +4,7 @@ import { ChevronDownIcon } from "@heroicons/react/20/solid"
 import currentUser from "stores/current_user_store"
 import { message } from "antd"
 import axios from "axios"
+import { Link, useLocation } from "react-router-dom"
 
 interface UserBarProps {}
 
@@ -50,6 +51,16 @@ const UserBar: React.FC<UserBarProps> = ({}) => {
                 >
                   账户设置
                 </a>
+              )}
+            </Menu.Item>
+            <Menu.Item>
+              {({ active }) => (
+                <Link
+                  className={classNames(active ? "bg-gray-100 text-gray-900" : "text-gray-700", "block px-4 py-2 text-sm")}
+                  to="/distribution"
+                >
+                  <span className="truncate">邀请返利</span>
+                </Link>
               )}
             </Menu.Item>
             <form onSubmit={handleLogOut}>

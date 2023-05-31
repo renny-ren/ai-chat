@@ -5,6 +5,7 @@ import Home from "components/Home"
 import Disclaimer from "components/Disclaimer"
 import Chat from "components/Chat"
 import Settings from "components/user/Settings"
+import Distribution from "components/user/Distribution"
 import Pricing from "components/Pricing"
 import Faqs from "components/Faqs"
 import Images from "components/Images"
@@ -27,6 +28,7 @@ export default ({ customContent, setCustomContent, conversations }) => {
           <Route exact path="/chats/new" element={<Chat />} />
           <Route path="/chats/:conversationId" element={<Chat />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/distribution" element={<Distribution />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/faqs" element={<Faqs />} />
           <Route path="/images" element={<Images />} />

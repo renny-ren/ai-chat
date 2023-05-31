@@ -5,6 +5,8 @@ import SecurityForm from "./SecurityForm"
 import PaymentForm from "./PaymentForm"
 import currentUser from "stores/current_user_store"
 
+interface SettingsProps {}
+
 const Settings: React.FC<SettingsProps> = ({}) => {
   const [currentTab, setCurrentTab] = useState("personal")
 
