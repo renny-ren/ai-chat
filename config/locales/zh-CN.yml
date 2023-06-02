@@ -11,6 +11,7 @@ zh-CN:
         current_sign_in_at: 登录时间
         sign_in_count: 登录次数
         created_at: 创建时间
+        invite_code: 邀请码
       model:
         title: 模型名称
         permalink: 模型地址

@@ -33,8 +33,11 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow }) => {
   const [inviteCode, setInviteCode] = useState(defaultInviteCode)
 
   useEffect(() => {
-    if (inviteCode) setMode("sign_up")
-  }, [])
+    if (defaultInviteCode) {
+      setInviteCode(defaultInviteCode)
+      setMode("sign_up")
+    }
+  }, [location.search])
 
   const onSignIn = async (e) => {
     e.preventDefault()
@@ -58,30 +61,23 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow }) => {
 
   const onSignUp = async (e) => {
     e.preventDefault()
-    console.log({
-      nickname: nickname,
-      username: e.target.elements.username.value,
-      password: e.target.elements.password.value,
-      password_confirmation: e.target.elements.password_confirmation.value,
-      invite_code: inviteCode,
-    })
-    // try {
-    //   const response = await axios.post("/users", {
-    //     nickname: nickname,
-    //     username: e.target.elements.username.value,
-    //     password: e.target.elements.password.value,
-    //     password_confirmation: e.target.elements.password_confirmation.value,
-    //     invite_code: inviteCode,
-    //   })
-    //   message.success("注册成功！正在自动登录")
-    //   setShowSigninModal(false)
-    //   gon.user_meta = response.data.user_meta
-    //   localStorage.setItem("username", e.target.elements.username.value)
-    // } catch (error) {
-    //   if (error.response.status === 400) {
-    //     setFormErrors(error.response.data.message)
-    //   }
-    // }
+    try {
+      const response = await axios.post("/users", {
+        nickname: nickname,
+        username: e.target.elements.username.value,
+        password: e.target.elements.password.value,
+        password_confirmation: e.target.elements.password_confirmation.value,
+        invite_code: inviteCode,
+      })
+      message.success("注册成功！正在自动登录")
+      setShowSigninModal(false)
+      gon.user_meta = response.data.user_meta
+      localStorage.setItem("username", e.target.elements.username.value)
+    } catch (error) {
+      if (error.response.status === 400) {
+        setFormErrors(error.response.data.message)
+      }
+    }
   }
 
   const toggleMode = () => {

@@ -4,13 +4,14 @@ import ChatRoom from "./ChatRoom"
 import Background from "components/common/Background"
 import { AppContext } from "components/AppContext"
 import queryString from "query-string"
+import currentUser from "stores/current_user_store"
 
 const Home = ({ setCustomContent }) => {
   const inviteCode = queryString.parse(location.search).code
   const { setShowSigninModal } = useContext(AppContext)
 
   useEffect(() => {
-    if (inviteCode) setShowSigninModal(true)
+    if (inviteCode && !currentUser.isSignedIn()) setShowSigninModal(true)
   }, [])
 
   return (
