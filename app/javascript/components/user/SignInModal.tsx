@@ -1,4 +1,4 @@
-import React, { Fragment, useRef, useState, useContext } from "react"
+import React, { Fragment, useRef, useState, useContext, useEffect } from "react"
 import { AppContext } from "components/AppContext"
 import { Dialog, Transition } from "@headlessui/react"
 import { LockClosedIcon } from "@heroicons/react/20/solid"
@@ -7,6 +7,7 @@ import axios from "axios"
 import { CDN_HOST } from "shared/constants"
 import { EyeOutlined, EyeInvisibleOutlined, ReloadOutlined } from "@ant-design/icons"
 import * as UserApi from "shared/api/user"
+import queryString from "query-string"
 
 axios.interceptors.request.use((config) => {
   config.headers["Content-Type"] = "application/json"
@@ -28,6 +29,12 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow }) => {
   const [showPassword, setShowPassword] = useState(false)
   const { setShowSigninModal } = useContext(AppContext)
   const [nickname, setNickname] = useState("")
+  const defaultInviteCode = queryString.parse(location.search).code || ""
+  const [inviteCode, setInviteCode] = useState(defaultInviteCode)
+
+  useEffect(() => {
+    if (inviteCode) setMode("sign_up")
+  }, [])
 
   const onSignIn = async (e) => {
     e.preventDefault()
@@ -51,22 +58,30 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow }) => {
 
   const onSignUp = async (e) => {
     e.preventDefault()
-    try {
-      const response = await axios.post("/users", {
-        nickname: nickname,
-        username: e.target.elements.username.value,
-        password: e.target.elements.password.value,
-        password_confirmation: e.target.elements.password_confirmation.value,
-      })
-      message.success("注册成功！正在自动登录")
-      setShowSigninModal(false)
-      gon.user_meta = response.data.user_meta
-      localStorage.setItem("username", e.target.elements.username.value)
-    } catch (error) {
-      if (error.response.status === 400) {
-        setFormErrors(error.response.data.message)
-      }
-    }
+    console.log({
+      nickname: nickname,
+      username: e.target.elements.username.value,
+      password: e.target.elements.password.value,
+      password_confirmation: e.target.elements.password_confirmation.value,
+      invite_code: inviteCode,
+    })
+    // try {
+    //   const response = await axios.post("/users", {
+    //     nickname: nickname,
+    //     username: e.target.elements.username.value,
+    //     password: e.target.elements.password.value,
+    //     password_confirmation: e.target.elements.password_confirmation.value,
+    //     invite_code: inviteCode,
+    //   })
+    //   message.success("注册成功！正在自动登录")
+    //   setShowSigninModal(false)
+    //   gon.user_meta = response.data.user_meta
+    //   localStorage.setItem("username", e.target.elements.username.value)
+    // } catch (error) {
+    //   if (error.response.status === 400) {
+    //     setFormErrors(error.response.data.message)
+    //   }
+    // }
   }
 
   const toggleMode = () => {
@@ -325,9 +340,29 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow }) => {
                               required
                               onInvalid={(e) => e.target.setCustomValidity("请输入确认密码")}
                               onInput={(e) => e.target.setCustomValidity("")}
-                              className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-emerald-500 focus:outline-none focus:ring-emerald-500 sm:text-sm"
+                              className="relative block w-full appearance-none rounded-none border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-emerald-500 focus:outline-none focus:ring-emerald-500 sm:text-sm"
                               placeholder="确认密码"
                             />
+                          </div>
+                          <div className="relative flex flex-row items-center justify-between">
+                            <label htmlFor="invite_code" className="sr-only">
+                              邀请码
+                            </label>
+                            <input
+                              name="invite_code"
+                              type="text"
+                              value={inviteCode}
+                              onChange={(e) => setInviteCode(e.target.value)}
+                              disabled={!!defaultInviteCode}
+                              className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-emerald-500 focus:outline-none focus:ring-emerald-500 sm:text-sm"
+                              placeholder="邀请码（选填）"
+                            />
+
+                            {defaultInviteCode && (
+                              <span className="w-full text-sm text-right absolute right-2 z-10 text-gray-500">
+                                邀请码已自动填写
+                              </span>
+                            )}
                           </div>
                         </div>
 

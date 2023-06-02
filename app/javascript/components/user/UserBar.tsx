@@ -57,7 +57,7 @@ const UserBar: React.FC<UserBarProps> = ({}) => {
               {({ active }) => (
                 <Link
                   className={classNames(active ? "bg-gray-100 text-gray-900" : "text-gray-700", "block px-4 py-2 text-sm")}
-                  to="/distribution"
+                  to="/invitation"
                 >
                   <span className="truncate">邀请返利</span>
                 </Link>

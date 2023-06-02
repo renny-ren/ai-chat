@@ -1,11 +1,11 @@
 import React, { Fragment } from "react"
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom"
 import Layout from "components/Layout"
 import Home from "components/Home"
 import Disclaimer from "components/Disclaimer"
 import Chat from "components/Chat"
 import Settings from "components/user/Settings"
-import Distribution from "components/user/Distribution"
+import Invitation from "components/user/Invitation"
 import Pricing from "components/Pricing"
 import Faqs from "components/Faqs"
 import Images from "components/Images"
@@ -24,11 +24,12 @@ export default ({ customContent, setCustomContent, conversations }) => {
       <Layout customContent={customContent} conversations={conversations}>
         <Routes>
           <Route exact path="/" element={<Home setCustomContent={setCustomContent} />} />
+          <Route path="/i/:inviteCode" element={<Navigate to={`/?code=${location.pathname.slice(3)}`} replace={true} />} />
           <Route path="/disclaimer" element={<Disclaimer />} />
           <Route exact path="/chats/new" element={<Chat />} />
           <Route path="/chats/:conversationId" element={<Chat />} />
           <Route path="/settings" element={<Settings />} />
-          <Route path="/distribution" element={<Distribution />} />
+          <Route path="/invitation" element={<Invitation />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/faqs" element={<Faqs />} />
           <Route path="/images" element={<Images />} />
