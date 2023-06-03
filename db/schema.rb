@@ -243,7 +243,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_02_143548) do
     t.string "user_agent"
     t.integer "referrer_id"
     t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["referrer_id"], name: "index_users_on_referrer_id", unique: true
+    t.index ["referrer_id"], name: "index_users_on_referrer_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true
   end

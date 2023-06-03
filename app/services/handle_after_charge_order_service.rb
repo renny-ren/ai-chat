@@ -9,22 +9,8 @@ class HandleAfterChargeOrderService
 
   def call
     ActiveRecord::Base.transaction do
-      if user.active_subscription.present?
-        subscription = user.active_subscription
-        subscription.update!(
-          membership_plan_id: plan.id,
-          end_at: subscription.end_at + (plan.duration).days,
-        )
-        user.update!(membership: plan.name)
-      else
-        user.membership_subscriptions.create!(
-          membership_plan_id: plan.id,
-          start_at: Time.now,
-          end_at: Time.now + (plan.duration).days,
-        )
-        openai_account = OpenaiAccount.find_by(user_id: nil)
-        user.update!(membership: plan.name, openai_account: openai_account)
-      end
+      UpgradeMembershipService.new(user, plan.name).call
+      RewardReferrerService.new(user.referrer).call if user.referrer.present?
       order.fulfilled!
     end
     grant_image_count
