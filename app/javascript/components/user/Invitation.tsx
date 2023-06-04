@@ -11,20 +11,20 @@ interface InvitationProps {}
 
 const Invitation: React.FC<InvitationProps> = ({}) => {
   const qrCodeRef = useRef(null)
-  const [invitees, setInvitees] = useState([])
+  const [referrals, setReferrals] = useState([])
 
   useEffect(() => {
     if (currentUser.isSignedIn()) {
-      fetchInviteeList()
+      fetchReferrals()
     } else {
       window.location.href = "/"
     }
   }, [])
 
-  const fetchInviteeList = async () => {
-    const res = await UserApi.fetchInvitees(currentUser.id())
+  const fetchReferrals = async () => {
+    const res = await UserApi.fetchReferrals(currentUser.id())
     const data = await res.json
-    setInvitees(data.invitees)
+    setReferrals(data.referrals)
   }
 
   const generateInvitationLink = () => {
@@ -68,29 +68,13 @@ const Invitation: React.FC<InvitationProps> = ({}) => {
     },
     {
       title: "状态",
-      dataIndex: "status",
       key: "status",
-    },
-  ]
-
-  const data = [
-    {
-      key: "1",
-      nickname: "John Brown",
-      created_at: 32,
-      status: "New York No. 1 Lake Park",
-    },
-    {
-      key: "2",
-      nickname: "Jim Green",
-      created_at: 42,
-      status: "London No. 1 Lake Park",
-    },
-    {
-      key: "3",
-      nickname: "Joe Black",
-      created_at: 32,
-      status: "Sydney No. 1 Lake Park",
+      render: (item) => (
+        <div>
+          <Badge className="mr-1" status={item.status === "paid" ? "success" : "processing"} />
+          {item.status_name}
+        </div>
+      ),
     },
   ]
 
@@ -178,7 +162,9 @@ const Invitation: React.FC<InvitationProps> = ({}) => {
                   </div>
                 </div>
               </div>
-              <Table columns={columns} dataSource={data} />
+
+              <h2>我的邀请列表</h2>
+              <Table columns={columns} dataSource={referrals} />
             </article>
           </div>
         </main>

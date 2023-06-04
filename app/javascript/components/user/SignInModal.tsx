@@ -69,7 +69,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow }) => {
         password_confirmation: e.target.elements.password_confirmation.value,
         invite_code: inviteCode,
       })
-      message.success("注册成功！正在自动登录")
+      message.success("注册成功！已自动登录")
       setShowSigninModal(false)
       gon.user_meta = response.data.user_meta
       localStorage.setItem("username", e.target.elements.username.value)

@@ -10,7 +10,7 @@ class HandleAfterChargeOrderService
   def call
     ActiveRecord::Base.transaction do
       UpgradeMembershipService.new(user, plan.name).call
-      RewardReferrerService.new(user.referrer).call if user.referrer.present?
+      RewardReferrerService.new(user).call if user.referrer.present?
       order.fulfilled!
     end
     grant_image_count

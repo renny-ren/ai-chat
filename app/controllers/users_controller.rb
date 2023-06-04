@@ -27,8 +27,8 @@ class UsersController < ApplicationController
     @image_blobs = current_user.images_blobs.order(created_at: :desc)
   end
 
-  def invitees
-    @invitees = current_user.invitees
+  def referrals
+    @referrals = current_user.referrals.includes(:invitee)
   end
 
   def fake_name

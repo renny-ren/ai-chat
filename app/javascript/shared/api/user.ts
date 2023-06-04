@@ -12,8 +12,8 @@ export function fetchImages(userId) {
   return get(`/v1/users/${userId}/images`)
 }
 
-export function fetchInvitees(userId) {
-  return get(`/v1/users/${userId}/invitees`)
+export function fetchReferrals(userId) {
+  return get(`/v1/users/${userId}/referrals`)
 }
 
 export function fetchNotificationUnreadCount() {

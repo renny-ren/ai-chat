@@ -14,6 +14,8 @@ class User < ApplicationRecord
   has_one :active_subscription, -> { active }, class_name: "MembershipSubscription"
   has_one :openai_account
   belongs_to :referrer, class_name: "User", foreign_key: :referrer_id, optional: true
+  has_many :referrals, foreign_key: :referrer_id
+  has_many :invitees, through: :referrals, source: :invitee
 
   has_one_attached :avatar, dependent: :purge
   has_many_attached :images, dependent: :purge
@@ -27,7 +29,7 @@ class User < ApplicationRecord
   enum membership: { free: 0, basic: 1, standard: 2, advanced: 3 }
 
   after_create :send_welcome_notification
-  after_create :apply_affiliation, if: :referrer_id?
+  after_create :apply_referral, if: :referrer_id?
   after_update :purge_avatar_cache
 
   action_store :like, :model, counter_cache: true
@@ -128,8 +130,9 @@ class User < ApplicationRecord
     )
   end
 
-  def apply_affiliation
+  def apply_referral
     UpgradeMembershipService.new(self, "basic").call
+    Referral.create(referrer_id: referrer_id, invitee_id: id)
   end
 
   private
