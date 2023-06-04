@@ -5,11 +5,13 @@ import SignInModal from "./user/SignInModal"
 import Header from "./Header"
 import axios from "axios"
 import currentUser from "stores/current_user_store"
+import { ConfigProvider, theme } from "antd"
 
 const App = (props) => {
   const [showSigninModal, setShowSigninModal] = useState(false)
   const [customContent, setCustomContent] = useState()
   const [conversations, setConversations] = useState([])
+  const { darkAlgorithm, defaultAlgorithm } = theme
 
   useEffect(() => {
     if (currentUser.isSignedIn()) {
@@ -27,12 +29,22 @@ const App = (props) => {
     setConversations(response.data.conversations)
   }
 
+  const isDarkMode = () => {
+    return document.documentElement.classList.contains("dark")
+  }
+
   return (
     <AppContext.Provider value={{ showSigninModal, setShowSigninModal, setConversations }}>
-      <div className="h-full lg:ml-64 xl:ml-72">
-        <Routes customContent={customContent} setCustomContent={setCustomContent} conversations={conversations} />
-      </div>
-      <SignInModal isShow={showSigninModal} />
+      <ConfigProvider
+        theme={{
+          algorithm: isDarkMode() ? darkAlgorithm : defaultAlgorithm,
+        }}
+      >
+        <div className="h-full lg:ml-64 xl:ml-72">
+          <Routes customContent={customContent} setCustomContent={setCustomContent} conversations={conversations} />
+        </div>
+        <SignInModal isShow={showSigninModal} />
+      </ConfigProvider>
     </AppContext.Provider>
   )
 }

@@ -2,7 +2,6 @@
 @import "./components/chatroom.scss";
 @import "./components/pricing.scss";
 @import "./mention.scss";
-@import "./antd_extend.scss";
 
 @tailwind base;
 @tailwind components;

@@ -29,6 +29,7 @@ Rails.application.routes.draw do
       end
       member do
         get :images
+        get :invitees
       end
     end
     resources :sponsorships, only: :index
