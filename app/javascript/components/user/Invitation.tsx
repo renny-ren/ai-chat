@@ -1,9 +1,16 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import currentUser from "stores/current_user_store"
+import { Descriptions, message } from "antd"
+import Background from "components/common/Background"
+import { copy } from "shared/utils/copy_text"
+import { CDN_HOST } from "shared/constants"
+import { QRCode } from "react-qrcode-logo"
 
 interface InvitationProps {}
 
 const Invitation: React.FC<InvitationProps> = ({}) => {
+  const qrCodeRef = useRef(null)
+
   useEffect(() => {
     if (!currentUser.isSignedIn()) {
       window.location.href = "/"
@@ -11,11 +18,29 @@ const Invitation: React.FC<InvitationProps> = ({}) => {
   }, [])
 
   const generateInvitationLink = () => {
+    return window.location.origin + `/i/${getInViteCode()}`
+  }
+
+  const getInViteCode = () => {
     const userId = currentUser.id()
-    if (userId < 100000) {
-      return window.location.origin + `/i/${userId + 606060}`
-    } else {
-      return window.location.origin + `/i/${userId}`
+    return userId < 100000 ? userId + 606060 : userId
+  }
+
+  const onCopy = (content) => {
+    copy(content)
+    message.success("复制成功")
+  }
+
+  const downloadQRCode = () => {
+    const canvas: any = qrCodeRef.current.querySelector("canvas")
+    if (canvas) {
+      const pngUrl = canvas.toDataURL("image/png")
+      let a = document.createElement("a")
+      a.href = pngUrl
+      a.download = `邀请二维码 - ${currentUser.nickname()}.png`
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
     }
   }
 
@@ -23,11 +48,48 @@ const Invitation: React.FC<InvitationProps> = ({}) => {
     <>
       <div className="relative px-4 pt-14 sm:px-6 lg:px-8">
         <main className="py-12 mx-auto max-w-2xl space-y-10 pb-16 lg:max-w-5xl">
+          <Background />
           <div className="min-h-screen pb-24">
             <article className="prose dark:prose-invert">
-              <h1 className="font-semibold">我的邀请码</h1>
-              <p className="lead">邀请链接：{generateInvitationLink()}</p>
-              <p className="lead">邀请二维码：</p>
+              <Descriptions bordered layout="vertical" title="邀请返利">
+                <Descriptions.Item label="我的邀请码">
+                  {getInViteCode()}
+                  <button
+                    onClick={() => onCopy(getInViteCode())}
+                    className="outline-none inline-flex ml-2 px-2 py-1 text-xs text-gray-600 transition-colors duration-300 transform border rounded-md dark:text-gray-200 dark:border-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  >
+                    <span>复制</span>
+                  </button>
+                </Descriptions.Item>
+                <Descriptions.Item label="邀请链接">
+                  {generateInvitationLink()}
+                  <button
+                    onClick={() => onCopy(generateInvitationLink())}
+                    className="outline-none inline-flex ml-2 px-2 py-1 text-xs text-gray-600 transition-colors duration-300 transform border rounded-md dark:text-gray-200 dark:border-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  >
+                    <span>复制</span>
+                  </button>
+                </Descriptions.Item>
+                <Descriptions.Item label="邀请二维码">
+                  <div ref={qrCodeRef}>
+                    <QRCode
+                      ecLevel="Q"
+                      enableCORS={true}
+                      value={generateInvitationLink()}
+                      logoImage={currentUser.avatarUrl()}
+                      logoWidth={40}
+                      logoHeight={40}
+                    />
+
+                    <button
+                      onClick={downloadQRCode}
+                      className="outline-none inline-flex ml-2 px-2 py-1 text-xs text-gray-600 transition-colors duration-300 transform border rounded-md dark:text-gray-200 dark:border-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    >
+                      <span>下载二维码</span>
+                    </button>
+                  </div>
+                </Descriptions.Item>
+              </Descriptions>
               <div className="my-16 xl:max-w-none">
                 <h2 className="scroll-mt-24">
                   <a className="group text-inherit no-underline hover:text-inherit" href="/sdks#official-libraries">
@@ -76,16 +138,6 @@ const Invitation: React.FC<InvitationProps> = ({}) => {
                         </a>
                       </p>
                     </div>
-                    <img
-                      alt=""
-                      loading="lazy"
-                      width="48"
-                      height="48"
-                      decoding="async"
-                      data-nimg="1"
-                      className="h-12 w-12"
-                      src="/_next/static/media/php.2e2ae735.svg"
-                    />
                   </div>
                   <div className="flex flex-row-reverse gap-6">
                     <div className="flex-auto">
@@ -113,16 +165,6 @@ const Invitation: React.FC<InvitationProps> = ({}) => {
                         </a>
                       </p>
                     </div>
-                    <img
-                      alt=""
-                      loading="lazy"
-                      width="48"
-                      height="48"
-                      decoding="async"
-                      data-nimg="1"
-                      className="h-12 w-12"
-                      src="/_next/static/media/ruby.4c6b71be.svg"
-                    />
                   </div>
                   <div className="flex flex-row-reverse gap-6">
                     <div className="flex-auto">
@@ -152,16 +194,7 @@ const Invitation: React.FC<InvitationProps> = ({}) => {
                         </a>
                       </p>
                     </div>
-                    <img
-                      alt=""
-                      loading="lazy"
-                      width="48"
-                      height="48"
-                      decoding="async"
-                      data-nimg="1"
-                      className="h-12 w-12"
-                      src="/_next/static/media/node.9b20f647.svg"
-                    />
+                    <img alt="" loading="lazy" width="48" height="48" decoding="async" data-nimg="1" className="h-12 w-12" />
                   </div>
                 </div>
               </div>

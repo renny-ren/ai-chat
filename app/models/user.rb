@@ -36,7 +36,7 @@ class User < ApplicationRecord
   def avatar_url(size = 80)
     # ActiveStorage::Current.url_options = { host: "localhost", port: 3000 }
     Rails.cache.fetch("user_#{id}_avatar_url", expires_in: 2.hours) do
-      avatar.url || "https://ui-avatars.com/api/?name=#{nickname}&size=#{size}"
+      avatar.url || "user_avatar/?name=#{nickname}&size=#{size}"
     end
   end
 

@@ -13,10 +13,8 @@ Rails.application.routes.draw do
                      }, sign_out_via: [:delete, :get]
 
   root "homepage#index"
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  get "/user_avatar", to: "images#user_avatar"
 
-  # Defines the root path route ("/")
-  # root "articles#index"
   scope "v1" do
     resources :completions, only: :create do
       get "live_stream", on: :collection
