@@ -131,8 +131,10 @@ class User < ApplicationRecord
   end
 
   def apply_referral
-    UpgradeMembershipService.new(self, "basic").call
+    return if current_sign_in_ip == referrer.current_sign_in_ip
+
     Referral.create(referrer_id: referrer_id, invitee_id: id)
+    UpgradeMembershipService.new(self, "basic").call
   end
 
   private

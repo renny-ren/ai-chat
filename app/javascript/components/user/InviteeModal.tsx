@@ -11,37 +11,6 @@ const InviteeModal: React.FC<InviteeModalProps> = ({ isOpen, setIsOpen }) => {
     setIsOpen(false)
   }
 
-  const dialogContent = () => {
-    return (
-      <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-center align-middle shadow-xl transition-all">
-        <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
-          恭喜你
-        </Dialog.Title>
-        <div className="mt-2">
-          <div className="text-center">
-            <img
-              className="inline-block h-32 w-32 my-2 ml-12 mr-4"
-              src="https://aii-chat-assets.oss-cn-chengdu.aliyuncs.com/images/gift_icon.png"
-            />
-            <div className="mt-2 leading-8 text-lg text-gray-900">
-              <p>通过邀请码注册成功</p>
-              <p>已为你自动升级为基础版</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex gap-4 justify-center mt-4">
-          <button
-            type="button"
-            className="outline-none inline-flex w-full justify-center rounded-md border border-transparent bg-emerald-500 py-2 px-4 text-sm font-medium text-white hover:bg-emerald-600"
-            onClick={closeModal}
-          >
-            开始体验
-          </button>
-        </div>
-      </Dialog.Panel>
-    )
-  }
   return (
     <>
       <Transition appear show={isOpen} as={Fragment}>
@@ -69,7 +38,34 @@ const InviteeModal: React.FC<InviteeModalProps> = ({ isOpen, setIsOpen }) => {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                {dialogContent()}
+                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-center align-middle shadow-xl transition-all">
+                  <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
+                    恭喜你
+                  </Dialog.Title>
+                  <div className="mt-2">
+                    <div className="text-center">
+                      <img
+                        className="inline-block h-32 w-32 my-2 ml-12 mr-4"
+                        src="https://aii-chat-assets.oss-cn-chengdu.aliyuncs.com/images/gift_icon.png"
+                      />
+                      <div className="mt-2 leading-8 text-lg text-gray-900">
+                        <p>通过邀请码注册成功</p>
+                        <p>已为你自动升级为基础版</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-4 justify-center mt-4">
+                    <button
+                      type="button"
+                      className="outline-none inline-flex w-full justify-center rounded-md border border-transparent bg-emerald-500 py-2 px-4 text-sm font-medium text-white hover:bg-emerald-600"
+                      onClick={closeModal}
+                    >
+                      开始体验
+                    </button>
+                  </div>
+                </Dialog.Panel>
+                )
               </Transition.Child>
             </div>
           </div>
