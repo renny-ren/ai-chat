@@ -144,7 +144,7 @@ class User < ApplicationRecord
   end
 
   def validate_referrer_id
-    if referrer_id.present? && referrer.nil?
+    if referrer_id.present? && (referrer.nil? || !referrer.advanced?)
       errors.add(:invite_code, "无效")
     end
   end
