@@ -19,7 +19,7 @@ class RewardReferrerService
     subscription = referrer.active_subscription
     return if subscription.nil?
 
-    subscription.update!(end_at: subscription.end_at + 5.days)
+    subscription.update!(end_at: subscription.end_at + 7.days)
   end
 
   def update_referral

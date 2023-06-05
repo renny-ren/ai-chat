@@ -107,12 +107,13 @@ const Invitation: React.FC<InvitationProps> = ({}) => {
                 <Descriptions.Item label="邀请二维码">
                   <div className="flex items-center" ref={qrCodeRef}>
                     <QRCode
+                      size={120}
                       ecLevel="Q"
                       enableCORS={true}
                       value={generateInvitationLink()}
                       logoImage={currentUser.avatarUrl()}
-                      logoWidth={40}
-                      logoHeight={40}
+                      logoWidth={32}
+                      logoHeight={32}
                     />
 
                     <button
@@ -134,7 +135,10 @@ const Invitation: React.FC<InvitationProps> = ({}) => {
                         分享邀请链接或让新用户注册时填写自己的邀请码
                       </p>
                       <p className="mt-4">
-                        <img className="h-12 w-12" />
+                        <img
+                          className=""
+                          src="https://aii-chat-assets.oss-cn-chengdu.aliyuncs.com/images/invitation_p1.png"
+                        />
                       </p>
                     </div>
                   </div>
@@ -145,7 +149,10 @@ const Invitation: React.FC<InvitationProps> = ({}) => {
                         通过你的邀请码注册的用户将自动升级为基础版
                       </p>
                       <p className="mt-4">
-                        <img className="h-12 w-12" />
+                        <img
+                          className=""
+                          src="https://aii-chat-assets.oss-cn-chengdu.aliyuncs.com/images/invitation_p2.png"
+                        />
                       </p>
                     </div>
                   </div>
@@ -153,10 +160,13 @@ const Invitation: React.FC<InvitationProps> = ({}) => {
                     <div className="flex-auto">
                       <h3 className="text-sm font-semibold text-zinc-900 dark:text-white">升级成功</h3>
                       <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-                        受邀用户付费后，你当前套餐时间将会自动延长 5 天
+                        受邀用户付费后，你当前套餐时间将会自动延长 7 天
                       </p>
                       <p className="mt-4">
-                        <img className="h-12 w-12" />
+                        <img
+                          className=""
+                          src="https://aii-chat-assets.oss-cn-chengdu.aliyuncs.com/images/invitation_p3.png"
+                        />
                       </p>
                     </div>
                   </div>
