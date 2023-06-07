@@ -197,7 +197,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow }) => {
 
                           <div className="text-sm">
                             <a
-                              onClick={() => message.info("请重新注册一个账号即可")}
+                              onClick={() => message.info("请重新注册一个账号或联系客服处理")}
                               className="cursor-pointer font-medium text-emerald-500 hover:text-emerald-400"
                             >
                               忘记密码?

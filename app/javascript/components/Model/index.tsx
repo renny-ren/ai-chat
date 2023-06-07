@@ -54,20 +54,20 @@ const Model: React.FC<ModelProps> = ({ tab }) => {
                   </li>
                   <li
                     className={`cursor-pointer mr-4 md:mr-6 hover:text-gray-900 dark:hover:text-gray-300 ${
-                      currentTab === "starred" ? "text-gray-900 dark:text-gray-300 border-b-2" : ""
-                    } border-gray-800`}
-                  >
-                    <a onClick={() => changeTab("starred")} className="py-4 inline-block">
-                      我收藏的
-                    </a>
-                  </li>
-                  <li
-                    className={`cursor-pointer mr-4 md:mr-6 hover:text-gray-900 dark:hover:text-gray-300 ${
                       currentTab === "self" ? "text-gray-900 dark:text-gray-300 border-b-2" : ""
                     } border-gray-800`}
                   >
                     <a onClick={() => changeTab("self")} className="py-4 inline-block">
                       我的模型
+                    </a>
+                  </li>
+                  <li
+                    className={`cursor-pointer mr-4 md:mr-6 hover:text-gray-900 dark:hover:text-gray-300 ${
+                      currentTab === "starred" ? "text-gray-900 dark:text-gray-300 border-b-2" : ""
+                    } border-gray-800`}
+                  >
+                    <a onClick={() => changeTab("starred")} className="py-4 inline-block">
+                      我收藏的
                     </a>
                   </li>
                   <li

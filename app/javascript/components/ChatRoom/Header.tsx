@@ -23,11 +23,11 @@ const Header: React.FC<HeaderProps> = ({ subscribers }) => {
         }`}
       >
         <div className="px-4 sm:px-0">
-          <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-600 font-medium">AI 在线聊天室 [GPT-3.5]</p>
+          <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-600 font-medium">AI 在线聊天室</p>
 
           <div className="flex justify-between">
             <div className="max-w-2xl text-xs text-gray-500 flex items-center space-x-2">
-              <span>这里是公开的在线聊天室，免费畅聊，请勿泄露个人隐私信息</span>
+              <span>这里是公开的在线聊天室，请勿泄露个人隐私信息</span>
               <div className="h-3 md:w-px bg-zinc-900/10 dark:bg-white/[.075]"></div>
               <span>AI 在聊天室里，@ChatGPT 他会回复你</span>
             </div>

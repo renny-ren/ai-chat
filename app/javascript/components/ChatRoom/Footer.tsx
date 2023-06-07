@@ -287,6 +287,15 @@ const Footer: React.FC<FooterProps> = ({
             </>
           }
         />
+        <footer className="px-3 pt-2 pb-2 text-center text-xs text-black/50 dark:text-white/50 md:px-4 md:pt-3">
+          <div className="flex flex-wrap items-center justify-center space-x-4">
+            <span className="hidden md:block">{currentUser.isSignedIn() && <span>此聊天室内免费畅聊</span>}</span>
+            <span>当前应用：ChatGPT (GPT-3.5)</span>
+            <a className="underline" href="/models" rel="noreferrer">
+              查看更多应用
+            </a>
+          </div>
+        </footer>
       </div>
     </>
   )
