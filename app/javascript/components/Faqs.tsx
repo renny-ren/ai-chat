@@ -277,7 +277,7 @@ const Faqs: React.FC<FaqsProps> = ({}) => {
   return (
     <>
       <Helmet>
-        <title>常见问题 - aiia.chat</title>
+        <title>常见问题 - 智言智语</title>
       </Helmet>
       <div className="h-full relative pt-12 md:pt-14">
         <main className="h-full pt-8">

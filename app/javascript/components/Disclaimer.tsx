@@ -6,7 +6,7 @@ const Disclaimer = () => {
   return (
     <>
       <Helmet>
-        <title>用户协议及免责声明 - aiia.chat</title>
+        <title>用户协议及免责声明 - 智言智语</title>
       </Helmet>
       <div className="h-full relative pt-12 md:pt-14">
         <main className="h-full p-8">
@@ -14,7 +14,7 @@ const Disclaimer = () => {
 
           <article className="mx-auto max-w-3xl pb-4">
             <div>
-              <h2 className="text-xl dark:text-white text-center font-medium">aiia.chat 用户协议及免责申明</h2>
+              <h2 className="text-xl dark:text-white text-center font-medium">智言智语用户协议及免责申明</h2>
               <div className="text-gray-800 dark:text-zinc-400 mt-2">
                 <p>
                   <span>
@@ -143,8 +143,8 @@ const Disclaimer = () => {
                     4.
                     本服务来自于法律法规允许的包括但不限于公开互联网等信息积累，因互联网的开放性属性，不排除其中部分信息具有瑕疵、不合理或引发不快。遇有此情形的，欢迎并感谢您随时通过点击右上角客服图标联系客服或通过邮箱{" "}
                   </span>
-                  <a href="mailto:support@aiia.chat" target="_blank" className="underline">
-                    support@aiia.chat
+                  <a href="mailto:support@aii.chat" target="_blank" className="underline">
+                    support@aii.chat
                   </a>
                   <span> 举报。</span>
                 </h3>

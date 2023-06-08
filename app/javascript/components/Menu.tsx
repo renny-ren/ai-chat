@@ -73,7 +73,7 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
     <>
       <ul role="list">
         <li className="relative mt-6 md:mt-0">
-          <h2 className="text-xs font-semibold text-gray-900 dark:text-white">聊天室</h2>
+          <h2 className="text-sm font-medium text-gray-900 dark:text-white">聊天室</h2>
           <div className="relative mt-3 pl-2">
             <div
               className="absolute inset-x-0 top-0 bg-gray-800/2.5 will-change-transform dark:bg-white/2.5"
@@ -109,7 +109,7 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
         <li className="relative mt-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <span className="relative text-xs font-semibold text-gray-900 dark:text-white">个人会话</span>
+              <span className="relative text-sm font-medium text-gray-900 dark:text-white">个人会话</span>
               <button className="text-gray-500 hover:text-gray-600" onClick={() => setSearchMode(true)}>
                 <SearchOutlined className="flex" />
               </button>
@@ -197,7 +197,7 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
           </div>
         </li>
         <li className="relative mt-6">
-          <h2 className="text-xs font-semibold text-gray-900 dark:text-white">应用市场</h2>
+          <h2 className="text-sm font-medium text-gray-900 dark:text-white">应用市场</h2>
           <div className="relative mt-3 pl-2">
             <div className="absolute inset-y-0 left-2 w-px bg-gray-900/10 dark:bg-white/5"></div>
             <ul role="list" className="border-l border-transparent">
@@ -285,7 +285,7 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
           </div>
         </li>
         <li className="relative mt-6">
-          <h2 className="text-xs font-semibold text-gray-900 dark:text-white">菜单</h2>
+          <h2 className="text-sm font-medium text-gray-900 dark:text-white">菜单</h2>
           <div className="relative mt-3 pl-2">
             <div className="absolute inset-y-0 left-2 w-px bg-gray-900/10 dark:bg-white/5"></div>
             <ul role="list" className="border-l border-transparent">

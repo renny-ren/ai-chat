@@ -111,7 +111,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow }) => {
                   <div className="flex min-h-full items-center justify-center py-10 px-4 sm:px-6 lg:px-8">
                     <div className="w-full max-w-md space-y-8">
                       <div>
-                        <img className="mx-auto h-12 w-auto" src={`${CDN_HOST}/assets/logo.png`} alt="aiia.chat" />
+                        <img className="mx-auto h-12 w-auto" src={`${CDN_HOST}/assets/logo.png`} alt="智言智语" />
                         <div className="mt-4 text-center ml-2">
                           <h2 className="text-xl font-semibold tracking-tight text-gray-900">登录账号</h2>
                           <p className="mt-2 text-sm text-gray-600">
@@ -250,7 +250,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow }) => {
                   <div className="flex min-h-full items-center justify-center py-10 px-4 sm:px-6 lg:px-8">
                     <div className="w-full max-w-md space-y-8">
                       <div>
-                        <img className="mx-auto h-12 w-auto" src={`${CDN_HOST}/assets/logo.png`} alt="aiia.chat" />
+                        <img className="mx-auto h-12 w-auto" src={`${CDN_HOST}/assets/logo.png`} alt="智言智语" />
                         <div className="mt-4 text-center ml-2">
                           <h2 className="text-xl font-semibold tracking-tight text-gray-900">注册账号</h2>
                           <p className="mt-2 text-sm text-gray-600">

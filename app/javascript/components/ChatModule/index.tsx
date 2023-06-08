@@ -9,9 +9,9 @@ import Typed from "typed.js"
 import { CDN_HOST } from "shared/constants"
 import { Helmet } from "react-helmet"
 
-interface ChatModuleProps { }
+interface ChatModuleProps {}
 
-const ChatModule: FC<ChatModuleProps> = ({ }) => {
+const ChatModule: FC<ChatModuleProps> = ({}) => {
   const [messages, setMessages] = useState<MessageInterface[]>([])
   const [prompt, setPrompt] = useState<string>("")
   const [promptToRetry, setPromptToRetry] = useState<string | null>(null)
@@ -123,7 +123,7 @@ const ChatModule: FC<ChatModuleProps> = ({ }) => {
   return (
     <>
       <Helmet>
-        <title>{state?.conversationTitle || "aiia.chat - 人工智能对话平台"}</title>
+        <title>{state?.conversationTitle || "智言智语 AI"}</title>
       </Helmet>
       <main className="relative h-full w-full transition-width flex flex-col overflow-hidden items-stretch flex-1 pb-20">
         <div className="flex-1 overflow-hidden relative">
