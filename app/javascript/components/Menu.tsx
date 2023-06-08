@@ -216,6 +216,19 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
               </li>
               <li
                 className={`relative hover:bg-gray-50 dark:hover:bg-white/5 ${
+                  location.pathname === "/fortune" ? "border-l border-emerald-400 bg-gray-800/[.025]" : ""
+                }`}
+              >
+                <Link
+                  className="flex items-center gap-2 py-1 pr-3 text-sm transition pl-4 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                  to="/fortune"
+                  onClick={onClickLink}
+                >
+                  <span className="truncate">命理大师</span>
+                </Link>
+              </li>
+              <li
+                className={`relative hover:bg-gray-50 dark:hover:bg-white/5 ${
                   location.pathname === "/girlfriend" ? "border-l border-emerald-400 bg-gray-800/[.025]" : ""
                 }`}
               >
@@ -229,15 +242,15 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
               </li>
               <li
                 className={`relative hover:bg-gray-50 dark:hover:bg-white/5 ${
-                  location.pathname === "/fortune" ? "border-l border-emerald-400 bg-gray-800/[.025]" : ""
+                  location.pathname === "/images" ? "border-l border-emerald-400 bg-gray-800/[.025]" : ""
                 }`}
               >
                 <Link
                   className="flex items-center gap-2 py-1 pr-3 text-sm transition pl-4 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
-                  to="/fortune"
+                  to="/images"
                   onClick={onClickLink}
                 >
-                  <span className="truncate">命理大师</span>
+                  <span className="truncate">AI 绘画</span>
                 </Link>
               </li>
               <li
@@ -268,19 +281,6 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
                   </svg>
                 </Link>
               </li>
-              <li
-                className={`relative hover:bg-gray-50 dark:hover:bg-white/5 ${
-                  location.pathname === "/images" ? "border-l border-emerald-400 bg-gray-800/[.025]" : ""
-                }`}
-              >
-                <Link
-                  className="flex items-center gap-2 py-1 pr-3 text-sm transition pl-4 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
-                  to="/images"
-                  onClick={onClickLink}
-                >
-                  <span className="truncate">AI 绘画</span>
-                </Link>
-              </li>
             </ul>
           </div>
         </li>
@@ -289,19 +289,6 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
           <div className="relative mt-3 pl-2">
             <div className="absolute inset-y-0 left-2 w-px bg-gray-900/10 dark:bg-white/5"></div>
             <ul role="list" className="border-l border-transparent">
-              <li
-                className={`relative hover:bg-gray-50 dark:hover:bg-white/5 ${
-                  location.pathname === "/faqs" ? "border-l border-emerald-400 bg-gray-800/[.025]" : ""
-                }`}
-              >
-                <Link
-                  className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
-                  to="/faqs"
-                  onClick={onClickLink}
-                >
-                  <span className="truncate">常见问题</span>
-                </Link>
-              </li>
               <li
                 className={`relative hover:bg-gray-50 dark:hover:bg-white/5 ${
                   location.pathname === "/pricing" ? "border-l border-emerald-400 bg-gray-800/[.025]" : ""
@@ -313,6 +300,19 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
                   onClick={onClickLink}
                 >
                   <span className="truncate">升级套餐</span>
+                </Link>
+              </li>
+              <li
+                className={`relative hover:bg-gray-50 dark:hover:bg-white/5 ${
+                  location.pathname === "/faqs" ? "border-l border-emerald-400 bg-gray-800/[.025]" : ""
+                }`}
+              >
+                <Link
+                  className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                  to="/faqs"
+                  onClick={onClickLink}
+                >
+                  <span className="truncate">常见问题</span>
                 </Link>
               </li>
               <li
