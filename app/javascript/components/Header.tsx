@@ -71,7 +71,7 @@ const Header: React.FC<HeaderProps> = ({ customContent, conversations }) => {
                   </svg>
                 </button>
                 <a aria-label="Home" href="/">
-                  <img src={`${CDN_HOST}/assets/logo.png`} width="70px" />
+                  <img src={`${CDN_HOST}/assets/logo.png`} width="60px" />
                 </a>
               </div>
               {currentUser.isSignedIn() && (
