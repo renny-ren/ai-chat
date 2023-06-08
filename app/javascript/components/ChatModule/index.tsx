@@ -7,19 +7,17 @@ import MessageList from "./MessageList"
 import Footer from "./Footer"
 import Typed from "typed.js"
 import { CDN_HOST } from "shared/constants"
-import currentUser from "stores/current_user_store"
 import { Helmet } from "react-helmet"
 
-interface ChatModuleProps {}
+interface ChatModuleProps { }
 
-const ChatModule: FC<ChatModuleProps> = ({}) => {
+const ChatModule: FC<ChatModuleProps> = ({ }) => {
   const [messages, setMessages] = useState<MessageInterface[]>([])
   const [prompt, setPrompt] = useState<string>("")
   const [promptToRetry, setPromptToRetry] = useState<string | null>(null)
   const [uniqueIdToRetry, setUniqueIdToRetry] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [isFetchingMsgs, setIsFetchingMsgs] = useState(false)
-  const [usedMessageCount, setUsedMessageCount] = useState(0)
   const [model, setModel] = useState({})
   let conversationId = useParams().conversationId
   let { state } = useLocation()
@@ -35,24 +33,10 @@ const ChatModule: FC<ChatModuleProps> = ({}) => {
   }
 
   useEffect(() => {
-    if (currentUser.isSignedIn()) {
-      fetchUser()
-    }
-  }, [])
-
-  useEffect(() => {
     if (conversationId) {
       fetchMessages()
     }
   }, [conversationId])
-
-  const fetchUser = async () => {
-    const res = await UserApi.fetchUser(currentUser.id())
-    if (res.ok) {
-      const data = await res.json
-      setUsedMessageCount(data.user.used_message_count)
-    }
-  }
 
   const fetchMessages = async () => {
     setIsFetchingMsgs(true)
@@ -200,8 +184,6 @@ const ChatModule: FC<ChatModuleProps> = ({}) => {
           setPrompt={setPrompt}
           isLoading={isLoading}
           setIsLoading={setIsLoading}
-          usedMessageCount={usedMessageCount}
-          setUsedMessageCount={setUsedMessageCount}
           messages={messages}
           setMessages={setMessages}
         />

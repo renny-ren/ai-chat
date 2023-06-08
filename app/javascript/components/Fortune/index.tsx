@@ -64,7 +64,13 @@ const Fortune: React.FC<FortuneProps> = ({ conversationId }) => {
                         <div className="flex flex-col h-full md:pb-4">
                           <div className="flex flex-col h-full overflow-x-auto">
                             <Header isAddContext={isAddContext} handleContextChange={handleContextChange} />
-                            <MessageList gptName="命理大师" messages={messages} isLoading={isLoading} voice="stanley" />
+                            <MessageList
+                              avatarUrl="https://aii-chat-assets.oss-cn-chengdu.aliyuncs.com/images/fortune.png"
+                              gptName="命理大师"
+                              messages={messages}
+                              isLoading={isLoading}
+                              voice="stanley"
+                            />
                           </div>
                         </div>
                       </div>

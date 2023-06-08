@@ -60,7 +60,12 @@ const Girlfriend: React.FC<GirlfriendProps> = ({ conversationId }) => {
                         <div className="flex flex-col h-full md:pb-4">
                           <div className="flex flex-col h-full overflow-x-auto">
                             <Header isAddContext={isAddContext} handleContextChange={handleContextChange} />
-                            <MessageList gptName="AI 女友" messages={messages} isLoading={isLoading} />
+                            <MessageList
+                              avatarUrl="https://aii-chat-assets.oss-cn-chengdu.aliyuncs.com/images/girlfriend.png"
+                              gptName="AI 女友"
+                              messages={messages}
+                              isLoading={isLoading}
+                            />
                           </div>
                         </div>
                       </div>

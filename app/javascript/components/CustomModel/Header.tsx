@@ -25,7 +25,7 @@ const Header: React.FC<HeaderProps> = ({ model, setModel, isAddContext, handleCo
           }`}
         >
           <div className="px-4 sm:px-0">
-            <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-600">{model.description}</p>
+            <p className="mt-1 max-w-2xl text-sm leading-6 font-medium text-gray-600">{model.description}</p>
 
             <div className="flex justify-between items-end">
               <div className="mt-1 max-w-2xl text-xs text-gray-600 flex items-center">

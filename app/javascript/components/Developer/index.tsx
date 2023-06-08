@@ -3,8 +3,8 @@ import { useLocation } from "react-router-dom"
 import { Helmet } from "react-helmet"
 import Background from "components/common/Background"
 import MessageList from "components/common/MessageList"
-import Footer from "components/common/Footer"
 import Header from "./Header"
+import Footer from "components/common/Footer"
 import * as UserApi from "shared/api/user"
 
 interface DeveloperProps {
@@ -62,7 +62,13 @@ const Developer: React.FC<DeveloperProps> = ({ conversationId }) => {
                         <div className="flex flex-col h-full md:pb-4">
                           <div className="flex flex-col h-full overflow-x-auto">
                             <Header isAddContext={isAddContext} handleContextChange={handleContextChange} />
-                            <MessageList gptName="程序员助手" messages={messages} isLoading={isLoading} voice="kenny" />
+                            <MessageList
+                              avatarUrl="https://aii-chat-assets.oss-cn-chengdu.aliyuncs.com/images/developer_assistant.jpeg"
+                              gptName="程序员助手"
+                              messages={messages}
+                              isLoading={isLoading}
+                              voice="kenny"
+                            />
                           </div>
                         </div>
                       </div>

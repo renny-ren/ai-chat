@@ -1,12 +1,15 @@
 import React, { useEffect, useState, useRef, useContext } from "react"
-import { AppContext } from "components/AppContext"
 import { useParams, useLocation } from "react-router-dom"
+import { AppContext } from "components/AppContext"
 import currentUser from "stores/current_user_store"
-import { message, Select } from "antd"
-import axios from "axios"
+import { message } from "antd"
+import data from "@emoji-mart/data"
+import Picker from "@emoji-mart/react"
+import DownloadButton from "components/common/DownloadButton"
 import UpgradeModal from "components/common/UpgradeModal"
 import queryString from "query-string"
 import GPT3Tokenizer from "gpt3-tokenizer"
+import * as UserApi from "shared/api/user"
 
 interface FooterProps {
   isLoading: boolean
@@ -36,6 +39,7 @@ const Footer: React.FC<FooterProps> = ({
   isAddContext = true,
 }) => {
   const inputRef = useRef(null)
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false)
   const [prompt, setPrompt] = useState("")
   const [usedMessageCount, setUsedMessageCount] = useState(0)
   const messageLimitPerDay = currentUser.plan()?.message_limit_per_day
@@ -65,13 +69,11 @@ const Footer: React.FC<FooterProps> = ({
   }, [isLoading])
 
   const fetchUser = async () => {
-    const csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content")
-    const response = await axios.get(`/v1/users/${currentUser.id()}`, {
-      headers: {
-        "X-CSRF-Token": csrf,
-      },
-    })
-    setUsedMessageCount(response.data.user.used_message_count)
+    const res = await UserApi.fetchUser(currentUser.id())
+    if (res.ok) {
+      const data = await res.json
+      setUsedMessageCount(data.user.used_message_count)
+    }
   }
 
   const checkKeyPress = (e) => {
@@ -107,6 +109,7 @@ const Footer: React.FC<FooterProps> = ({
     addMessage({ role: "user", content: prompt })
     addMessage({ role: "assistant", content: "" })
     setIsLoading(true)
+    setShowEmojiPicker(false)
     inputRef.current.blur()
     inputRef.current.style.height = "24px"
   }
@@ -161,24 +164,65 @@ const Footer: React.FC<FooterProps> = ({
     }
   }
 
+  const onClickOutside = (e) => {
+    if (e.target.tagName.toLowerCase() === "div") {
+      setShowEmojiPicker(false)
+    }
+  }
+
+  const onEmojiSelect = (item) => {
+    inputRef.current.focus()
+    setPrompt(prompt.concat(item.native))
+  }
+
   const getIconStrokeColor = () => {
     if (document.documentElement.classList.contains("dark")) {
-      return prompt ? "#cdcdcd" : "currentColor"
+      return prompt ? "#cdcdcd" : "#31c48d"
     } else {
-      return prompt ? "currentColor" : "#cdcdcd"
+      return prompt ? "#31c48d" : "#cdcdcd"
     }
   }
 
   return (
     <>
       <div className="absolute bottom-0 left-0 w-full dark:border-transparent bg-vert-light-gradient dark:bg-vert-dark-gradient input-area">
+        {showEmojiPicker && (
+          <div className="pl-2 pb-px lg:mx-auto lg:max-w-3xl">
+            <Picker
+              data={data}
+              onEmojiSelect={onEmojiSelect}
+              onClickOutside={onClickOutside}
+              locale="zh"
+              previewPosition="none"
+            />
+          </div>
+        )}
         <form className="stretch mx-2 flex flex-row items-center gap-1 md:gap-2 last:mb-2 md:last:mb-6 lg:mx-auto lg:max-w-3xl">
           {currentUser.isSignedIn() ? (
             <div className="relative flex h-full flex-1 flex-col">
-              <div className="flex flex-col w-full py-2 flex-grow md:py-3 pl-2 md:pl-4 relative border border-black/10 bg-white dark:border-gray-900/50 dark:text-white dark:bg-gray-700 rounded-md shadow-[0_0_10px_rgba(0,0,0,0.10)] dark:shadow-[0_0_15px_rgba(0,0,0,0.10)]">
+              <div className="flex flex-col w-full py-2 flex-grow md:py-3 md:pl-4 relative border border-black/10 bg-white dark:border-gray-900/50 dark:text-white dark:bg-gray-700 rounded-md shadow-[0_0_10px_rgba(0,0,0,0.10)] dark:shadow-[0_0_15px_rgba(0,0,0,0.10)]">
+                <div className="flex items-center absolute gap-1.5 md:gap-2.5">
+                  <button
+                    className="z-10 ml-2 md:ml-0 pt-px text-gray-500 md:hover:bg-gray-100 dark:hover:text-gray-400 dark:hover:bg-gray-900 outline-none"
+                    type="button"
+                    onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                  >
+                    <svg className="h-5 w-5" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M512 981.333333C253.866667 981.333333 42.666667 770.133333 42.666667 512S253.866667 42.666667 512 42.666667s469.333333 211.2 469.333333 469.333333-211.2 469.333333-469.333333 469.333333z m0-853.333333C300.8 128 128 300.8 128 512s172.8 384 384 384 384-172.8 384-384S723.2 128 512 128z"
+                        fill={showEmojiPicker ? "#31c48d" : "#808080"}
+                      ></path>
+                      <path
+                        d="M640 469.333333c36.266667 0 64-27.733333 64-64s-27.733333-64-64-64-64 27.733333-64 64 29.866667 64 64 64M384 469.333333c36.266667 0 64-27.733333 64-64s-27.733333-64-64-64-64 27.733333-64 64 29.866667 64 64 64M512 725.333333c78.933333 0 151.466667-38.4 194.133333-104.533333 12.8-19.2 8.533333-46.933333-12.8-59.733333-19.2-12.8-46.933333-8.533333-59.733333 12.8-25.6 40.533333-72.533333 66.133333-121.6 66.133333s-96-25.6-123.733333-66.133333c-12.8-19.2-40.533333-25.6-59.733334-12.8-19.2 12.8-25.6 40.533333-12.8 59.733333 44.8 66.133333 117.333333 104.533333 196.266667 104.533333"
+                        fill={showEmojiPicker ? "#31c48d" : "#808080"}
+                      ></path>
+                    </svg>
+                  </button>
+                </div>
                 <textarea
                   ref={inputRef}
-                  className="user-input overflow-hidden max-h-52 m-0 w-full resize-none border-0 bg-transparent p-0 pr-7 focus:ring-0 focus-visible:ring-0 dark:bg-transparent"
+                  className="user-input max-h-52 m-0 w-full resize-none border-0 bg-transparent p-0 px-8 focus:ring-0 focus-visible:ring-0 dark:bg-transparent"
+                  // className="user-input overflow-hidden max-h-52 m-0 w-full resize-none border-0 bg-transparent p-0 pr-7 focus:ring-0 focus-visible:ring-0 dark:bg-transparent"
                   value={prompt}
                   onChange={handlePromptChange}
                   style={{ height: "24px" }}
@@ -244,10 +288,13 @@ const Footer: React.FC<FooterProps> = ({
             </>
           }
         />
-        <footer className="px-3 pt-2 pb-2 text-center text-xs text-black/50 dark:text-white/50 md:px-4 md:pt-3">
-          <span className="mr-4">
-            {currentUser.isSignedIn() && <span>今日剩余次数：{Math.max(0, messageLimitPerDay - usedMessageCount)}</span>}
-          </span>
+        <footer className="px-3 md:px-4 py-2 text-center text-xs text-black/50 dark:text-white/50">
+          <div className="flex flex-wrap items-center justify-center space-x-2 md:space-x-4">
+            {!!messages.length && <DownloadButton messages={messages} conversationId={conversationId} />}
+            <span className="mr-4">
+              {currentUser.isSignedIn() && <span>今日剩余次数：{Math.max(0, messageLimitPerDay - usedMessageCount)}</span>}
+            </span>
+          </div>
         </footer>
       </div>
     </>
