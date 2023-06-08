@@ -20,8 +20,8 @@ const Header: React.FC<HeaderProps> = ({ model, setModel, isAddContext, handleCo
     <>
       <div className="group">
         <div
-          className={`border-gray-300 border-dashed overflow-hidden transition-all duration-300 ${
-            isOpen ? "max-h-36 border-b pb-2" : "max-h-0"
+          className={`border-gray-300 overflow-hidden transition-all duration-300 ${
+            isOpen ? "max-h-36 shadow-sm pb-2" : "max-h-0"
           }`}
         >
           <div className="px-4 sm:px-0">

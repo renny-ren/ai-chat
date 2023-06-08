@@ -203,15 +203,15 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
             <ul role="list" className="border-l border-transparent">
               <li
                 className={`relative hover:bg-gray-50 dark:hover:bg-white/5 ${
-                  location.pathname === "/images" ? "border-l border-emerald-400 bg-gray-800/[.025]" : ""
+                  location.pathname === "/developer_assistant" ? "border-l border-emerald-400 bg-gray-800/[.025]" : ""
                 }`}
               >
                 <Link
                   className="flex items-center gap-2 py-1 pr-3 text-sm transition pl-4 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
-                  to="/images"
+                  to="/developer_assistant"
                   onClick={onClickLink}
                 >
-                  <span className="truncate">AI 绘画</span>
+                  <span className="truncate">程序员助手</span>
                 </Link>
               </li>
               <li
@@ -225,19 +225,6 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
                   onClick={onClickLink}
                 >
                   <span className="truncate">AI 女友</span>
-                </Link>
-              </li>
-              <li
-                className={`relative hover:bg-gray-50 dark:hover:bg-white/5 ${
-                  location.pathname === "/developer_assistant" ? "border-l border-emerald-400 bg-gray-800/[.025]" : ""
-                }`}
-              >
-                <Link
-                  className="flex items-center gap-2 py-1 pr-3 text-sm transition pl-4 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
-                  to="/developer_assistant"
-                  onClick={onClickLink}
-                >
-                  <span className="truncate">程序员助手</span>
                 </Link>
               </li>
               <li
@@ -279,6 +266,19 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
                       fill="#FF6600"
                     ></path>
                   </svg>
+                </Link>
+              </li>
+              <li
+                className={`relative hover:bg-gray-50 dark:hover:bg-white/5 ${
+                  location.pathname === "/images" ? "border-l border-emerald-400 bg-gray-800/[.025]" : ""
+                }`}
+              >
+                <Link
+                  className="flex items-center gap-2 py-1 pr-3 text-sm transition pl-4 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                  to="/images"
+                  onClick={onClickLink}
+                >
+                  <span className="truncate">AI 绘画</span>
                 </Link>
               </li>
             </ul>

@@ -60,7 +60,7 @@ const Footer: React.FC<FooterProps> = ({
     // Check message length limit
     const encoded: { bpe: number[]; text: string[] } = tokenizer.encode(content)
     if ((encoded.bpe?.length || content.length) > currentUser.plan().max_question_length) {
-      return showNotice(`消息超过最大长度限制(${currentUser.plan().max_question_length})，请精简提问或分条发送`)
+      return showNotice(`消息超过当前套餐的最大长度限制(${currentUser.plan().max_question_length})，请精简提问或分条发送`)
     }
 
     // Check sensitive words
@@ -129,9 +129,9 @@ const Footer: React.FC<FooterProps> = ({
 
   const getIconStrokeColor = () => {
     if (document.documentElement.classList.contains("dark")) {
-      return content ? "#cdcdcd" : "currentColor"
+      return content ? "#cdcdcd" : "#31c48d"
     } else {
-      return content ? "currentColor" : "#cdcdcd"
+      return content ? "#31c48d" : "#cdcdcd"
     }
   }
 
@@ -165,11 +165,11 @@ const Footer: React.FC<FooterProps> = ({
                     <svg className="h-5 w-5" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
                       <path
                         d="M512 981.333333C253.866667 981.333333 42.666667 770.133333 42.666667 512S253.866667 42.666667 512 42.666667s469.333333 211.2 469.333333 469.333333-211.2 469.333333-469.333333 469.333333z m0-853.333333C300.8 128 128 300.8 128 512s172.8 384 384 384 384-172.8 384-384S723.2 128 512 128z"
-                        fill={showEmojiPicker ? "#31c48d" : "#808080"}
+                        fill={showEmojiPicker ? "#31c48d" : "#6b7280"}
                       ></path>
                       <path
                         d="M640 469.333333c36.266667 0 64-27.733333 64-64s-27.733333-64-64-64-64 27.733333-64 64 29.866667 64 64 64M384 469.333333c36.266667 0 64-27.733333 64-64s-27.733333-64-64-64-64 27.733333-64 64 29.866667 64 64 64M512 725.333333c78.933333 0 151.466667-38.4 194.133333-104.533333 12.8-19.2 8.533333-46.933333-12.8-59.733333-19.2-12.8-46.933333-8.533333-59.733333 12.8-25.6 40.533333-72.533333 66.133333-121.6 66.133333s-96-25.6-123.733333-66.133333c-12.8-19.2-40.533333-25.6-59.733334-12.8-19.2 12.8-25.6 40.533333-12.8 59.733333 44.8 66.133333 117.333333 104.533333 196.266667 104.533333"
-                        fill={showEmojiPicker ? "#31c48d" : "#808080"}
+                        fill={showEmojiPicker ? "#31c48d" : "#6b7280"}
                       ></path>
                     </svg>
                   </button>
@@ -187,7 +187,7 @@ const Footer: React.FC<FooterProps> = ({
                     >
                       <path
                         d="M405.333333 149.333333l67.562667 184.234667h91.776L632.234667 149.333333h64l-67.562667 184.234667h110.229333a64 64 0 0 1 64 64v407.274667a64 64 0 0 1-64 64H285.098667a64 64 0 0 1-64-64v-407.253334a64 64 0 0 1 64-64l123.797333-0.021333L341.333333 149.333333h64z m333.568 248.234667H285.098667v407.274667h453.802666v-407.253334zM192 496.490667v213.333333H128v-213.333333h64z m698.176 0v213.333333h-64v-213.333333h64zM405.333333 519.744a42.666667 42.666667 0 1 1 0 85.333333 42.666667 42.666667 0 0 1 0-85.333333z m213.333334 0a42.666667 42.666667 0 1 1 0 85.333333 42.666667 42.666667 0 0 1 0-85.333333z"
-                        fill={isToAI ? "#31c48d" : "#808080"}
+                        fill={isToAI ? "#31c48d" : "#6b7280"}
                       ></path>
                     </svg>
                   </button>

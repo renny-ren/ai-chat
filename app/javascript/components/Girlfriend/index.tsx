@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom"
 import { Helmet } from "react-helmet"
 import Background from "components/common/Background"
 import MessageList from "components/common/MessageList"
+import Header from "./Header"
 import Footer from "components/common/Footer"
 import * as UserApi from "shared/api/user"
 
@@ -21,6 +22,7 @@ const initMessages = [
 const Girlfriend: React.FC<GirlfriendProps> = ({ conversationId }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [messages, setMessages] = useState(initMessages)
+  const [isAddContext, setIsAddContext] = useState(true)
   let { state } = useLocation()
 
   useEffect(() => {
@@ -33,6 +35,10 @@ const Girlfriend: React.FC<GirlfriendProps> = ({ conversationId }) => {
     const res = await UserApi.fetchMessages(conversationId)
     const data = await res.json
     setMessages([...initMessages, ...data.messages])
+  }
+
+  const handleContextChange = (checked) => {
+    setIsAddContext(checked)
   }
 
   return (
@@ -53,6 +59,7 @@ const Girlfriend: React.FC<GirlfriendProps> = ({ conversationId }) => {
                       <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl h-full w-full md:max-w-3xl lg:max-w-4xl">
                         <div className="flex flex-col h-full md:pb-4">
                           <div className="flex flex-col h-full overflow-x-auto">
+                            <Header isAddContext={isAddContext} handleContextChange={handleContextChange} />
                             <MessageList gptName="AI 女友" messages={messages} isLoading={isLoading} />
                           </div>
                         </div>
@@ -70,6 +77,7 @@ const Girlfriend: React.FC<GirlfriendProps> = ({ conversationId }) => {
             messages={messages}
             setMessages={setMessages}
             conversationId={conversationId}
+            isAddContext={isAddContext}
             signInPrompt="登录即可开始与女友聊天"
             loadingMessage="女友正在思考中，请耐心等待"
             conversationType="girlfriend"
