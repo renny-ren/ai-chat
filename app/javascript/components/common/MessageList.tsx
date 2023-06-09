@@ -85,7 +85,7 @@ const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, gptName,
   return (
     <>
       <audio ref={audioRef}></audio>
-      <div className="message-list-container overflow-auto" style={{ scrollbarGutter: "stable both-edges" }}>
+      <div className="message-list-container c-scrollbar overflow-auto" style={{ scrollbarGutter: "stable both-edges" }}>
         <div className="grid grid-cols-12 gap-y-2">
           {messages.map((message, i) => {
             return isSelf(message) ? (

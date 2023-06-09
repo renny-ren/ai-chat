@@ -13,6 +13,7 @@ ActiveAdmin.register Conversation do
     actions
   end
 
+  filter :id
   filter :user_id
   filter :title
   filter :type

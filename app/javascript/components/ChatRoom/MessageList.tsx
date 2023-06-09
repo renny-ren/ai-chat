@@ -152,7 +152,7 @@ const MessageList = ({ messages, fetchMessages, isFetching, openModal, paginatio
     <>
       <audio ref={audioRef}></audio>
       <div
-        className="message-list-container overflow-auto"
+        className="message-list-container c-scrollbar overflow-auto"
         style={{ scrollbarGutter: "stable both-edges" }}
         ref={rootRefSetter}
         onScroll={handleRootScroll}
@@ -247,7 +247,7 @@ const MessageList = ({ messages, fetchMessages, isFetching, openModal, paginatio
           })}
         </div>
         <div ref={messagesEndRef}></div>
-        <div className="w-full h-2 sm:h-6 flex-shrink-0"></div>
+        <div className="w-full h-4 flex-shrink-0"></div>
       </div>
     </>
   )

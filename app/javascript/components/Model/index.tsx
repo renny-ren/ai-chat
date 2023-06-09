@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react"
 import { AppContext } from "components/AppContext"
 import currentUser from "stores/current_user_store"
-import { Badge, message } from "antd"
+import { Badge, message, Popover } from "antd"
 import { Helmet } from "react-helmet"
 import Background from "components/common/Background"
 import List from "./List"
@@ -36,11 +36,11 @@ const Model: React.FC<ModelProps> = ({ tab }) => {
           <Background />
 
           <Helmet>
-            <title>自定义应用 - aiia.chat</title>
+            <title>自定义应用 - 智言智语</title>
           </Helmet>
 
           <div className="relative h-full w-full transition-width flex flex-col overflow-y-auto items-stretch justify-center flex-1">
-            <div className="flex-1 overflow-y-auto relative">
+            <div className="flex-1 overflow-y-auto relative c-scrollbar">
               <div className="px-4 md:px-8 container mx-auto max-w-7xl mt-2">
                 <ul className="flex border-b border-gray-300 text-sm font-medium text-gray-600 dark:text-gray-500">
                   <li
@@ -54,15 +54,6 @@ const Model: React.FC<ModelProps> = ({ tab }) => {
                   </li>
                   <li
                     className={`cursor-pointer mr-4 md:mr-6 hover:text-gray-900 dark:hover:text-gray-300 ${
-                      currentTab === "starred" ? "text-gray-900 dark:text-gray-300 border-b-2" : ""
-                    } border-gray-800`}
-                  >
-                    <a onClick={() => changeTab("starred")} className="py-4 inline-block">
-                      我收藏的
-                    </a>
-                  </li>
-                  <li
-                    className={`cursor-pointer mr-4 md:mr-6 hover:text-gray-900 dark:hover:text-gray-300 ${
                       currentTab === "self" ? "text-gray-900 dark:text-gray-300 border-b-2" : ""
                     } border-gray-800`}
                   >
@@ -72,11 +63,31 @@ const Model: React.FC<ModelProps> = ({ tab }) => {
                   </li>
                   <li
                     className={`cursor-pointer mr-4 md:mr-6 hover:text-gray-900 dark:hover:text-gray-300 ${
+                      currentTab === "starred" ? "text-gray-900 dark:text-gray-300 border-b-2" : ""
+                    } border-gray-800`}
+                  >
+                    <a onClick={() => changeTab("starred")} className="py-4 inline-block">
+                      我收藏的
+                    </a>
+                  </li>
+                  <li
+                    className={`cursor-pointer mr-4 md:mr-6 hover:text-gray-900 dark:hover:text-gray-300 ${
                       currentTab === "new" ? "text-gray-900 dark:text-gray-300 border-b-2" : ""
                     } border-gray-800`}
                   >
                     <a onClick={() => changeTab("new")} className="py-4 inline-block">
-                      <div className="flex items-center">
+                      <Popover
+                        className="hidden md:inline-flex"
+                        placement="right"
+                        open={true}
+                        content="点击创建你的专属应用"
+                      >
+                        <div className="flex items-center">
+                          <PlusCircleOutlined className="mr-1" />
+                          <span>创建模型</span>
+                        </div>
+                      </Popover>
+                      <div className="block md:hidden flex items-center">
                         <PlusCircleOutlined className="mr-1" />
                         创建模型
                       </div>

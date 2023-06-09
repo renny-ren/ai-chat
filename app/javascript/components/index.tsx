@@ -11,8 +11,37 @@ const renderApp = () => {
   root.render(<App />)
 }
 
+const debounce = (func, timeout = 1000) => {
+  let timer
+  return (...args) => {
+    clearTimeout(timer)
+    timer = setTimeout(() => {
+      func.apply(this, args)
+    }, timeout)
+  }
+}
+
 document.addEventListener("turbo:load", () => {
   const existingDiv = document.getElementById("main-container")
   if (existingDiv) existingDiv.remove()
   renderApp()
 })
+
+document.addEventListener(
+  "scroll",
+  (e) => {
+    if (e.target.classList && e.target.classList.contains("on-scrollbar") === false) {
+      e.target.classList.add("on-scrollbar")
+    }
+  },
+  true
+)
+document.addEventListener(
+  "scroll",
+  debounce((e) => {
+    if (e.target.classList) {
+      e.target.classList.remove("on-scrollbar")
+    }
+  }),
+  true
+)

@@ -86,7 +86,7 @@ const CustomModel: React.FC<CustomModelProps> = ({ conversation }) => {
   return (
     <>
       <Helmet>
-        <title>{conversation?.title || state?.conversationTitle || `${model.title || ""} - aiia.chat`}</title>
+        <title>{conversation?.title || state?.conversationTitle || `${model.title || ""} - 智言智语`}</title>
       </Helmet>
       <div className="h-full relative pt-12 md:pt-14">
         <main className="h-full">

@@ -7,7 +7,6 @@ import MessageList from "./MessageList"
 import Footer from "./Footer"
 import Typed from "typed.js"
 import { CDN_HOST } from "shared/constants"
-import currentUser from "stores/current_user_store"
 import { Helmet } from "react-helmet"
 
 interface ChatModuleProps {}
@@ -19,7 +18,6 @@ const ChatModule: FC<ChatModuleProps> = ({}) => {
   const [uniqueIdToRetry, setUniqueIdToRetry] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [isFetchingMsgs, setIsFetchingMsgs] = useState(false)
-  const [usedMessageCount, setUsedMessageCount] = useState(0)
   const [model, setModel] = useState({})
   let conversationId = useParams().conversationId
   let { state } = useLocation()
@@ -35,24 +33,10 @@ const ChatModule: FC<ChatModuleProps> = ({}) => {
   }
 
   useEffect(() => {
-    if (currentUser.isSignedIn()) {
-      fetchUser()
-    }
-  }, [])
-
-  useEffect(() => {
     if (conversationId) {
       fetchMessages()
     }
   }, [conversationId])
-
-  const fetchUser = async () => {
-    const res = await UserApi.fetchUser(currentUser.id())
-    if (res.ok) {
-      const data = await res.json
-      setUsedMessageCount(data.user.used_message_count)
-    }
-  }
 
   const fetchMessages = async () => {
     setIsFetchingMsgs(true)
@@ -77,8 +61,8 @@ const ChatModule: FC<ChatModuleProps> = ({}) => {
       prompts: [
         "写一首赞美祖国的诗",
         "给10岁的孩子过生日有什么创意吗",
-        "写一篇200字左右的爱情故事，男主角叫小明，女主角叫小红",
-        "用Python写一个猜数字的游戏并运行它",
+        "写一篇 200 字左右的爱情故事，男主角叫小明，女主角叫小红",
+        "用 Python 写一个猜数字的游戏并运行它",
       ],
     },
     {
@@ -139,7 +123,7 @@ const ChatModule: FC<ChatModuleProps> = ({}) => {
   return (
     <>
       <Helmet>
-        <title>{state?.conversationTitle || "aiia.chat - 人工智能对话平台"}</title>
+        <title>{state?.conversationTitle || "智言智语 AI"}</title>
       </Helmet>
       <main className="relative h-full w-full transition-width flex flex-col overflow-hidden items-stretch flex-1 pb-20">
         <div className="flex-1 overflow-hidden relative">
@@ -200,8 +184,6 @@ const ChatModule: FC<ChatModuleProps> = ({}) => {
           setPrompt={setPrompt}
           isLoading={isLoading}
           setIsLoading={setIsLoading}
-          usedMessageCount={usedMessageCount}
-          setUsedMessageCount={setUsedMessageCount}
           messages={messages}
           setMessages={setMessages}
         />

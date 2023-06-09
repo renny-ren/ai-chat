@@ -200,7 +200,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ setCustomContent }) => {
       <Helmet>
         <title>AI 在线聊天室</title>
       </Helmet>
-      <div className="relative h-full w-full transition-width flex flex-col overflow-hidden items-stretch flex-1 pb-14">
+      <div className="relative h-full w-full transition-width flex flex-col overflow-hidden items-stretch flex-1 pb-[4.5rem]">
         <div className="flex-1 overflow-hidden relative">
           <div className="h-full overflow-hidden">
             <div className="flex h-full antialiased text-gray-800">
