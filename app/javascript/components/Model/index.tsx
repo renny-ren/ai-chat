@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react"
 import { AppContext } from "components/AppContext"
 import currentUser from "stores/current_user_store"
-import { Badge, message } from "antd"
+import { Badge, message, Popover } from "antd"
 import { Helmet } from "react-helmet"
 import Background from "components/common/Background"
 import List from "./List"
@@ -76,7 +76,18 @@ const Model: React.FC<ModelProps> = ({ tab }) => {
                     } border-gray-800`}
                   >
                     <a onClick={() => changeTab("new")} className="py-4 inline-block">
-                      <div className="flex items-center">
+                      <Popover
+                        className="hidden md:inline-flex"
+                        placement="right"
+                        open={true}
+                        content="点击创建你的专属应用"
+                      >
+                        <div className="flex items-center">
+                          <PlusCircleOutlined className="mr-1" />
+                          <span>创建模型</span>
+                        </div>
+                      </Popover>
+                      <div className="block md:hidden flex items-center">
                         <PlusCircleOutlined className="mr-1" />
                         创建模型
                       </div>

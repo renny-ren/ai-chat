@@ -182,8 +182,9 @@ const faqs = [
     q: "机器人能记忆上下文吗",
     a: (
       <>
-        <p>机器人可记忆你和他之间的最近 20 条对话</p>
+        <p>机器人默认可记忆你和他之间的最近 16 条对话</p>
         <p>在聊天室中，上下文记忆保存时间 1 天，个人会话中永久保存</p>
+        <p>你也可以手动开启或关闭上下文记忆</p>
       </>
     ),
   },
@@ -220,7 +221,7 @@ const faqs = [
                 <MailFilled className="mr-1" />
                 客服邮箱
               </td>
-              <td className="border px-4 py-2">support@aiia.chat</td>
+              <td className="border px-4 py-2">support@aii.chat</td>
             </tr>
           </tbody>
         </table>
