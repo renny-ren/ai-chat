@@ -288,14 +288,14 @@ const Footer: React.FC<FooterProps> = ({
             </>
           }
         />
-        <footer className="px-3 md:px-4 py-2 text-center text-xs text-black/50 dark:text-white/50">
-          <div className="flex flex-wrap items-center justify-center space-x-2 md:space-x-4">
-            {!!messages.length && <DownloadButton messages={messages} conversationId={conversationId} />}
-            <span className="mr-4">
-              {currentUser.isSignedIn() && <span>今日剩余次数：{Math.max(0, messageLimitPerDay - usedMessageCount)}</span>}
-            </span>
-          </div>
-        </footer>
+        {currentUser.isSignedIn() && (
+          <footer className="px-3 md:px-4 py-2 text-center text-xs text-black/50 dark:text-white/50">
+            <div className="flex flex-wrap items-center justify-center space-x-2 md:space-x-4">
+              {!!messages.length && <DownloadButton messages={messages} conversationId={conversationId} />}
+              <span className="mr-4">{<span>今日剩余次数：{Math.max(0, messageLimitPerDay - usedMessageCount)}</span>}</span>
+            </div>
+          </footer>
+        )}
       </div>
     </>
   )

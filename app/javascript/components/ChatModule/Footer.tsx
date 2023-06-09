@@ -301,14 +301,22 @@ const Footer: React.FC<FooterProps> = ({
         />
         <footer className="px-3 pt-2 pb-2 text-center text-xs text-black/50 dark:text-white/50 md:px-4 md:pt-3">
           <div className="flex flex-wrap items-center justify-center space-x-2 md:space-x-4">
-            {!!messages.length && <DownloadButton messages={messages} conversationId={conversationId} />}
-            <span>
-              {currentUser.isSignedIn() && <span>今日剩余次数：{Math.max(0, messageLimitPerDay - usedMessageCount)}</span>}
-            </span>
+            {currentUser.isSignedIn() && (
+              <>
+                {!!messages.length && <DownloadButton messages={messages} conversationId={conversationId} />}
+                <span>今日剩余次数：999</span>
+              </>
+            )}
             <span>当前应用：ChatGPT (GPT-3.5)</span>
-            <a className="underline hidden md:block" href="/models" rel="noreferrer">
-              查看更多应用
-            </a>
+            {currentUser.isSignedIn() ? (
+              <a className="underline hidden md:block" href="/models" rel="noreferrer">
+                查看更多应用
+              </a>
+            ) : (
+              <a className="underline" href="/models" rel="noreferrer">
+                查看更多应用
+              </a>
+            )}
           </div>
         </footer>
       </div>
