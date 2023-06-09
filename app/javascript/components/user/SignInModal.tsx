@@ -123,20 +123,22 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow }) => {
                   leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                 >
                   <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 mx-8 w-full sm:max-w-lg">
-                    <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+                    <div className="flex min-h-full items-center justify-center py-10 px-4 sm:px-6 lg:px-8">
                       <div className="w-full max-w-md space-y-8">
                         <div>
-                          <img className="mx-auto h-8 w-auto" src={`${CDN_HOST}/assets/logo2.png`} alt="aiia.chat" />
-                          <h2 className="mt-4 text-center text-3xl font-bold tracking-tight text-gray-900">登录账号</h2>
-                          <p className="mt-2 text-center text-sm text-gray-600">
-                            或
-                            <span
-                              onClick={toggleMode}
-                              className="cursor-pointer font-medium text-emerald-500 hover:text-emerald-400"
-                            >
-                              注册新账号
-                            </span>
-                          </p>
+                          <img className="mx-auto h-12 w-auto" src={`${CDN_HOST}/assets/logo.png`} alt="智言智语" />
+                          <div className="mt-4 text-center ml-2">
+                            <h2 className="text-xl font-semibold tracking-tight text-gray-900">登录账号</h2>
+                            <p className="mt-2 text-sm text-gray-600">
+                              或{" "}
+                              <span
+                                onClick={toggleMode}
+                                className="cursor-pointer font-medium text-emerald-500 hover:text-emerald-400"
+                              >
+                                注册新账号
+                              </span>
+                            </p>
+                          </div>
                         </div>
                         <form className="mt-8 space-y-6" onSubmit={onSignIn}>
                           <input type="hidden" name="remember" defaultValue="true" />
@@ -210,7 +212,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow }) => {
 
                             <div className="text-sm">
                               <a
-                                onClick={() => message.info("请重新注册一个账号即可")}
+                                onClick={() => message.info("请重新注册一个账号或联系客服处理")}
                                 className="cursor-pointer font-medium text-emerald-500 hover:text-emerald-400"
                               >
                                 忘记密码?
@@ -260,20 +262,22 @@ const SignInModal: React.FC<SignInModalProps> = ({ isShow }) => {
                   leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                 >
                   <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 mx-8 w-full sm:max-w-lg">
-                    <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+                    <div className="flex min-h-full items-center justify-center py-10 px-4 sm:px-6 lg:px-8">
                       <div className="w-full max-w-md space-y-8">
                         <div>
-                          <img className="mx-auto h-8 w-auto" src={`${CDN_HOST}/assets/logo2.png`} alt="aiia.chat" />
-                          <h2 className="mt-4 text-center text-3xl font-bold tracking-tight text-gray-900">注册账号</h2>
-                          <p className="mt-2 text-center text-sm text-gray-600">
-                            或{" "}
-                            <span
-                              onClick={toggleMode}
-                              className="cursor-pointer font-medium text-emerald-500 hover:text-emerald-400"
-                            >
-                              登录已有账号
-                            </span>
-                          </p>
+                          <img className="mx-auto h-12 w-auto" src={`${CDN_HOST}/assets/logo.png`} alt="智言智语" />
+                          <div className="mt-4 text-center ml-2">
+                            <h2 className="text-xl font-semibold tracking-tight text-gray-900">注册账号</h2>
+                            <p className="mt-2 text-sm text-gray-600">
+                              或{" "}
+                              <span
+                                onClick={toggleMode}
+                                className="cursor-pointer font-medium text-emerald-500 hover:text-emerald-400"
+                              >
+                                登录已有账号
+                              </span>
+                            </p>
+                          </div>
                         </div>
                         <form className="mt-8 space-y-6" onSubmit={onSignUp}>
                           <div className="-space-y-px rounded-md shadow-sm">

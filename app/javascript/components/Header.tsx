@@ -37,7 +37,7 @@ const Header: React.FC<HeaderProps> = ({ customContent, conversations }) => {
   return (
     <>
       <header className="contents lg:pointer-events-none lg:fixed lg:inset-0 lg:z-40 lg:flex">
-        <div className="contents lg:pointer-events-auto lg:block lg:w-64 lg:overflow-y-auto lg:border-r lg:border-zinc-900/10 lg:px-6 lg:pt-4 lg:pb-8 lg:dark:border-white/10 xl:w-72">
+        <div className="contents c-scrollbar lg:pointer-events-auto lg:block lg:w-64 lg:overflow-y-auto lg:border-r lg:border-zinc-900/10 lg:px-6 lg:pt-4 lg:pb-8 lg:dark:border-white/10 xl:w-72">
           <div className="hidden lg:flex">
             <a aria-label="Home" href="/"></a>
           </div>
@@ -49,7 +49,7 @@ const Header: React.FC<HeaderProps> = ({ customContent, conversations }) => {
             <div className="flex items-center">
               <div className="hidden lg:block lg:max-w-md lg:flex-auto">
                 <a aria-label="Home" href="/">
-                  <img src={`${CDN_HOST}/assets/logo.png?v=D86ItiPelE`} width="80px" />
+                  <img src={`${CDN_HOST}/assets/logo.png`} width="70px" />
                 </a>
               </div>
 
@@ -71,7 +71,7 @@ const Header: React.FC<HeaderProps> = ({ customContent, conversations }) => {
                   </svg>
                 </button>
                 <a aria-label="Home" href="/">
-                  <img src={`${CDN_HOST}/assets/logo.png?v=D86ItiPelE`} width="70px" />
+                  <img src={`${CDN_HOST}/assets/logo.png`} width="60px" />
                 </a>
               </div>
               {currentUser.isSignedIn() && (

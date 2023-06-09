@@ -61,7 +61,7 @@ const List: React.FC<ListProps> = ({ validateLogin, scope }) => {
                         </div>
                         <ModelActions model={model} models={models} setModels={setModels} validateLogin={validateLogin} />
                       </div>
-                      <p className="truncate mt-1 text-base text-slate-500 dark:text-slate-400">{model.description}</p>
+                      <p className="truncate mt-1 text-sm text-slate-500 dark:text-slate-400">{model.description}</p>
                       <div className="flex mt-2 justify-between items-start">
                         <dl className="flex items-center">
                           {!model.is_public && (
@@ -85,7 +85,7 @@ const List: React.FC<ListProps> = ({ validateLogin, scope }) => {
                         </dl>
                         <a
                           href={`/${model.permalink}`}
-                          className="float-right items-center group relative flex justify-center rounded-md border border-transparent bg-emerald-500 py-1 md:py-2 px-2 md:px-4 text-sm font-medium text-white hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
+                          className="float-right items-center group relative flex justify-center rounded-xl border border-transparent bg-emerald-500 py-1 md:py-1.5 px-2 md:px-3 text-sm font-medium text-white hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2"
                         >
                           <span className="absolute inset-y-0 left-0 flex items-center pl-3"></span>
                           进入

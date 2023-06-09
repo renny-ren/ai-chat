@@ -73,7 +73,7 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
     <>
       <ul role="list">
         <li className="relative mt-6 md:mt-0">
-          <h2 className="text-xs font-semibold text-gray-900 dark:text-white">聊天室</h2>
+          <h2 className="text-sm font-medium text-gray-900 dark:text-white">聊天室</h2>
           <div className="relative mt-3 pl-2">
             <div
               className="absolute inset-x-0 top-0 bg-gray-800/2.5 will-change-transform dark:bg-white/2.5"
@@ -109,7 +109,7 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
         <li className="relative mt-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <span className="relative text-xs font-semibold text-gray-900 dark:text-white">个人会话</span>
+              <span className="relative text-sm font-medium text-gray-900 dark:text-white">个人会话</span>
               <button className="text-gray-500 hover:text-gray-600" onClick={() => setSearchMode(true)}>
                 <SearchOutlined className="flex" />
               </button>
@@ -162,7 +162,7 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
               <button
                 title="新的会话"
                 onClick={newConversation}
-                className="outline-none inline-flex ml-2 px-2 py-1 text-xs text-gray-600 transition-colors duration-300 transform border rounded-md dark:text-gray-200 dark:border-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                className="outline-none inline-flex ml-2 px-2 py-1 text-xs text-gray-600 font-medium transition-colors duration-300 transform border rounded-md dark:text-gray-200 dark:border-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -179,7 +179,7 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
             )}
           </div>
 
-          <div className="relative mt-3 pl-2 max-h-64 overflow-y-auto">
+          <div className="relative mt-3 pl-2 max-h-64 overflow-y-auto c-scrollbar">
             <div
               className="absolute inset-x-0 top-0 bg-gray-800/2.5 will-change-transform dark:bg-white/2.5"
               style={{
@@ -197,36 +197,10 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
           </div>
         </li>
         <li className="relative mt-6">
-          <h2 className="text-xs font-semibold text-gray-900 dark:text-white">应用市场</h2>
+          <h2 className="text-sm font-medium text-gray-900 dark:text-white">应用市场</h2>
           <div className="relative mt-3 pl-2">
             <div className="absolute inset-y-0 left-2 w-px bg-gray-900/10 dark:bg-white/5"></div>
             <ul role="list" className="border-l border-transparent">
-              <li
-                className={`relative hover:bg-gray-50 dark:hover:bg-white/5 ${
-                  location.pathname === "/images" ? "border-l border-emerald-400 bg-gray-800/[.025]" : ""
-                }`}
-              >
-                <Link
-                  className="flex items-center gap-2 py-1 pr-3 text-sm transition pl-4 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
-                  to="/images"
-                  onClick={onClickLink}
-                >
-                  <span className="truncate">AI 绘画</span>
-                </Link>
-              </li>
-              <li
-                className={`relative hover:bg-gray-50 dark:hover:bg-white/5 ${
-                  location.pathname === "/girlfriend" ? "border-l border-emerald-400 bg-gray-800/[.025]" : ""
-                }`}
-              >
-                <Link
-                  className="flex items-center gap-2 py-1 pr-3 text-sm transition pl-4 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
-                  to="/girlfriend"
-                  onClick={onClickLink}
-                >
-                  <span className="truncate">AI 女友</span>
-                </Link>
-              </li>
               <li
                 className={`relative hover:bg-gray-50 dark:hover:bg-white/5 ${
                   location.pathname === "/developer_assistant" ? "border-l border-emerald-400 bg-gray-800/[.025]" : ""
@@ -251,6 +225,32 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
                   onClick={onClickLink}
                 >
                   <span className="truncate">命理大师</span>
+                </Link>
+              </li>
+              <li
+                className={`relative hover:bg-gray-50 dark:hover:bg-white/5 ${
+                  location.pathname === "/girlfriend" ? "border-l border-emerald-400 bg-gray-800/[.025]" : ""
+                }`}
+              >
+                <Link
+                  className="flex items-center gap-2 py-1 pr-3 text-sm transition pl-4 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                  to="/girlfriend"
+                  onClick={onClickLink}
+                >
+                  <span className="truncate">AI 女友</span>
+                </Link>
+              </li>
+              <li
+                className={`relative hover:bg-gray-50 dark:hover:bg-white/5 ${
+                  location.pathname === "/images" ? "border-l border-emerald-400 bg-gray-800/[.025]" : ""
+                }`}
+              >
+                <Link
+                  className="flex items-center gap-2 py-1 pr-3 text-sm transition pl-4 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                  to="/images"
+                  onClick={onClickLink}
+                >
+                  <span className="truncate">AI 绘画</span>
                 </Link>
               </li>
               <li
@@ -285,23 +285,10 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
           </div>
         </li>
         <li className="relative mt-6">
-          <h2 className="text-xs font-semibold text-gray-900 dark:text-white">菜单</h2>
+          <h2 className="text-sm font-medium text-gray-900 dark:text-white">菜单</h2>
           <div className="relative mt-3 pl-2">
             <div className="absolute inset-y-0 left-2 w-px bg-gray-900/10 dark:bg-white/5"></div>
             <ul role="list" className="border-l border-transparent">
-              <li
-                className={`relative hover:bg-gray-50 dark:hover:bg-white/5 ${
-                  location.pathname === "/faqs" ? "border-l border-emerald-400 bg-gray-800/[.025]" : ""
-                }`}
-              >
-                <Link
-                  className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
-                  to="/faqs"
-                  onClick={onClickLink}
-                >
-                  <span className="truncate">常见问题</span>
-                </Link>
-              </li>
               <li
                 className={`relative hover:bg-gray-50 dark:hover:bg-white/5 ${
                   location.pathname === "/pricing" ? "border-l border-emerald-400 bg-gray-800/[.025]" : ""
@@ -313,6 +300,19 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
                   onClick={onClickLink}
                 >
                   <span className="truncate">升级套餐</span>
+                </Link>
+              </li>
+              <li
+                className={`relative hover:bg-gray-50 dark:hover:bg-white/5 ${
+                  location.pathname === "/faqs" ? "border-l border-emerald-400 bg-gray-800/[.025]" : ""
+                }`}
+              >
+                <Link
+                  className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                  to="/faqs"
+                  onClick={onClickLink}
+                >
+                  <span className="truncate">常见问题</span>
                 </Link>
               </li>
               <li

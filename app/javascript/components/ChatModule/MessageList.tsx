@@ -73,7 +73,7 @@ const MessageList: FC<MessageListProps> = ({ messages, messagesEndRef, isLoading
   return (
     <>
       <audio ref={audioRef}></audio>
-      <div className="flex flex-col items-center text-sm h-full dark:bg-gray-800 overflow-y-auto">
+      <div className="flex flex-col items-center text-sm h-full dark:bg-gray-800 overflow-y-auto c-scrollbar">
         {messages.map((msg, i) => {
           return isSelf(msg) ? (
             <div

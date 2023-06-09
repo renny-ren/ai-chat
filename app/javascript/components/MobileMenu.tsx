@@ -49,7 +49,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ setIsShow, onShowSignInModal, c
                     </svg>
                   </button>
                   <a aria-label="Home" href="/">
-                    <img src={`${CDN_HOST}/assets/logo.png?v=D86ItiPelE`} width="70px" />
+                    <img src={`${CDN_HOST}/assets/logo.png`} width="70px" />
                   </a>
                 </div>
                 <div className="flex items-center gap-4">
