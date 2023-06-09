@@ -94,7 +94,7 @@ const DownloadButton: React.FC<DownloadButtonProps> = ({ messages, conversationI
                     导出会话
                   </Dialog.Title>
 
-                  {currentUser.plan().export_conversation ? (
+                  {currentUser.plan()?.export_conversation ? (
                     <>
                       <div className="text-center text-sm text-gray-600">请选择导出的格式</div>
                       <div className="mt-4 flex justify-center gap-6">

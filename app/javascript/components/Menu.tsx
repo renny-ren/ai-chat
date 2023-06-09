@@ -179,7 +179,7 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
             )}
           </div>
 
-          <div className="relative mt-3 pl-2 max-h-64 overflow-y-auto">
+          <div className="relative mt-3 pl-2 max-h-64 overflow-y-auto c-scrollbar">
             <div
               className="absolute inset-x-0 top-0 bg-gray-800/2.5 will-change-transform dark:bg-white/2.5"
               style={{
