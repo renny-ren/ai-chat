@@ -1,7 +1,7 @@
 ActiveAdmin.register User do
   permit_params :nickname, :email, :password, :password_confirmation
 
-   member_action :login do
+  member_action :login do
     sign_in resource
     redirect_to root_path
   end

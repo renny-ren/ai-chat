@@ -5,7 +5,9 @@ ActiveAdmin.register Notification do
   index do
     selectable_column
     id_column
-    column :user_id
+    column :user_id do |item|
+      link_to item.user_id, admin_user_path(item.user_id)
+    end
     column :target
     column '是否已读' do |item|
       span item.read_at.present?
