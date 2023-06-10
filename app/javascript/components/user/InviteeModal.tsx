@@ -65,7 +65,6 @@ const InviteeModal: React.FC<InviteeModalProps> = ({ isOpen, setIsOpen }) => {
                     </button>
                   </div>
                 </Dialog.Panel>
-                )
               </Transition.Child>
             </div>
           </div>
