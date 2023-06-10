@@ -80,7 +80,7 @@ const Invitation: React.FC<InvitationProps> = ({}) => {
   return (
     <>
       <div className="relative px-4 pt-14 sm:px-6 lg:px-8">
-        <main className="py-10 mx-auto max-w-2xl lg:max-w-5xl">
+        <main className="py-10 mx-auto max-w-4xl lg:max-w-5xl 2xl:max-w-6xl">
           <Background />
           <div>
             <article className="prose dark:prose-invert">
@@ -131,46 +131,49 @@ const Invitation: React.FC<InvitationProps> = ({}) => {
               )}
               <div className="mb-14">
                 <div className="not-prose grid grid-cols-1 gap-x-6 gap-y-10 mt-4 dark:border-white/5 sm:grid-cols-2 xl:max-w-none xl:grid-cols-3">
-                  <div className="flex flex-row-reverse gap-6">
-                    <div className="flex-auto">
-                      <h3 className="text-sm font-semibold text-gray-900 dark:text-white">发送邀请</h3>
-                      <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                        分享邀请链接或让新用户注册时填写自己的邀请码
-                      </p>
-                      <p className="mt-4">
+                  <div className="flex flex-row-reverse gap-6 p-4 border border-gray-900/[.06] rounded-lg">
+                    <div className="flex flex-col">
+                      <h3 className="font-semibold text-gray-900 dark:text-white">发送邀请</h3>
+                      <div className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                        <p>分享你的邀请链接</p>
+                        <p>或让新用户注册时填写自己的邀请码</p>
+                      </div>
+                      <div className="mt-2 flex flex-1 items-center justify-center h-full">
                         <img
                           className=""
                           src="https://aii-chat-assets.oss-cn-chengdu.aliyuncs.com/images/invitation_p1.png"
                         />
-                      </p>
+                      </div>
                     </div>
                   </div>
-                  <div className="flex flex-row-reverse gap-6">
-                    <div className="flex-auto">
-                      <h3 className="text-sm font-semibold text-gray-900 dark:text-white">注册成功</h3>
-                      <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                        通过你的邀请码注册的用户将自动升级为基础版
-                      </p>
-                      <p className="mt-4">
+                  <div className="flex flex-row-reverse gap-6 p-4 border border-gray-900/[.06] rounded-lg">
+                    <div className="flex flex-col">
+                      <h3 className="font-semibold text-gray-900 dark:text-white">注册成功</h3>
+                      <div className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                        <p>通过你的邀请码注册的用户</p>
+                        <p>将自动升级为基础版</p>
+                      </div>
+                      <div className="mt-2 flex flex-1 items-center justify-center h-full">
                         <img
                           className=""
                           src="https://aii-chat-assets.oss-cn-chengdu.aliyuncs.com/images/invitation_p2.png"
                         />
-                      </p>
+                      </div>
                     </div>
                   </div>
-                  <div className="flex flex-row-reverse gap-6">
-                    <div className="flex-auto">
-                      <h3 className="text-sm font-semibold text-gray-900 dark:text-white">升级成功</h3>
-                      <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                        受邀用户付费后，你当前套餐时间将会自动延长 7 天
-                      </p>
-                      <p className="mt-4">
+                  <div className="flex flex-row-reverse gap-6 p-4 border border-gray-900/[.06] rounded-lg">
+                    <div className="flex flex-col">
+                      <h3 className="font-semibold text-gray-900 dark:text-white">升级成功</h3>
+                      <div className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                        <p>受邀用户每一次付费</p>
+                        <p>你当前套餐时间将会自动延长 7 天</p>
+                      </div>
+                      <div className="mt-2 flex flex-1 items-center justify-center h-full">
                         <img
                           className=""
                           src="https://aii-chat-assets.oss-cn-chengdu.aliyuncs.com/images/invitation_p3.png"
                         />
-                      </p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -186,7 +189,7 @@ const Invitation: React.FC<InvitationProps> = ({}) => {
 
               {currentUser.plan()?.can_invite_people && (
                 <>
-                  <h2>我的邀请列表</h2>
+                  <h3 className="font-semibold text-gray-900 dark:text-white mb-5">我的邀请列表</h3>
                   <Table columns={columns} dataSource={referrals} pagination={false} />
                 </>
               )}
