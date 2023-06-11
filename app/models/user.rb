@@ -13,6 +13,9 @@ class User < ApplicationRecord
   has_many :models
   has_one :active_subscription, -> { active }, class_name: "MembershipSubscription"
   has_one :openai_account
+  belongs_to :referrer, class_name: "User", foreign_key: :referrer_id, optional: true
+  has_many :referrals, foreign_key: :referrer_id
+  has_many :invitees, through: :referrals, source: :invitee
 
   has_one_attached :avatar, dependent: :purge
   has_many_attached :images, dependent: :purge
@@ -21,10 +24,12 @@ class User < ApplicationRecord
   validates :nickname, presence: true, uniqueness: true, length: 1..16
   validates_format_of :username, with: /^[a-zA-Z0-9_\.]*$/, multiline: true # Only allow letter, number, underscore and punctuation.
   validates :email, uniqueness: true, allow_blank: true, format: { with: URI::MailTo::EMAIL_REGEXP, message: "email is not valid" }
+  validate :validate_referrer_id
 
   enum membership: { free: 0, basic: 1, standard: 2, advanced: 3 }
 
   after_create :send_welcome_notification
+  after_create :apply_referral, if: :referrer_id?
   after_update :purge_avatar_cache
 
   action_store :like, :model, counter_cache: true
@@ -33,7 +38,7 @@ class User < ApplicationRecord
   def avatar_url(size = 80)
     # ActiveStorage::Current.url_options = { host: "localhost", port: 3000 }
     Rails.cache.fetch("user_#{id}_avatar_url", expires_in: 2.hours) do
-      avatar.url || "https://ui-avatars.com/api/?name=#{nickname}&size=#{size}"
+      avatar.url || "user_avatar/?name=#{nickname}&size=#{size}"
     end
   end
 
@@ -125,12 +130,25 @@ class User < ApplicationRecord
     )
   end
 
+  def apply_referral
+    return if current_sign_in_ip == referrer.current_sign_in_ip
+
+    Referral.create(referrer_id: referrer_id, invitee_id: id)
+    UpgradeMembershipService.new(self, "basic").call
+  end
+
   private
 
   def initial_messages
     [
       { role: "system", content: "You are ChatGPT, a large language model trained by OpenAI. Answer as concisely as possible. Current date: #{Date.today.to_s}" },
     ]
+  end
+
+  def validate_referrer_id
+    if referrer_id.present? && (referrer.nil? || !referrer.advanced?)
+      errors.add(:invite_code, "无效")
+    end
   end
 
   protected

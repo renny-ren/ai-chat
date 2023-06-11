@@ -304,6 +304,19 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
               </li>
               <li
                 className={`relative hover:bg-gray-50 dark:hover:bg-white/5 ${
+                  location.pathname === "/invitation" ? "border-l border-emerald-400 bg-gray-800/[.025]" : ""
+                }`}
+              >
+                <Link
+                  className="flex justify-between gap-2 py-1 pr-3 text-sm transition pl-4 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
+                  to="/invitation"
+                  onClick={onClickLink}
+                >
+                  <span className="truncate">邀请返利</span>
+                </Link>
+              </li>
+              <li
+                className={`relative hover:bg-gray-50 dark:hover:bg-white/5 ${
                   location.pathname === "/faqs" ? "border-l border-emerald-400 bg-gray-800/[.025]" : ""
                 }`}
               >

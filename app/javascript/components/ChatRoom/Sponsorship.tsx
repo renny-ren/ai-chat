@@ -6,7 +6,7 @@ import { CDN_HOST } from "shared/constants"
 
 interface SponsorshipProps {}
 
-const Sponsorship: React.FC<SponsorshipProps> = ({ src, isRobot }) => {
+const Sponsorship: React.FC<SponsorshipProps> = ({}) => {
   let [isOpen, setIsOpen] = useState(false)
   let [step, setStep] = useState("initial")
   let [sponsorships, setSponsorships] = useState([])

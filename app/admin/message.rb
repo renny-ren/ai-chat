@@ -5,8 +5,12 @@ ActiveAdmin.register Message do
   index do
     selectable_column
     id_column
-    column :user_id
-    column :conversation_id
+    column :user_id do |item|
+      link_to item.user_id, admin_user_path(item.user_id)
+    end
+    column :conversation_id do |item|
+      link_to item.conversation_id, admin_conversation_path(item.conversation_id)
+    end
     column :content
     column :created_at
     actions

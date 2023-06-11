@@ -27,6 +27,10 @@ class UsersController < ApplicationController
     @image_blobs = current_user.images_blobs.order(created_at: :desc)
   end
 
+  def referrals
+    @referrals = current_user.referrals.includes(:invitee)
+  end
+
   def fake_name
     render status: 200, json: { name: FFaker::Name.name }
   end

@@ -18,6 +18,17 @@ class ImagesController < ApplicationController
     render_json_response :error, message: "图片生成失败，请稍后再试"
   end
 
+  def user_avatar
+    name = URI.encode_www_form_component(params[:name])
+    size = params[:size] || 80
+    url = URI.parse("https://ui-avatars.com/api/?name=#{name}&size=#{size}")
+    response = Net::HTTP.get_response(url)
+    send_data response.body, type: response.content_type, disposition: "inline"
+  rescue StandardError => e
+    puts "Error fetching image: #{e.message}"
+    head :internal_server_error
+  end
+
   private
 
   def can?
@@ -31,7 +42,6 @@ class ImagesController < ApplicationController
   def image_params
     params.permit(:prompt, :n, :size)
   end
-
 
   def attach_images
     @images.each do |image|

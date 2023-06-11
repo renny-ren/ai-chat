@@ -5,10 +5,16 @@ ActiveAdmin.register Conversation do
   index do
     selectable_column
     id_column
-    column :user_id
+    column :user_id do |item|
+      link_to item.user_id, admin_user_path(item.user_id)
+    end
     column :title
     column :type
-    column :model_id
+    column :model_id do |item|
+      if item.model_id
+        link_to item.model_id, admin_models_path
+      end
+    end
     column :created_at
     actions
   end

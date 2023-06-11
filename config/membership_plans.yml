@@ -22,3 +22,4 @@ advanced:
   export_conversation: true
   image_model: true
   image_count: 50
+  can_invite_people: true

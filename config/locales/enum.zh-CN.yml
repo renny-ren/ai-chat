@@ -26,3 +26,7 @@ zh-CN:
         status:
           draft: 草稿
           published: 已发送
+      referral:
+        status:
+          registered: 注册成功，未升级
+          paid: 已升级，奖励已到账
