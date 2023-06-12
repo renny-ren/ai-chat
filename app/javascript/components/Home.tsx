@@ -16,13 +16,6 @@ const Home = ({ setCustomContent }) => {
 
   return (
     <>
-      {/*  <div style={{ height: "100%" }}>
-        <div className="overflow-hidden w-full h-full relative">
-          <div className="flex h-full flex-1 flex-col md:pl-[260px]">
-            <ChatModule />
-          </div>
-        </div>
-      </div>*/}
       <div className="h-full relative pt-12 md:pt-14">
         <main className="h-full">
           <Background />
