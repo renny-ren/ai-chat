@@ -11,12 +11,16 @@ ActiveAdmin.register Referral do
       link_to item.invitee_id, admin_user_path(item.invitee_id)
     end
     column :status
+    column :created_at
+    column :updated_at
   end
 
   filter :id
   filter :referrer_id
   filter :invitee_id
   filter :status
+  filter :created_at
+  filter :updated_at
 
   form do |f|
     f.inputs do
