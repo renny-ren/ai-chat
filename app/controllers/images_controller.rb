@@ -1,7 +1,7 @@
 require "open-uri"
 
 class ImagesController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:user_avatar]
 
   def generations
     if can?
