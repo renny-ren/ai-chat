@@ -9,7 +9,9 @@ ActiveAdmin.register Message do
       link_to item.user_id, admin_user_path(item.user_id)
     end
     column :conversation_id do |item|
-      link_to item.conversation_id, admin_conversation_path(item.conversation_id)
+      if item.conversation_id
+        link_to item.conversation_id, admin_conversation_path(item.conversation_id)
+      end
     end
     column :content
     column :created_at
