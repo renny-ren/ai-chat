@@ -3,7 +3,9 @@ ActiveAdmin.register OpenaiAccount do
     selectable_column
     id_column
     column :user_id do |item|
-      link_to item.user_id, admin_user_path(item.user_id)
+      if item.user_id
+        link_to item.user_id, admin_user_path(item.user_id)
+      end
     end
     column :email
     column :credit
