@@ -13,7 +13,7 @@ class Model < ApplicationRecord
                           message: "不能为%{value}",
                         }, format: { with: /\A[a-zA-Z0-9_-]+\z/, message: "只能为字母、数字、下划线或中横线" }
   validates :description, presence: true, length: { maximum: 60 }
-  validates :system_instruction, presence: true, length: { maximum: 600 }
+  validates :system_instruction, presence: true, length: { maximum: 1200 }
   validates :introduction, length: { maximum: 600 }
   validates :input_placeholder, length: { maximum: 100 }
 
