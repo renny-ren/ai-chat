@@ -1,33 +1,18 @@
 import React, { useEffect, useState } from "react"
-import * as CommonApi from "shared/api/common"
 import { message, Empty } from "antd"
 import { LockOutlined } from "@ant-design/icons"
 import Spinner from "components/common/Spinner"
 import ModelActions from "./ModelActions"
 
 interface ListProps {
+  models: []
+  setModels: () => void
+  isLoading: boolean
   validateLogin: () => boolean
   scope?: string
 }
 
-const List: React.FC<ListProps> = ({ validateLogin, scope }) => {
-  const [models, setModels] = useState([])
-  const [isLoading, setIsLoading] = useState(false)
-
-  useEffect(() => {
-    fetchModels()
-  }, [])
-
-  const fetchModels = async () => {
-    setIsLoading(true)
-    const res = await CommonApi.fetchModels({ scope })
-    if (res.ok) {
-      const data = await res.json
-      setModels(data.models)
-    }
-    setIsLoading(false)
-  }
-
+const List: React.FC<ListProps> = ({ models, setModels, isLoading, validateLogin }) => {
   return (
     <section className="mt-6 pb-12 lg:pb-[90px] relative z-20">
       <div className="grid grid-cols-12 gap-6">

@@ -1,18 +1,45 @@
-import React, { useState, useEffect, useContext } from "react"
+import React, { useState, useEffect, useContext, useRef } from "react"
 import { AppContext } from "components/AppContext"
 import currentUser from "stores/current_user_store"
 import { Badge, message, Popover } from "antd"
+import { PlusCircleOutlined, CloseOutlined, SearchOutlined } from "@ant-design/icons"
 import { Helmet } from "react-helmet"
 import Background from "components/common/Background"
 import List from "./List"
 import Form from "./Form"
-import { PlusCircleOutlined } from "@ant-design/icons"
+import * as _ from "lodash"
+import Fuse from "fuse.js"
+import pinyin from "tiny-pinyin"
+import * as CommonApi from "shared/api/common"
 
 interface ModelProps {}
 
 const Model: React.FC<ModelProps> = ({ tab }) => {
   const [currentTab, setCurrentTab] = useState(tab || "list")
   const { setShowSigninModal } = useContext(AppContext)
+  const [models, setModels] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [filteredModels, setFilteredModels] = useState(models)
+  const modelsWithPinyin = models.map((model) => ({
+    ...model,
+    title_pinyin: pinyin.convertToPinyin(model.title, "", true),
+  }))
+  const inputRef = useRef(null)
+
+  useEffect(() => {
+    fetchModels()
+  }, [currentTab])
+
+  const fetchModels = async () => {
+    setIsLoading(true)
+    const res = await CommonApi.fetchModels({ scope: currentTab })
+    if (res.ok) {
+      const data = await res.json
+      setModels(data.models)
+      setFilteredModels(data.models)
+    }
+    setIsLoading(false)
+  }
 
   const changeTab = (tab) => {
     if (tab !== "list" && !validateLogin()) return
@@ -27,6 +54,23 @@ const Model: React.FC<ModelProps> = ({ tab }) => {
     } else {
       return true
     }
+  }
+
+  const onSearch = (value) => {
+    if (!value) return setFilteredModels(modelsWithPinyin)
+    const fuse = new Fuse(modelsWithPinyin, {
+      keys: ["title", "title_pinyin"],
+      threshold: 0.4,
+    })
+    const result = fuse.search(value).map((r) => r.item)
+    setFilteredModels(result)
+  }
+
+  const debouncedSearch = _.debounce(onSearch, 600)
+
+  const closeSearch = () => {
+    inputRef.current.value = ""
+    setFilteredModels(modelsWithPinyin)
   }
 
   return (
@@ -88,11 +132,38 @@ const Model: React.FC<ModelProps> = ({ tab }) => {
                       </div>
                     </a>
                   </li>
+                  <li className="relative py-2 ml-auto">
+                    <div className="relative">
+                      <input
+                        ref={inputRef}
+                        placeholder="搜索模型"
+                        className="peer w-full px-8 py-2 leading-tight placeholder-gray-400 bg-transparent border border-slate-300 focus:border-emerald-500 focus:outline-none rounded-md"
+                        onChange={(e) => debouncedSearch(e.target.value)}
+                      />
+                      <div className="absolute w-6 text-gray-400 peer-focus:text-gray-500 inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                        <SearchOutlined />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={closeSearch}
+                        className="invisible peer-focus:visible py-2 z-10 absolute text-gray-500 hover:text-gray-600 w-6 right-0"
+                      >
+                        <CloseOutlined />
+                      </button>
+                    </div>
+                  </li>
                 </ul>
-                {currentTab === "list" && <List validateLogin={validateLogin} />}
-                {currentTab === "self" && <List scope="self" validateLogin={validateLogin} />}
-                {currentTab === "starred" && <List scope="starred" validateLogin={validateLogin} />}
-                {currentTab === "new" && <Form />}
+
+                {currentTab === "new" ? (
+                  <Form />
+                ) : (
+                  <List
+                    models={filteredModels}
+                    setModels={setFilteredModels}
+                    isLoading={isLoading}
+                    validateLogin={validateLogin}
+                  />
+                )}
               </div>
             </div>
           </div>
