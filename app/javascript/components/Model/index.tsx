@@ -25,6 +25,7 @@ const Model: React.FC<ModelProps> = ({ tab }) => {
     title_pinyin: pinyin.convertToPinyin(model.title, "", true),
   }))
   const inputRef = useRef(null)
+  const mobileInputRef = useRef(null)
 
   useEffect(() => {
     fetchModels()
@@ -70,6 +71,7 @@ const Model: React.FC<ModelProps> = ({ tab }) => {
 
   const closeSearch = () => {
     inputRef.current.value = ""
+    mobileInputRef.current.value = ""
     setFilteredModels(modelsWithPinyin)
   }
 
@@ -146,7 +148,7 @@ const Model: React.FC<ModelProps> = ({ tab }) => {
                       <button
                         type="button"
                         onClick={closeSearch}
-                        className="absolute w-6 text-gray-500 hover:text-gray-600 inset-y-0 z-10 right-1 invisible peer-focus:visible"
+                        className="absolute w-6 text-gray-500 hover:text-gray-600 inset-y-0 z-10 right-1 opacity-0 peer-focus:opacity-100"
                       >
                         <CloseOutlined />
                       </button>
@@ -157,7 +159,7 @@ const Model: React.FC<ModelProps> = ({ tab }) => {
                 <div className="block md:hidden relative pt-2">
                   <div className="relative">
                     <input
-                      ref={inputRef}
+                      ref={mobileInputRef}
                       placeholder="搜索模型"
                       className="peer w-full px-8 py-2 leading-tight text-sm placeholder-gray-400 bg-transparent border border-slate-300 focus:border-emerald-500 focus:outline-none rounded-md"
                       onChange={(e) => debouncedSearch(e.target.value)}
@@ -168,7 +170,7 @@ const Model: React.FC<ModelProps> = ({ tab }) => {
                     <button
                       type="button"
                       onClick={closeSearch}
-                      className="absolute w-6 text-gray-500 hover:text-gray-600 inset-y-0 z-10 right-1 invisible peer-focus:visible"
+                      className="absolute w-6 text-gray-500 hover:text-gray-600 inset-y-0 z-10 right-1 opacity-0 peer-focus:opacity-100 pointer-events-none peer-focus:pointer-events-auto"
                     >
                       <CloseOutlined />
                     </button>
