@@ -10,6 +10,11 @@ interface ConversationListProps {
 const ConversationList: React.FC<ConversationListProps> = ({ conversations, handleClick }) => {
   const [status, setStatus] = useState("initial")
   const [title, setTitle] = useState("")
+  const [conversationsData, setConversationsData] = useState(conversations)
+
+  useEffect(() => {
+    setConversationsData(conversations)
+  }, [conversations])
 
   const isCurrent = (conversation) => {
     return window.location.pathname === `/chats/${conversation.id}` || !!conversation.current
@@ -49,6 +54,7 @@ const ConversationList: React.FC<ConversationListProps> = ({ conversations, hand
 
     if (status === "pendingEdit") {
       await axios.put(`/v1/conversations/${conversationId}`, { title: title })
+      setConversationsData(conversationsData.map((c) => (c.id === conversationId ? { ...c, title: title } : c)))
       setStatus("initial")
     }
   }
@@ -65,7 +71,7 @@ const ConversationList: React.FC<ConversationListProps> = ({ conversations, hand
 
   return (
     <>
-      {conversations.map((conversation, i) =>
+      {conversationsData.map((conversation, i) =>
         isCurrent(conversation) ? (
           <li key={i} className="relative border-l border-emerald-400 bg-zinc-800/[.025]">
             <a className="flex justify-between gap-4 py-1 pr-3 text-sm transition pl-4 text-zinc-600 dark:text-zinc-400 ">
