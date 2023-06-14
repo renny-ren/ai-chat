@@ -76,12 +76,7 @@ const Model: React.FC<ModelProps> = ({ tab }) => {
                     } border-gray-800`}
                   >
                     <a onClick={() => changeTab("new")} className="py-4 inline-block">
-                      <Popover
-                        className="hidden md:inline-flex"
-                        placement="right"
-                        open={true}
-                        content="点击创建你的专属应用"
-                      >
+                      <Popover className="hidden md:inline-flex" placement="right" content="点击创建你的专属应用">
                         <div className="flex items-center">
                           <PlusCircleOutlined className="mr-1" />
                           <span>创建模型</span>

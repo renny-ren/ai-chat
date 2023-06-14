@@ -76,11 +76,9 @@ const List: React.FC<ListProps> = ({ validateLogin, scope }) => {
                             </>
                           )}
                           <div className="flex flex-col-reverse">
-                            <dd className="text-xs text-slate-500">{model.user_nickname}</dd>
-                          </div>
-                          <div className="block h-3 w-px mx-2 bg-slate-900/10 dark:bg-slate-600"></div>
-                          <div className="flex flex-col-reverse">
-                            <dd className="text-xs text-slate-500">创建于 {model.created_at_in_words}</dd>
+                            <dd className="text-xs text-slate-500">
+                              {model.user_nickname} 创建于 {model.created_at_in_words}
+                            </dd>
                           </div>
                         </dl>
                         <a
