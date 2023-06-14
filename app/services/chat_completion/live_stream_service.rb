@@ -1,6 +1,6 @@
 module ChatCompletion
   class LiveStreamService
-    MODEL = "gpt-3.5-turbo-0613".freeze
+    MODEL = "gpt-3.5-turbo".freeze
 
     attr_reader :sse, :current_user, :params
     attr_accessor :result

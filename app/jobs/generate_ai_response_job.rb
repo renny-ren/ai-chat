@@ -17,7 +17,7 @@ class GenerateAiResponseJob < ApplicationJob
 
     params = {
       # model: "text-davinci-003",
-      model: "gpt-3.5-turbo-0613",
+      model: "gpt-3.5-turbo",
       messages: message.user.ai_conversation_history << { role: "user", content: message.content.sub("@#{User.gpt_user[:nickname]} ", "") },
       max_tokens: 500,
       temperature: 1,
