@@ -132,12 +132,12 @@ const Model: React.FC<ModelProps> = ({ tab }) => {
                       </div>
                     </a>
                   </li>
-                  <li className="relative py-2 ml-auto">
+                  <li className="hidden md:block relative py-2 ml-auto">
                     <div className="relative">
                       <input
                         ref={inputRef}
                         placeholder="搜索模型"
-                        className="peer w-full px-8 py-2 leading-tight placeholder-gray-400 bg-transparent border border-slate-300 focus:border-emerald-500 focus:outline-none rounded-md"
+                        className="peer w-full px-8 py-2 leading-tight font-normal placeholder-gray-400 bg-transparent border border-slate-300 focus:border-emerald-500 focus:outline-none rounded-md"
                         onChange={(e) => debouncedSearch(e.target.value)}
                       />
                       <div className="absolute w-6 text-gray-400 peer-focus:text-gray-500 inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -146,13 +146,34 @@ const Model: React.FC<ModelProps> = ({ tab }) => {
                       <button
                         type="button"
                         onClick={closeSearch}
-                        className="invisible peer-focus:visible py-2 z-10 absolute text-gray-500 hover:text-gray-600 w-6 right-0"
+                        className="absolute w-6 text-gray-500 hover:text-gray-600 inset-y-0 z-10 right-1 invisible peer-focus:visible"
                       >
                         <CloseOutlined />
                       </button>
                     </div>
                   </li>
                 </ul>
+
+                <div className="block md:hidden relative pt-2">
+                  <div className="relative">
+                    <input
+                      ref={inputRef}
+                      placeholder="搜索模型"
+                      className="peer w-full px-8 py-2 leading-tight text-sm placeholder-gray-400 bg-transparent border border-slate-300 focus:border-emerald-500 focus:outline-none rounded-md"
+                      onChange={(e) => debouncedSearch(e.target.value)}
+                    />
+                    <div className="absolute w-6 text-gray-400 peer-focus:text-gray-500 inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                      <SearchOutlined />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={closeSearch}
+                      className="absolute w-6 text-gray-500 hover:text-gray-600 inset-y-0 z-10 right-1 invisible peer-focus:visible"
+                    >
+                      <CloseOutlined />
+                    </button>
+                  </div>
+                </div>
 
                 {currentTab === "new" ? (
                   <Form />
