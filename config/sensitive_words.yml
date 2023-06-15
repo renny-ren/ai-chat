@@ -1,4 +1,4 @@
-sensitive_words:
+\sensitive_words:
   - 胡紧套
   - 胡錦濤
   - 胡适眼
@@ -119,7 +119,6 @@ sensitive_words:
   - 性虐待
   - 情欲
   - 情色
-  - sB
   - sb
   - SB
   - Sb
