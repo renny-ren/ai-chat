@@ -40,7 +40,7 @@ module ChatCompletion
     end
 
     def notify_failure
-      sse.write({ status: @resp.status, content: @resp.reason_phrase })
+      sse.write({ status: 400, content: "Unknown error" })
     end
 
     def handle_message_done
