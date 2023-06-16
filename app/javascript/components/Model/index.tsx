@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext, useRef } from "react"
 import { AppContext } from "components/AppContext"
 import currentUser from "stores/current_user_store"
-import { Badge, message, Popover } from "antd"
+import { message, Popover } from "antd"
 import { PlusCircleOutlined, CloseOutlined, SearchOutlined } from "@ant-design/icons"
 import { Helmet } from "react-helmet"
 import Background from "components/common/Background"

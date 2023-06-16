@@ -116,7 +116,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ setCustomContent }) => {
       channel.unsubscribe()
       consumer.disconnect()
     }
-    newChannel = subscribeChannel(consumer)
+    const newChannel = subscribeChannel(consumer)
     setChannel(newChannel)
   }
 
@@ -142,7 +142,7 @@ const ChatRoom: React.FC<ChatRoomProps> = ({ setCustomContent }) => {
               setUsedMessageCount((prevCount) => prevCount + 1)
             }
             setGeneratingMsgId(data.done ? 0 : data.id)
-            newMessageIndex = messagesRef.current.findIndex((msg) => msg.id === data.id)
+            const newMessageIndex = messagesRef.current.findIndex((msg) => msg.id === data.id)
             newMessageIndex === -1 ? addMessage(data) : updateMessage(data, newMessageIndex)
           }
         }

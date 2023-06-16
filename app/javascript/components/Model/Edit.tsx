@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react"
 import currentUser from "stores/current_user_store"
-import { Badge, message } from "antd"
 import { Helmet } from "react-helmet"
 import Background from "components/common/Background"
 import Form from "./Form"
