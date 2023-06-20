@@ -16,8 +16,6 @@ const Invitation: React.FC<InvitationProps> = ({}) => {
   useEffect(() => {
     if (currentUser.isSignedIn()) {
       fetchReferrals()
-    } else {
-      window.location.href = "/"
     }
   }, [])
 
