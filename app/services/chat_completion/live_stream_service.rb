@@ -97,9 +97,6 @@ module ChatCompletion
           model: MODEL,
           messages: build_messages,
           max_tokens: 500,
-          temperature: 1,
-          frequency_penalty: 0,
-          presence_penalty: 0,
           stream: true,
         }
       end

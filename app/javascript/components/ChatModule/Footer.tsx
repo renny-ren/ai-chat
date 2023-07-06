@@ -304,7 +304,7 @@ const Footer: React.FC<FooterProps> = ({
             {currentUser.isSignedIn() && (
               <>
                 {!!messages.length && <DownloadButton messages={messages} conversationId={conversationId} />}
-                <span>今日剩余次数：999</span>
+                <span>今日剩余次数：{Math.max(0, messageLimitPerDay - usedMessageCount)}</span>
               </>
             )}
             <span>当前应用：ChatGPT (GPT-3.5)</span>
