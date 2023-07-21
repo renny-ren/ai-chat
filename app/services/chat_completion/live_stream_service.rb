@@ -96,7 +96,7 @@ module ChatCompletion
         {
           model: MODEL,
           messages: build_messages,
-          max_tokens: 500,
+          max_tokens: 1000,
           stream: true,
         }
       end
