@@ -6,6 +6,7 @@ import MessageList from "components/common/MessageList"
 import Header from "./Header"
 import Footer from "components/common/Footer"
 import * as UserApi from "shared/api/user"
+import { Spin } from "antd"
 
 interface DeveloperProps {
   conversationId?: number
@@ -25,6 +26,8 @@ const Developer: React.FC<DeveloperProps> = ({ conversationId }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [messages, setMessages] = useState(initMessages)
   const [isAddContext, setIsAddContext] = useState(true)
+  const [isFetchingMsgs, setIsFetchingMsgs] = useState(false)
+
   let { state } = useLocation()
 
   useEffect(() => {
@@ -34,9 +37,11 @@ const Developer: React.FC<DeveloperProps> = ({ conversationId }) => {
   }, [conversationId])
 
   const fetchMessages = async () => {
+    setIsFetchingMsgs(true)
     const res = await UserApi.fetchMessages(conversationId)
     const data = await res.json
     setMessages([...initMessages, ...data.messages])
+    setIsFetchingMsgs(false)
   }
 
   const handleContextChange = (checked) => {
@@ -62,13 +67,20 @@ const Developer: React.FC<DeveloperProps> = ({ conversationId }) => {
                         <div className="flex flex-col h-full md:pb-4">
                           <div className="flex flex-col h-full overflow-x-auto">
                             <Header isAddContext={isAddContext} handleContextChange={handleContextChange} />
-                            <MessageList
-                              avatarUrl="https://aii-chat-assets.oss-cn-chengdu.aliyuncs.com/images/developer_assistant.jpeg"
-                              gptName="程序员助手"
-                              messages={messages}
-                              isLoading={isLoading}
-                              voice="kenny"
-                            />
+
+                            {isFetchingMsgs ? (
+                              <div className="flex h-full justify-center items-center">
+                                <Spin size="large" />
+                              </div>
+                            ) : (
+                              <MessageList
+                                avatarUrl="https://aii-chat-assets.oss-cn-chengdu.aliyuncs.com/images/developer_assistant.jpeg"
+                                gptName="程序员助手"
+                                messages={messages}
+                                isLoading={isLoading}
+                                voice="kenny"
+                              />
+                            )}
                           </div>
                         </div>
                       </div>
