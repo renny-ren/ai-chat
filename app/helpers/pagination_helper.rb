@@ -7,7 +7,7 @@ module PaginationHelper
   end
 
   def pagination_data(json, data)
-    json.total data.total_count
+    json.total data.total_pages
     json.current data.current_page
     json.pageSize data.limit_value
   end

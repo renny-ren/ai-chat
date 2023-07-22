@@ -26,6 +26,48 @@ const MessageList = ({ messages, fetchMessages, isFetching, openModal, paginatio
     return !!(text?.includes(" = ") || text?.match(regexp))
   }
 
+  const fetchMoreData = () => {
+    let nextPage = currentPage + 1
+    fetchMessages(nextPage)
+    setCurrentPage(nextPage)
+  }
+
+  const [infiniteRef, { rootRef }] = useInfiniteScroll({
+    loading: isFetching,
+    hasNextPage: pagination.current < pagination.total && currentPage <= 50,
+    onLoadMore: fetchMoreData,
+    rootMargin: "400px 0px 0px 0px",
+  })
+
+  // Keep the scroll position when new items are added.
+  useEffect(() => {
+    const scrollableRoot = scrollableRootRef.current
+    const lastScrollDistanceToBottom = lastScrollDistanceToBottomRef.current ?? 0
+    if (scrollableRoot) {
+      scrollableRoot.scrollTop = scrollableRoot.scrollHeight - lastScrollDistanceToBottom
+    }
+  }, [messages, rootRef])
+
+  useEffect(() => {
+    // scrollToBottom()
+  }, [messages])
+
+  const rootRefSetter = useCallback(
+    (node: HTMLDivElement) => {
+      rootRef(node)
+      scrollableRootRef.current = node
+    },
+    [rootRef]
+  )
+
+  const handleRootScroll = useCallback(() => {
+    const rootNode = scrollableRootRef.current
+    if (rootNode) {
+      const scrollDistanceToBottom = rootNode.scrollHeight - rootNode.scrollTop
+      lastScrollDistanceToBottomRef.current = scrollDistanceToBottom
+    }
+  }, [])
+
   const renderer = {
     code(snippet, language) {
       return (
@@ -89,48 +131,6 @@ const MessageList = ({ messages, fetchMessages, isFetching, openModal, paginatio
       <div className="whitespace-pre-line">{message.content}</div>
     )
   }
-
-  const fetchMoreData = () => {
-    nextPage = currentPage + 1
-    fetchMessages(nextPage)
-    setCurrentPage(nextPage)
-  }
-
-  const [infiniteRef, { rootRef }] = useInfiniteScroll({
-    loading: isFetching,
-    hasNextPage: pagination.current < pagination.total && currentPage <= 20,
-    onLoadMore: fetchMoreData,
-    rootMargin: "400px 0px 0px 0px",
-  })
-
-  // Keep the scroll position when new items are added.
-  useEffect(() => {
-    const scrollableRoot = scrollableRootRef.current
-    const lastScrollDistanceToBottom = lastScrollDistanceToBottomRef.current ?? 0
-    if (scrollableRoot) {
-      scrollableRoot.scrollTop = scrollableRoot.scrollHeight - lastScrollDistanceToBottom
-    }
-  }, [messages, rootRef])
-
-  useEffect(() => {
-    // scrollToBottom()
-  }, [messages])
-
-  const rootRefSetter = useCallback(
-    (node: HTMLDivElement) => {
-      rootRef(node)
-      scrollableRootRef.current = node
-    },
-    [rootRef]
-  )
-
-  const handleRootScroll = useCallback(() => {
-    const rootNode = scrollableRootRef.current
-    if (rootNode) {
-      const scrollDistanceToBottom = rootNode.scrollHeight - rootNode.scrollTop
-      lastScrollDistanceToBottomRef.current = scrollDistanceToBottom
-    }
-  }, [])
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -212,6 +212,7 @@ const MessageList = ({ messages, fetchMessages, isFetching, openModal, paginatio
                     isSelf={false}
                     openModal={openModal}
                   />
+
                   <div className="relative flex flex-col gap-1 max-w-[98%]">
                     <div className="flex items-baseline">
                       <div className="text-sm font-medium ml-3 dark:text-white">{message.user_nickname}</div>

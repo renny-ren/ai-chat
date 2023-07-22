@@ -4,8 +4,8 @@ export function fetchNotifications(page, q = "") {
   return get(`/v1/notifications?page=${page}&q=${q}`)
 }
 
-export function fetchMessages(conversationId) {
-  return get(`/v1/messages?conversation_id=${conversationId}`)
+export function fetchMessages(conversationId, page) {
+  return get(`/v1/messages?conversation_id=${conversationId}&page=${page}`)
 }
 
 export function fetchImages(userId) {

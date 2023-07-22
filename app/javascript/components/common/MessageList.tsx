@@ -1,29 +1,84 @@
-import React, { useEffect, useState, useRef } from "react"
+import React, { useEffect, useState, useRef, useCallback } from "react"
 import currentUser from "stores/current_user_store"
 import Markdown from "marked-react"
 import SyntaxHighlighter from "react-syntax-highlighter"
 import { github, arduinoLight } from "react-syntax-highlighter/dist/esm/styles/hljs"
 import AudioButton from "./AudioButton"
-import { Tooltip } from "antd"
+import { Spin, Tooltip } from "antd"
 import { ExclamationCircleOutlined } from "@ant-design/icons"
 import CopyButton from "components/common/CopyButton"
+import useInfiniteScroll from "react-infinite-scroll-hook"
+import { Popover } from "@headlessui/react"
 
 interface MessageListProps {
   messages: any
   isLoading: boolean
+  isFetchingMessages: boolean
+  pagination: any
+  fetchMessages: any
   gptName?: string
   voice?: string
   avatarUrl?: string
 }
 
-const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, gptName, voice, avatarUrl }) => {
+const MessageList: React.FC<MessageListProps> = ({
+  messages,
+  isFetchingMessages,
+  fetchMessages,
+  pagination,
+  isLoading,
+  gptName,
+  voice,
+  avatarUrl,
+}) => {
+  const [currentPage, setCurrentPage] = useState(1)
   const [playingMessageId, setPlayingMessageId] = useState(0)
+  const scrollableRootRef = useRef<HTMLDivElement | null>(null)
+  const lastScrollDistanceToBottomRef = useRef<number>()
   const messagesEndRef = useRef(null)
   const audioRef = useRef(null)
 
+  const fetchMoreData = () => {
+    let nextPage = currentPage + 1
+    fetchMessages(nextPage)
+    setCurrentPage(nextPage)
+  }
+
+  const [infiniteRef, { rootRef }] = useInfiniteScroll({
+    loading: isFetchingMessages,
+    hasNextPage: pagination.current < pagination.total && currentPage <= 50,
+    onLoadMore: fetchMoreData,
+    rootMargin: "400px 0px 0px 0px",
+  })
+
+  // Keep the scroll position when new items are added.
   useEffect(() => {
-    scrollToBottom()
+    const scrollableRoot = scrollableRootRef.current
+    const lastScrollDistanceToBottom = lastScrollDistanceToBottomRef.current ?? 0
+    if (scrollableRoot) {
+      scrollableRoot.scrollTop = scrollableRoot.scrollHeight - lastScrollDistanceToBottom
+    }
+  }, [messages, rootRef])
+
+  useEffect(() => {
+    // scrollToBottom()
   }, [messages])
+
+  const rootRefSetter = useCallback(
+    (node: HTMLDivElement) => {
+      rootRef(node)
+      scrollableRootRef.current = node
+    },
+    [rootRef]
+  )
+
+  const handleRootScroll = useCallback(() => {
+    const rootNode = scrollableRootRef.current
+    if (rootNode) {
+      const scrollDistanceToBottom = rootNode.scrollHeight - rootNode.scrollTop
+      lastScrollDistanceToBottomRef.current = scrollDistanceToBottom
+    }
+  }, [])
 
   const renderer = {
     code(snippet, language) {
@@ -66,6 +121,10 @@ const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, gptName,
     }
   }
 
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  }
+
   const playAudio = (src) => {
     audioRef.current.src = src
     audioRef.current.play()
@@ -78,14 +137,19 @@ const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, gptName,
     }
   }
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
-  }
-
   return (
     <>
       <audio ref={audioRef}></audio>
-      <div className="message-list-container c-scrollbar overflow-auto" style={{ scrollbarGutter: "stable both-edges" }}>
+      <div
+        className="message-list-container c-scrollbar overflow-auto"
+        style={{ scrollbarGutter: "stable both-edges" }}
+        ref={rootRefSetter}
+        onScroll={handleRootScroll}
+      >
+        <div className="sentry text-center" ref={infiniteRef}>
+          {isFetchingMessages && <Spin />}
+        </div>
+
         <div className="grid grid-cols-12 gap-y-2">
           {messages.map((message, i) => {
             return isSelf(message) ? (
@@ -129,14 +193,18 @@ const MessageList: React.FC<MessageListProps> = ({ messages, isLoading, gptName,
             ) : (
               <div key={i} className="col-start-1 col-end-12 md:col-end-10 p-3 rounded-lg">
                 <div className="flex flex-row items-start">
-                  <div className="relative mt-1">
-                    <div className="inline-block h-10 w-10">
-                      <img
-                        className="rounded-full aspect-square mt-1 h-10 w-10"
-                        src={avatarUrl || gon.gpt_user.avatar_url}
-                      />
-                    </div>
-                  </div>
+                  <Popover className="relative mt-1">
+                    {({ open }) => (
+                      <>
+                        <Popover.Button className={`${open ? "" : "text-opacity-90"} outline-none inline-block h-10 w-10`}>
+                          <img
+                            className="cursor-pointer rounded-full aspect-square mt-1"
+                            src={avatarUrl || gon.gpt_user.avatar_url}
+                          />
+                        </Popover.Button>
+                      </>
+                    )}
+                  </Popover>
 
                   <div className="relative flex flex-col gap-1 max-w-[98%]">
                     <div className="flex items-baseline">
