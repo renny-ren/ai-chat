@@ -6,7 +6,6 @@ import MessageList from "components/common/MessageList"
 import Header from "./Header"
 import Footer from "components/common/Footer"
 import * as UserApi from "shared/api/user"
-import { Spin } from "antd"
 
 interface DeveloperProps {
   conversationId?: number
@@ -41,7 +40,7 @@ const Developer: React.FC<DeveloperProps> = ({ conversationId }) => {
     setIsFetchingMessages(true)
     const res = await UserApi.fetchMessages(conversationId, page)
     const data = await res.json
-    setMessages([...data.messages.reverse(), ...messages])
+    setMessages(page === 1 ? data.messages.reverse() : [...data.messages.reverse(), ...messages])
     setPagination(data.pagination_meta)
     setIsFetchingMessages(false)
   }

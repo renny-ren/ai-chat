@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useMemo } from "react"
 import { useParams, useLocation } from "react-router-dom"
 import ChatModule from "./ChatModule"
 import CustomModel from "./CustomModel"
@@ -24,6 +24,8 @@ const Chat = ({}) => {
   }
 
   const renderContent = () => {
+    if (!conversation.type) return <div></div>
+
     switch (conversation.type) {
       case "girlfriend":
         return <Girlfriend conversationId={conversationId} />
@@ -45,7 +47,9 @@ const Chat = ({}) => {
     }
   }
 
-  return <>{renderContent()}</>
+  const content = useMemo(() => renderContent(), [conversation])
+
+  return <>{content}</>
 }
 
 export default Chat

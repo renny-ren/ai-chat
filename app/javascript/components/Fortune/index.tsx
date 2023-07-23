@@ -25,8 +25,11 @@ const initMessages = [
 
 const Fortune: React.FC<FortuneProps> = ({ conversationId }) => {
   const [isLoading, setIsLoading] = useState(false)
-  const [messages, setMessages] = useState(initMessages)
+  const [messages, setMessages] = useState([])
   const [isAddContext, setIsAddContext] = useState(true)
+  const [isFetchingMessages, setIsFetchingMessages] = useState(false)
+  const [pagination, setPagination] = useState({})
+
   let { state } = useLocation()
 
   useEffect(() => {
@@ -35,10 +38,13 @@ const Fortune: React.FC<FortuneProps> = ({ conversationId }) => {
     }
   }, [conversationId])
 
-  const fetchMessages = async () => {
-    const res = await UserApi.fetchMessages(conversationId)
+  const fetchMessages = async (page = 1) => {
+    setIsFetchingMessages(true)
+    const res = await UserApi.fetchMessages(conversationId, page)
     const data = await res.json
-    setMessages([...initMessages, ...data.messages])
+    setMessages(page === 1 ? data.messages.reverse() : [...data.messages.reverse(), ...messages])
+    setPagination(data.pagination_meta)
+    setIsFetchingMessages(false)
   }
 
   const handleContextChange = (checked) => {
@@ -67,7 +73,10 @@ const Fortune: React.FC<FortuneProps> = ({ conversationId }) => {
                             <MessageList
                               avatarUrl="https://aii-chat-assets.oss-cn-chengdu.aliyuncs.com/images/fortune.png"
                               gptName="命理大师"
-                              messages={messages}
+                              messages={[...initMessages, ...messages]}
+                              fetchMessages={fetchMessages}
+                              isFetchingMessages={isFetchingMessages}
+                              pagination={pagination}
                               isLoading={isLoading}
                               voice="stanley"
                             />
@@ -84,7 +93,7 @@ const Fortune: React.FC<FortuneProps> = ({ conversationId }) => {
           <Footer
             isLoading={isLoading}
             setIsLoading={setIsLoading}
-            messages={messages}
+            messages={[...initMessages, ...messages]}
             setMessages={setMessages}
             conversationId={conversationId}
             isAddContext={isAddContext}

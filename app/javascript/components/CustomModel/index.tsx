@@ -31,6 +31,9 @@ const CustomModel: React.FC<CustomModelProps> = ({ conversation }) => {
   const [permalink, setPermalink] = useState(useParams().modelPermalink)
   const [isAddContext, setIsAddContext] = useState(true)
   const conversationId = useParams().conversationId
+  const [isFetchingMessages, setIsFetchingMessages] = useState(false)
+  const [pagination, setPagination] = useState({})
+
   let { state } = useLocation()
 
   useEffect(() => {
@@ -73,11 +76,17 @@ const CustomModel: React.FC<CustomModelProps> = ({ conversation }) => {
     setIsLoadingModel(false)
   }
 
-  const fetchMessages = useCallback(async () => {
-    const res = await UserApi.fetchMessages(conversationId)
-    const data = await res.json
-    setMessages(data.messages)
-  }, [conversationId])
+  const fetchMessages = useCallback(
+    async (page = 1) => {
+      setIsFetchingMessages(true)
+      const res = await UserApi.fetchMessages(conversationId, page)
+      const data = await res.json
+      setMessages(page === 1 ? data.messages.reverse() : [...data.messages.reverse(), ...messages])
+      setPagination(data.pagination_meta)
+      setIsFetchingMessages(false)
+    },
+    [conversationId]
+  )
 
   const handleContextChange = (checked) => {
     setIsAddContext(checked)
@@ -126,6 +135,9 @@ const CustomModel: React.FC<CustomModelProps> = ({ conversation }) => {
                                           isLoading={isLoading}
                                           avatarUrl={model.avatar_url}
                                           voice={model.voice}
+                                          fetchMessages={fetchMessages}
+                                          isFetchingMessages={isFetchingMessages}
+                                          pagination={pagination}
                                         />
                                       </>
                                     ) : (
@@ -134,6 +146,9 @@ const CustomModel: React.FC<CustomModelProps> = ({ conversation }) => {
                                         messages={messages}
                                         isLoading={isLoading}
                                         avatarUrl={`${CDN_HOST}/assets/person.png`}
+                                        fetchMessages={fetchMessages}
+                                        isFetchingMessages={isFetchingMessages}
+                                        pagination={pagination}
                                       />
                                     )}
                                   </div>
