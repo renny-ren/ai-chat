@@ -4,6 +4,8 @@
 
 <img width="1503" alt="image" src="https://github.com/renny-ren/ai-chat/assets/19547819/734dd751-c3fa-40f1-ab98-b7329775fc42">
 
+<img width="847" alt="image" src="https://github.com/renny-ren/ai-chat/assets/19547819/42229b49-972c-4727-9789-215b1b60dcb3">
+
 Live demo: [https://zyzy.chat](https://zyzy.chat/)
 
 ## Features
@@ -17,6 +19,7 @@ Live demo: [https://zyzy.chat](https://zyzy.chat/)
 - 支持夜间模式切换
 - 用户管理系统，支持注册登录
 - 消息通知系统，支持发送站内信
+- 响应式布局，多端适用
 
 ## Tech Stack
 
