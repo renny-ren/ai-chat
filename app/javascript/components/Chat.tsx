@@ -7,10 +7,12 @@ import * as UserApi from "shared/api/user"
 import Girlfriend from "components/Girlfriend"
 import Fortune from "components/Fortune"
 import Developer from "components/Developer"
+import { Spin } from "antd"
 
 const Chat = ({}) => {
   let { state } = useLocation()
   const [conversation, setConversation] = useState({})
+  const [isLoading, setIsLoading] = useState(false)
   const conversationId = useParams().conversationId
 
   useEffect(() => {
@@ -18,9 +20,11 @@ const Chat = ({}) => {
   }, [state])
 
   const fetchConversation = async () => {
+    setIsLoading(true)
     const res = await UserApi.fetchConversation(conversationId)
     const data = await res.json
     setConversation(data.conversation || {})
+    setIsLoading(false)
   }
 
   const renderContent = () => {
@@ -49,7 +53,17 @@ const Chat = ({}) => {
 
   const content = useMemo(() => renderContent(), [conversation])
 
-  return <>{content}</>
+  return (
+    <>
+      {isLoading ? (
+        <div className="flex h-full justify-center items-center">
+          <Spin size="large" />
+        </div>
+      ) : (
+        content
+      )}
+    </>
+  )
 }
 
 export default Chat

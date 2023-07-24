@@ -6,10 +6,9 @@ import MessageList from "components/common/MessageList"
 import Footer from "components/common/Footer"
 import * as CommonApi from "shared/api/common"
 import * as UserApi from "shared/api/user"
-import { Empty } from "antd"
+import { Empty, Spin } from "antd"
 import { MinusCircleOutlined } from "@ant-design/icons"
 import Header from "./Header"
-import Spinner from "components/common/Spinner"
 import { CDN_HOST } from "shared/constants"
 
 interface CustomModelProps {
@@ -103,8 +102,8 @@ const CustomModel: React.FC<CustomModelProps> = ({ conversation }) => {
         <main className="h-full">
           <Background />
           {isLoadingModel ? (
-            <div className="col-span-12 h-full flex items-center justify-center">
-              <Spinner className="w-10 h-10 text-gray-200 animate-spin dark:text-gray-600 fill-green-500" />
+            <div className="flex h-full justify-center items-center">
+              <Spin size="large" />
             </div>
           ) : (
             <>

@@ -37,6 +37,9 @@ const App = (props) => {
       <ConfigProvider
         theme={{
           algorithm: isDarkMode() ? darkAlgorithm : defaultAlgorithm,
+          token: {
+            colorPrimary: "#10B981",
+          },
         }}
       >
         <div className="h-full lg:ml-64 xl:ml-72">
