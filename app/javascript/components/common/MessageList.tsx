@@ -147,7 +147,7 @@ const MessageList: React.FC<MessageListProps> = ({
         onScroll={handleRootScroll}
       >
         <div className="sentry text-center" ref={infiniteRef}>
-          {isFetchingMessages && <Spin />}
+          {isFetchingMessages && <Spin className="mt-2" />}
         </div>
 
         <div className="grid grid-cols-12 gap-y-2">

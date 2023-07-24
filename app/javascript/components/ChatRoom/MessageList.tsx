@@ -158,7 +158,7 @@ const MessageList = ({ messages, fetchMessages, isFetching, openModal, paginatio
         onScroll={handleRootScroll}
       >
         <div className="sentry text-center" ref={infiniteRef}>
-          {isFetching && <Spin />}
+          {isFetching && <Spin className="mt-2" />}
         </div>
         <div className="grid grid-cols-12 gap-y-2 overflow-hidden">
           {messages.map((message, i) => {

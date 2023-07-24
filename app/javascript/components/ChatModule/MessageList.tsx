@@ -135,7 +135,7 @@ const MessageList: FC<MessageListProps> = ({
         onScroll={handleRootScroll}
       >
         <div className="sentry text-center" ref={infiniteRef}>
-          {isFetchingMessages && <Spin />}
+          {isFetchingMessages && <Spin className="mt-2" />}
         </div>
         {messages.map((msg, i) => {
           return isSelf(msg) ? (
