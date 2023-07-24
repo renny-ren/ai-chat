@@ -48,7 +48,7 @@ const MessageList: React.FC<MessageListProps> = ({
     loading: isFetchingMessages,
     hasNextPage: pagination.current < pagination.total && currentPage <= 50,
     onLoadMore: fetchMoreData,
-    rootMargin: "400px 0px 0px 0px",
+    rootMargin: "100px 0px 0px 0px",
   })
 
   // Keep the scroll position when new items are added.

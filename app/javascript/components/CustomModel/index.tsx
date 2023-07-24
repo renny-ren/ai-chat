@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react"
+import React, { useState, useEffect, useCallback, useRef } from "react"
 import { useParams, useLocation } from "react-router-dom"
 import { Helmet } from "react-helmet"
 import Background from "components/common/Background"
@@ -17,6 +17,7 @@ interface CustomModelProps {
 }
 
 const CustomModel: React.FC<CustomModelProps> = ({ conversation }) => {
+  const messagesRef = useRef()
   const [model, setModel] = useState({})
   const initMessages = [
     {
@@ -27,12 +28,13 @@ const CustomModel: React.FC<CustomModelProps> = ({ conversation }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [isLoadingModel, setIsLoadingModel] = useState(false)
   const [isPrivate, setIsPrivate] = useState(false)
-  const [messages, setMessages] = useState(initMessages)
+  const [messages, setMessages] = useState([])
   const [permalink, setPermalink] = useState(useParams().modelPermalink)
   const [isAddContext, setIsAddContext] = useState(true)
   const conversationId = useParams().conversationId
   const [isFetchingMessages, setIsFetchingMessages] = useState(false)
   const [pagination, setPagination] = useState({})
+  messagesRef.current = messages
 
   let { state } = useLocation()
 
@@ -54,9 +56,9 @@ const CustomModel: React.FC<CustomModelProps> = ({ conversation }) => {
     }
   }, [permalink])
 
-  useEffect(() => {
-    setMessages([...initMessages, ...messages].filter((m) => !!m.content))
-  }, [model])
+  // useEffect(() => {
+  //   setMessages([...initMessages, ...messages].filter((m) => !!m.content))
+  // }, [model])
 
   const fetchModel = async () => {
     setIsLoadingModel(true)
@@ -81,7 +83,7 @@ const CustomModel: React.FC<CustomModelProps> = ({ conversation }) => {
       setIsFetchingMessages(true)
       const res = await UserApi.fetchMessages(conversationId, page)
       const data = await res.json
-      setMessages(page === 1 ? data.messages.reverse() : [...data.messages.reverse(), ...messages])
+      setMessages(page === 1 ? data.messages.reverse() : [...data.messages.reverse(), ...messagesRef.current])
       setPagination(data.pagination_meta)
       setIsFetchingMessages(false)
     },
@@ -131,7 +133,7 @@ const CustomModel: React.FC<CustomModelProps> = ({ conversation }) => {
                                         />
                                         <MessageList
                                           gptName={model.title}
-                                          messages={messages}
+                                          messages={[...initMessages, ...messagesRef.current]}
                                           isLoading={isLoading}
                                           avatarUrl={model.avatar_url}
                                           voice={model.voice}
@@ -143,7 +145,7 @@ const CustomModel: React.FC<CustomModelProps> = ({ conversation }) => {
                                     ) : (
                                       <MessageList
                                         gptName="AI"
-                                        messages={messages}
+                                        messages={[...initMessages, ...messagesRef.current]}
                                         isLoading={isLoading}
                                         avatarUrl={`${CDN_HOST}/assets/person.png`}
                                         fetchMessages={fetchMessages}
