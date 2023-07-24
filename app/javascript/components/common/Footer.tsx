@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useContext } from "react"
+import React, { useEffect, useState, useRef, useContext, useCallback } from "react"
 import { useParams, useLocation } from "react-router-dom"
 import { AppContext } from "components/AppContext"
 import currentUser from "stores/current_user_store"
@@ -68,13 +68,14 @@ const Footer: React.FC<FooterProps> = ({
     }
   }, [isLoading])
 
-  const fetchUser = async () => {
+  // TODO: move this to Context
+  const fetchUser = useCallback(async () => {
     const res = await UserApi.fetchUser(currentUser.id())
     if (res.ok) {
       const data = await res.json
       setUsedMessageCount(data.user.used_message_count)
     }
-  }
+  }, [currentUser.id()])
 
   const checkKeyPress = (e) => {
     if (e.key === "Enter") {

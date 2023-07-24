@@ -24,7 +24,7 @@ const Chat = ({}) => {
   }
 
   const renderContent = () => {
-    if (!conversation.type) return <div></div>
+    // if (!conversation.type) return <div></div>
 
     switch (conversation.type) {
       case "girlfriend":

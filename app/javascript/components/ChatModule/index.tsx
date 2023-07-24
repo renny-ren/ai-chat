@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react"
+import React, { FC, useState, useEffect, useRef } from "react"
 import { useParams, useLocation } from "react-router-dom"
 import { Spin, message } from "antd"
 import * as UserApi from "shared/api/user"
@@ -18,6 +18,7 @@ const ChatModule: FC<ChatModuleProps> = ({}) => {
   const [uniqueIdToRetry, setUniqueIdToRetry] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [isFetchingMsgs, setIsFetchingMsgs] = useState(false)
+  const [pagination, setPagination] = useState({})
   const [model, setModel] = useState({})
   let conversationId = useParams().conversationId
   let { state } = useLocation()
@@ -38,12 +39,14 @@ const ChatModule: FC<ChatModuleProps> = ({}) => {
     }
   }, [conversationId])
 
-  const fetchMessages = async () => {
+  const fetchMessages = async (page = 1) => {
     setIsFetchingMsgs(true)
-    const res = await UserApi.fetchMessages(conversationId)
+    const res = await UserApi.fetchMessages(conversationId, page)
     const data = await res.json
     if (res.ok) {
-      setMessages(data.messages)
+      setMessages(page === 1 ? data.messages.reverse() : [...data.messages.reverse(), ...messages])
+      setPagination(data.pagination_meta)
+
       if (data.model) {
         setModel(data.model)
       }
@@ -88,7 +91,7 @@ const ChatModule: FC<ChatModuleProps> = ({}) => {
   const messagesEndRef = useRef(null)
 
   useEffect(() => {
-    scrollToBottom()
+    // scrollToBottom()
   }, [messages])
 
   const scrollToBottom = () => {
@@ -174,7 +177,15 @@ const ChatModule: FC<ChatModuleProps> = ({}) => {
                   )}
                 </>
               ) : (
-                <MessageList messagesEndRef={messagesEndRef} messages={messages} isLoading={isLoading} model={model} />
+                <MessageList
+                  messagesEndRef={messagesEndRef}
+                  messages={messages}
+                  fetchMessages={fetchMessages}
+                  isFetchingMessages={isFetchingMsgs}
+                  pagination={pagination}
+                  isLoading={isLoading}
+                  model={model}
+                />
               )}
             </div>
           </div>

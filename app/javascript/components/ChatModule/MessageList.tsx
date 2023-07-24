@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState, useRef } from "react"
+import React, { FC, useEffect, useState, useRef, useCallback } from "react"
 import type { MessageInterface } from "./types"
 import { CDN_HOST } from "shared/constants"
 import Markdown from "marked-react"
@@ -8,18 +8,73 @@ import { hybrid } from "react-syntax-highlighter/dist/esm/styles/hljs"
 import currentUser from "stores/current_user_store"
 import AudioButton from "components/common/AudioButton"
 import CopyButton from "components/common/CopyButton"
+import useInfiniteScroll from "react-infinite-scroll-hook"
+import { Spin } from "antd"
 
 interface MessageListProps {
   messages: MessageInterface[]
   messagesEndRef: any
   isLoading: boolean
   model?: any
+  pagination: any
+  fetchMessages: any
+  isFetchingMessages: boolean
 }
 
-const MessageList: FC<MessageListProps> = ({ messages, messagesEndRef, isLoading, model }) => {
+const MessageList: FC<MessageListProps> = ({
+  messages,
+  isFetchingMessages,
+  fetchMessages,
+  pagination,
+  messagesEndRef,
+  isLoading,
+  model,
+}) => {
+  const [currentPage, setCurrentPage] = useState(1)
   const [playingMessageId, setPlayingMessageId] = useState(0)
+  const scrollableRootRef = useRef<HTMLDivElement | null>(null)
+  const lastScrollDistanceToBottomRef = useRef<number>()
   const responseListRef = useRef<HTMLDivElement>(null)
   const audioRef = useRef(null)
+
+  const fetchMoreData = () => {
+    let nextPage = currentPage + 1
+    fetchMessages(nextPage)
+    setCurrentPage(nextPage)
+  }
+
+  const [infiniteRef, { rootRef }] = useInfiniteScroll({
+    loading: isFetchingMessages,
+    hasNextPage: pagination.current < pagination.total && currentPage <= 50,
+    onLoadMore: fetchMoreData,
+    rootMargin: "400px 0px 0px 0px",
+  })
+
+  // Keep the scroll position when new items are added.
+  useEffect(() => {
+    const scrollableRoot = scrollableRootRef.current
+    const lastScrollDistanceToBottom = lastScrollDistanceToBottomRef.current ?? 0
+    if (scrollableRoot) {
+      scrollableRoot.scrollTop = scrollableRoot.scrollHeight - lastScrollDistanceToBottom
+    }
+  }, [messages, rootRef])
+
+  const rootRefSetter = useCallback(
+    (node: HTMLDivElement) => {
+      rootRef(node)
+      scrollableRootRef.current = node
+    },
+    [rootRef]
+  )
+
+  const handleRootScroll = useCallback(() => {
+    const rootNode = scrollableRootRef.current
+    if (rootNode) {
+      const scrollDistanceToBottom = rootNode.scrollHeight - rootNode.scrollTop
+
+      lastScrollDistanceToBottomRef.current = scrollDistanceToBottom
+    }
+  }, [])
 
   const isSelf = (message) => {
     return message.role === "user"
@@ -73,7 +128,15 @@ const MessageList: FC<MessageListProps> = ({ messages, messagesEndRef, isLoading
   return (
     <>
       <audio ref={audioRef}></audio>
-      <div className="flex flex-col items-center text-sm h-full dark:bg-gray-800 overflow-y-auto c-scrollbar">
+
+      <div
+        className="flex flex-col items-center text-sm h-full dark:bg-gray-800 overflow-y-auto c-scrollbar"
+        ref={rootRefSetter}
+        onScroll={handleRootScroll}
+      >
+        <div className="sentry text-center" ref={infiniteRef}>
+          {isFetchingMessages && <Spin />}
+        </div>
         {messages.map((msg, i) => {
           return isSelf(msg) ? (
             <div
