@@ -25,8 +25,8 @@ const Girlfriend: React.FC<GirlfriendProps> = ({ conversationId }) => {
   const [isAddContext, setIsAddContext] = useState(true)
   const [isFetchingMessages, setIsFetchingMessages] = useState(false)
   const [pagination, setPagination] = useState({})
-
   let { state } = useLocation()
+  const title = state?.conversationTitle || "AI 女友"
 
   useEffect(() => {
     if (conversationId) {
@@ -49,7 +49,7 @@ const Girlfriend: React.FC<GirlfriendProps> = ({ conversationId }) => {
   return (
     <>
       <Helmet>
-        <title>{state?.conversationTitle || "AI 女友"}</title>
+        <title>{title}</title>
       </Helmet>
       <div className="h-full relative pt-12 md:pt-14">
         <main className="h-full">
@@ -64,7 +64,7 @@ const Girlfriend: React.FC<GirlfriendProps> = ({ conversationId }) => {
                       <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl h-full w-full md:max-w-3xl lg:max-w-4xl">
                         <div className="flex flex-col h-full md:pb-4">
                           <div className="flex flex-col h-full overflow-x-auto">
-                            <Header isAddContext={isAddContext} handleContextChange={handleContextChange} />
+                            <Header isAddContext={isAddContext} handleContextChange={handleContextChange} title={title} />
                             <MessageList
                               avatarUrl="https://aii-chat-assets.oss-cn-chengdu.aliyuncs.com/images/girlfriend.png"
                               gptName="AI 女友"

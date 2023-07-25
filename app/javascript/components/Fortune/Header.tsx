@@ -5,7 +5,7 @@ import { copy } from "shared/utils/copy_text"
 
 interface HeaderProps {}
 
-const Header: React.FC<HeaderProps> = ({ isAddContext, handleContextChange }) => {
+const Header: React.FC<HeaderProps> = ({ isAddContext, handleContextChange, title }) => {
   const [isOpen, setIsOpen] = useState(true)
 
   const toggleMenu = () => {
@@ -26,7 +26,7 @@ const Header: React.FC<HeaderProps> = ({ isAddContext, handleContextChange }) =>
           }`}
         >
           <div className="px-4 sm:px-0">
-            <p className="mt-1 max-w-2xl text-sm leading-6 font-medium text-gray-600">命理大师</p>
+            <p className="mt-1 max-w-2xl text-sm leading-6 font-medium text-gray-600">{title}</p>
 
             <div className="flex justify-between items-end">
               <div className="mt-1 max-w-2xl text-xs text-gray-600 flex items-center">

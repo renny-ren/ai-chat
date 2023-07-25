@@ -27,8 +27,8 @@ const Developer: React.FC<DeveloperProps> = ({ conversationId }) => {
   const [isAddContext, setIsAddContext] = useState(true)
   const [isFetchingMessages, setIsFetchingMessages] = useState(false)
   const [pagination, setPagination] = useState({})
-
   let { state } = useLocation()
+  const title = state?.conversationTitle || "程序员助手"
 
   useEffect(() => {
     if (conversationId) {
@@ -52,7 +52,7 @@ const Developer: React.FC<DeveloperProps> = ({ conversationId }) => {
   return (
     <>
       <Helmet>
-        <title>{state?.conversationTitle || "程序员助手"}</title>
+        <title>{title}</title>
       </Helmet>
       <div className="h-full relative pt-12 md:pt-14">
         <main className="h-full">
@@ -67,7 +67,7 @@ const Developer: React.FC<DeveloperProps> = ({ conversationId }) => {
                       <div className="flex flex-col flex-auto flex-shrink-0 rounded-2xl h-full w-full md:max-w-3xl lg:max-w-4xl">
                         <div className="flex flex-col h-full md:pb-4">
                           <div className="flex flex-col h-full overflow-x-auto">
-                            <Header isAddContext={isAddContext} handleContextChange={handleContextChange} />
+                            <Header isAddContext={isAddContext} handleContextChange={handleContextChange} title={title} />
                             <MessageList
                               avatarUrl="https://aii-chat-assets.oss-cn-chengdu.aliyuncs.com/images/developer_assistant.jpeg"
                               gptName="程序员助手"
