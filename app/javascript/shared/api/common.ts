@@ -1,7 +1,7 @@
 import { get, post, put, patch, destroy } from "../utils/request"
 import queryString from "query-string"
 
-export function fetchAppMessages(params) {
+export function fetchAppMessages() {
   return get("/v1/app_messages")
 }
 

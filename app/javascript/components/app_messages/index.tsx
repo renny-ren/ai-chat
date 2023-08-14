@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { Table, Form, Row, Col, Select, Input, Button, Popconfirm, message } from "antd"
+import { Table, Button, Popconfirm, message } from "antd"
 import * as CommonApi from "shared/api/common"
 
 const AppMessageList = (props) => {
@@ -8,9 +8,9 @@ const AppMessageList = (props) => {
   const [loading, setLoading] = useState(false)
   const [pushing, setPushing] = useState(false)
 
-  const fetchMessages = async (params) => {
+  const fetchMessages = async () => {
     setLoading(true)
-    const res = await CommonApi.fetchAppMessages(params)
+    const res = await CommonApi.fetchAppMessages()
     if (res.ok) {
       const body = await res.json
       setData(body.messages)
@@ -24,7 +24,7 @@ const AppMessageList = (props) => {
   }, [])
 
   const handleTableChange = (pagination, filters, sorter) => {
-    fetchMessages({ page: pagination.current })
+    fetchMessages()
   }
 
   const onClickPush = async (id) => {

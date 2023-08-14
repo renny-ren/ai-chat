@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { UpOutlined, DownOutlined, ShareAltOutlined } from "@ant-design/icons"
-import { message, Popconfirm, ConfigProvider, Switch, Tooltip } from "antd"
+import { message, ConfigProvider, Switch, Tooltip } from "antd"
 import { copy } from "shared/utils/copy_text"
 
 interface HeaderProps {}

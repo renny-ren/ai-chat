@@ -7,7 +7,7 @@ interface BaseSelectionProps {
   onChange?: () => void
 }
 
-const BaseSelection: React.FC<BackgroundProps> = ({ options, onChange }) => {
+const BaseSelection: React.FC<BaseSelectionProps> = ({ options, onChange }) => {
   const [selected, setSelected] = useState(options[0])
 
   function classNames(...classes) {

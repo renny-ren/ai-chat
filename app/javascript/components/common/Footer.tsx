@@ -87,7 +87,7 @@ const Footer: React.FC<FooterProps> = ({
   }
 
   const handlePromptChange = (e) => {
-    value = e.target.value
+    const value = e.target.value
     setPrompt(value)
     e.target.style.height = "24px"
     e.target.style.height = e.target.scrollHeight + "px"

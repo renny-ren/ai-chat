@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import * as _ from "lodash"
 import Spinner from "components/common/Spinner"
 import { AliyunTTS } from "aliyun-nls-js"
