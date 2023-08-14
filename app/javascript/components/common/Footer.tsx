@@ -147,7 +147,11 @@ const Footer: React.FC<FooterProps> = ({
 
   const updateMessage = (response) => {
     if (response.status !== 200) {
-      response.content = "哎呀呀，出了点小意外，我现在脑子有点短路，您可以等我喝点咖啡或者让我稍微休息一下再试试看！"
+      if (response.content === "context_length_exceeded") {
+        response.content = "当前对话上下文内容过长，请尝试开启新的会话或关闭「关联上下文」功能"
+      } else {
+        response.content = "哎呀呀，出了点小意外，我现在脑子有点短路，您可以等我喝点咖啡或者让我稍微休息一下再试试看！"
+      }
     }
     const updatedMessages = [...messages]
     updatedMessages[messages.length - 1] = response
