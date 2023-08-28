@@ -34,6 +34,8 @@ class MessagesChannel < ApplicationCable::Channel
         current_user.update_used_count(remote_ip)
       end
     end
+  rescue Exception => e
+    App::Error.track(e)
   end
 
   def appear_user
@@ -54,6 +56,6 @@ class MessagesChannel < ApplicationCable::Channel
 
   def rate_limit_reached?
     last_message = current_user.messages.order(:id).last
-    Time.now - last_message.created_at < 3.seconds
+    last_message.present? && Time.now - last_message.created_at < 3.seconds
   end
 end
