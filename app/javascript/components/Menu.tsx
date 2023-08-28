@@ -162,7 +162,7 @@ const Menu: React.FC<MenuProps> = ({ onShowSignInModal, conversations, closeMobi
               <button
                 title="新的会话"
                 onClick={newConversation}
-                className="outline-none inline-flex ml-2 px-2 py-1 text-xs text-gray-600 font-medium transition-colors duration-300 transform border rounded-md dark:text-gray-200 dark:border-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                className="outline-none inline-flex px-2 py-1 text-xs text-gray-600 font-medium transition-colors duration-300 transform border rounded-md dark:text-gray-200 dark:border-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
