@@ -7,6 +7,7 @@ ActiveAdmin.register OpenaiAccount do
         link_to item.user_id, admin_user_path(item.user_id)
       end
     end
+    column :status
     column :email
     column :credit
     column :used_amount
@@ -17,6 +18,7 @@ ActiveAdmin.register OpenaiAccount do
 
   filter :id
   filter :user_id
+  filter :status
   filter :email
   filter :credit
   filter :used_amount
@@ -25,6 +27,7 @@ ActiveAdmin.register OpenaiAccount do
   form do |f|
     f.inputs do
       f.input :user_id
+      f.input :status
       f.input :secret_key
       f.input :credit
       f.input :used_amount
@@ -43,7 +46,7 @@ ActiveAdmin.register OpenaiAccount do
     private
 
     def openai_account_params
-      params.require(:openai_account).permit(:user_id, :secret_key, :credit, :used_amount, :total_available)
+      params.require(:openai_account).permit(:user_id, :status, :secret_key, :credit, :used_amount, :total_available)
     end
   end
 end
