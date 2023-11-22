@@ -25,12 +25,12 @@ module ChatCompletion
 
       Retry.run(count: 2, after_retry: method(:notify_failure)) do
         @resp = client.create_chat_completion(request_body) do |chunk, overall_received_bytes, env|
-          data = chunk[/data: (.*)\n\n$/, 1]
-
-          if data.present?
-            data == "[DONE]" ? handle_message_done : send_message(data)
-          else
-            handle_exception(chunk)
+          parser.feed(chunk) do |_type, data|
+            if data.present?
+              data == "[DONE]" ? handle_message_done : send_message(data)
+            else
+              handle_exception(chunk)
+            end
           end
         end
         raise @resp.reason_phrase if @resp.status != 200
@@ -73,6 +73,10 @@ module ChatCompletion
 
     def client
       @client ||= OpenAI::Client.new(current_user.openai_account&.secret_key || OPENAI_API_KEY)
+    end
+
+    def parser
+      EventStreamParser::Parser.new
     end
 
     def dummy_call
