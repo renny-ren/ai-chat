@@ -13,19 +13,16 @@ module ChatCompletion
     # {"error"=>{"message"=>"This model's maximum context length is 4097 tokens. However, you requested 4569 tokens (4069 in the messages, 500 in the completion). Please reduce the length of the messages or completion.", "type"=>"invalid_request_error", "param"=>"messages", "code"=>"context_length_exceeded"}}
     def call
       Retry.run(count: 2, after_retry: method(:notify_failure)) do
-        @resp = client.create_chat_completion(params) do |chunk, overall_received_bytes, env|
-          parser.feed(chunk) do |_type, data|
-            if data.present?
-              data == "[DONE]" ? handle_message_done : broadcast_message(data)
-            else
-              handle_exception(chunk)
-            end
-          end
+        @resp = client.create_chat_completion(params) do |data|
+          update_result(data)
+          broadcast_message(data)
         end
-        raise @resp.reason_phrase if @resp.status != 200
+        handle_message_done
+        raise "#{@resp.reason_phrase}: #{@resp.body}" if @resp.status != 200
       end
     rescue => e
       App::Error.track(e)
+      # handle_exception(chunk)
     end
 
     def handle_message_done
@@ -42,8 +39,6 @@ module ChatCompletion
     end
 
     def broadcast_message(data)
-      response = JSON.parse(data)
-      update_result(response)
       ActionCable.server.broadcast("MessagesChannel", {
         id: message_id,
         role: "assistant",
@@ -117,10 +112,6 @@ module ChatCompletion
 
     def client
       @client ||= OpenAI::Client.new([OPENAI_API_KEY, OPENAI_API_KEY2].sample)
-    end
-
-    def parser
-      EventStreamParser::Parser.new
     end
 
     def notify_done

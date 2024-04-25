@@ -71,7 +71,7 @@ end
 gem "tailwindcss-rails", "~> 2.0"
 gem "faraday"
 gem "pry"
-gem "openai_ruby", "~> 0.3.6"
+gem "openai_ruby", "~> 0.4.0"
 gem "devise"
 gem "gon"
 gem "dalli"

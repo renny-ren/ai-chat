@@ -24,19 +24,15 @@ module ChatCompletion
       )
 
       Retry.run(count: 2, after_retry: method(:notify_failure)) do
-        @resp = client.create_chat_completion(request_body) do |chunk, overall_received_bytes, env|
-          parser.feed(chunk) do |_type, data|
-            if data.present?
-              data == "[DONE]" ? handle_message_done : send_message(data)
-            else
-              handle_exception(chunk)
-            end
-          end
+        @resp = client.create_chat_completion(request_body) do |data|
+          send_message(data)
         end
-        raise @resp.reason_phrase if @resp.status != 200
+        handle_message_done
+        raise "#{@resp.reason_phrase}: #{@resp.body}" if @resp.status != 200
       end
     rescue => e
       App::Error.track(e)
+      # handle_exception(chunk)
     end
 
     def notify_failure
@@ -53,11 +49,10 @@ module ChatCompletion
     end
 
     def send_message(data)
-      response = JSON.parse(data)
-      if response.dig("choices", 0, "delta", "content")
-        @result = @result + response.dig("choices", 0, "delta", "content")
+      if data.dig("choices", 0, "delta", "content")
+        @result = @result + data.dig("choices", 0, "delta", "content")
       end
-      sse.write(status: 200, id: response.dig("id"), role: "assistant", content: @result)
+      sse.write(status: 200, id: data.dig("id"), role: "assistant", content: @result)
     end
 
     def handle_exception(chunk)
@@ -73,10 +68,6 @@ module ChatCompletion
 
     def client
       @client ||= OpenAI::Client.new(current_user.openai_account&.secret_key || OPENAI_API_KEY)
-    end
-
-    def parser
-      EventStreamParser::Parser.new
     end
 
     def dummy_call

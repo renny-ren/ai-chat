@@ -31,11 +31,13 @@ Live demo: [https://zyzy.chat](https://zyzy.chat/)
 - TailwindCSS
 - Rails
 - PostgreSQL
+- esbuild
 
 ## Setup
 
 1. run `bundle install`
-2. run `bin/dev`
+2. run `yarn install`
+3. run `bin/dev`
 
 Open your web browser and navigate to http://localhost:3000
 
