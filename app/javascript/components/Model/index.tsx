@@ -33,7 +33,7 @@ const Model: React.FC<ModelProps> = ({ tab }) => {
 
   const fetchModels = async () => {
     setIsLoading(true)
-    const res = await CommonApi.fetchModels({ scope: currentTab })
+    const res = await CommonApi.fetchModels({ scope: currentTab, per: 99 })
     if (res.ok) {
       const data = await res.json
       setModels(data.models)
