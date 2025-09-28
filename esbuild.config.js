@@ -6,7 +6,7 @@ esbuild
     entryPoints: ["application.js"],
     bundle: true,
     sourcemap: true,
-    watch: process.env.NODE_ENV !== "production",
+    // watch: process.env.NODE_ENV !== "production",
     outdir: path.join(process.cwd(), "app/assets/builds"),
     absWorkingDir: path.join(process.cwd(), "app/javascript"),
     publicPath: path.join(process.cwd(), "assets"),
