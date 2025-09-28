@@ -5,7 +5,7 @@ class CompletionsController < ApplicationController
 
   # Deprecated
   def create
-    client = OpenAI::Client.new(OPENAI_API_KEY)
+    client = OpenAI::Client.new(OPENAI_API_KEY, base_uri: "https://api.whatai.cc")
     res = client.create_completion(completion_params.merge(
       model: "text-davinci-003",
       max_tokens: 500,

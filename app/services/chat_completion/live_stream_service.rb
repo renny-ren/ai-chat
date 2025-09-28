@@ -67,7 +67,7 @@ module ChatCompletion
     private
 
     def client
-      @client ||= OpenAI::Client.new(current_user.openai_account&.secret_key || OPENAI_API_KEY)
+      @client ||= OpenAI::Client.new(current_user.openai_account&.secret_key || OPENAI_API_KEY, base_uri: "https://api.whatai.cc")
     end
 
     def dummy_call

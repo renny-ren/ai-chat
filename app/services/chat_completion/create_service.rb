@@ -111,7 +111,7 @@ module ChatCompletion
     private
 
     def client
-      @client ||= OpenAI::Client.new([OPENAI_API_KEY, OPENAI_API_KEY2].sample)
+      @client ||= OpenAI::Client.new([OPENAI_API_KEY, OPENAI_API_KEY2].sample, base_uri: "https://api.whatai.cc")
     end
 
     def notify_done
