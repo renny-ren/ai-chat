@@ -52,4 +52,4 @@ export const people = [
   },
 ]
 
-export const modelOptions = [{ label: "gpt-3.5-turbo", value: "gpt-3.5-turbo" }]
+export const modelOptions = [{ label: "gpt-4.1", value: "gpt-4.1" }]

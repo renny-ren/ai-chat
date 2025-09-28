@@ -158,7 +158,7 @@ module ChatCompletion
     end
 
     def tokens_of(messages)
-      enc = Tiktoken.encoding_for_model("gpt-3.5-turbo")
+      enc = Tiktoken.encoding_for_model("gpt-4")
       enc.encode(messages.to_s)
     end
 

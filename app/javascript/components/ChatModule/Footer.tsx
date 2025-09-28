@@ -307,7 +307,7 @@ const Footer: React.FC<FooterProps> = ({
                 <span>今日剩余次数：{Math.max(0, messageLimitPerDay - usedMessageCount)}</span>
               </>
             )}
-            <span>当前应用：ChatGPT (GPT-3.5)</span>
+            <span>当前应用：ChatGPT</span>
             {currentUser.isSignedIn() ? (
               <a className="underline hidden md:block" href="/models" rel="noreferrer">
                 查看更多应用

@@ -1,6 +1,6 @@
 module ChatCompletion
   class LiveStreamService
-    MODEL = "gpt-3.5-turbo".freeze
+    MODEL = "gpt-4.1".freeze
 
     attr_reader :sse, :current_user, :params
     attr_accessor :result
@@ -116,7 +116,7 @@ module ChatCompletion
     end
 
     def tokens_of(messages)
-      enc = Tiktoken.encoding_for_model("gpt-3.5-turbo")
+      enc = Tiktoken.encoding_for_model("gpt-4.1")
       enc.encode(messages.to_s)
     end
 
